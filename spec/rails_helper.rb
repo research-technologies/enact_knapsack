@@ -1,10 +1,13 @@
 # frozen_string_literal: true
 
-# This file is copied to spec/ when you run 'rails generate rspec:install'
+# Set environment variables BEFORE requiring Rails environment
+# so initializers read the correct values on first load.
+ENV["RAILS_ENV"] ||= "test"
+# Use Hyku default (false) unless a spec or .env sets HYRAX_FLEXIBLE.
+ENV['HYRAX_FLEXIBLE'] ||= 'false'
+
 require "spec_helper"
 
-ENV["RAILS_ENV"] ||= "test"
-ENV['HYRAX_FLEXIBLE'] ||= 'false'
 # require File.expand_path('../config/environment', __dir__)
 require File.expand_path("../hyrax-webapp/config/environment", __dir__)
 # Prevent database truncation if the environment is production
@@ -42,5 +45,6 @@ RSpec.configure do |config|
   # TODO is this needed?
   config.include HykuKnapsack::Engine.routes.url_helpers
   config.include Capybara::DSL
-  config.include Fixtures::FixtureFileUpload
+  # Only include Fixtures::FixtureFileUpload if it's defined (from hyrax-webapp)
+  config.include Fixtures::FixtureFileUpload if defined?(Fixtures::FixtureFileUpload)
 end

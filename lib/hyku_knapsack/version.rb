@@ -1,6 +1,5 @@
 # frozen_string_literal: true
 
 module HykuKnapsack
-  VERSION = "0.0.1"
-  TEST = 'five'
+  VERSION = "7.1.0"
 end
