@@ -260,6 +260,8 @@ externalPostgresql:
   host: zalando-postgres-v17.postgres.svc.cluster.local
   username: enact-knapsack-production
   password: $DB_PASSWORD
+  database: enact-knapsack-production
+  port: 5432
 
 externalSolrHost: solr.solr.svc.cluster.local
 externalSolrUser: admin
