@@ -176,6 +176,8 @@ extraEnvVars: &envVars
     value: enact-knapsack-staging.enacthyku.com
   - name: HYKU_SHOW_BACKTRACE
     value: "true"
+  - name: EXTERNAL_IIIF_URL
+    value: iiif.enacthyku.com/iiif/2
   - name: NEGATIVE_CAPTCHA_SECRET
     value: $NEGATIVE_CAPTCHA_SECRET
   # Need to flesh out a mail server for them

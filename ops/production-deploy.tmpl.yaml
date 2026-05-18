@@ -87,6 +87,8 @@ extraEnvVars: &envVars
     value: enact-knapsack-production
   - name: DISABLE_WINGS
     value: "true"
+  - name: EXTERNAL_IIIF_URL
+    value: iiif.enacthyku.com/iiif/2
   # Running WINGS OFF MODE, so FCREPO env vars are not needed
   # - name: FCREPO_BASE_PATH
   #   value: /enact-knapsack-production
