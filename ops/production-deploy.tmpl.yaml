@@ -81,6 +81,8 @@ extraEnvVars: &envVars
     value: postgresql
   - name: DB_HOST
     value: zalando-postgres-v17.postgres.svc.cluster.local
+  - name: DB_PORT
+    value: "5432"
   - name: DB_NAME
     value: enact-knapsack-production
   - name: DB_USER

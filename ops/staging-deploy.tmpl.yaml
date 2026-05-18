@@ -81,6 +81,8 @@ extraEnvVars: &envVars
     value: postgresql
   - name: DB_HOST
     value: zalando-postgres-v17.postgres.svc.cluster.local
+  - name: DB_PORT
+    value: "5432"
   - name: DB_NAME
     value: enact-knapsack-staging
   - name: DB_USER
@@ -258,6 +260,8 @@ externalPostgresql:
   host: zalando-postgres-v17.postgres.svc.cluster.local
   username: enact-knapsack-staging
   password: $DB_PASSWORD
+  database: enact-knapsack-staging
+  port: 5432
 
 externalSolrHost: solr.solr.svc.cluster.local
 externalSolrUser: admin
