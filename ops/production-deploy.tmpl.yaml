@@ -80,7 +80,7 @@ extraEnvVars: &envVars
   - name: DB_ADAPTER
     value: postgresql
   - name: DB_HOST
-    value: zalando-postgres-v17.default.svc.cluster.local
+    value: zalando-postgres-v17.postgres.svc.cluster.local
   - name: DB_NAME
     value: enact-knapsack-production
   - name: DB_USER
@@ -204,11 +204,11 @@ extraEnvVars: &envVars
   - name: SOLR_CONFIGSET_NAME
     value: enact-knapsack-production
   - name: SOLR_HOST
-    value: solr.default.svc.cluster.local
+    value: solr.solr.svc.cluster.local
   - name: SOLR_PORT
     value: "8983"
   - name: SOLR_URL
-    value: http://admin:$SOLR_ADMIN_PASSWORD@solr.default.svc.cluster.local:8983/solr/
+    value: http://admin:$SOLR_ADMIN_PASSWORD@solr.solr.svc.cluster.local:8983/solr/
   # - name: SENTRY_DSN
   #   value: $SENTRY_DSN
   # - name: SENTRY_ENVIRONMENT
@@ -255,11 +255,11 @@ solr:
   enabled: false
 
 externalPostgresql:
-  host: zalando-postgres-v17.default.svc.cluster.local
+  host: zalando-postgres-v17.postgres.svc.cluster.local
   username: enact-knapsack-production
   password: $DB_PASSWORD
 
-externalSolrHost: solr.default.svc.cluster.local
+externalSolrHost: solr.solr.svc.cluster.local
 externalSolrUser: admin
 externalSolrCollection: "enact-knapsack-production"
 externalSolrPassword: $SOLR_ADMIN_PASSWORD
