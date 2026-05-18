@@ -244,6 +244,8 @@ embargoRelease:
 leaseRelease:
   enabled: false
 
+externalFcrepoHost: ""
+
 fcrepo:
   enabled: false
 postgresql:
