@@ -83,14 +83,6 @@ extraEnvVars: &envVars
     value: REPLACE_ME
   - name: DB_USER
     value: postgres
-  - name: FCREPO_BASE_PATH
-    value: /REPLACE_ME
-  - name: FCREPO_HOST
-    value: fcrepo.fcrepo.svc.cluster.local
-  - name: FCREPO_PORT
-    value: "8080"
-  - name: FCREPO_REST_PATH
-    value: rest
   - name: GOOGLE_ANALYTICS_ID
     value: $GOOGLE_ANALYTICS_ID
   - name: GOOGLE_OAUTH_APP_NAME
