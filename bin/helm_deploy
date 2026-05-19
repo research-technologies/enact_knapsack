@@ -27,7 +27,8 @@ WORKER_TAG="${WORKER_TAG:-$DEPLOY_TAG}"
 echo $DEPLOY_TAG
 
 helm pull --untar oci://ghcr.io/samvera/charts/hyrax --version $CHART_VERSION
-helm repo update
+# Only update the helm repo locally - it breaks in CI containers and is not needed for OCI based charts
+# helm repo update
 
 helm upgrade \
     --install \
