@@ -50,6 +50,12 @@ ingress:
   enabled: true
   ingressClassName: nginx
   hosts:
+    - host: "enacthyku.com"
+      paths:
+        - path: /
+    - host: "*.enacthyku.com"
+      paths:
+        - path: /
     - host: "enact-knapsack-production.enacthyku.com"
       paths:
         - path: /
@@ -61,6 +67,10 @@ ingress:
     cert-manager.io/cluster-issuer: letsencrypt-production-dns
   }
   tls:
+    - hosts:
+        - "enacthyku.com"
+        - "*.enacthyku.com"
+      secretName: enacthyku-tls
     - hosts:
         - "enact-knapsack-production.enacthyku.com"
         - "*.enact-knapsack-production.enacthyku.com"
