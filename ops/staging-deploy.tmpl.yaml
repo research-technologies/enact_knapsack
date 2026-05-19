@@ -90,14 +90,6 @@ extraEnvVars: &envVars
   - name: DISABLE_WINGS
     value: "true"
   # Running WINGS OFF MODE, so FCREPO env vars are not needed
-  # - name: FCREPO_BASE_PATH
-  #   value: /enact-knapsack-staging
-  # - name: FCREPO_HOST
-  #   value: fcrepo-staging.fcrepo-staging.svc.cluster.local
-  # - name: FCREPO_PORT
-  #   value: "8080"
-  # - name: FCREPO_REST_PATH
-  #   value: rest
   # - name: GOOGLE_ANALYTICS_ID
   #   value: $GOOGLE_ANALYTICS_ID
   # - name: GOOGLE_OAUTH_APP_NAME
@@ -243,8 +235,6 @@ embargoRelease:
   enabled: false
 leaseRelease:
   enabled: false
-
-# externalFcrepoHost: ""
 
 fcrepo:
   enabled: false
