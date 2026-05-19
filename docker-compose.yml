@@ -27,6 +27,7 @@ volumes:
   assets:
   cache:
   db:
+  fcrepo:
   node_modules:
   redis:
   solr:
@@ -53,6 +54,11 @@ services:
     extends:
       file: hyrax-webapp/docker-compose.yml
       service: solr
+
+  fcrepo:
+    extends:
+      file: hyrax-webapp/docker-compose.yml
+      service: fcrepo
 
   fits:
     extends:
