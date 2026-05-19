@@ -97,7 +97,7 @@ extraEnvVars: &envVars
     value: enact-knapsack-production
   - name: DB_USER
     value: enact-knapsack-production
-  - name: DISABLE_WINGS
+  - name: HYRAX_SKIP_WINGS
     value: "true"
   - name: EXTERNAL_IIIF_URL
     value: https://iiif.enacthyku.com/iiif/2

@@ -87,7 +87,7 @@ extraEnvVars: &envVars
     value: enact-knapsack-staging
   - name: DB_USER
     value: enact-knapsack-staging
-  - name: DISABLE_WINGS
+  - name: HYRAX_SKIP_WINGS
     value: "true"
   # Running WINGS OFF MODE, so FCREPO env vars are not needed
   # - name: GOOGLE_ANALYTICS_ID
