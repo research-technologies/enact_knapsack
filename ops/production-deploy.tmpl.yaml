@@ -244,7 +244,7 @@ embargoRelease:
 leaseRelease:
   enabled: false
 
-externalFcrepoHost: ""
+# externalFcrepoHost: ""
 
 fcrepo:
   enabled: false

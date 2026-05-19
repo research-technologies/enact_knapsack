@@ -41,8 +41,8 @@ end
 begin
   db_host = ENV['DB_HOST']
   db_port = ENV['DB_PORT']
-  fcrepo_host = ENV['FCREPO_HOST']
-  fcrepo_port = ENV['FCREPO_PORT']
+  # fcrepo_host = ENV['FCREPO_HOST']
+  # fcrepo_port = ENV['FCREPO_PORT']
   solr_host = ENV['SOLR_HOST']
   solr_port = ENV['SOLR_PORT']
   db_user = ENV['DB_USER']
@@ -50,7 +50,7 @@ begin
   db_password = ENV['DB_PASSWORD']
 
   service_wait("#{db_host}:#{db_port}")
-  service_wait("#{fcrepo_host}:#{fcrepo_port}") if fcrepo_host
+  # service_wait("#{fcrepo_host}:#{fcrepo_port}") if fcrepo_host
   service_wait("#{solr_host}:#{solr_port}")
 
   migrations_run_query = "PGPASSWORD=#{db_password} psql -h #{db_host} -U #{db_user} #{db_name} -t -c \"SELECT version FROM schema_migrations ORDER BY schema_migrations\""
