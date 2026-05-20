@@ -1,0 +1,35 @@
+<%# Knapsack-level override of hyrax-webapp/app/views/layouts/homepage.html.erb.
+
+  Hyku's default homepage layout wraps the page in an `image-masthead` block
+  (banner image + site title + search controls). The Enact theme wants a clean
+  paper canvas instead, so we skip that block when on the Enact theme and fall
+  through to Hyku's default for every other theme. %>
+
+<% unless respond_to?(:home_page_theme) && home_page_theme.to_s == 'enact' %>
+  <% content_for(:navbar) do %>
+    <div class="image-masthead">
+      <!-- default repository homepage -->
+      <div class="background-container" title="<%= block_for(name: 'banner_image_text') %>" style="background-image: url('<%= banner_image %>')"></div>
+      <span class="background-container-gradient"></span>
+
+      <div class="container site-title-container">
+        <div class="site-title h1" style="text-align: center;">
+          <%= render "hyrax/homepage/marketing" if controller_name == 'homepage' %>
+        </div>
+      </div>
+
+      <%= render '/controls' %>
+    </div>
+  <% end %>
+
+  <% content_for(:precontainer_content) do %>
+    <%= render 'hyrax/homepage/announcement' if controller_name == 'homepage' %>
+  <% end %>
+<% else %>
+  <%# Enact theme: announcements still surface, but no banner-image masthead. %>
+  <% content_for(:precontainer_content) do %>
+    <%= render 'hyrax/homepage/announcement' if controller_name == 'homepage' %>
+  <% end %>
+<% end %>
+
+<%= render template: 'layouts/hyrax' %>
