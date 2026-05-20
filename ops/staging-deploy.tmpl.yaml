@@ -195,6 +195,8 @@ extraEnvVars: &envVars
     value: $SOLR_ADMIN_PASSWORD
   - name: SOLR_COLLECTION_NAME
     value: enact-knapsack-staging
+  - name: SOLR_COLLECTION_REPLICAS
+    value: "3"
   - name: SOLR_CONFIGSET_NAME
     value: enact-knapsack-staging
   - name: SOLR_HOST
