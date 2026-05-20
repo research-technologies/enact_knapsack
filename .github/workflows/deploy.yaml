@@ -4,20 +4,61 @@ on:
   workflow_dispatch:
     inputs:
       environment:
-        description: 'Deploy to Environment'
+        description: "Deploy to Environment"
         required: true
-        default: 'staging'
+        default: "staging"
         type: choice
         options:
           - staging
           - production
       debug_enabled:
         type: boolean
-        description: 'Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)'
+        description: "Run the build with tmate debugging enabled (https://github.com/marketplace/actions/debugging-with-tmate)"
         required: false
         default: false
 
 jobs:
-  deploy:
-    uses: notch8/actions/.github/workflows/deploy.yaml@v1.0.9
-    secrets: inherit
+  deployment:
+    runs-on: ubuntu-latest
+    container: dtzar/helm-kubectl:3.9.4
+    environment: ${{ inputs.environment }}
+    env:
+      HELM_EXPERIMENTAL_OCI: 1
+      HELM_RELEASE_NAME: ${{ github.event.repository.name }}-${{ inputs.environment }}
+      KUBE_NAMESPACE: ${{ github.event.repository.name }}-${{ inputs.environment }}
+      HELM_EXTRA_ARGS: >
+        --values ops/${{ inputs.environment }}-deploy.yaml
+      KUBECONFIG_FILE: ${{ secrets.KUBECONFIG_FILE }}
+      KUBECONFIG: ./kubeconfig.yml
+      CLIENT_ADMIN_USER_EMAIL: ${{ secrets.INITIAL_ADMIN_EMAIL }}
+      CLIENT_ADMIN_USER_PASSWORD: ${{ secrets.INITIAL_ADMIN_PASSWORD }}
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      INITIAL_ADMIN_EMAIL: ${{ secrets.INITIAL_ADMIN_EMAIL }}
+      INITIAL_ADMIN_PASSWORD: ${{ secrets.INITIAL_ADMIN_PASSWORD }}
+      NEGATIVE_CAPTCHA_SECRET: ${{ secrets.NEGATIVE_CAPTCHA_SECRET }}
+      REDIS_PASSWORD: ${{ secrets.REDIS_PASSWORD }}
+      SECRET_KEY_BASE: ${{ secrets.SECRET_KEY_BASE }}
+      SOLR_ADMIN_PASSWORD: ${{ secrets.SOLR_ADMIN_PASSWORD }}
+      TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
+      TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+    steps:
+      - id: setup
+        name: Setup
+        uses: notch8/actions/setup-env@v1.0.9
+        with:
+          tag: ${{ inputs.tag }}
+          image_name: ${{ inputs.image_name }}
+          token: ${{ secrets.CHECKOUT_TOKEN || secrets.GITHUB_TOKEN }}
+      - name: Setup tmate session
+        uses: mxschmitt/action-tmate@v3
+        if: ${{ github.event_name == 'workflow_dispatch' && inputs.debug_enabled }}
+        with:
+          limit-access-to-actor: true
+      - name: Do deploy
+        run: |
+          echo $KUBECONFIG_FILE | base64 -d > $KUBECONFIG;
+          DOLLAR=$ envsubst < ops/${{ inputs.environment }}-deploy.tmpl.yaml > ops/${{ inputs.environment }}-deploy.yaml;
+          export DEPLOY_TAG=${TAG};
+          export DEPLOY_IMAGE=ghcr.io/${REPO_LOWER}/web;
+          export WORKER_IMAGE=ghcr.io/${REPO_LOWER}/worker;
+          ./bin/helm_deploy ${{ inputs.k8s-release-name || format('{0}-{1}', github.event.repository.name, inputs.environment) }} ${{ inputs.k8s-namespace || format('{0}-{1}', github.event.repository.name, inputs.environment) }}

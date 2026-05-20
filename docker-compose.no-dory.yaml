@@ -26,7 +26,6 @@ volumes:
   assets:
   cache:
   db:
-  fcrepo:
   node_modules:
   redis:
   solr:
@@ -49,13 +48,6 @@ services:
       service: solr
     ports:
       - '8983:8983'
-
-  fcrepo:
-    extends:
-      file: hyrax-webapp/docker-compose.yml
-      service: fcrepo
-    ports:
-      - '8080:8080'
 
   fits:
     extends:
