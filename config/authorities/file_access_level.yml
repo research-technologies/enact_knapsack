@@ -1,0 +1,9 @@
+terms:
+  - id: public
+    label: Public
+  - id: authenticated
+    label: Authenticated users
+  - id: restricted
+    label: Restricted
+  - id: embargoed
+    label: Embargoed

@@ -1,0 +1,19 @@
+terms:
+  - id: article
+    label: Journal article
+  - id: monograph
+    label: Monograph
+  - id: chapter
+    label: Book chapter
+  - id: methodology
+    label: Methodology
+  - id: thesis
+    label: Thesis
+  - id: blog
+    label: Blog post
+  - id: podcast
+    label: Podcast
+  - id: review
+    label: Review
+  - id: program_note
+    label: Program note

@@ -1,0 +1,67 @@
+# Stub list of practice-research contributor roles. Phase 2 replaces this with
+# an aggregating QA authority (Haplo + CRediT + LOC relators merged).
+terms:
+  - id: creator
+    label: Creator
+  - id: author
+    label: Author
+  - id: editor
+    label: Editor
+  - id: performer
+    label: Performer
+  - id: composer
+    label: Composer
+  - id: lyricist
+    label: Lyricist
+  - id: arranger
+    label: Arranger
+  - id: conductor
+    label: Conductor
+  - id: choreographer
+    label: Choreographer
+  - id: dancer
+    label: Dancer
+  - id: director
+    label: Director
+  - id: producer
+    label: Producer
+  - id: actor
+    label: Actor
+  - id: dramaturg
+    label: Dramaturg
+  - id: cinematographer
+    label: Cinematographer
+  - id: editor_film
+    label: Editor (film)
+  - id: sound_engineer
+    label: Sound engineer
+  - id: sound_designer
+    label: Sound designer
+  - id: lighting_designer
+    label: Lighting designer
+  - id: set_designer
+    label: Set designer
+  - id: costume_designer
+    label: Costume designer
+  - id: curator
+    label: Curator
+  - id: artist
+    label: Artist
+  - id: photographer
+    label: Photographer
+  - id: illustrator
+    label: Illustrator
+  - id: designer
+    label: Designer
+  - id: programmer
+    label: Programmer
+  - id: data_curator
+    label: Data curator
+  - id: contributor
+    label: Contributor
+  - id: funder
+    label: Funder
+  - id: rights_holder
+    label: Rights holder
+  - id: collaborator
+    label: Collaborator

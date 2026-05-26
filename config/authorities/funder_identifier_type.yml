@@ -1,0 +1,9 @@
+terms:
+  - id: ror
+    label: ROR
+  - id: isni
+    label: ISNI
+  - id: crossref_funder_id
+    label: Crossref Funder ID
+  - id: grid
+    label: GRID

@@ -1,0 +1,11 @@
+terms:
+  - id: anthology
+    label: Anthology
+  - id: curated_set
+    label: Curated set
+  - id: dataset
+    label: Dataset
+  - id: archive
+    label: Archive
+  - id: portfolio_subset
+    label: Portfolio subset

@@ -1,0 +1,17 @@
+terms:
+  - id: exhibition
+    label: Exhibition
+  - id: conference
+    label: Conference
+  - id: live_performance
+    label: Live performance
+  - id: symposium
+    label: Symposium
+  - id: workshop
+    label: Workshop
+  - id: screening
+    label: Screening
+  - id: lecture
+    label: Lecture
+  - id: residency
+    label: Residency

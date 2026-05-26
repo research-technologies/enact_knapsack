@@ -1,0 +1,43 @@
+<%# Inline event-delegated handlers for compound add/remove rows. Document-
+    scoped sentinel prevents double-binding on Turbolinks reloads. Mirrors
+    Hyrax's redirects.js pattern (hyrax gem app/assets/javascripts/hyrax/redirects.js). %>
+<script>
+  (function() {
+    if (document.enactCompoundsBound) return;
+    document.enactCompoundsBound = true;
+
+    document.addEventListener('click', function(event) {
+      var removeButton = event.target.closest('[data-enact-compound-remove-row]');
+      if (removeButton) {
+        var row = removeButton.closest('[data-enact-compound-row]');
+        if (!row) return;
+        var destroyFlag = row.querySelector('[data-enact-compound-destroy-flag]');
+        if (destroyFlag && destroyFlag.value !== undefined) {
+          // Persisted rows: flip the _destroy flag and hide so the
+          // populator drops the row server-side.
+          destroyFlag.value = '1';
+          row.style.display = 'none';
+        } else {
+          row.parentNode.removeChild(row);
+        }
+        return;
+      }
+
+      var addButton = event.target.closest('[data-enact-compound-add-row]');
+      if (!addButton) return;
+      var section = addButton.closest('[data-enact-compound]');
+      if (!section) return;
+      var template = section.querySelector('[data-enact-compound-row-template]');
+      var tbody = section.querySelector('tbody');
+      if (!template || !tbody) return;
+
+      var nextIndex = parseInt(section.dataset.nextIndex, 10);
+      if (isNaN(nextIndex)) {
+        nextIndex = tbody.querySelectorAll('[data-enact-compound-row]').length;
+      }
+      var html = template.innerHTML.replace(/__INDEX__/g, nextIndex);
+      tbody.insertAdjacentHTML('beforeend', html);
+      section.dataset.nextIndex = String(nextIndex + 1);
+    });
+  })();
+</script>

@@ -188,7 +188,7 @@ attributes:
     type: hash
     multiple: true
     form:
-      primary: false
+      display: false
     index_keys:
       - "contributor_label_tesim"
       - "contributor_label_sim"
@@ -201,7 +201,7 @@ attributes:
     type: hash
     multiple: true
     form:
-      primary: false
+      display: false
     index_keys:
       - "identifier_value_tesim"
       - "identifier_value_sim"
@@ -214,7 +214,7 @@ attributes:
     type: hash
     multiple: true
     form:
-      primary: false
+      display: false
     index_keys:
       - "funder_label_tesim"
       - "funder_label_sim"
@@ -225,7 +225,7 @@ attributes:
     type: hash
     multiple: true
     form:
-      primary: false
+      display: false
     index_keys:
       - "organisational_unit_label_tesim"
       - "organisational_unit_label_sim"
@@ -236,7 +236,7 @@ attributes:
     type: hash
     multiple: true
     form:
-      primary: false
+      display: false
     index_keys:
       - "geo_place_name_tesim"
       - "geo_place_name_sim"
@@ -247,7 +247,7 @@ attributes:
     type: hash
     multiple: true
     form:
-      primary: false
+      display: false
     index_keys:
       - "license_label_tesim"
       - "license_label_sim"

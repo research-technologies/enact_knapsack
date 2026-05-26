@@ -1,0 +1,25 @@
+terms:
+  - id: is_part_of
+    label: Is part of
+  - id: has_part
+    label: Has part
+  - id: references
+    label: References
+  - id: is_referenced_by
+    label: Is referenced by
+  - id: describes
+    label: Describes
+  - id: is_described_by
+    label: Is described by
+  - id: is_version_of
+    label: Is version of
+  - id: has_version
+    label: Has version
+  - id: is_supplement_to
+    label: Is supplement to
+  - id: is_supplemented_by
+    label: Is supplemented by
+  - id: continues
+    label: Continues
+  - id: is_continued_by
+    label: Is continued by

@@ -1,0 +1,36 @@
+<%# Override of Hyrax's hyrax/base/_form_metadata.html.erb. Renders the
+    schema-driven scalar fields (primary + secondary terms) followed by the
+    PortfolioResource compound sections. Mirrors the upstream structure so
+    Hyrax's "Additional fields" toggle continues to work. %>
+<div class="base-terms">
+  <% f.object.primary_terms.each do |term| %>
+    <%= render_edit_field_partial(term, f: f) %>
+  <% end %>
+</div>
+<% if f.object.display_additional_fields? %>
+  <%= link_to t('hyrax.works.form.additional_fields'),
+              '#extended-terms',
+              class: 'btn btn-secondary additional-fields',
+              data: { toggle: 'collapse' },
+              role: "button",
+              'aria-expanded' => "false",
+              'aria-controls' => "extended-terms" %>
+  <div id="extended-terms" class='collapse'>
+    <%= render 'form_media', f: f %>
+    <% f.object.secondary_terms.each do |term| %>
+      <%= render_edit_field_partial(term, f: f) %>
+    <% end %>
+  </div>
+<% end %>
+
+<%# Compound sections (contributors, identifiers, funding references,
+    organisational units, licenses). Each renders as a table of rows with
+    add/remove handled by the inline script. %>
+<% PortfolioResourceForm::COMPOUND_ATTRIBUTES.each do |compound_name, sub_fields| %>
+  <%= render 'hyrax/compounds/compound_section',
+             f: f,
+             compound_name: compound_name,
+             sub_fields: sub_fields,
+             display_label: t("enact.compound_fields.#{compound_name}.section", default: compound_name.to_s.humanize) %>
+<% end %>
+<%= render 'hyrax/compounds/compound_script' %>

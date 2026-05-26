@@ -1,0 +1,17 @@
+terms:
+  - id: isbn
+    label: ISBN
+  - id: doi
+    label: DOI
+  - id: urn
+    label: URN
+  - id: handle
+    label: Handle
+  - id: ark
+    label: ARK
+  - id: isni
+    label: ISNI
+  - id: issn
+    label: ISSN
+  - id: local
+    label: Local identifier

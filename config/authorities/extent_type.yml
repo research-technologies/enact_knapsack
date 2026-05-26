@@ -1,0 +1,11 @@
+terms:
+  - id: items
+    label: Items
+  - id: pages
+    label: Pages
+  - id: duration
+    label: Duration
+  - id: size
+    label: Size (bytes)
+  - id: works
+    label: Works

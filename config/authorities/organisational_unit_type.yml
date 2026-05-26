@@ -1,0 +1,13 @@
+terms:
+  - id: department
+    label: Department
+  - id: centre
+    label: Centre
+  - id: school
+    label: School
+  - id: faculty
+    label: Faculty
+  - id: institute
+    label: Institute
+  - id: research_group
+    label: Research group
