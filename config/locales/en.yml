@@ -81,3 +81,10 @@ en:
       type:
         portfolio_resource: Portfolio
         portfolio_item_resource: Portfolio item
+    select_type:
+      portfolio_resource:
+        name: Portfolio
+        description: A practice-research portfolio - the longitudinal container for a body of creative work. Aggregates artefacts, events, literature, and collection items, and carries project-level contributors, funding, organisational units, and rights.
+      portfolio_item_resource:
+        name: Portfolio item
+        description: A single typed output within a portfolio. Pick the item type on the next screen - artefact (composition, recording, performance, design), event (exhibition, conference, live performance), literature (article, methodology, monograph), or collection.
