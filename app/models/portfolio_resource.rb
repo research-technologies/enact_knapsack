@@ -15,4 +15,5 @@ class PortfolioResource < Hyrax::Work
 
   include Hyrax::ArResource
   include Hyrax::NestedWorks
+  prepend EnactCompoundNormalization
 end
