@@ -1,0 +1,50 @@
+<%# Single card for one compound-attribute row.
+
+    Locals:
+      f                  - form builder for the parent resource
+      compound_name      - Symbol, e.g. :contributors
+      groups             - Array of { label:, cols:, fields: } hashes describing how
+                           to render sub-fields in this row's body
+      row                - Hash of persisted values, or nil for a new row
+      index              - Integer position, or the literal "__INDEX__" placeholder
+                           when this partial is rendered inside the JS template
+      row_label_singular - "Contributor", "License", etc. used in the legend +
+                           remove button aria-label
+%>
+<% row_position = index.is_a?(String) ? '' : (index.to_i + 1).to_s %>
+<div class="card mb-3 enact-compound-row" data-enact-compound-row role="group" aria-label="<%= row_label_singular %> <%= row_position %>">
+  <div class="card-header bg-light d-flex justify-content-between align-items-center py-2 h6 mb-0">
+    <span><%= row_label_singular %> <%= row_position %></span>
+    <button type="button"
+            class="close py-0 px-2"
+            aria-label="<%= t('enact.compound_fields.remove_row_with_label', label: row_label_singular, default: t('enact.compound_fields.remove_row')) %>"
+            data-enact-compound-remove-row>
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="card-body">
+    <% groups.each do |group| %>
+      <% if group[:label].present? %>
+        <h4 class="h6 text-muted text-uppercase mt-1 mb-2"><%= group[:label] %></h4>
+      <% end %>
+      <div class="form-row">
+        <% group[:fields].each do |sub_field| %>
+          <% input_id = "#{f.object_name}_#{compound_name}_attributes_#{index}_#{sub_field}" %>
+          <% input_name = "#{f.object_name}[#{compound_name}_attributes][#{index}][#{sub_field}]" %>
+          <% field_label = t("enact.compound_fields.#{compound_name}.#{sub_field}", default: sub_field.humanize) %>
+          <div class="form-group col-md-<%= group.fetch(:cols, 6) %>">
+            <%= label_tag input_id, field_label, class: 'form-label small text-muted' %>
+            <%= text_field_tag input_name,
+                               row.is_a?(Hash) ? row[sub_field] : nil,
+                               id: input_id,
+                               class: 'form-control form-control-sm' %>
+          </div>
+        <% end %>
+      </div>
+    <% end %>
+
+    <%= hidden_field_tag "#{f.object_name}[#{compound_name}_attributes][#{index}][_destroy]", '0',
+                         id: "#{f.object_name}_#{compound_name}_attributes_#{index}__destroy",
+                         data: { 'enact-compound-destroy-flag': true } %>
+  </div>
+</div>

@@ -26,6 +26,33 @@ class PortfolioResourceForm < Hyrax::Forms::ResourceForm(PortfolioResource)
     licenses: %w[rights_label rights_uri rights_identifier rights_identifier_scheme scheme_uri lang holder]
   }.freeze
 
+  # Visual grouping of compound sub-fields in the form. Each row in the form
+  # renders as a card with these clusters; `cols` is the Bootstrap column width
+  # (1-12) for each input inside the cluster.
+  COMPOUND_FIELD_GROUPS = {
+    contributors: [
+      { label: 'Identity', cols: 6, fields: %w[given_name family_name contributor_name name_type] },
+      { label: 'Role',     cols: 4, fields: %w[role_label role_id role_vocabulary] },
+      { label: 'Identifier', cols: 6, fields: %w[name_identifier scheme_uri] },
+      { label: 'Affiliation', cols: 6, fields: %w[affiliation affiliation_identifier] }
+    ],
+    identifiers: [
+      { label: nil, cols: 6, fields: %w[value identifier_type] }
+    ],
+    funding_references: [
+      { label: 'Funder', cols: 4, fields: %w[funder_name funder_identifier funder_identifier_type] },
+      { label: 'Award',  cols: 4, fields: %w[award_number award_uri award_title] }
+    ],
+    organisational_units: [
+      { label: nil, cols: 4, fields: %w[name pid unit_type] }
+    ],
+    licenses: [
+      { label: 'Statement', cols: 6, fields: %w[rights_label rights_uri holder] },
+      { label: 'Identifier', cols: 4, fields: %w[rights_identifier rights_identifier_scheme scheme_uri] },
+      { label: 'Language', cols: 4, fields: %w[lang] }
+    ]
+  }.freeze
+
   COMPOUND_ATTRIBUTES.each_key do |key|
     property :"#{key}_attributes", virtual: true, populator: :"#{key}_attributes_populator"
 
