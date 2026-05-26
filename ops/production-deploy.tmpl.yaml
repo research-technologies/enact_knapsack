@@ -71,6 +71,7 @@ ingress:
         - "enacthyku.com"
         - "*.enacthyku.com"
       secretName: enacthyku-tls
+      # Can remove once the deploy for just enacthyku.com is successful and any existing tenants moved
     - hosts:
         - "enact-knapsack-production.enacthyku.com"
         - "*.enact-knapsack-production.enacthyku.com"
@@ -165,7 +166,7 @@ extraEnvVars: &envVars
   - name: HYKU_FILE_ACL
     value: "false"
   - name: HYKU_ADMIN_HOST
-    value: enact-knapsack-production.enacthyku.com
+    value: admin.enacthyku.com
   - name: HYKU_ADMIN_ONLY_TENANT_CREATION
     value: "false"
   - name: HYKU_ALLOW_SIGNUP
@@ -173,11 +174,11 @@ extraEnvVars: &envVars
   - name: HYKU_ATTACK_RATE_THROTTLE_OFF
     value: "false"
   - name: HYKU_DEFAULT_HOST
-    value: "%{tenant}.enact-knapsack-production.enacthyku.com"
+    value: "%{tenant}.enacthyku.com"
   - name: HYKU_MULTITENANT
     value: "true"
   - name: HYKU_ROOT_HOST
-    value: enact-knapsack-production.enacthyku.com
+    value: enacthyku.com
   - name: HYKU_SHOW_BACKTRACE
     value: "true"
   - name: NEGATIVE_CAPTCHA_SECRET
