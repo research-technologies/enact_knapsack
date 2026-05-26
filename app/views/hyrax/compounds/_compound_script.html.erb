@@ -28,15 +28,16 @@
       var section = addButton.closest('[data-enact-compound]');
       if (!section) return;
       var template = section.querySelector('[data-enact-compound-row-template]');
-      var tbody = section.querySelector('tbody');
-      if (!template || !tbody) return;
+      // Card layout uses [data-enact-compound-rows]; legacy table layout used <tbody>.
+      var rowsHost = section.querySelector('[data-enact-compound-rows]') || section.querySelector('tbody');
+      if (!template || !rowsHost) return;
 
       var nextIndex = parseInt(section.dataset.nextIndex, 10);
       if (isNaN(nextIndex)) {
-        nextIndex = tbody.querySelectorAll('[data-enact-compound-row]').length;
+        nextIndex = rowsHost.querySelectorAll('[data-enact-compound-row]').length;
       }
       var html = template.innerHTML.replace(/__INDEX__/g, nextIndex);
-      tbody.insertAdjacentHTML('beforeend', html);
+      rowsHost.insertAdjacentHTML('beforeend', html);
       section.dataset.nextIndex = String(nextIndex + 1);
     });
   })();
