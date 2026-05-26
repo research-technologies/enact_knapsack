@@ -1,0 +1,174 @@
+# Enact PortfolioItemResource - child work; one typed output (Artefact / Event /
+# Literature / Collection) linked under a PortfolioResource.
+#
+# `portfolio_item_type` is the required type discriminator. `item_subtype` is a
+# CV filtered by type (driven by Stimulus JS in the form).
+#
+# Scalar attributes only at this stage; compound attributes (contributor,
+# identifier, funding_reference, organisational_unit, geo_location, license)
+# follow in a separate commit using `type: hash` + `multiple: true`.
+#
+# `title` comes from core_metadata and is not redeclared here.
+attributes:
+  description:
+    type: string
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "description_tesim"
+    predicate: http://purl.org/dc/elements/1.1/description
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
+  context_statement:
+    type: string
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "context_statement_tesim"
+    predicate: https://prvoices.org/terms/contextStatement
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
+  date_created:
+    type: date_time
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "date_created_dtsi"
+      - "date_created_tesim"
+    predicate: http://purl.org/dc/terms/created
+    view:
+      render_as: "linked"
+      search_field: 'date_created_tesim'
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:date
+  date_made_public:
+    type: date_time
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "date_made_public_dtsi"
+      - "date_made_public_tesim"
+    predicate: http://purl.org/dc/terms/issued
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:date
+  portfolio_item_type:
+    type: string
+    multiple: false
+    form:
+      required: true
+      primary: true
+    index_keys:
+      - "portfolio_item_type_sim"
+      - "portfolio_item_type_tesim"
+    predicate: http://purl.org/dc/terms/type
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:type
+  item_subtype:
+    type: string
+    multiple: false
+    form:
+      primary: true
+    index_keys:
+      - "item_subtype_sim"
+      - "item_subtype_tesim"
+    predicate: https://prvoices.org/terms/itemSubtype
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:type
+  media_type:
+    type: string
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "media_type_sim"
+      - "media_type_tesim"
+    predicate: http://purl.org/dc/elements/1.1/format
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:format
+  related_item:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "related_item_tesim"
+    predicate: http://purl.org/dc/terms/relation
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:relation
+  file_access_level:
+    type: string
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "file_access_level_sim"
+      - "file_access_level_tesim"
+    predicate: http://purl.org/dc/terms/accessRights
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:rights
+  place_of_publication:
+    type: string
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "place_of_publication_tesim"
+    predicate: https://prvoices.org/terms/placeOfPublication
+    view:
+      html_dl: true
+  extent:
+    type: string
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "extent_tesim"
+    predicate: http://purl.org/dc/terms/extent
+    view:
+      html_dl: true
+  extent_type:
+    type: string
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "extent_type_sim"
+      - "extent_type_tesim"
+    predicate: https://prvoices.org/terms/extentType
+    view:
+      html_dl: true
+  collection_order:
+    type: string
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "collection_order_tesim"
+    predicate: https://prvoices.org/terms/collectionOrder
+    view:
+      html_dl: true
