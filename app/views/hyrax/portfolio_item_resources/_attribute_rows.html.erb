@@ -1,0 +1,29 @@
+<%# Show-page attribute rows for PortfolioItemResource. See
+    portfolio_resources/_attribute_rows.html.erb for the pattern. %>
+<% if Hyrax.config.flexible? %>
+  <% view_options_for(presenter).each do |field, options| %>
+    <% view_options = conform_options(field, options) %>
+    <%= presenter.attribute_to_html(conform_field(field, options), view_options) if field_visible?(view_options, presenter) %>
+  <% end %>
+<% else %>
+  <%= presenter.attribute_to_html(:date_modified, label: t('hyrax.base.show.last_modified'), html_dl: true) %>
+  <%= presenter.attribute_to_html(:description, html_dl: true) %>
+  <%= presenter.attribute_to_html(:context_statement, html_dl: true) %>
+  <%= presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim', html_dl: true) %>
+  <%= presenter.attribute_to_html(:date_made_public, html_dl: true) %>
+  <%= presenter.attribute_to_html(:portfolio_item_type, render_as: :faceted, html_dl: true) %>
+  <%= presenter.attribute_to_html(:item_subtype, render_as: :faceted, html_dl: true) %>
+  <%= presenter.attribute_to_html(:media_type, render_as: :faceted, html_dl: true) %>
+  <%= presenter.attribute_to_html(:related_item, html_dl: true) %>
+  <%= presenter.attribute_to_html(:file_access_level, render_as: :faceted, html_dl: true) %>
+  <%= presenter.attribute_to_html(:place_of_publication, html_dl: true) %>
+  <%= presenter.attribute_to_html(:extent, html_dl: true) %>
+  <%= presenter.attribute_to_html(:extent_type, html_dl: true) %>
+  <%= presenter.attribute_to_html(:collection_order, html_dl: true) %>
+  <%= presenter.attribute_to_html(:contributor_label, html_dl: true, label: t('enact.compound_fields.contributors.section')) %>
+  <%= presenter.attribute_to_html(:identifier_value, html_dl: true, label: t('enact.compound_fields.identifiers.section')) %>
+  <%= presenter.attribute_to_html(:funder_label, html_dl: true, label: t('enact.compound_fields.funding_references.section')) %>
+  <%= presenter.attribute_to_html(:organisational_unit_label, html_dl: true, label: t('enact.compound_fields.organisational_units.section')) %>
+  <%= presenter.attribute_to_html(:geo_place_name, html_dl: true, label: t('enact.compound_fields.geo_locations.section')) %>
+  <%= presenter.attribute_to_html(:license_label, html_dl: true, label: t('enact.compound_fields.licenses.section')) %>
+<% end %>
