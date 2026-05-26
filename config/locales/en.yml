@@ -77,15 +77,26 @@ en:
         metadata_rights_statement: Rights pertaining to this metadata description (distinct from rights on the works themselves).
         portfolio_item_type: Choose Artefact, Event, Literature, or Collection.
         item_subtype: A finer-grained type controlled by vocabulary for the chosen item type.
+  activerecord:
+    models:
+      portfolio_resource:
+        one: Portfolio
+        other: Portfolios
+      portfolio_item_resource:
+        one: Portfolio Item
+        other: Portfolio Items
   hyrax:
+    models:
+      portfolio_resource: Portfolio
+      portfolio_item_resource: Portfolio Item
     work:
       type:
         portfolio_resource: Portfolio
-        portfolio_item_resource: Portfolio item
+        portfolio_item_resource: Portfolio Item
     select_type:
       portfolio_resource:
         name: Portfolio
         description: A practice-research portfolio - the longitudinal container for a body of creative work. Aggregates artefacts, events, literature, and collection items, and carries project-level contributors, funding, organisational units, and rights.
       portfolio_item_resource:
-        name: Portfolio item
+        name: Portfolio Item
         description: A single typed output within a portfolio. Pick the item type on the next screen - artefact (composition, recording, performance, design), event (exhibition, conference, live performance), literature (article, methodology, monograph), or collection.

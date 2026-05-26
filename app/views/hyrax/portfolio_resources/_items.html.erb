@@ -1,0 +1,58 @@
+<%# Override Hyrax's default _items.html.erb so the Portfolio show page lists
+    its child PortfolioItemResource works alongside any attached FileSets.
+    The default partial renders presenter.member_presenters paginated, which in
+    practice surfaces FileSets and not the child works the depositor expects to
+    see on a Portfolio's show page. %>
+<% work_members = Array(presenter.try(:work_presenters)) %>
+<% file_set_members = Array(presenter.try(:file_set_presenters)) %>
+<% if work_members.any? %>
+  <h3 class="h5 mt-3"><%= t('hyrax.work.type.portfolio_item_resource').pluralize %></h3>
+  <table class="table table-striped portfolio-items">
+    <thead>
+      <tr>
+        <th scope="col"><%= t('hyrax.base.items.title') %></th>
+        <th scope="col">Type</th>
+        <th scope="col">Subtype</th>
+        <th scope="col"><%= t('hyrax.base.items.visibility') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <% work_members.each do |member| %>
+        <tr>
+          <td>
+            <%= link_to member.to_s, polymorphic_path([main_app, member]) %>
+          </td>
+          <td><%= Array(member.solr_document['portfolio_item_type_tesim']).first %></td>
+          <td><%= Array(member.solr_document['item_subtype_tesim']).first %></td>
+          <td><%= Hyrax::PermissionBadge.new(member.solr_document.visibility).render if member.respond_to?(:solr_document) %></td>
+        </tr>
+      <% end %>
+    </tbody>
+  </table>
+<% end %>
+
+<% if file_set_members.any? %>
+  <h3 class="h5 mt-4"><%= t('hyrax.base.items.heading_files', default: 'Files') %></h3>
+  <table class="table table-striped related-files">
+    <thead>
+      <tr>
+        <th><%= t('hyrax.base.items.thumbnail') %></th>
+        <th><%= t('hyrax.base.items.title') %></th>
+        <th><%= t('hyrax.base.items.date_uploaded') %></th>
+        <th><%= t('hyrax.base.items.visibility') %></th>
+        <th><%= t('hyrax.base.items.actions') %></th>
+      </tr>
+    </thead>
+    <tbody>
+      <%= render partial: 'hyrax/base/member', collection: file_set_members %>
+    </tbody>
+  </table>
+<% end %>
+
+<% if work_members.empty? && file_set_members.empty? %>
+  <% if can? :edit, presenter.id %>
+    <div class="alert alert-warning" role="alert"><%= t('hyrax.base.items.empty', type: presenter.human_readable_type) %></div>
+  <% else %>
+    <div class="alert alert-warning" role="alert"><%= t('hyrax.base.items.unauthorized', type: presenter.human_readable_type) %></div>
+  <% end %>
+<% end %>
