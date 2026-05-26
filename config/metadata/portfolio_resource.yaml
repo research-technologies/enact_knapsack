@@ -47,7 +47,6 @@ attributes:
     form:
       primary: false
     index_keys:
-      - "date_created_dtsi"
       - "date_created_tesim"
     predicate: http://purl.org/dc/terms/created
     view:
@@ -62,7 +61,6 @@ attributes:
     form:
       primary: false
     index_keys:
-      - "date_made_public_dtsi"
       - "date_made_public_tesim"
     predicate: http://purl.org/dc/terms/issued
     view:

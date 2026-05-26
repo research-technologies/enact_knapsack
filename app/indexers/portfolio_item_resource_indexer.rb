@@ -41,11 +41,19 @@ class PortfolioItemResourceIndexer < Hyrax::ValkyrieWorkIndexer
   private
 
   def compact_labels(rows)
-    rows.map { |row| row.respond_to?(:[]) ? yield(row) : nil }.map(&:presence).compact
+    rows.map { |row| yield(coerce_row(row)) }.map(&:presence).compact
+  end
+
+  def coerce_row(row)
+    return row if row.is_a?(Hash)
+    return JSON.parse(row) if row.is_a?(String) && row.start_with?('{')
+    {}
+  rescue JSON::ParserError
+    {}
   end
 
   def contributor_label(row)
-    return nil unless row.respond_to?(:[])
+    return nil unless row.is_a?(Hash)
     row['contributor_name'].presence ||
       [row['given_name'], row['family_name']].compact.join(' ').presence
   end
