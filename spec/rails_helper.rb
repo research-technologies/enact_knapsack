@@ -37,8 +37,15 @@ require 'dry-validation'
 Dir[HykuKnapsack::Engine.root.join('spec', 'support', '**', '*.rb')].each { |f| require f }
 
 RSpec.configure do |config|
-  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures
-  config.fixture_path = Rails.root.join('spec', 'fixtures')
+  # Remove this line if you're not using ActiveRecord or ActiveRecord fixtures.
+  # RSpec 7 / rspec-rails 7 renamed `fixture_path=` to `fixture_paths=`; keep
+  # the legacy setter for older Hyku CI environments and switch to the new
+  # plural setter when running on the newer rspec-rails.
+  if config.respond_to?(:fixture_paths=)
+    config.fixture_paths = [Rails.root.join('spec', 'fixtures')]
+  else
+    config.fixture_path = Rails.root.join('spec', 'fixtures')
+  end
 
   # They enable url_helpers not to throw error in Rspec system spec and request spec.
   # config.include Rails.application.routes.url_helpers
