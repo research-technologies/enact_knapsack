@@ -1,8 +1,19 @@
 # Enact PortfolioResource - parent work for a practice-research portfolio.
 #
-# Scalar attributes only at this stage; compound attributes (contributor,
-# identifier, funding_reference, organisational_unit, license) follow in a
-# separate commit using `type: hash` + `multiple: true`.
+# Compound attributes use `type: hash` + `multiple: true` per Hyrax 5.2's
+# documented pattern (see hyrax gem documentation/redirects.md). Each persisted
+# entry is a JSONB hash on the parent. Sub-field shapes:
+#
+#   contributors[]: { given_name, family_name, contributor_name, name_type,
+#                     role_label, role_id, role_vocabulary, name_identifier,
+#                     scheme_uri, affiliation, affiliation_identifier }
+#   identifiers[]:  { value, identifier_type }
+#   funding_references[]: { funder_name, funder_identifier,
+#                           funder_identifier_type, award_number, award_uri,
+#                           award_title }
+#   organisational_units[]: { name, pid, unit_type }
+#   licenses[]: { rights_label, rights_uri, rights_identifier,
+#                 rights_identifier_scheme, scheme_uri, lang, holder }
 #
 # `title` comes from core_metadata and is not redeclared here.
 attributes:
@@ -159,3 +170,64 @@ attributes:
     view:
       render_as: "faceted"
       html_dl: true
+  contributors:
+    type: hash
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "contributor_label_tesim"
+      - "contributor_label_sim"
+    predicate: http://purl.org/dc/elements/1.1/contributor
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:contributor
+  identifiers:
+    type: hash
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "identifier_value_tesim"
+      - "identifier_value_sim"
+    predicate: http://purl.org/dc/terms/identifier
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:identifier
+  funding_references:
+    type: hash
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "funder_label_tesim"
+      - "funder_label_sim"
+    predicate: https://datacite.org/schema/fundingReference
+    view:
+      html_dl: true
+  organisational_units:
+    type: hash
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "organisational_unit_label_tesim"
+      - "organisational_unit_label_sim"
+    predicate: https://prvoices.org/terms/organisationalUnit
+    view:
+      html_dl: true
+  licenses:
+    type: hash
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "license_label_tesim"
+      - "license_label_sim"
+    predicate: http://purl.org/dc/terms/license
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:rights
