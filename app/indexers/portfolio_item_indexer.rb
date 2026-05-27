@@ -1,15 +1,14 @@
 # frozen_string_literal: true
 
-# Flatten compound hash entries into searchable Solr fields. The schema loader
-# already emits `*_label_tesim` / `*_label_sim` index keys (declared on each
-# compound in config/metadata/portfolio_resource.yaml); this indexer fills them
-# in by reading the persisted hash entries.
-class PortfolioResourceIndexer < Hyrax::ValkyrieWorkIndexer
+# Flatten compound hash entries into searchable Solr fields. See
+# PortfolioIndexer for the shared pattern; this indexer adds `geo_place_name_*`
+# for the Artefact/Event geo_locations compound.
+class PortfolioItemIndexer < Hyrax::ValkyrieWorkIndexer
   if Hyrax.config.work_include_metadata?
     include Hyrax::Indexer(:core_metadata)
-    include Hyrax::Indexer(:portfolio_resource)
+    include Hyrax::Indexer(:portfolio_item)
   end
-  check_if_flexible(PortfolioResource)
+  check_if_flexible(PortfolioItem)
 
   def to_solr
     super.tap do |doc|
@@ -32,6 +31,10 @@ class PortfolioResourceIndexer < Hyrax::ValkyrieWorkIndexer
       ident_values = compact_labels(Array(resource.identifiers)) { |row| row['value'] }
       doc['identifier_value_tesim'] = ident_values
       doc['identifier_value_sim'] = ident_values
+
+      place_names = compact_labels(Array(resource.geo_locations)) { |row| row['place_name'] }
+      doc['geo_place_name_tesim'] = place_names
+      doc['geo_place_name_sim'] = place_names
     end
   end
 
@@ -55,3 +58,5 @@ class PortfolioResourceIndexer < Hyrax::ValkyrieWorkIndexer
       [row['given_name'], row['family_name']].compact.join(' ').presence
   end
 end
+
+PortfolioItemResourceIndexer = PortfolioItemIndexer unless defined?(PortfolioItemResourceIndexer)

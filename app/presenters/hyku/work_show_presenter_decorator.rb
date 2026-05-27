@@ -11,7 +11,13 @@
 # on the presenter is safe for both old and new records.
 module Hyku
   module WorkShowPresenterDecorator
+    # Keys are values that may appear in `has_model_ssim` on the Solr doc.
+    # Includes both the canonical class names (Portfolio / PortfolioItem) and
+    # the previous *Resource names so already-indexed records still get a
+    # clean label without a reindex.
     ENACT_HUMAN_READABLE_OVERRIDES = {
+      'Portfolio' => 'Portfolio',
+      'PortfolioItem' => 'Portfolio Item',
       'PortfolioResource' => 'Portfolio',
       'PortfolioItemResource' => 'Portfolio Item'
     }.freeze

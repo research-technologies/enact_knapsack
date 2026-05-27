@@ -1,21 +1,14 @@
 # frozen_string_literal: true
 
-# Form for PortfolioResource. Scalar fields come from the YAML schema via
-# Hyrax::FormFields(:portfolio_resource). Compound fields are stored on the
-# model as arrays of plain hashes (`type: hash` in the schema) and arrive in
-# form params as `<compound>_attributes`. Per-compound virtual properties +
-# populators normalize the nested-attributes payload, drop rows marked
-# _destroy, and write through to the model. The deserialize! override mirrors
-# Hyrax::RedirectsFieldBehavior: strip the auto-renamed key so the
-# `_attributes` populator is the only write path.
+# Form for PortfolioItem. Same compound-as-hash pattern as PortfolioForm, plus
+# a `geo_locations` compound for Artefact/Event items.
 #
-# @see app/forms/concerns/hyrax/redirects_field_behavior.rb in the hyrax gem
-# @see https://github.com/samvera/hyrax/wiki/Hyrax-Valkyrie-Usage-Guide#forms
-class PortfolioResourceForm < Hyrax::Forms::ResourceForm(PortfolioResource)
+# @see app/forms/portfolio_form.rb
+class PortfolioItemForm < Hyrax::Forms::ResourceForm(PortfolioItem)
   if Hyrax.config.work_include_metadata?
-    include Hyrax::FormFields(:portfolio_resource)
+    include Hyrax::FormFields(:portfolio_item)
   end
-  check_if_flexible(PortfolioResource)
+  check_if_flexible(PortfolioItem)
 
   COMPOUND_ATTRIBUTES = {
     contributors: %w[given_name family_name contributor_name name_type role_label role_id role_vocabulary
@@ -23,12 +16,11 @@ class PortfolioResourceForm < Hyrax::Forms::ResourceForm(PortfolioResource)
     identifiers: %w[value identifier_type],
     funding_references: %w[funder_name funder_identifier funder_identifier_type award_number award_uri award_title],
     organisational_units: %w[name pid unit_type],
+    geo_locations: %w[place_name point_latitude point_longitude west_bound east_bound south_bound north_bound],
     licenses: %w[rights_label rights_uri rights_identifier rights_identifier_scheme scheme_uri lang holder]
   }.freeze
 
-  # Visual grouping of compound sub-fields in the form. Each row in the form
-  # renders as a card with these clusters; `cols` is the Bootstrap column width
-  # (1-12) for each input inside the cluster.
+  # @see PortfolioForm::COMPOUND_FIELD_GROUPS
   COMPOUND_FIELD_GROUPS = {
     contributors: [
       { label: 'Identity', cols: 6, fields: %w[given_name family_name contributor_name name_type] },
@@ -45,6 +37,11 @@ class PortfolioResourceForm < Hyrax::Forms::ResourceForm(PortfolioResource)
     ],
     organisational_units: [
       { label: nil, cols: 4, fields: %w[name pid unit_type] }
+    ],
+    geo_locations: [
+      { label: 'Place', cols: 12, fields: %w[place_name] },
+      { label: 'Point', cols: 6,  fields: %w[point_latitude point_longitude] },
+      { label: 'Bounding box', cols: 3, fields: %w[west_bound east_bound south_bound north_bound] }
     ],
     licenses: [
       { label: 'Statement', cols: 6, fields: %w[rights_label rights_uri holder] },
@@ -65,8 +62,6 @@ class PortfolioResourceForm < Hyrax::Forms::ResourceForm(PortfolioResource)
     super + COMPOUND_ATTRIBUTES.map { |key, attrs| { :"#{key}_attributes" => attrs + %w[_destroy] } }
   end
 
-  # Strip the auto-renamed keys so the *_attributes populators own the
-  # write path for compounds.
   def deserialize!(params)
     result = super
     return result unless result.respond_to?(:delete)
@@ -101,3 +96,5 @@ class PortfolioResourceForm < Hyrax::Forms::ResourceForm(PortfolioResource)
     cleaned.empty? ? nil : cleaned
   end
 end
+
+PortfolioItemResourceForm = PortfolioItemForm unless defined?(PortfolioItemResourceForm)

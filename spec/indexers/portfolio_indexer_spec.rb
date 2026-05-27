@@ -3,9 +3,9 @@
 require 'rails_helper'
 require 'hyrax/specs/shared_specs/indexers'
 
-RSpec.describe PortfolioResourceIndexer do
+RSpec.describe PortfolioIndexer do
   let(:indexer_class) { described_class }
-  let!(:resource) { Hyrax.persister.save(resource: PortfolioResource.new) }
+  let!(:resource) { Hyrax.persister.save(resource: Portfolio.new) }
 
   it_behaves_like 'a Hyrax::Resource indexer'
 
@@ -18,7 +18,7 @@ RSpec.describe PortfolioResourceIndexer do
     let(:unit) { { 'name' => 'School of Music' } }
     let(:identifier) { { 'value' => 'doi:10.1234/foo', 'identifier_type' => 'doi' } }
     let(:resource) do
-      Hyrax.persister.save(resource: PortfolioResource.new(
+      Hyrax.persister.save(resource: Portfolio.new(
         title: ['Indexed portfolio'],
         contributors: [contributor],
         licenses: [license],

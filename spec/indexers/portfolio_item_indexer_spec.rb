@@ -3,15 +3,15 @@
 require 'rails_helper'
 require 'hyrax/specs/shared_specs/indexers'
 
-RSpec.describe PortfolioItemResourceIndexer do
+RSpec.describe PortfolioItemIndexer do
   let(:indexer_class) { described_class }
-  let!(:resource) { Hyrax.persister.save(resource: PortfolioItemResource.new) }
+  let!(:resource) { Hyrax.persister.save(resource: PortfolioItem.new) }
 
   it_behaves_like 'a Hyrax::Resource indexer'
 
   describe 'compound flattening including geo_locations', :clean_repo do
     let(:resource) do
-      Hyrax.persister.save(resource: PortfolioItemResource.new(
+      Hyrax.persister.save(resource: PortfolioItem.new(
         title: ['Indexed item'],
         portfolio_item_type: 'Event',
         contributors: [{ 'contributor_name' => 'Avery Brooks' }],

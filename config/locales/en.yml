@@ -79,24 +79,24 @@ en:
         item_subtype: A finer-grained type controlled by vocabulary for the chosen item type.
   activerecord:
     models:
-      portfolio_resource:
+      portfolio:
         one: Portfolio
         other: Portfolios
-      portfolio_item_resource:
+      portfolio_item:
         one: Portfolio Item
         other: Portfolio Items
   hyrax:
     models:
-      portfolio_resource: Portfolio
-      portfolio_item_resource: Portfolio Item
+      portfolio: Portfolio
+      portfolio_item: Portfolio Item
     work:
       type:
-        portfolio_resource: Portfolio
-        portfolio_item_resource: Portfolio Item
+        portfolio: Portfolio
+        portfolio_item: Portfolio Item
     select_type:
-      portfolio_resource:
+      portfolio:
         name: Portfolio
         description: A practice-research portfolio - the longitudinal container for a body of creative work. Aggregates artefacts, events, literature, and collection items, and carries project-level contributors, funding, organisational units, and rights.
-      portfolio_item_resource:
+      portfolio_item:
         name: Portfolio Item
         description: A single typed output within a portfolio. Pick the item type on the next screen - artefact (composition, recording, performance, design), event (exhibition, conference, live performance), literature (article, methodology, monograph), or collection.

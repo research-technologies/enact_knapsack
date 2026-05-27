@@ -1,5 +1,5 @@
-# Enact PortfolioItemResource - child work; one typed output (Artefact / Event /
-# Literature / Collection) linked under a PortfolioResource.
+# Enact PortfolioItem - child work; one typed output (Artefact / Event /
+# Literature / Collection) linked under a Portfolio.
 #
 # `portfolio_item_type` is the required type discriminator. `item_subtype` is a
 # CV filtered by type (driven by Stimulus JS in the form).

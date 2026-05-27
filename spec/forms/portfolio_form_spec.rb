@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-RSpec.describe PortfolioResourceForm do
-  subject(:form) { described_class.new(PortfolioResource.new) }
+RSpec.describe PortfolioForm do
+  subject(:form) { described_class.new(Portfolio.new) }
 
   describe '.build_permitted_params' do
     it 'allows the *_attributes nested hash for every compound' do

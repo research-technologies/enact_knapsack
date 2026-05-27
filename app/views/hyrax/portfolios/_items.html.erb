@@ -1,12 +1,12 @@
 <%# Override Hyrax's default _items.html.erb so the Portfolio show page lists
-    its child PortfolioItemResource works alongside any attached FileSets.
-    The default partial renders presenter.member_presenters paginated, which in
-    practice surfaces FileSets and not the child works the depositor expects to
-    see on a Portfolio's show page. %>
+    its child PortfolioItem works alongside any attached FileSets. The default
+    partial renders presenter.member_presenters paginated, which in practice
+    surfaces FileSets and not the child works the depositor expects to see on
+    a Portfolio's show page. %>
 <% work_members = Array(presenter.try(:work_presenters)) %>
 <% file_set_members = Array(presenter.try(:file_set_presenters)) %>
 <% if work_members.any? %>
-  <h3 class="h5 mt-3"><%= t('hyrax.work.type.portfolio_item_resource').pluralize %></h3>
+  <h3 class="h5 mt-3"><%= t('hyrax.work.type.portfolio_item').pluralize %></h3>
   <table class="table table-striped portfolio-items">
     <thead>
       <tr>

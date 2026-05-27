@@ -1,6 +1,7 @@
-<%# Override of Hyrax's hyrax/base/_form_metadata.html.erb for PortfolioItem.
-    Same shape as PortfolioResource form metadata; adds the geo_locations
-    compound for Artefact/Event subtypes. %>
+<%# Override of Hyrax's hyrax/base/_form_metadata.html.erb. Renders the
+    schema-driven scalar fields (primary + secondary terms) followed by the
+    Portfolio compound sections. Mirrors the upstream structure so Hyrax's
+    "Additional fields" toggle continues to work. %>
 <div class="base-terms">
   <% f.object.primary_terms.each do |term| %>
     <%= render_edit_field_partial(term, f: f) %>
@@ -22,7 +23,10 @@
   </div>
 <% end %>
 
-<% PortfolioItemResourceForm::COMPOUND_ATTRIBUTES.each do |compound_name, sub_fields| %>
+<%# Compound sections (contributors, identifiers, funding references,
+    organisational units, licenses). Each renders as a table of rows with
+    add/remove handled by the inline script. %>
+<% PortfolioForm::COMPOUND_ATTRIBUTES.each do |compound_name, sub_fields| %>
   <%= render 'hyrax/compounds/compound_section',
              f: f,
              compound_name: compound_name,

@@ -11,7 +11,7 @@ Rails.application.config.after_initialize do
       if config.respond_to?(:schema_loader_config_search_paths)
 
     # Enact work types - parent narrative container + typed child item.
-    config.register_curation_concern :portfolio_resource
-    config.register_curation_concern :portfolio_item_resource
+    config.register_curation_concern :portfolio
+    config.register_curation_concern :portfolio_item
   end
 end

@@ -18,7 +18,7 @@ module SolrDocumentDecorator
   included do
     array_type = Hyrax::SolrDocument::Metadata::Solr::Array
 
-    # PortfolioResource scalars (only those not already declared by Hyrax).
+    # Portfolio scalars (only those not already declared by Hyrax).
     attribute :context_statement, array_type, 'context_statement_tesim'
     attribute :date_made_public, array_type, 'date_made_public_tesim'
     attribute :portfolio_date_range, array_type, 'portfolio_date_range_tesim'
@@ -28,7 +28,7 @@ module SolrDocumentDecorator
     attribute :file_access_level, array_type, 'file_access_level_tesim'
     attribute :ref_unit_of_assessment, array_type, 'ref_unit_of_assessment_tesim'
 
-    # PortfolioItemResource scalars.
+    # PortfolioItem scalars.
     attribute :portfolio_item_type, array_type, 'portfolio_item_type_tesim'
     attribute :item_subtype, array_type, 'item_subtype_tesim'
     attribute :media_type, array_type, 'media_type_tesim'

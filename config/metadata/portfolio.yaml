@@ -1,4 +1,4 @@
-# Enact PortfolioResource - parent work for a practice-research portfolio.
+# Enact Portfolio - parent work for a practice-research portfolio.
 #
 # Compound attributes use `type: hash` + `multiple: true` per Hyrax 5.2's
 # documented pattern (see hyrax gem documentation/redirects.md). Each persisted
