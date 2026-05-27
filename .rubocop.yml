@@ -78,3 +78,20 @@ RSpec/NestedGroups:
 
 RSpec/LeadingSubject:
   Enabled: false
+
+# Seed scripts legitimately use `puts` for progress output; converting to
+# Rails.logger would silence the output entirely (logger goes to a file).
+Rails/Output:
+  Exclude:
+  - "db/seeds/**/*"
+
+# The seed's attach_file! orchestrates a linear pipeline (upload, ingest,
+# characterise, set dimensions, derivative). Splitting it into smaller
+# helpers buys complexity, not readability.
+Metrics/MethodLength:
+  Exclude:
+  - "db/seeds/**/*"
+
+Metrics/AbcSize:
+  Exclude:
+  - "db/seeds/**/*"

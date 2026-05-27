@@ -46,7 +46,7 @@ end
 
 def attach_file!(work, file_path)
   uploaded = Hyrax::UploadedFile.create!(user: ADMIN, file: File.open(file_path))
-  Hyrax::WorkUploadsHandler.new(work: work).add(files: [uploaded]).attach
+  Hyrax::WorkUploadsHandler.new(work:).add(files: [uploaded]).attach
   # The actor stack enqueues ingest + characterise + derivative jobs; in the
   # seed context the worker may not be running, so drive them synchronously.
   ValkyrieIngestJob.perform_now(uploaded)
@@ -284,7 +284,7 @@ end
 
 portfolio = Hyrax.persister.save(resource: portfolio)
 Hyrax.index_adapter.save(resource: portfolio)
-child_ids.each { |id| Hyrax.index_adapter.save(resource: Hyrax.query_service.find_by(id: id)) }
+child_ids.each { |id| Hyrax.index_adapter.save(resource: Hyrax.query_service.find_by(id:)) }
 Hyrax::SolrService.commit
 
 puts "\nDone. Portfolio has #{portfolio.member_ids.size} member(s)."
