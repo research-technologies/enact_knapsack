@@ -25,7 +25,7 @@ RSpec.describe PortfolioForm do
         '2' => { 'given_name' => '', 'family_name' => '' },
         '_marker' => { '_destroy' => '1' }
       }
-      form.contributors_attributes_populator(fragment: fragment)
+      form.contributors_attributes_populator(fragment:)
       expect(form.contributors).to eq([
                                         { 'given_name' => 'Avery',
                                           'family_name' => 'Brooks',
@@ -38,7 +38,7 @@ RSpec.describe PortfolioForm do
         '10' => { 'value' => 'second' },
         '2' => { 'value' => 'first' }
       }
-      form.identifiers_attributes_populator(fragment: fragment)
+      form.identifiers_attributes_populator(fragment:)
       expect(form.identifiers.map { |i| i['value'] }).to eq(%w[first second])
     end
   end

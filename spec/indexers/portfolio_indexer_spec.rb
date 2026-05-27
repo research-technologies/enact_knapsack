@@ -29,7 +29,7 @@ RSpec.describe PortfolioIndexer do
     end
 
     it 'writes flattened *_label / *_value fields to Solr' do
-      doc = described_class.new(resource: resource).to_solr
+      doc = described_class.new(resource:).to_solr
       expect(doc['contributor_label_tesim']).to include('Avery Brooks')
       expect(doc['license_label_tesim']).to include('CC BY 4.0')
       expect(doc['funder_label_tesim']).to include('AHRC')

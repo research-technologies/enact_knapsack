@@ -20,7 +20,7 @@ RSpec.describe PortfolioItemIndexer do
     end
 
     it 'writes geo_place_name to Solr alongside the shared flattened fields' do
-      doc = described_class.new(resource: resource).to_solr
+      doc = described_class.new(resource:).to_solr
       expect(doc['contributor_label_tesim']).to include('Avery Brooks')
       expect(doc['geo_place_name_tesim']).to include('Tate Modern')
     end
