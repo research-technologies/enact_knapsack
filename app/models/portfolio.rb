@@ -17,6 +17,11 @@ class Portfolio < Hyrax::Work
   include Hyrax::ArResource
   include Hyrax::NestedWorks
   prepend EnactCompoundNormalization
+
+  # HykuIndexing hardcodes `object.creator&.first`. Enact has no `creator`
+  # field (contributors with typed roles cover that role per CLAUDE.md), so
+  # we expose a nil stub purely to keep the shared indexer happy.
+  def creator; end
 end
 
 # Backward-compatibility alias so previously-persisted records (with

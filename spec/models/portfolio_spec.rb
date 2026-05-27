@@ -13,12 +13,12 @@ RSpec.describe Portfolio do
     it { is_expected.to respond_to(:context_statement) }
     it { is_expected.to respond_to(:date_created) }
     it { is_expected.to respond_to(:date_made_public) }
-    it { is_expected.to respond_to(:portfolio_date_range) }
+    it { is_expected.to respond_to(:date_range_of_outputs) }
     it { is_expected.to respond_to(:publisher) }
-    it { is_expected.to respond_to(:raid_identifier) }
+    it { is_expected.to respond_to(:portfolio_identifier) }
     it { is_expected.to respond_to(:keyword) }
     it { is_expected.to respond_to(:research_group) }
-    it { is_expected.to respond_to(:metadata_rights_statement) }
+    it { is_expected.to respond_to(:rights_statement) }
     it { is_expected.to respond_to(:file_access_level) }
     it { is_expected.to respond_to(:ref_unit_of_assessment) }
   end
@@ -43,7 +43,7 @@ RSpec.describe Portfolio do
 
     it 'persists and reloads compound hash entries' do
       work.title = ['Test portfolio']
-      work.metadata_rights_statement = 'Metadata licensed CC0.'
+      work.rights_statement = 'Metadata licensed CC0.'
       work.contributors = [contributor]
       work.licenses = [license]
 

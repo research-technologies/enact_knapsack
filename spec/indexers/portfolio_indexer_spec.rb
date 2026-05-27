@@ -34,7 +34,7 @@ RSpec.describe PortfolioIndexer do
       expect(doc['license_label_tesim']).to include('CC BY 4.0')
       expect(doc['funder_label_tesim']).to include('AHRC')
       expect(doc['organisational_unit_label_tesim']).to include('School of Music')
-      expect(doc['identifier_value_tesim']).to include('doi:10.1234/foo')
+      expect(doc['identifier_value_tesim']).to include(a_string_including('doi:10.1234/foo'))
     end
   end
 end

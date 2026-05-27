@@ -66,8 +66,10 @@ class PortfolioItemForm < Hyrax::Forms::ResourceForm(PortfolioItem)
     end
   end
 
+  # See PortfolioForm.build_permitted_params for the super guard rationale.
   def self.build_permitted_params
-    super + COMPOUND_ATTRIBUTES.map { |key, attrs| { :"#{key}_attributes" => attrs + %w[_destroy] } }
+    base = defined?(super) ? super : []
+    base + COMPOUND_ATTRIBUTES.map { |key, attrs| { :"#{key}_attributes" => attrs + %w[_destroy] } }
   end
 
   def deserialize!(params)

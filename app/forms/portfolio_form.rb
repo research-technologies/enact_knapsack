@@ -69,8 +69,12 @@ class PortfolioForm < Hyrax::Forms::ResourceForm(Portfolio)
     end
   end
 
+  # Permit each compound's nested-attributes hash. Hyrax::Forms::ResourceForm
+  # doesn't define a class-level `build_permitted_params`, so guard the super
+  # call (matches the pattern used in Hyrax 5.2's WorkForm subclasses elsewhere).
   def self.build_permitted_params
-    super + COMPOUND_ATTRIBUTES.map { |key, attrs| { :"#{key}_attributes" => attrs + %w[_destroy] } }
+    base = defined?(super) ? super : []
+    base + COMPOUND_ATTRIBUTES.map { |key, attrs| { :"#{key}_attributes" => attrs + %w[_destroy] } }
   end
 
   # Strip the auto-renamed keys so the *_attributes populators own the

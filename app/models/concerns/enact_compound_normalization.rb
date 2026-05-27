@@ -35,9 +35,19 @@ module EnactCompoundNormalization
   def normalize_compound(value)
     return value if value.nil?
     arr = value.is_a?(::Array) ? value : [value]
-    pair_array = arr.length.positive? &&
-                 arr.all? { |e| e.is_a?(::Array) && e.length == 2 && (e.first.is_a?(::Symbol) || e.first.is_a?(::String)) }
-    rows = pair_array ? [::Hash[arr]] : arr
-    rows.map { |entry| entry.is_a?(::Hash) ? entry.transform_keys(&:to_s) : entry }
+    # Multi-key splay: a single saved hash with N>1 keys reads back as N pairs
+    # `[[:a, 1], [:b, 2]]`. Collapse those pairs back into one hash.
+    if arr.length.positive? &&
+       arr.all? { |e| e.is_a?(::Array) && e.length == 2 && (e.first.is_a?(::Symbol) || e.first.is_a?(::String)) }
+      arr = [::Hash[arr]]
+    # Single-key collapse: a single saved hash with one key reads back as a
+    # flat 2-element pair `["a", 1]` after a second unwrap layer. Detect by a
+    # 2-element array whose first slot looks like a key (String/Symbol) and
+    # whose second slot is not itself a String/Symbol pair-mate.
+    elsif arr.length == 2 && (arr.first.is_a?(::Symbol) || arr.first.is_a?(::String)) &&
+          !arr.last.is_a?(::Hash) && !arr.last.is_a?(::Array)
+      arr = [::Hash[[arr]]]
+    end
+    arr.map { |entry| entry.is_a?(::Hash) ? entry.transform_keys(&:to_s) : entry }
   end
 end
