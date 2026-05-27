@@ -19,8 +19,8 @@
 # from the persister. Both layers transform_keys so downstream code (form
 # partial, indexer) can rely on string keys.
 module EnactCompoundNormalization
-  COMPOUND_ATTRS = %i[contributors identifiers funding_references organisational_units
-                      geo_locations licenses].freeze
+  COMPOUND_ATTRS = %i[titles dates contributors identifiers funding_references
+                      organisational_units geo_locations licenses].freeze
 
   def set_value(key, value)
     super(key, COMPOUND_ATTRS.include?(key.to_sym) ? normalize_compound(value) : value)
