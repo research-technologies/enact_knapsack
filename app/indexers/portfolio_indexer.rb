@@ -9,6 +9,12 @@
 # PortfolioItemIndexer).
 class PortfolioIndexer < Hyrax::ValkyrieWorkIndexer
   include EnactCompoundLabelHelpers
+  # HykuIndexing supplies the Hyku-specific Solr fields the rest of the app
+  # expects: valkyrie_bsi (so SolrDocument#valkyrie? is true, which routes
+  # member_ids through the fast Valkyrie path), member_ids_ssim,
+  # generic_type_sim, all_text_tsimv, etc. Mirrors the include the Hyku
+  # work_resource generator adds.
+  include HykuIndexing
 
   if Hyrax.config.work_include_metadata?
     include Hyrax::Indexer(:core_metadata)

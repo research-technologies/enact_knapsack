@@ -5,6 +5,7 @@
 # for the Artefact/Event geo_locations compound.
 class PortfolioItemIndexer < Hyrax::ValkyrieWorkIndexer
   include EnactCompoundLabelHelpers
+  include HykuIndexing
 
   if Hyrax.config.work_include_metadata?
     include Hyrax::Indexer(:core_metadata)
