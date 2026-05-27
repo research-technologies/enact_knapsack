@@ -5,9 +5,7 @@
 #
 # @see app/forms/portfolio_form.rb
 class PortfolioItemForm < Hyrax::Forms::ResourceForm(PortfolioItem)
-  if Hyrax.config.work_include_metadata?
-    include Hyrax::FormFields(:portfolio_item)
-  end
+  include Hyrax::FormFields(:portfolio_item) if Hyrax.config.work_include_metadata?
   check_if_flexible(PortfolioItem)
 
   COMPOUND_ATTRIBUTES = {
@@ -69,7 +67,7 @@ class PortfolioItemForm < Hyrax::Forms::ResourceForm(PortfolioItem)
   # See PortfolioForm.build_permitted_params for the super guard rationale.
   def self.build_permitted_params
     base = defined?(super) ? super : []
-    base + COMPOUND_ATTRIBUTES.map { |key, attrs| { :"#{key}_attributes" => attrs + %w[_destroy] } }
+    base + COMPOUND_ATTRIBUTES.map { |key, attrs| { "#{key}_attributes": attrs + %w[_destroy] } }
   end
 
   def deserialize!(params)

@@ -5,6 +5,15 @@
 # attributes (title_label, date_label, contributor_label, etc.), so this
 # module is the one place to enrich how a compound row reads to a depositor.
 module EnactCompoundLabelHelpers
+  # Read `resource.<attr>`, build a label per row via the named helper, write
+  # the resulting array to `<key>_tesim` + `<key>_sim` so the show page and
+  # facet sidebar see it. Used by PortfolioIndexer / PortfolioItemIndexer.
+  def write_compound_labels(doc, attr, key, builder_method)
+    labels = compact_labels(Array(resource.send(attr))) { |row| send(builder_method, row) }
+    doc["#{key}_tesim"] = labels
+    doc["#{key}_sim"]   = labels
+  end
+
   private
 
   # Iterate rows, coerce each into a Hash, hand to the block, then drop blanks.
@@ -83,8 +92,7 @@ module EnactCompoundLabelHelpers
   # "Tate Modern, London - 51.5076, -0.0994"
   def geo_place_name(row)
     return nil unless row.is_a?(Hash) && row['place_name'].present?
-    coords = (row['point_latitude'].present? && row['point_longitude'].present?) ?
-               "#{row['point_latitude']}, #{row['point_longitude']}" : nil
+    coords = ("#{row['point_latitude']}, #{row['point_longitude']}" if row['point_latitude'].present? && row['point_longitude'].present?)
     coords ? "#{row['place_name']} - #{coords}" : row['place_name']
   end
 end

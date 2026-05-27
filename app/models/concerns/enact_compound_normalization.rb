@@ -13,41 +13,77 @@
 #
 # Net effect: a saved `[{a: 1, b: 2}]` reads back as `[[:a, 1], [:b, 2]]`.
 #
-# `set_value` covers the form-driven write path (it's the entry point for
-# `resource.foo = ...` setters), and the prepended reader covers the read
-# path, which bypasses `set_value` during `Resource.new(attrs)` construction
-# from the persister. Both layers transform_keys so downstream code (form
-# partial, indexer) can rely on string keys.
+# We intercept at three layers:
+#   - `klass.new(attrs)` (class-level, via singleton_class.prepend) so
+#     dry-struct's strict type coercion never sees a splayed pair array
+#     during reload from the persister.
+#   - `set_value` (instance, write path).
+#   - per-compound reader (instance, read path).
 module EnactCompoundNormalization
   COMPOUND_ATTRS = %i[titles dates contributors identifiers funding_references
                       organisational_units geo_locations licenses].freeze
 
+  # Prepended onto the host class's singleton so it wins over Dry::Struct's
+  # own `.new`. Pre-normalizes compound attrs BEFORE dry-struct's strict
+  # type coercion runs (required for Hyrax 5.2+).
+  module ClassOverrides
+    def new(attrs = {}, *args)
+      attrs = EnactCompoundNormalization.normalize_attrs(attrs) if attrs.is_a?(::Hash)
+      super
+    end
+  end
+
+  def self.prepended(base)
+    base.singleton_class.prepend(ClassOverrides)
+  end
+
   def set_value(key, value)
-    super(key, COMPOUND_ATTRS.include?(key.to_sym) ? normalize_compound(value) : value)
+    super(key, COMPOUND_ATTRS.include?(key.to_sym) ? EnactCompoundNormalization.normalize_compound(value) : value)
   end
 
   COMPOUND_ATTRS.each do |attr|
-    define_method(attr) { normalize_compound(super()) }
+    define_method(attr) { EnactCompoundNormalization.normalize_compound(super()) }
   end
 
-  private
+  # @api private
+  def self.normalize_attrs(attrs)
+    attrs = attrs.dup
+    COMPOUND_ATTRS.each do |key|
+      [key, key.to_s].each do |k|
+        attrs[k] = normalize_compound(attrs[k]) if attrs.key?(k)
+      end
+    end
+    attrs
+  end
 
-  def normalize_compound(value)
+  # @api private
+  def self.normalize_compound(value)
     return value if value.nil?
     arr = value.is_a?(::Array) ? value : [value]
-    # Multi-key splay: a single saved hash with N>1 keys reads back as N pairs
-    # `[[:a, 1], [:b, 2]]`. Collapse those pairs back into one hash.
-    if arr.length.positive? &&
-       arr.all? { |e| e.is_a?(::Array) && e.length == 2 && (e.first.is_a?(::Symbol) || e.first.is_a?(::String)) }
-      arr = [::Hash[arr]]
-    # Single-key collapse: a single saved hash with one key reads back as a
-    # flat 2-element pair `["a", 1]` after a second unwrap layer. Detect by a
-    # 2-element array whose first slot looks like a key (String/Symbol) and
-    # whose second slot is not itself a String/Symbol pair-mate.
-    elsif arr.length == 2 && (arr.first.is_a?(::Symbol) || arr.first.is_a?(::String)) &&
-          !arr.last.is_a?(::Hash) && !arr.last.is_a?(::Array)
-      arr = [::Hash[[arr]]]
-    end
+    arr = collapse_pair_array(arr) || collapse_flat_pair(arr) || arr
     arr.map { |entry| entry.is_a?(::Hash) ? entry.transform_keys(&:to_s) : entry }
+  end
+
+  # Multi-key splay: `[[:a, 1], [:b, 2]]` -> `[{a: 1, b: 2}]`. Returns nil
+  # if the input doesn't look like a pair array.
+  def self.collapse_pair_array(arr)
+    return nil if arr.empty?
+    return nil unless arr.all? { |e| pair?(e) }
+    [::Hash[arr]]
+  end
+
+  # Single-key collapse: `["a", 1]` -> `[{"a" => 1}]`. Returns nil if the
+  # input doesn't look like a single flat pair.
+  def self.collapse_flat_pair(arr)
+    return nil unless arr.length == 2
+    return nil unless arr.first.is_a?(::Symbol) || arr.first.is_a?(::String)
+    return nil if arr.last.is_a?(::Hash) || arr.last.is_a?(::Array)
+    [::Hash[[arr]]]
+  end
+
+  def self.pair?(element)
+    element.is_a?(::Array) &&
+      element.length == 2 &&
+      (element.first.is_a?(::Symbol) || element.first.is_a?(::String))
   end
 end

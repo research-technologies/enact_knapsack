@@ -12,11 +12,11 @@
 module HyraxHelperDecorator
   def rights_statement_links(options)
     service = Hyrax.config.rights_statement_service_class.new
-    to_sentence(Array(options[:value]).compact_blank.map { |right|
+    to_sentence(Array(options[:value]).compact_blank.map do |right|
       label =
         begin
           service.label(right)
-        rescue KeyError, StandardError
+        rescue StandardError
           right
         end
 
@@ -25,8 +25,8 @@ module HyraxHelperDecorator
       else
         ERB::Util.h(label)
       end
-    })
+    end)
   end
 end
 
-HyraxHelper.prepend(HyraxHelperDecorator) if defined?(HyraxHelper)
+HyraxHelper.prepend(HyraxHelperDecorator)

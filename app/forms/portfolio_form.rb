@@ -12,9 +12,7 @@
 # @see app/forms/concerns/hyrax/redirects_field_behavior.rb in the hyrax gem
 # @see https://github.com/samvera/hyrax/wiki/Hyrax-Valkyrie-Usage-Guide#forms
 class PortfolioForm < Hyrax::Forms::ResourceForm(Portfolio)
-  if Hyrax.config.work_include_metadata?
-    include Hyrax::FormFields(:portfolio)
-  end
+  include Hyrax::FormFields(:portfolio) if Hyrax.config.work_include_metadata?
   check_if_flexible(Portfolio)
 
   COMPOUND_ATTRIBUTES = {
@@ -74,7 +72,7 @@ class PortfolioForm < Hyrax::Forms::ResourceForm(Portfolio)
   # call (matches the pattern used in Hyrax 5.2's WorkForm subclasses elsewhere).
   def self.build_permitted_params
     base = defined?(super) ? super : []
-    base + COMPOUND_ATTRIBUTES.map { |key, attrs| { :"#{key}_attributes" => attrs + %w[_destroy] } }
+    base + COMPOUND_ATTRIBUTES.map { |key, attrs| { "#{key}_attributes": attrs + %w[_destroy] } }
   end
 
   # Strip the auto-renamed keys so the *_attributes populators own the
