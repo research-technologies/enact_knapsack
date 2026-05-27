@@ -10,6 +10,7 @@
   <table class="table table-striped portfolio-items">
     <thead>
       <tr>
+        <th scope="col" style="width: 80px;"><%= t('hyrax.base.items.thumbnail') %></th>
         <th scope="col"><%= t('hyrax.base.items.title') %></th>
         <th scope="col">Type</th>
         <th scope="col">Subtype</th>
@@ -18,7 +19,14 @@
     </thead>
     <tbody>
       <% work_members.each do |member| %>
+        <% thumb_path = Array(member.solr_document['thumbnail_path_ss']).first %>
         <tr>
+          <td>
+            <% if thumb_path.present? %>
+              <%= link_to image_tag(thumb_path, alt: member.to_s, style: 'max-width: 64px; max-height: 64px;'),
+                          polymorphic_path([main_app, member]) %>
+            <% end %>
+          </td>
           <td>
             <%= link_to member.to_s, polymorphic_path([main_app, member]) %>
           </td>
