@@ -11,10 +11,12 @@ class PortfolioItemForm < Hyrax::Forms::ResourceForm(PortfolioItem)
   check_if_flexible(PortfolioItem)
 
   COMPOUND_ATTRIBUTES = {
+    titles: %w[value title_type lang],
+    dates: %w[value date_type date_information],
     contributors: %w[given_name family_name contributor_name name_type role_label role_id role_vocabulary
                      name_identifier scheme_uri affiliation affiliation_identifier],
     identifiers: %w[value identifier_type],
-    funding_references: %w[funder_name funder_identifier funder_identifier_type award_number award_uri award_title],
+    funding_references: %w[funder_name funder_identifier funder_identifier_type schemeURI award_number award_uri award_title],
     organisational_units: %w[name pid unit_type],
     geo_locations: %w[place_name point_latitude point_longitude west_bound east_bound south_bound north_bound],
     licenses: %w[rights_label rights_uri rights_identifier rights_identifier_scheme scheme_uri lang holder]
@@ -22,6 +24,12 @@ class PortfolioItemForm < Hyrax::Forms::ResourceForm(PortfolioItem)
 
   # @see PortfolioForm::COMPOUND_FIELD_GROUPS
   COMPOUND_FIELD_GROUPS = {
+    titles: [
+      { label: nil, cols: 6, fields: %w[value title_type lang] }
+    ],
+    dates: [
+      { label: nil, cols: 4, fields: %w[value date_type date_information] }
+    ],
     contributors: [
       { label: 'Identity', cols: 6, fields: %w[given_name family_name contributor_name name_type] },
       { label: 'Role',     cols: 4, fields: %w[role_label role_id role_vocabulary] },
@@ -32,7 +40,7 @@ class PortfolioItemForm < Hyrax::Forms::ResourceForm(PortfolioItem)
       { label: nil, cols: 6, fields: %w[value identifier_type] }
     ],
     funding_references: [
-      { label: 'Funder', cols: 4, fields: %w[funder_name funder_identifier funder_identifier_type] },
+      { label: 'Funder', cols: 6, fields: %w[funder_name funder_identifier funder_identifier_type schemeURI] },
       { label: 'Award',  cols: 4, fields: %w[award_number award_uri award_title] }
     ],
     organisational_units: [

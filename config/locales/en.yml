@@ -5,6 +5,16 @@ en:
       add_row: "Add %{label}"
       remove_row: Remove row
       remove_row_with_label: "Remove %{label}"
+      titles:
+        section: Titles
+        value: Title
+        title_type: Title type
+        lang: Language
+      dates:
+        section: Dates
+        value: Date
+        date_type: Date type
+        date_information: Notes
       contributors:
         section: Contributors
         given_name: Given name
@@ -58,10 +68,10 @@ en:
       defaults:
         context_statement: Context statement
         date_made_public: Date made public
-        portfolio_date_range: Portfolio date range
-        raid_identifier: RAiD identifier
+        date_range_of_outputs: Date range of outputs
+        portfolio_identifier: Portfolio identifier (RAiD)
         research_group: Research group
-        metadata_rights_statement: Metadata rights statement
+        rights_statement: Rights statement
         file_access_level: File access level
         ref_unit_of_assessment: REF unit of assessment
         portfolio_item_type: Item type
@@ -74,7 +84,7 @@ en:
         collection_order: Collection order
     hints:
       defaults:
-        metadata_rights_statement: Rights pertaining to this metadata description (distinct from rights on the works themselves).
+        rights_statement: Rights associated with the portfolio record (distinct from rights on individual portfolio items, which carry their own license claims).
         portfolio_item_type: Choose Artefact, Event, Literature, or Collection.
         item_subtype: A finer-grained type controlled by vocabulary for the chosen item type.
   activerecord:

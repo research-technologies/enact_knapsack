@@ -1,29 +1,39 @@
 <%# Show-page attribute rows for PortfolioItem. See
-    portfolios/_attribute_rows.html.erb for the pattern. %>
+    portfolios/_attribute_rows.html.erb for the pattern. Empty fields are
+    suppressed entirely by the per-row presence guard. %>
 <% if Hyrax.config.flexible? %>
   <% view_options_for(presenter).each do |field, options| %>
     <% view_options = conform_options(field, options) %>
     <%= presenter.attribute_to_html(conform_field(field, options), view_options) if field_visible?(view_options, presenter) %>
   <% end %>
 <% else %>
-  <%= presenter.attribute_to_html(:date_modified, label: t('hyrax.base.show.last_modified'), html_dl: true) %>
-  <%= presenter.attribute_to_html(:description, html_dl: true) %>
-  <%= presenter.attribute_to_html(:context_statement, html_dl: true) %>
-  <%= presenter.attribute_to_html(:date_created, render_as: :linked, search_field: 'date_created_tesim', html_dl: true) %>
-  <%= presenter.attribute_to_html(:date_made_public, html_dl: true) %>
-  <%= presenter.attribute_to_html(:portfolio_item_type, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:item_subtype, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:media_type, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:related_item, html_dl: true) %>
-  <%= presenter.attribute_to_html(:file_access_level, render_as: :faceted, html_dl: true) %>
-  <%= presenter.attribute_to_html(:place_of_publication, html_dl: true) %>
-  <%= presenter.attribute_to_html(:extent, html_dl: true) %>
-  <%= presenter.attribute_to_html(:extent_type, html_dl: true) %>
-  <%= presenter.attribute_to_html(:collection_order, html_dl: true) %>
-  <%= presenter.attribute_to_html(:contributor_label, html_dl: true, label: t('enact.compound_fields.contributors.section')) %>
-  <%= presenter.attribute_to_html(:identifier_value, html_dl: true, label: t('enact.compound_fields.identifiers.section')) %>
-  <%= presenter.attribute_to_html(:funder_label, html_dl: true, label: t('enact.compound_fields.funding_references.section')) %>
-  <%= presenter.attribute_to_html(:organisational_unit_label, html_dl: true, label: t('enact.compound_fields.organisational_units.section')) %>
-  <%= presenter.attribute_to_html(:geo_place_name, html_dl: true, label: t('enact.compound_fields.geo_locations.section')) %>
-  <%= presenter.attribute_to_html(:license_label, html_dl: true, label: t('enact.compound_fields.licenses.section')) %>
+  <% item_rows = [
+       [:date_modified, { label: t('hyrax.base.show.last_modified'), html_dl: true }],
+       [:description, { html_dl: true }],
+       [:context_statement, { html_dl: true }],
+       [:date_created, { render_as: :linked, search_field: 'date_created_tesim', html_dl: true }],
+       [:date_made_public, { html_dl: true }],
+       [:portfolio_item_type, { render_as: :faceted, html_dl: true }],
+       [:item_subtype, { render_as: :faceted, html_dl: true }],
+       [:media_type, { render_as: :faceted, html_dl: true }],
+       [:related_item, { html_dl: true }],
+       [:file_access_level, { render_as: :faceted, html_dl: true }],
+       [:place_of_publication, { html_dl: true }],
+       [:extent, { html_dl: true }],
+       [:extent_type, { html_dl: true }],
+       [:collection_order, { html_dl: true }],
+       [:title_label, { html_dl: true, label: t('enact.compound_fields.titles.section') }],
+       [:date_label, { html_dl: true, label: t('enact.compound_fields.dates.section') }],
+       [:contributor_label, { html_dl: true, label: t('enact.compound_fields.contributors.section') }],
+       [:identifier_value, { html_dl: true, label: t('enact.compound_fields.identifiers.section') }],
+       [:funder_label, { html_dl: true, label: t('enact.compound_fields.funding_references.section') }],
+       [:organisational_unit_label, { html_dl: true, label: t('enact.compound_fields.organisational_units.section') }],
+       [:geo_place_name, { html_dl: true, label: t('enact.compound_fields.geo_locations.section') }],
+       [:license_label, { html_dl: true, label: t('enact.compound_fields.licenses.section') }]
+     ] %>
+  <% item_rows.each do |field, opts| %>
+    <% next unless presenter.respond_to?(field) %>
+    <% next if Array(presenter.send(field)).none?(&:present?) %>
+    <%= presenter.attribute_to_html(field, opts) %>
+  <% end %>
 <% end %>

@@ -182,6 +182,32 @@ attributes:
     predicate: https://prvoices.org/terms/collectionOrder
     view:
       html_dl: true
+  titles:
+    type: hash
+    multiple: true
+    form:
+      display: false
+    index_keys:
+      - "title_label_tesim"
+      - "title_label_sim"
+    predicate: http://purl.org/dc/terms/title
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:title
+  dates:
+    type: hash
+    multiple: true
+    form:
+      display: false
+    index_keys:
+      - "date_label_tesim"
+      - "date_label_sim"
+    predicate: http://purl.org/dc/elements/1.1/date
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:date
   contributors:
     type: hash
     multiple: true

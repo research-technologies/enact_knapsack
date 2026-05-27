@@ -1,0 +1,75 @@
+<%# Subtype selector. Options are filtered by the selected portfolio_item_type
+    via inline JS. Subtype CVs are loaded from config/authorities/<type>_type.yml
+    (artefact_type, event_type, literature_type, collection_type). %>
+<% subtype_options =
+     {
+       'Artefact' => 'artefact_type',
+       'Event' => 'event_type',
+       'Literature' => 'literature_type',
+       'Collection' => 'collection_type'
+     }.transform_values do |authority|
+       path = HykuKnapsack::Engine.root.join('config', 'authorities', "#{authority}.yml")
+       next [] unless File.exist?(path)
+       YAML.load_file(path)['terms'].map { |t| [t['label'], t['id']] }
+     end %>
+
+<% required = f.object.required?(:item_subtype) %>
+<div class="form-group field <%= 'required' if required %>"
+     data-enact-item-subtype
+     data-options='<%= subtype_options.to_json %>'>
+  <%= f.label :item_subtype, class: 'control-label' do %>
+    <%= t('simple_form.labels.defaults.item_subtype') %>
+    <% if required %><abbr title="<%= t('simple_form.required.text') %>"><%= t('simple_form.required.mark') %></abbr><% end %>
+  <% end %>
+  <%= f.select :item_subtype,
+               [],
+               { include_blank: 'Pick a type first' },
+               { class: 'form-control',
+                 data: { enact_item_subtype_target: 'true', current_value: f.object.item_subtype } } %>
+  <p class="help-block"><%= t('simple_form.hints.defaults.item_subtype') %></p>
+</div>
+
+<script>
+  (function() {
+    if (document.enactItemSubtypeBound) return;
+    document.enactItemSubtypeBound = true;
+
+    function repopulate(typeSelect) {
+      var wrapper = document.querySelector('[data-enact-item-subtype]');
+      if (!wrapper) return;
+      var subtypeSelect = wrapper.querySelector('[data-enact-item-subtype-target]');
+      if (!subtypeSelect) return;
+
+      var optionsMap = {};
+      try { optionsMap = JSON.parse(wrapper.dataset.options); } catch (e) { return; }
+
+      var currentValue = subtypeSelect.dataset.currentValue || subtypeSelect.value;
+      var chosenType = typeSelect.value;
+      var options = optionsMap[chosenType] || [];
+
+      var html = '<option value="">';
+      html += chosenType ? '— select a subtype —' : 'Pick a type first';
+      html += '</option>';
+      options.forEach(function(pair) {
+        var label = pair[0], id = pair[1];
+        var selected = (id === currentValue) ? ' selected' : '';
+        html += '<option value="' + id + '"' + selected + '>' + label + '</option>';
+      });
+      subtypeSelect.innerHTML = html;
+      subtypeSelect.dataset.currentValue = '';
+    }
+
+    document.addEventListener('change', function(event) {
+      if (!event.target.matches('[data-enact-item-type-target]')) return;
+      repopulate(event.target);
+    });
+
+    document.addEventListener('DOMContentLoaded', function() {
+      var typeSelect = document.querySelector('[data-enact-item-type-target]');
+      if (typeSelect) repopulate(typeSelect);
+    });
+    // Also run now in case DOMContentLoaded already fired (Turbolinks).
+    var typeSelect = document.querySelector('[data-enact-item-type-target]');
+    if (typeSelect) repopulate(typeSelect);
+  })();
+</script>

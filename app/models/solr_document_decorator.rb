@@ -21,10 +21,12 @@ module SolrDocumentDecorator
     # Portfolio scalars (only those not already declared by Hyrax).
     attribute :context_statement, array_type, 'context_statement_tesim'
     attribute :date_made_public, array_type, 'date_made_public_tesim'
-    attribute :portfolio_date_range, array_type, 'portfolio_date_range_tesim'
-    attribute :raid_identifier, array_type, 'raid_identifier_ssi'
+    attribute :date_range_of_outputs, array_type, 'date_range_of_outputs_tesim'
+    attribute :portfolio_identifier, array_type, 'portfolio_identifier_ssi'
     attribute :research_group, array_type, 'research_group_tesim'
-    attribute :metadata_rights_statement, array_type, 'metadata_rights_statement_tesim'
+    # `rights_statement` is already declared by Hyrax SolrDocument::Metadata
+    # (basic_metadata field). PR Voices uses the same name on Portfolio with
+    # semantics "rights to the portfolio record".
     attribute :file_access_level, array_type, 'file_access_level_tesim'
     attribute :ref_unit_of_assessment, array_type, 'ref_unit_of_assessment_tesim'
 
@@ -41,6 +43,8 @@ module SolrDocumentDecorator
     # Flattened *_label / *_value / *_name fields written by the Enact indexers
     # for each compound attribute. The show-page partial calls these directly
     # via `attribute_to_html`.
+    attribute :title_label, array_type, 'title_label_tesim'
+    attribute :date_label, array_type, 'date_label_tesim'
     attribute :contributor_label, array_type, 'contributor_label_tesim'
     attribute :identifier_value, array_type, 'identifier_value_tesim'
     attribute :funder_label, array_type, 'funder_label_tesim'

@@ -1,0 +1,11 @@
+# PR Voices titleType controlled vocabulary. Applied to alternate titles
+# alongside the canonical title that core_metadata supplies.
+terms:
+  - id: AlternativeTitle
+    label: Alternative title
+  - id: Subtitle
+    label: Subtitle
+  - id: TranslatedTitle
+    label: Translated title
+  - id: Other
+    label: Other

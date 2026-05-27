@@ -1,0 +1,16 @@
+<%# Type-selector for PortfolioItem. Renders a controlled `<select>` of the
+    four PR Voices item-type roots (Artefact / Event / Literature / Collection).
+    On change, the inline JS in _item_subtype.html.erb swaps the subtype
+    select's options. %>
+<% required = f.object.required?(:portfolio_item_type) %>
+<div class="form-group field <%= 'required' if required %>">
+  <%= f.label :portfolio_item_type, class: 'control-label' do %>
+    <%= t('simple_form.labels.defaults.portfolio_item_type') %>
+    <% if required %><abbr title="<%= t('simple_form.required.text') %>"><%= t('simple_form.required.mark') %></abbr><% end %>
+  <% end %>
+  <%= f.select :portfolio_item_type,
+               options_for_select(%w[Artefact Event Literature Collection], f.object.portfolio_item_type),
+               { include_blank: 'Select a type' },
+               { class: 'form-control', data: { enact_item_type_target: 'true' } } %>
+  <p class="help-block"><%= t('simple_form.hints.defaults.portfolio_item_type') %></p>
+</div>

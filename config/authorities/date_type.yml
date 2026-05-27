@@ -1,0 +1,25 @@
+# PR Voices dateType controlled vocabulary (per the Date wiki page).
+# Applied to each row of the `dates` compound.
+terms:
+  - id: Created
+    label: Created
+  - id: Accepted
+    label: Accepted
+  - id: Available
+    label: Available
+  - id: Copyrighted
+    label: Copyrighted
+  - id: Collected
+    label: Collected
+  - id: Issued
+    label: Issued
+  - id: Submitted
+    label: Submitted
+  - id: Updated
+    label: Updated
+  - id: Valid
+    label: Valid
+  - id: Withdrawn
+    label: Withdrawn
+  - id: Other
+    label: Other

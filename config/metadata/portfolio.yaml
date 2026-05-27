@@ -69,13 +69,13 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:date
-  portfolio_date_range:
+  date_range_of_outputs:
     type: string
     multiple: false
     form:
       primary: false
     index_keys:
-      - "portfolio_date_range_tesim"
+      - "date_range_of_outputs_tesim"
     predicate: https://prvoices.org/terms/portfolioDateRange
     view:
       html_dl: true
@@ -93,13 +93,13 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:publisher
-  raid_identifier:
+  portfolio_identifier:
     type: string
     multiple: false
     form:
       primary: false
     index_keys:
-      - "raid_identifier_ssi"
+      - "portfolio_identifier_ssi"
     predicate: https://raid.org/terms/identifier
     view:
       html_dl: true
@@ -129,14 +129,14 @@ attributes:
     view:
       render_as: "faceted"
       html_dl: true
-  metadata_rights_statement:
+  rights_statement:
     type: string
     multiple: false
     form:
       required: true
       primary: true
     index_keys:
-      - "metadata_rights_statement_tesim"
+      - "rights_statement_tesim"
     predicate: https://prvoices.org/terms/metadataRightsStatement
     view:
       html_dl: true
@@ -168,6 +168,32 @@ attributes:
     view:
       render_as: "faceted"
       html_dl: true
+  titles:
+    type: hash
+    multiple: true
+    form:
+      display: false
+    index_keys:
+      - "title_label_tesim"
+      - "title_label_sim"
+    predicate: http://purl.org/dc/terms/title
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:title
+  dates:
+    type: hash
+    multiple: true
+    form:
+      display: false
+    index_keys:
+      - "date_label_tesim"
+      - "date_label_sim"
+    predicate: http://purl.org/dc/elements/1.1/date
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:date
   contributors:
     type: hash
     multiple: true

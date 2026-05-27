@@ -13,6 +13,14 @@ class PortfolioIndexer < Hyrax::ValkyrieWorkIndexer
 
   def to_solr
     super.tap do |doc|
+      title_labels = compact_labels(Array(resource.titles)) { |row| title_label(row) }
+      doc['title_label_tesim'] = title_labels
+      doc['title_label_sim'] = title_labels
+
+      date_labels = compact_labels(Array(resource.dates)) { |row| date_label(row) }
+      doc['date_label_tesim'] = date_labels
+      doc['date_label_sim'] = date_labels
+
       contrib_labels = compact_labels(Array(resource.contributors)) { |row| contributor_label(row) }
       doc['contributor_label_tesim'] = contrib_labels
       doc['contributor_label_sim'] = contrib_labels
@@ -53,6 +61,16 @@ class PortfolioIndexer < Hyrax::ValkyrieWorkIndexer
     return nil unless row.is_a?(Hash)
     row['contributor_name'].presence ||
       [row['given_name'], row['family_name']].compact.join(' ').presence
+  end
+
+  def title_label(row)
+    return nil unless row.is_a?(Hash)
+    [row['value'], row['title_type'].presence && "(#{row['title_type']})"].compact.join(' ').presence
+  end
+
+  def date_label(row)
+    return nil unless row.is_a?(Hash)
+    [row['value'], row['date_type'].presence && "(#{row['date_type']})"].compact.join(' ').presence
   end
 end
 
