@@ -141,11 +141,15 @@ attributes:
       html_dl: true
     mappings:
       simple_dc_pmh: dc:rights
+  # Type-conditional scalars: shown inline in the main form, then hidden
+  # via the type-conditional JS when the chosen portfolio_item_type doesn't
+  # match. `primary: true` keeps them out of the collapsed "Additional fields"
+  # section so they can actually be revealed.
   place_of_publication:
     type: string
     multiple: false
     form:
-      primary: false
+      primary: true
     index_keys:
       - "place_of_publication_tesim"
     predicate: https://prvoices.org/terms/placeOfPublication
@@ -155,7 +159,7 @@ attributes:
     type: string
     multiple: false
     form:
-      primary: false
+      primary: true
     index_keys:
       - "extent_tesim"
     predicate: http://purl.org/dc/terms/extent
@@ -165,7 +169,7 @@ attributes:
     type: string
     multiple: false
     form:
-      primary: false
+      primary: true
     index_keys:
       - "extent_type_sim"
       - "extent_type_tesim"
@@ -176,7 +180,7 @@ attributes:
     type: string
     multiple: false
     form:
-      primary: false
+      primary: true
     index_keys:
       - "collection_order_tesim"
     predicate: https://prvoices.org/terms/collectionOrder

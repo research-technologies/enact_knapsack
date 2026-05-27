@@ -59,6 +59,11 @@
         var badge = document.createElement('span');
         badge.setAttribute('data-enact-required-badge', 'true');
         badge.className = 'badge badge-info ml-2';
+        // Pin font-size so the badge doesn't inherit the h3's size; matches
+        // the chip that Hyrax renders next to "Title".
+        badge.style.fontSize = '0.75rem';
+        badge.style.verticalAlign = 'middle';
+        badge.style.fontWeight = '600';
         badge.textContent = 'required';
         heading.appendChild(badge);
       } else if (!required && existing) {
