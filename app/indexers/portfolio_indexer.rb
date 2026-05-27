@@ -4,7 +4,12 @@
 # already emits `*_label_tesim` / `*_label_sim` index keys (declared on each
 # compound in config/metadata/portfolio.yaml); this indexer fills them in by
 # reading the persisted hash entries.
+#
+# Label strings live in EnactCompoundLabelHelpers (shared with
+# PortfolioItemIndexer).
 class PortfolioIndexer < Hyrax::ValkyrieWorkIndexer
+  include EnactCompoundLabelHelpers
+
   if Hyrax.config.work_include_metadata?
     include Hyrax::Indexer(:core_metadata)
     include Hyrax::Indexer(:portfolio)
@@ -15,62 +20,32 @@ class PortfolioIndexer < Hyrax::ValkyrieWorkIndexer
     super.tap do |doc|
       title_labels = compact_labels(Array(resource.titles)) { |row| title_label(row) }
       doc['title_label_tesim'] = title_labels
-      doc['title_label_sim'] = title_labels
+      doc['title_label_sim']   = title_labels
 
       date_labels = compact_labels(Array(resource.dates)) { |row| date_label(row) }
       doc['date_label_tesim'] = date_labels
-      doc['date_label_sim'] = date_labels
+      doc['date_label_sim']   = date_labels
 
       contrib_labels = compact_labels(Array(resource.contributors)) { |row| contributor_label(row) }
       doc['contributor_label_tesim'] = contrib_labels
-      doc['contributor_label_sim'] = contrib_labels
+      doc['contributor_label_sim']   = contrib_labels
 
-      funder_labels = compact_labels(Array(resource.funding_references)) { |row| row['funder_name'] }
+      funder_labels = compact_labels(Array(resource.funding_references)) { |row| funder_label(row) }
       doc['funder_label_tesim'] = funder_labels
-      doc['funder_label_sim'] = funder_labels
+      doc['funder_label_sim']   = funder_labels
 
-      license_labels = compact_labels(Array(resource.licenses)) { |row| row['rights_label'] }
+      license_labels = compact_labels(Array(resource.licenses)) { |row| license_label_for(row) }
       doc['license_label_tesim'] = license_labels
-      doc['license_label_sim'] = license_labels
+      doc['license_label_sim']   = license_labels
 
-      unit_labels = compact_labels(Array(resource.organisational_units)) { |row| row['name'] }
+      unit_labels = compact_labels(Array(resource.organisational_units)) { |row| organisational_unit_label(row) }
       doc['organisational_unit_label_tesim'] = unit_labels
-      doc['organisational_unit_label_sim'] = unit_labels
+      doc['organisational_unit_label_sim']   = unit_labels
 
-      ident_values = compact_labels(Array(resource.identifiers)) { |row| row['value'] }
+      ident_values = compact_labels(Array(resource.identifiers)) { |row| identifier_value_for(row) }
       doc['identifier_value_tesim'] = ident_values
-      doc['identifier_value_sim'] = ident_values
+      doc['identifier_value_sim']   = ident_values
     end
-  end
-
-  private
-
-  def compact_labels(rows)
-    rows.map { |row| yield(coerce_row(row)) }.map(&:presence).compact
-  end
-
-  def coerce_row(row)
-    return row if row.is_a?(Hash)
-    return JSON.parse(row) if row.is_a?(String) && row.start_with?('{')
-    {}
-  rescue JSON::ParserError
-    {}
-  end
-
-  def contributor_label(row)
-    return nil unless row.is_a?(Hash)
-    row['contributor_name'].presence ||
-      [row['given_name'], row['family_name']].compact.join(' ').presence
-  end
-
-  def title_label(row)
-    return nil unless row.is_a?(Hash)
-    [row['value'], row['title_type'].presence && "(#{row['title_type']})"].compact.join(' ').presence
-  end
-
-  def date_label(row)
-    return nil unless row.is_a?(Hash)
-    [row['value'], row['date_type'].presence && "(#{row['date_type']})"].compact.join(' ').presence
   end
 end
 

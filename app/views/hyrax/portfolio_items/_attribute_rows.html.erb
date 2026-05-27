@@ -1,12 +1,29 @@
 <%# Show-page attribute rows for PortfolioItem. See
     portfolios/_attribute_rows.html.erb for the pattern. Empty fields are
-    suppressed entirely by the per-row presence guard. %>
+    suppressed entirely by the per-row presence guard.
+
+    Per PR Voices wiki, some fields only apply to certain item types. The
+    TYPE_GATED_FIELDS map below mirrors the form-side visibility (see
+    portfolio_items/_type_conditional_script.html.erb); fields not listed are
+    universal. %>
 <% if Hyrax.config.flexible? %>
   <% view_options_for(presenter).each do |field, options| %>
     <% view_options = conform_options(field, options) %>
     <%= presenter.attribute_to_html(conform_field(field, options), view_options) if field_visible?(view_options, presenter) %>
   <% end %>
 <% else %>
+  <% current_type = Array(presenter.portfolio_item_type).first.to_s %>
+  <% type_gated_fields = {
+       'place_of_publication' => %w[Literature],
+       'extent'               => %w[Collection],
+       'extent_type'          => %w[Collection],
+       'collection_order'     => %w[Collection],
+       'geo_place_name'       => %w[Artefact Event]
+     } %>
+  <% gate = ->(field) {
+       gate_list = type_gated_fields[field.to_s]
+       gate_list.nil? || gate_list.include?(current_type)
+     } %>
   <% item_rows = [
        [:date_modified, { label: t('hyrax.base.show.last_modified'), html_dl: true }],
        [:description, { html_dl: true }],
@@ -33,6 +50,7 @@
      ] %>
   <% item_rows.each do |field, opts| %>
     <% next unless presenter.respond_to?(field) %>
+    <% next unless gate.call(field) %>
     <% next if Array(presenter.send(field)).none?(&:present?) %>
     <%= presenter.attribute_to_html(field, opts) %>
   <% end %>

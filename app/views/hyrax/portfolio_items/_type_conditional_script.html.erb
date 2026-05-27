@@ -3,9 +3,10 @@
       Artefact + Event: geo_locations compound visible
       Literature:       place_of_publication scalar visible
       Collection:       extent / extent_type / collection_order scalars visible
-    Other type-specific cuts can be added to TYPE_FIELDS below.
 
-    Reactive on portfolio_item_type select change. Also runs once on load. %>
+    Reactive on portfolio_item_type select change. When a field becomes
+    hidden, its value is cleared and any compound rows are marked _destroy=1
+    so a Save doesn't persist phantom data the depositor can no longer see. %>
 <script>
   (function() {
     if (document.enactItemTypeFieldsBound) return;
@@ -17,34 +18,79 @@
       Literature: { scalars: ['place_of_publication'],                              compounds: [] },
       Collection: { scalars: ['extent', 'extent_type', 'collection_order'],         compounds: [] }
     };
-
-    // Every field the matrix touches at least once - so we can hide them
-    // when the picked type doesn't claim them.
     var ALL_SCALARS = ['place_of_publication', 'extent', 'extent_type', 'collection_order'];
     var ALL_COMPOUNDS = ['geo_locations'];
 
-    function scalarWrapper(fieldName) {
-      var input = document.querySelector('[name="portfolio_item[' + fieldName + '][]"], [name="portfolio_item[' + fieldName + ']"]');
-      if (!input) return null;
+    function scalarInput(fieldName) {
+      return document.querySelector('[name="portfolio_item[' + fieldName + '][]"], [name="portfolio_item[' + fieldName + ']"]');
+    }
+    function scalarWrapper(input) {
       return input.closest('.form-group') || input.closest('.field') || input.parentElement;
     }
-
     function compoundSection(fieldName) {
       return document.getElementById('portfolio_item-' + fieldName);
+    }
+    function clearScalar(input) {
+      // Multi-value text inputs in Hyrax come as <input name="portfolio_item[foo][]">
+      // ... possibly several. Find all siblings with the same name and clear them.
+      var all = document.querySelectorAll('[name="' + input.name + '"]');
+      all.forEach(function(el) { el.value = ''; });
+    }
+    function clearCompound(section) {
+      // Mark every persisted row for destruction so the populator drops them.
+      section.querySelectorAll('[data-enact-compound-destroy-flag]').forEach(function(flag) {
+        flag.value = '1';
+      });
+      // Also clear visible inputs in case the populator looks at values too.
+      section.querySelectorAll('[data-enact-compound-row] input[type="text"]').forEach(function(input) {
+        input.value = '';
+      });
+    }
+
+    // Identifiers is required on Artefact + Collection per PR Voices wiki.
+    var IDENTIFIERS_REQUIRED_FOR = ['Artefact', 'Collection'];
+
+    function markIdentifiersRequired(typeValue) {
+      var heading = document.querySelector('#portfolio_item-identifiers h3');
+      if (!heading) return;
+      var existing = heading.querySelector('[data-enact-required-badge]');
+      var required = IDENTIFIERS_REQUIRED_FOR.indexOf(typeValue) !== -1;
+      if (required && !existing) {
+        var badge = document.createElement('span');
+        badge.setAttribute('data-enact-required-badge', 'true');
+        badge.className = 'badge badge-info ml-2';
+        badge.textContent = 'required';
+        heading.appendChild(badge);
+      } else if (!required && existing) {
+        existing.remove();
+      }
     }
 
     function applyVisibility(typeValue) {
       var cfg = TYPE_FIELDS[typeValue] || { scalars: [], compounds: [] };
       ALL_SCALARS.forEach(function(name) {
-        var el = scalarWrapper(name);
-        if (!el) return;
-        el.style.display = (cfg.scalars.indexOf(name) === -1) ? 'none' : '';
+        var input = scalarInput(name);
+        if (!input) return;
+        var wrapper = scalarWrapper(input);
+        if (!wrapper) return;
+        if (cfg.scalars.indexOf(name) === -1) {
+          wrapper.style.display = 'none';
+          clearScalar(input);
+        } else {
+          wrapper.style.display = '';
+        }
       });
       ALL_COMPOUNDS.forEach(function(name) {
-        var el = compoundSection(name);
-        if (!el) return;
-        el.style.display = (cfg.compounds.indexOf(name) === -1) ? 'none' : '';
+        var section = compoundSection(name);
+        if (!section) return;
+        if (cfg.compounds.indexOf(name) === -1) {
+          section.style.display = 'none';
+          clearCompound(section);
+        } else {
+          section.style.display = '';
+        }
       });
+      markIdentifiersRequired(typeValue);
     }
 
     document.addEventListener('change', function(event) {
@@ -56,7 +102,6 @@
       var sel = document.querySelector('[data-enact-item-type-target]');
       if (sel) applyVisibility(sel.value);
     }
-
     if (document.readyState === 'loading') {
       document.addEventListener('DOMContentLoaded', runOnce);
     } else {
