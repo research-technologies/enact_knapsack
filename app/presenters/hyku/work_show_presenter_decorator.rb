@@ -26,6 +26,22 @@ module Hyku
       override = ENACT_HUMAN_READABLE_OVERRIDES[Array(solr_document['has_model_ssim']).first]
       override || super
     end
+
+    # For a Portfolio (parent work) `members_include_iiif_viewable?` returns
+    # false because the Portfolio's direct members are child *Works*
+    # (PortfolioItems), not FileSets - so Hyrax's default check sees no
+    # viewable file-set members and skips UV. The Portfolio's IIIF manifest
+    # endpoint, however, already enumerates every descendant FileSet as a
+    # canvas (via iiif_print's manifest builder), so it's safe to flip UV
+    # on when at least one child work exists. For PortfolioItem and every
+    # other work type we defer to Hyrax's default check.
+    def members_include_iiif_viewable?
+      if Array(solr_document['has_model_ssim']).first.in?(%w[Portfolio PortfolioResource])
+        Array(solr_document.try(:member_ids) || solr_document.try(:[], 'member_ids_ssim')).any?
+      else
+        super
+      end
+    end
   end
 end
 
