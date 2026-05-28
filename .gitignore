@@ -4,6 +4,7 @@
 /pkg/
 /tmp/
 scratch.md
+/CLAUDE.md
 *~undo-tree~
 .env.*
 .DS_Store
