@@ -1,59 +1,56 @@
-# Enact demo seed
+# Enact demo seeds
 
-Seeds one Portfolio + four typed PortfolioItem children (Artefact / Event /
-Literature / Collection), each with an image file, full compound metadata,
-public visibility, ingested + characterised + with derivatives generated,
-and the Portfolio wired so Universal Viewer shows all four children as
-canvases.
+Two seeds live here, both driven by `rake enact:demo:*` tasks:
 
-## One-time setup: placeholder images
+- **`enact_demo.rb`** — one Portfolio + four typed children. Reference seed for local dev.
+- **`enact_demo_multi.rb`** — four Portfolios + sixteen typed children across music composition, visual art, theatre, and dance. Used for the client demo.
 
-Inside the web container, generate four 1200x800 PNGs (used as canvas
-content for each child):
+Each child has a themed 1200x800 placeholder PNG attached, full compound metadata, public visibility, and ingest + characterise + derivatives run synchronously. Each Portfolio's `representative_id` / `thumbnail_id` point at the first child's FileSet so Universal Viewer bootstraps and aggregates all children.
 
-```sh
-docker exec enact_knapsack-web-1 sh -c '
-  mkdir -p /tmp/enact_seed && cd /tmp/enact_seed
-  convert -size 1200x800 xc:"#2c3e50" -gravity center -fill white -pointsize 64 \
-    -annotate +0-40 "Lacrimae Rerum" \
-    -pointsize 28 -fill "#bdc3c7" -annotate +0+40 "Full Score (composition)" \
-    artefact-score.png
-  convert -size 1200x800 xc:"#34495e" -gravity center -fill white -pointsize 56 \
-    -annotate +0-50 "Three Performances of Erasure" \
-    -pointsize 24 -fill "#bdc3c7" -annotate +0+30 "Tate Modern, London 2024-08" \
-    event-exhibition.png
-  convert -size 1200x800 xc:"#7f8c8d" -gravity center -fill white -pointsize 48 \
-    -annotate +0-60 "Notes on Erasure" \
-    -pointsize 34 -annotate +0-10 "as Compositional Method" \
-    -pointsize 22 -fill "#bdc3c7" -annotate +0+40 "Journal article" \
-    literature-article.png
-  convert -size 1200x800 xc:"#95a5a6" -gravity center -fill white -pointsize 56 \
-    -annotate +0-40 "Workbook \& Sketchbooks" \
-    -pointsize 30 -fill "#ecf0f1" -annotate +0+40 "2024-2025 curated_set" \
-    collection-sketchbook.png
-'
-```
+## Quick path: rake tasks
 
-Substitute your own assets here for a more interesting demo.
+| Task | What it does |
+|---|---|
+| `rake enact:demo:images` | Generate sixteen themed PNGs via `generate_demo_images.sh` |
+| `rake enact:demo:wipe` | Delete every Portfolio + PortfolioItem in `$ENACT_DEMO_TENANT` |
+| `rake enact:demo:seed` | Run the multi-portfolio seed (4 portfolios, 16 items) |
+| `rake enact:demo:seed_single` | Run the single-portfolio reference seed |
+| `rake enact:demo:all` | `images` + `wipe` + `seed` |
 
-## Run the seed
+### Run against staging demo tenant
 
 ```sh
-# (Optional) wipe existing Portfolio / PortfolioItem records first
-docker exec -i enact_knapsack-web-1 sh -c \
-  'cd /app/samvera/hyrax-webapp && bundle exec rails runner /app/samvera/db/seeds/enact_demo_wipe.rb'
-
-# Then seed
-docker exec -i enact_knapsack-web-1 sh -c \
-  'cd /app/samvera/hyrax-webapp && bundle exec rails runner /app/samvera/db/seeds/enact_demo.rb'
+kubectl exec -n enact-knapsack-staging deploy/enact-knapsack-staging -c hyrax -- \
+  bash -c 'cd /app/samvera/hyrax-webapp && \
+           ENACT_DEMO_TENANT=demo.enact-knapsack-staging.enacthyku.com \
+           bundle exec rake enact:demo:all'
 ```
 
-Open `https://dev-enact-knapsack.localhost.direct/concern/portfolios/<id>` — UV renders with all four children in the left filmstrip, all rows badge as Public, and the catalog shows them with thumbnails + Type / Subtype facets.
+Expect ~4 minutes of run time (one ingest + characterize + derivative pipeline per file).
+
+### Run against local dev
+
+```sh
+docker exec enact_knapsack-web-1 bash -c 'cd /app/samvera/hyrax-webapp && bundle exec rake enact:demo:all'
+```
+
+The local dev tenant default works without explicit env vars.
 
 ## Environment overrides
 
 | Env var | Default | Purpose |
-| --- | --- | --- |
-| `ENACT_DEMO_TENANT` | `dev-enact-knapsack.localhost.direct` | `AccountElevator.switch!` target |
+|---|---|---|
+| `ENACT_DEMO_TENANT` | `demo.enact-knapsack-staging.enacthyku.com` (multi) / `dev-enact-knapsack.localhost.direct` (single) | `AccountElevator.switch!` target |
 | `ENACT_DEMO_ADMIN_EMAIL` | `admin@example.com` | Depositor for every seeded record |
-| `ENACT_DEMO_FILES_DIR` | `/tmp/enact_seed` | Directory holding the four placeholder PNGs |
+| `ENACT_DEMO_FILES_DIR` | `/tmp/enact_seed` | Directory the seed reads PNGs from and the script writes them to |
+
+## Content overview (multi)
+
+| # | Portfolio | Discipline | REF UoA |
+|---|---|---|---|
+| 1 | Bonfire of the Manuscripts | Music composition | 33 |
+| 2 | Ten Walks Across the Fens | Visual art / drawing | 32 |
+| 3 | The Glassmaker's Daughter | Playwriting / theatre | 33 |
+| 4 | Bodies in Common Ground | Community dance | 33 |
+
+Each Portfolio has Artefact / Event / Literature / Collection children. View any portfolio at `https://<tenant>/concern/portfolios/<id>`.
