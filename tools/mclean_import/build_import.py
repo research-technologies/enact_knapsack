@@ -343,8 +343,11 @@ def build():
     if OUTPUT_ZIP.exists():
         OUTPUT_ZIP.unlink()
     print(f'> Building output zip: {OUTPUT_ZIP}')
+    readme_path = STAGE_DIR / 'README.txt'
     with zipfile.ZipFile(OUTPUT_ZIP, 'w', zipfile.ZIP_DEFLATED, allowZip64=True) as z:
         z.write(CSV_PATH, arcname='manifest.csv')
+        if readme_path.exists():
+            z.write(readme_path, arcname='README.txt')
         for p in sorted(FILES_DIR.iterdir()):
             z.write(p, arcname=f'files/{p.name}')
 
