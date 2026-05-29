@@ -12,6 +12,8 @@ class PortfolioItem < Hyrax::Work
   if Hyrax.config.work_include_metadata?
     include Hyrax::Schema(:core_metadata)
     include Hyrax::Schema(:portfolio_item)
+    # See Portfolio for why bulkrax_identifier needs to be on the resource.
+    include Hyrax::Schema(:bulkrax_metadata)
   end
 
   include Hyrax::ArResource

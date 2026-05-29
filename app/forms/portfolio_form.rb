@@ -12,7 +12,13 @@
 # @see app/forms/concerns/hyrax/redirects_field_behavior.rb in the hyrax gem
 # @see https://github.com/samvera/hyrax/wiki/Hyrax-Valkyrie-Usage-Guide#forms
 class PortfolioForm < Hyrax::Forms::ResourceForm(Portfolio)
-  include Hyrax::FormFields(:portfolio) if Hyrax.config.work_include_metadata?
+  if Hyrax.config.work_include_metadata?
+    include Hyrax::FormFields(:portfolio)
+    # Permit bulkrax_identifier so Bulkrax imports can round-trip the source
+    # identifier through the resource form. Without this the form filters it
+    # out during deserialize and `factory.find` can't look the record back up.
+    include Hyrax::FormFields(:bulkrax_metadata)
+  end
   check_if_flexible(Portfolio)
 
   COMPOUND_ATTRIBUTES = {

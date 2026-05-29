@@ -12,6 +12,10 @@ class Portfolio < Hyrax::Work
   if Hyrax.config.work_include_metadata?
     include Hyrax::Schema(:core_metadata)
     include Hyrax::Schema(:portfolio)
+    # bulkrax_identifier round-trips Bulkrax's `source_identifier` so
+    # `factory.run!` can find the record back after creation; without it
+    # every CSV row reports "Record invalid" even when the work persists.
+    include Hyrax::Schema(:bulkrax_metadata)
   end
 
   include Hyrax::ArResource

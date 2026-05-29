@@ -5,7 +5,11 @@
 #
 # @see app/forms/portfolio_form.rb
 class PortfolioItemForm < Hyrax::Forms::ResourceForm(PortfolioItem)
-  include Hyrax::FormFields(:portfolio_item) if Hyrax.config.work_include_metadata?
+  if Hyrax.config.work_include_metadata?
+    include Hyrax::FormFields(:portfolio_item)
+    # See PortfolioForm for why bulkrax_metadata is permitted on the form.
+    include Hyrax::FormFields(:bulkrax_metadata)
+  end
   check_if_flexible(PortfolioItem)
 
   COMPOUND_ATTRIBUTES = {
