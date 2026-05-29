@@ -36,11 +36,45 @@ module Hyku
     # on when at least one child work exists. For PortfolioItem and every
     # other work type we defer to Hyrax's default check.
     def members_include_iiif_viewable?
-      if Array(solr_document['has_model_ssim']).first.in?(%w[Portfolio PortfolioResource])
+      if portfolio?
         Array(solr_document.try(:member_ids) || solr_document.try(:[], 'member_ids_ssim')).any?
       else
         super
       end
+    end
+
+    # The `_representative_media.html.erb` partial gates UV on
+    # `representative_id.present? && representative_presenter.present?`.
+    # Portfolios don't carry a direct FileSet (only their child works do),
+    # so Bulkrax / form-driven imports never set `representative_id`. Without
+    # this fallback, UV never bootstraps on the Portfolio show page even
+    # though the manifest endpoint correctly aggregates every descendant
+    # FileSet as a canvas.
+    #
+    # When the Portfolio has no representative of its own, look up the first
+    # member work's representative and present that. Per-presenter memoized
+    # so the Solr round-trip happens at most once per request.
+    def representative_id
+      val = super
+      return val if val.present?
+      return nil unless portfolio?
+      @enact_representative_id ||= first_member_representative_id
+    end
+
+    private
+
+    def portfolio?
+      Array(solr_document['has_model_ssim']).first.in?(%w[Portfolio PortfolioResource])
+    end
+
+    def first_member_representative_id
+      member_id = Array(solr_document.try(:member_ids) || solr_document.try(:[], 'member_ids_ssim')).first
+      return nil unless member_id
+      member_doc = SolrDocument.find(member_id.to_s)
+      member_doc&.representative_id
+    rescue StandardError => e
+      Rails.logger.warn("Enact: failed to resolve first-member representative for #{id}: #{e.class}: #{e.message}")
+      nil
     end
   end
 end
