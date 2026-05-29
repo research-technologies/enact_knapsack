@@ -44,15 +44,22 @@ Python 3.10+. No external deps; uses stdlib `zipfile`, `csv`, `xml.etree`.
 | Description | `description` |
 | Location / Venue | `based_near` |
 | Keywords | `keyword` (pipe-separated) |
-| Rights, licensing, credits | `rights_statement` (free-text) |
+| Rights, licensing, credits | `rights_holder` (free-text, pipe-joined names) - merged with `Contributor name(s)` in this dataset since both columns held the same people |
 | URL | `related_url` |
 | Public? | `visibility` (Y -> open, else restricted) + `file_access_level` |
 | Additional info | `additional_information` |
 
 **Compound contributors are not yet mapped** - the import lands names as free
-text in `contributor`. Wiring the full PR Voices compound (name + role +
-ORCID + affiliation) needs a Bulkrax custom field mapping; deferred to
-Phase 2 per CLAUDE.md.
+text in `rights_holder`. Wiring the full PR Voices compound (name + role +
+ORCID + affiliation) needs a Bulkrax custom field mapping; deferred to Phase 2
+per CLAUDE.md.
+
+**`rights_statement` is intentionally not in the CSV.** Hyrax's default Bulkrax
+mapping CV-validates that field against rightsstatements.org; free-text values
+fail with `StandardError - "..." is not a valid and/or active authority ID for
+the :rights_statement field` and halt the entire row. Use `rights_holder`
+(free text) for credits/names and let depositors fill the PR Voices metadata
+rights statement via the form post-import.
 
 The subtype heuristic (`SUBTYPE_MAP` in `build_import.py`) covers every value
 Will used in the template; new values fall back to `Artefact / documentation`.

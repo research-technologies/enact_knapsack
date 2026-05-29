@@ -186,15 +186,17 @@ def extract_records():
         # paragraphs - e.g. "Dalry Primary  An Innovative" / "Scottish Case Study").
         full_title = ' '.join(cells[0])
 
-        # Compose a free-text contributor label for the demo; structured compound
-        # contributors come post-import via the form (Phase 2 mapping work).
-        contributor_label = '; '.join(contributors)
-        # Rights / credits are mostly the same people again in this dataset; surface
-        # them as a free-text rights_statement scalar.
-        rights_statement = '; '.join(rights_lines)
-
         # Visibility: 'Y' -> open, anything else -> private (per the template prompt).
         visibility = 'open' if public.startswith('y') else 'restricted'
+
+        # Combine contributor names + the rights/credits cell (which in this
+        # dataset is almost always the same names again) into a single free-text
+        # rights_holder list. Both columns describe the people behind the work;
+        # the compound `contributors` mapping is Phase 2.
+        # Bulkrax's default `rights_statement` mapping CV-validates the value
+        # against rightsstatements.org, so free-text names there break the
+        # import. `rights_holder` is the free-text equivalent.
+        credits = list(dict.fromkeys([c for c in contributors + rights_lines if c]))
 
         record = {
             'source_identifier': f'mclean-item-{idx:03d}',
@@ -206,13 +208,12 @@ def extract_records():
             'item_subtype': item_subtype,
             'date_created': parse_date(date_raw),
             'keyword': '|'.join(k for k in keywords if k),
-            'rights_statement': rights_statement,
+            'rights_holder': '|'.join(credits),
             'file_access_level': 'open' if visibility == 'open' else 'restricted',
             'visibility': visibility,
             'file': file_name or '',
             'based_near': location or '',
             'related_url': url or '',
-            'contributor': contributor_label,         # free-text fallback (see README)
             'section_label': current_section or '',
             'additional_information': additional,
             'media_type': item_type_raw or '',
@@ -225,12 +226,14 @@ def extract_records():
         'parents': '',
         'title': portfolio_title,
         'description': portfolio_description,
-        'context_statement': portfolio_additional,
         'date_range_of_outputs': '1997 / 2008',
         'publisher': '|'.join(related_credits[:3]) if related_credits else '',
         'keyword': 'practice-research|architecture|education|public art',
-        'research_group': '',
-        'rights_statement': 'Metadata licensed under Creative Commons Zero (CC0 1.0).',
+        # rights_statement on Portfolio is the PR Voices metadata-rights string
+        # (free text in our schema). Hyrax's default `rights_statement` field is
+        # CV-validated, so we don't import it here - the depositor can fill the
+        # Portfolio's metadata rights via the form after import lands.
+        'rights_holder': 'University of Westminster',
         'file_access_level': 'open',
         'visibility': 'open',
         'related_url': '|'.join(related_urls),
@@ -305,11 +308,11 @@ def build():
 
     fields = [
         'source_identifier', 'model', 'parents', 'title', 'description',
-        'context_statement', 'portfolio_item_type', 'item_subtype',
+        'portfolio_item_type', 'item_subtype',
         'date_created', 'date_range_of_outputs', 'publisher', 'keyword',
-        'rights_statement', 'file_access_level', 'visibility', 'file',
-        'based_near', 'related_url', 'contributor', 'section_label',
-        'additional_information', 'media_type', 'research_group'
+        'rights_holder', 'file_access_level', 'visibility', 'file',
+        'based_near', 'related_url', 'section_label',
+        'additional_information', 'media_type'
     ]
 
     with open(CSV_PATH, 'w', newline='') as f:
