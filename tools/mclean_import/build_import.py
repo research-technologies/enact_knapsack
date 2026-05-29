@@ -208,6 +208,7 @@ def extract_records():
             'item_subtype': item_subtype,
             'date_created': parse_date(date_raw),
             'keyword': '|'.join(k for k in keywords if k),
+            'rights_statement': 'http://rightsstatements.org/vocab/InC/1.0/',
             'rights_holder': '|'.join(credits),
             'file_access_level': 'open' if visibility == 'open' else 'restricted',
             'visibility': visibility,
@@ -220,19 +221,30 @@ def extract_records():
         }
         records.append(record)
 
+    # Hyrax presence-validates `rights_statement` on works and CV-validates it
+    # against rightsstatements.org. "In Copyright" is the right default for
+    # Will's still-copyrighted material; depositors can refine via the form.
+    DEFAULT_RIGHTS = 'http://rightsstatements.org/vocab/InC/1.0/'
+
+    # Prefix the title so the parent Portfolio is visually distinct from its
+    # children on the works index (Portfolio + PortfolioItem both render as
+    # Hyrax::Work rows; Phase 2's pivot to PcdmCollection makes this
+    # unnecessary). Idempotent against re-runs.
+    portfolio_display_title = (
+        portfolio_title if portfolio_title.startswith('Portfolio: ')
+        else f'Portfolio: {portfolio_title}'
+    )
+
     portfolio_record = {
         'source_identifier': 'mclean-portfolio',
         'model': 'Portfolio',
         'parents': '',
-        'title': portfolio_title,
+        'title': portfolio_display_title,
         'description': portfolio_description,
         'date_range_of_outputs': '1997 / 2008',
         'publisher': '|'.join(related_credits[:3]) if related_credits else '',
         'keyword': 'practice-research|architecture|education|public art',
-        # rights_statement on Portfolio is the PR Voices metadata-rights string
-        # (free text in our schema). Hyrax's default `rights_statement` field is
-        # CV-validated, so we don't import it here - the depositor can fill the
-        # Portfolio's metadata rights via the form after import lands.
+        'rights_statement': DEFAULT_RIGHTS,
         'rights_holder': 'University of Westminster',
         'file_access_level': 'open',
         'visibility': 'open',
@@ -310,8 +322,8 @@ def build():
         'source_identifier', 'model', 'parents', 'title', 'description',
         'portfolio_item_type', 'item_subtype',
         'date_created', 'date_range_of_outputs', 'publisher', 'keyword',
-        'rights_holder', 'file_access_level', 'visibility', 'file',
-        'based_near', 'related_url', 'section_label',
+        'rights_statement', 'rights_holder', 'file_access_level', 'visibility',
+        'file', 'based_near', 'related_url', 'section_label',
         'additional_information', 'media_type'
     ]
 
