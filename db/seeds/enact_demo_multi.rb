@@ -357,7 +357,9 @@ PORTFOLIOS = [
     portfolio: {
       scalars: {
         title: ['Portfolio: Bodies in Common Ground'],
-        description: 'A three-year participatory dance practice with non-professional performers, presented across choreographic score, public performance, peer-reviewed essay, and workshop documentation.',
+        description: 'A three-year participatory dance practice with non-professional performers, ' \
+                     'presented across choreographic score, public performance, peer-reviewed essay, ' \
+                     'and workshop documentation.',
         context_statement: 'Submitted as a REF 2029 portfolio in Dance, foregrounding community practice as research.',
         date_created: '2022-03-15',
         date_made_public: '2025-05-01',
@@ -451,15 +453,13 @@ PORTFOLIOS = [
 # rubocop:enable Metrics/CollectionLiteralLength
 
 puts "Admin set: #{ADMIN_SET_ID}"
-puts "Seeding into tenant: #{AccountElevator.current_tenant rescue ENV['ENACT_DEMO_TENANT']}"
+puts "Seeding into tenant: #{begin
+                               AccountElevator.current_tenant
+                             rescue
+                               ENV['ENACT_DEMO_TENANT']
+                             end}"
 
-PORTFOLIOS.each do |spec|
-  puts "\n=========================================="
-  puts "  #{spec[:portfolio][:scalars][:title].first}"
-  puts "=========================================="
-  portfolio = create_work(Portfolio, scalars: spec[:portfolio][:scalars], compounds: spec[:portfolio][:compounds])
-  puts "  -> Portfolio #{portfolio.id}"
-
+def seed_children(spec)
   child_ids = []
   spec[:children].each do |c|
     puts "\n-- #{c[:scalars][:title].first} --"
@@ -473,7 +473,10 @@ PORTFOLIOS.each do |spec|
     end
     child_ids << child.id.to_s
   end
+  child_ids
+end
 
+def attach_children_to_portfolio(portfolio, child_ids)
   portfolio = Hyrax.query_service.find_by(id: portfolio.id)
   portfolio.member_ids = child_ids.map { |id| Valkyrie::ID.new(id) }
 
@@ -487,6 +490,17 @@ PORTFOLIOS.each do |spec|
   portfolio = Hyrax.persister.save(resource: portfolio)
   Hyrax.index_adapter.save(resource: portfolio)
   child_ids.each { |id| Hyrax.index_adapter.save(resource: Hyrax.query_service.find_by(id:)) }
+end
+
+PORTFOLIOS.each do |spec|
+  puts "\n=========================================="
+  puts "  #{spec[:portfolio][:scalars][:title].first}"
+  puts "=========================================="
+  portfolio = create_work(Portfolio, scalars: spec[:portfolio][:scalars], compounds: spec[:portfolio][:compounds])
+  puts "  -> Portfolio #{portfolio.id}"
+
+  child_ids = seed_children(spec)
+  attach_children_to_portfolio(portfolio, child_ids)
 end
 
 Hyrax::SolrService.commit
