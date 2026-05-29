@@ -1,0 +1,632 @@
+// Enact theme - editorial museum-archive aesthetic.
+//
+// Wrapped in body.enact (matching Hyku's other themes). The home theme class
+// is added by Hyku's layout based on the current site's home_page_theme.
+// See hyrax-webapp/app/views/layouts/hyrax.html.erb.
+
+@import url("https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Geist:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap");
+
+body.enact {
+  // ────────────────────────────────────────────────────────────────────
+  // Design tokens. Tenants can override via Appearance > Apply Theme
+  // Colors (see config/home_themes.yml :theme_custom_colors), which feeds
+  // through to Hyku's per-site CSS variables on the chrome.
+  // These :root-scoped variables drive Enact-specific surfaces.
+  // ────────────────────────────────────────────────────────────────────
+  --enact-canvas:   #F6F2EA;
+  --enact-canvas-2: #EFE9DD;
+  --enact-paper:    #FBF8F2;
+  --enact-ink:      #1A1714;
+  --enact-muted:    #6B635A;
+  --enact-hairline: #E5DFD3;
+  --enact-accent:   #C76A4A;
+
+  --enact-font-display: "Instrument Serif", "Iowan Old Style", Georgia, serif;
+  --enact-font-sans:    "Geist", "SF Pro Text", -apple-system, system-ui, sans-serif;
+  --enact-font-mono:    "JetBrains Mono", "SF Mono", ui-monospace, monospace;
+
+  // Type-coded swatches (Artefact / Event / Literature / Collection).
+  --enact-type-artefact:   #C76A4A;
+  --enact-type-event:      #B5872D;
+  --enact-type-literature: #5A6FA5;
+  --enact-type-collection: #5F8A6E;
+
+  background: var(--enact-canvas);
+  color: var(--enact-ink);
+  font-family: var(--enact-font-sans);
+  font-size: 14px;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+
+  ::selection {
+    background: var(--enact-accent);
+    color: #fff;
+  }
+
+  // ────────────────────────────────────────────────────────────────────
+  // Typography
+  // ────────────────────────────────────────────────────────────────────
+  h1, h2, h3, .h1, .h2, .h3 {
+    font-family: var(--enact-font-display);
+    font-weight: 400;
+    font-style: italic;
+    letter-spacing: -0.015em;
+    color: var(--enact-ink);
+    text-wrap: balance;
+  }
+  h1, .h1 { font-size: clamp(40px, 4.4vw, 64px); line-height: 1.05; }
+  h2, .h2 { font-size: 32px; line-height: 1.1; letter-spacing: -0.01em; }
+  h3, .h3 { font-size: 22px; line-height: 1.15; }
+
+  // Editorial "eyebrow" label (small monospace caps above headings)
+  .enact-eyebrow {
+    font-family: var(--enact-font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--enact-muted);
+    margin-bottom: 16px;
+    display: inline-block;
+  }
+
+  // Body copy
+  p { line-height: 1.65; }
+
+  // ────────────────────────────────────────────────────────────────────
+  // Chrome: header / navbar
+  // ────────────────────────────────────────────────────────────────────
+  .navbar {
+    background: var(--enact-paper);
+    border-bottom: 1px solid var(--enact-hairline);
+    box-shadow: none;
+    padding-top: 14px;
+    padding-bottom: 14px;
+  }
+  .navbar-brand {
+    font-family: var(--enact-font-display);
+    font-style: italic;
+    font-size: 26px;
+    letter-spacing: -0.01em;
+    color: var(--enact-ink) !important;
+    display: inline-flex;
+    align-items: baseline;
+    gap: 10px;
+
+    &::after {
+      content: "UK Practice Research Repository";
+      font-family: var(--enact-font-mono);
+      font-style: normal;
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--enact-muted);
+    }
+  }
+  .navbar-nav .nav-link {
+    font-family: var(--enact-font-sans);
+    font-size: 13.5px;
+    color: var(--enact-muted) !important;
+    padding: 8px 12px !important;
+    border-bottom: 1px solid transparent;
+    transition: color 120ms ease, border-color 120ms ease;
+
+    &:hover, &:focus { color: var(--enact-ink) !important; }
+    &.active {
+      color: var(--enact-ink) !important;
+      border-bottom-color: var(--enact-ink);
+    }
+  }
+
+  // ────────────────────────────────────────────────────────────────────
+  // Buttons
+  // ────────────────────────────────────────────────────────────────────
+  .btn {
+    font-family: var(--enact-font-sans);
+    font-weight: 500;
+    letter-spacing: -0.005em;
+    border-radius: 2px;
+    border-width: 1px;
+    padding: 8px 14px;
+    font-size: 13.5px;
+    transition: background 120ms ease, border-color 120ms ease, color 120ms ease;
+    box-shadow: none;
+  }
+  .btn-primary {
+    background: var(--enact-accent);
+    border-color: var(--enact-accent);
+    color: #fff;
+
+    &:hover, &:focus, &:active {
+      background: #B05A3A;
+      border-color: #B05A3A;
+      color: #fff;
+    }
+  }
+  .btn-secondary, .btn-default {
+    background: transparent;
+    border-color: var(--enact-hairline);
+    color: var(--enact-ink);
+
+    &:hover, &:focus {
+      background: transparent;
+      border-color: var(--enact-ink);
+      color: var(--enact-ink);
+    }
+  }
+  .btn-lg { padding: 11px 18px; font-size: 14.5px; }
+  .btn-sm { padding: 5px 10px; font-size: 12.5px; }
+
+  // ────────────────────────────────────────────────────────────────────
+  // Cards (Blacklight catalog uses .card heavily)
+  // ────────────────────────────────────────────────────────────────────
+  .card {
+    background: var(--enact-paper);
+    border: 1px solid var(--enact-hairline);
+    border-radius: 2px;
+    box-shadow: none;
+  }
+  .card-header {
+    background: transparent;
+    border-bottom: 1px solid var(--enact-hairline);
+    font-family: var(--enact-font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--enact-ink);
+    padding: 14px 18px;
+  }
+  .card-body { padding: 18px; }
+
+  // ────────────────────────────────────────────────────────────────────
+  // Forms
+  // ────────────────────────────────────────────────────────────────────
+  .form-control, .custom-select, input[type="text"], input[type="email"],
+  input[type="search"], input[type="url"], textarea {
+    background: var(--enact-paper);
+    border: 1px solid var(--enact-hairline);
+    border-radius: 2px;
+    color: var(--enact-ink);
+    font-family: var(--enact-font-sans);
+    font-size: 14px;
+    padding: 10px 12px;
+    box-shadow: none;
+    transition: border-color 120ms ease;
+
+    &:focus {
+      border-color: var(--enact-ink);
+      outline: none;
+      box-shadow: none;
+    }
+    &::placeholder { color: var(--enact-muted); }
+  }
+  label, .col-form-label {
+    font-family: var(--enact-font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--enact-ink);
+  }
+
+  // ────────────────────────────────────────────────────────────────────
+  // Tables
+  // ────────────────────────────────────────────────────────────────────
+  .table {
+    color: var(--enact-ink);
+    background: transparent;
+
+    th {
+      font-family: var(--enact-font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--enact-muted);
+      border-bottom: 1px solid var(--enact-hairline);
+      border-top: none;
+      font-weight: normal;
+      padding: 10px 12px;
+    }
+    td {
+      border-top: 1px solid var(--enact-hairline);
+      padding: 12px;
+      vertical-align: top;
+    }
+  }
+
+  // ────────────────────────────────────────────────────────────────────
+  // Facets sidebar
+  // ────────────────────────────────────────────────────────────────────
+  .facets, .facets-toggleable {
+    background: transparent;
+  }
+  .facet-limit {
+    background: transparent !important;
+    border: none !important;
+    border-bottom: 1px solid var(--enact-hairline) !important;
+    border-radius: 0 !important;
+    margin-bottom: 0 !important;
+
+    .card-header {
+      background: transparent !important;
+      border-bottom: none !important;
+      padding: 14px 8px;
+    }
+    .facet-values {
+      padding: 0 8px 14px;
+      font-family: var(--enact-font-sans);
+      font-size: 13px;
+    }
+  }
+
+  // ────────────────────────────────────────────────────────────────────
+  // Footer
+  // ────────────────────────────────────────────────────────────────────
+  .navbar-footer, footer.footer {
+    background: var(--enact-canvas-2);
+    border-top: 1px solid var(--enact-hairline);
+    padding: 32px 0;
+    color: var(--enact-muted);
+    font-family: var(--enact-font-sans);
+    font-size: 13px;
+
+    a { color: var(--enact-muted); }
+    a:hover { color: var(--enact-ink); }
+  }
+
+  // ────────────────────────────────────────────────────────────────────
+  // Enact-specific utilities (used by overridden partials)
+  // ────────────────────────────────────────────────────────────────────
+
+  // Type badge (Artefact / Event / Literature / Collection)
+  .enact-type-badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    font-family: var(--enact-font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    padding: 3px 8px 3px 6px;
+    border: 1px solid var(--enact-hairline);
+    border-radius: 2px;
+    background: transparent;
+    color: var(--enact-muted);
+
+    &::before {
+      content: "";
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--enact-muted);
+      flex: none;
+    }
+
+    &--artefact   { color: #5b2f1c; border-color: #E4C9B6; &::before { background: var(--enact-type-artefact); } }
+    &--event      { color: #5a4413; border-color: #E4D4A8; &::before { background: var(--enact-type-event); } }
+    &--literature { color: #2a3247; border-color: #C5CBD6; &::before { background: var(--enact-type-literature); } }
+    &--collection { color: #2c3d2d; border-color: #C9D3C0; &::before { background: var(--enact-type-collection); } }
+  }
+
+  // Hairline section rule (an editorial "section header" with a line)
+  .enact-section-rule {
+    display: flex;
+    align-items: baseline;
+    gap: 14px;
+    margin-bottom: 18px;
+
+    .label {
+      font-family: var(--enact-font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--enact-ink);
+      white-space: nowrap;
+    }
+    .count {
+      font-family: var(--enact-font-mono);
+      font-size: 10.5px;
+      color: var(--enact-muted);
+    }
+    .rule {
+      flex: 1;
+      height: 1px;
+      background: var(--enact-hairline);
+    }
+  }
+
+  // Footer (Enact theme; replaces Hyku's dark navbar footer)
+  .enact-footer {
+    background: var(--enact-canvas-2);
+    border-top: 1px solid var(--enact-hairline);
+    padding: 32px 0 40px;
+    color: var(--enact-muted);
+    font-family: var(--enact-font-sans);
+    font-size: 13px;
+    margin-top: 64px;
+
+    &__inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 32px;
+      display: grid;
+      grid-template-columns: 1fr auto 1fr;
+      gap: 32px;
+      align-items: start;
+
+      @media (max-width: 768px) {
+        grid-template-columns: 1fr;
+        gap: 24px;
+      }
+    }
+    &__wordmark {
+      font-family: var(--enact-font-display);
+      font-style: italic;
+      font-size: 26px;
+      color: var(--enact-ink);
+      line-height: 1;
+    }
+    &__tagline {
+      font-family: var(--enact-font-mono);
+      font-size: 9.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--enact-muted);
+      margin-top: 4px;
+    }
+    &__nav ul {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: center;
+
+      @media (max-width: 768px) { align-items: flex-start; }
+    }
+    &__nav a {
+      color: var(--enact-muted);
+      font-size: 13px;
+      text-decoration: none;
+      &:hover { color: var(--enact-ink); }
+    }
+    &__colophon {
+      text-align: right;
+      font-size: 12.5px;
+      line-height: 1.6;
+
+      @media (max-width: 768px) { text-align: left; }
+    }
+    &__platform {
+      font-family: var(--enact-font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.04em;
+      color: var(--enact-muted);
+      margin-top: 4px;
+    }
+  }
+
+  // PROTOTYPE pill (floating; surfaces "this is a prototype" to viewers)
+  .enact-prototype-pill {
+    position: fixed;
+    bottom: 18px;
+    left: 18px;
+    z-index: 50;
+    background: var(--enact-ink);
+    color: var(--enact-paper);
+    padding: 8px 14px 8px 12px;
+    border-radius: 999px;
+    font-family: var(--enact-font-mono);
+    font-size: 10.5px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    box-shadow: 0 2px 12px rgba(20, 15, 8, 0.18);
+
+    &::before {
+      content: "";
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: var(--enact-accent);
+      box-shadow: 0 0 0 3px rgba(199, 106, 74, 0.18);
+    }
+  }
+
+  // ────────────────────────────────────────────────────────────────────
+  // Defensive: hide Hyku's homepage banner-image masthead and search-bar
+  // controls when on the Enact theme. The knapsack-level layout override
+  // (app/views/layouts/homepage.html.erb) should prevent these from being
+  // rendered in the first place, but if it doesn't kick in for some reason,
+  // these rules hide them visually.
+  // ────────────────────────────────────────────────────────────────────
+  .image-masthead,
+  .background-container,
+  .background-container-gradient,
+  .site-title-container {
+    display: none !important;
+  }
+
+  // ────────────────────────────────────────────────────────────────────
+  // Homepage (enact theme)
+  // ────────────────────────────────────────────────────────────────────
+  .enact-home {
+    max-width: 1320px;
+    margin: 0 auto;
+    padding: 32px 32px 96px;
+
+    &__hero {
+      max-width: 760px;
+      margin-bottom: 64px;
+      padding-top: 16px;
+    }
+    &__headline {
+      font-family: var(--enact-font-display);
+      font-weight: 400;
+      font-style: italic;
+      font-size: clamp(40px, 4.4vw, 64px);
+      line-height: 1.05;
+      letter-spacing: -0.015em;
+      color: var(--enact-ink);
+      margin: 0 0 24px;
+      text-wrap: balance;
+    }
+    &__lede {
+      font-family: var(--enact-font-sans);
+      font-size: 16px;
+      line-height: 1.65;
+      color: var(--enact-ink);
+      margin: 0 0 24px;
+
+      p { margin: 0 0 14px; }
+    }
+    &__actions {
+      display: flex;
+      gap: 12px;
+      flex-wrap: wrap;
+      margin-top: 28px;
+      margin-bottom: 40px;
+    }
+
+    // Hero search bar (matches prototype Browse view).
+    &__search {
+      display: flex;
+      align-items: center;
+      gap: 0;
+      background: var(--enact-paper);
+      border: 1px solid var(--enact-hairline);
+      border-radius: 2px;
+      padding: 0;
+      max-width: none;
+      width: 100%;
+      transition: border-color 120ms ease;
+
+      &:focus-within {
+        border-color: var(--enact-ink);
+      }
+    }
+    &__search-icon {
+      padding: 0 14px 0 18px;
+      font-size: 18px;
+      color: var(--enact-muted);
+      line-height: 1;
+    }
+    &__search-input {
+      flex: 1;
+      border: none;
+      outline: none;
+      background: transparent;
+      padding: 16px 0;
+      font-family: var(--enact-font-sans);
+      font-size: 15px;
+      color: var(--enact-ink);
+
+      &::placeholder { color: var(--enact-muted); }
+    }
+    &__search-submit {
+      border: none;
+      background: transparent;
+      color: var(--enact-muted);
+      padding: 16px 20px;
+      font-family: var(--enact-font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      cursor: pointer;
+      border-left: 1px solid var(--enact-hairline);
+      transition: color 120ms ease, background 120ms ease;
+
+      &:hover { color: var(--enact-ink); background: var(--enact-canvas-2); }
+    }
+    &__section {
+      margin-bottom: 56px;
+    }
+    &__see-all {
+      font-family: var(--enact-font-mono);
+      font-size: 10.5px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--enact-muted);
+      text-decoration: none;
+      &:hover { color: var(--enact-ink); text-decoration: none; }
+    }
+    &__grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 24px;
+    }
+    &__pathfinders {
+      margin-top: 64px;
+      padding-top: 32px;
+      border-top: 1px solid var(--enact-hairline);
+
+      &-copy {
+        font-family: var(--enact-font-sans);
+        font-size: 14.5px;
+        line-height: 1.65;
+        color: var(--enact-muted);
+        max-width: 720px;
+
+        a { color: var(--enact-ink); text-decoration: underline; text-decoration-color: var(--enact-hairline); }
+        a:hover { text-decoration-color: var(--enact-accent); }
+      }
+    }
+  }
+
+  // Editorial card (Browse grid item)
+  .enact-card {
+    background: var(--enact-paper);
+    border: 1px solid var(--enact-hairline);
+    border-radius: 2px;
+    padding: 0;
+    transition: border-color 120ms ease;
+    display: flex;
+    flex-direction: column;
+    text-decoration: none;
+    color: inherit;
+
+    &:hover {
+      border-color: var(--enact-ink);
+      text-decoration: none;
+      color: inherit;
+    }
+
+    &__media {
+      aspect-ratio: 4 / 3;
+      background: var(--enact-canvas-2);
+      position: relative;
+      overflow: hidden;
+    }
+    &__thumb {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+    &__body { padding: 18px; }
+    &__eyebrow {
+      font-family: var(--enact-font-mono);
+      font-size: 10px;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--enact-muted);
+      margin-bottom: 6px;
+    }
+    &__title {
+      font-family: var(--enact-font-display);
+      font-style: italic;
+      font-size: 22px;
+      line-height: 1.15;
+      letter-spacing: -0.01em;
+      color: var(--enact-ink);
+      margin: 0 0 8px;
+    }
+    &__meta {
+      font-family: var(--enact-font-sans);
+      font-size: 13px;
+      color: var(--enact-muted);
+      margin: 0;
+    }
+  }
+}

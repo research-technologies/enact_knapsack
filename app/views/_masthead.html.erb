@@ -1,0 +1,44 @@
+<%# Knapsack-level masthead. Conditionally renders the Enact paper-toned
+    header for tenants on the `enact` home theme; falls through to Hyku's
+    default dark navbar otherwise.
+
+    Lives at the knapsack root (not under themes/enact) so it applies on
+    every page that uses `layouts/hyrax.html.erb` - not just the controllers
+    that include Hyku::HomePageThemesBehavior (homepage, pages, contact). %>
+
+<% if respond_to?(:home_page_theme) && home_page_theme.to_s == 'enact' %>
+  <header aria-label="header" class="top-header enact-top-header">
+    <nav id="masthead" class="navbar navbar-expand-lg justify-content-between enact-navbar <%= placement_class %>" role="navigation" aria-label="masthead">
+      <h1 class="sr-only"><%= application_name %></h1>
+      <%= render '/logo' %>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#top-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="top-navbar-collapse">
+        <% if admin_host? %>
+          <%= render '/admin_util_links' %>
+        <% else %>
+          <%= render '/user_util_links' %>
+        <% end %>
+      </div>
+    </nav>
+  </header>
+<% else %>
+  <%# Hyku default masthead. Kept verbatim from hyrax-webapp/app/views/_masthead.html.erb. %>
+  <header aria-label="header" class="top-header">
+    <nav id="masthead" class="navbar navbar-expand-lg navbar-dark bg-dark justify-content-between <%= placement_class %>" role="navigation" aria-label="masthead">
+      <h1 class="sr-only"><%= application_name %></h1>
+      <%= render '/logo' %>
+      <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#top-navbar-collapse" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse justify-content-end" id="top-navbar-collapse">
+        <% if admin_host? %>
+          <%= render '/admin_util_links' %>
+        <% else %>
+          <%= render '/user_util_links' %>
+        <% end %>
+      </div>
+    </nav>
+  </header>
+<% end %>

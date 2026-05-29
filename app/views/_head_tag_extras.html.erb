@@ -1,0 +1,40 @@
+<%# Knapsack-level override of hyrax-webapp/app/views/_head_tag_extras.html.erb.
+    Adds an explicit Enact theme stylesheet link on every page that uses the
+    Hyrax layout, so the SCSS does not depend on Hyrax's `@import "themes/*"`
+    glob finding files contributed by the knapsack engine.
+
+    The rest of this file matches Hyku's original (favicons, MS meta tags),
+    so removing/disabling the Enact theme falls back cleanly. %>
+
+<% if respond_to?(:home_page_theme) && home_page_theme.to_s == 'enact' %>
+  <%= stylesheet_link_tag 'themes/enact', media: 'all', 'data-turbolinks-track': 'reload' %>
+<% end %>
+<% if respond_to?(:show_page_theme) && show_page_theme.to_s == 'enact_show' %>
+  <%= stylesheet_link_tag 'themes/enact_show', media: 'all', 'data-turbolinks-track': 'reload' %>
+<% end %>
+
+<%= render_gtm_head(request.original_url) %>
+
+<!-- generics -->
+<link rel="icon" href="<%= favicon(:v32) %>" sizes="32x32">
+<link rel="icon" href="<%= favicon(:v57) %>" sizes="57x57">
+<link rel="icon" href="<%= favicon(:v76) %>" sizes="76x76">
+<link rel="icon" href="<%= favicon(:v96) %>" sizes="96x96">
+<link rel="icon" href="<%= favicon(:v128) %>" sizes="128x128">
+<link rel="icon" href="<%= favicon(:v128) %>" sizes="192x192">
+<link rel="icon" href="<%= favicon(:v228) %>" sizes="228x228">
+
+<!-- Android -->
+<link rel="shortcut icon" href="<%= favicon(:v196) %>" sizes="196x196">
+
+<!-- iOS -->
+<link rel="apple-touch-icon" href="<%= favicon(:v120) %>" sizes="120x120">
+<link rel="apple-touch-icon" href="<%= favicon(:v152) %>" sizes="152x152">
+<link rel="apple-touch-icon" href="<%= favicon(:v180) %>" sizes="180x180">
+
+<!-- Windows 8 IE 10-->
+<meta name="msapplication-TileColor" content="#FFFFFF">
+<meta name="msapplication-TileImage" content="<%= favicon(:v228) %>">
+
+<!-- Windows 8.1 + IE11 and above -->
+<meta name="msapplication-config" content="/browserconfig.xml" />
