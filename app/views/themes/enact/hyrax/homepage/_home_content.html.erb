@@ -28,7 +28,7 @@
     <div class="enact-home__actions">
       <a class="btn btn-primary" href="<%= main_app.search_catalog_path %>">Browse the archive</a>
       <% if user_signed_in? %>
-        <a class="btn btn-secondary" href="<%= main_app.hyrax_my_works_path rescue main_app.root_path %>">Deposit a portfolio</a>
+        <%= link_to 'Deposit a portfolio', main_app.new_hyrax_portfolio_path, class: 'btn btn-secondary' %>
       <% end %>
     </div>
 
@@ -52,7 +52,7 @@
       </div>
       <div class="enact-home__grid">
         <% @recent_documents.first(6).each do |doc| %>
-          <%= link_to main_app.solr_document_path(doc), class: 'enact-card' do %>
+          <%= link_to generate_work_url(doc, request), class: 'enact-card' do %>
             <div class="enact-card__media">
               <% if doc.thumbnail_path %>
                 <%= image_tag doc.thumbnail_path, alt: '', class: 'enact-card__thumb' %>
