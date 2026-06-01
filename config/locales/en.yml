@@ -95,14 +95,34 @@ en:
       portfolio_item:
         one: Portfolio Item
         other: Portfolio Items
+      portfolio_artefact:
+        one: Artefact
+        other: Artefacts
+      portfolio_event:
+        one: Event
+        other: Events
+      portfolio_literature:
+        one: Literature
+        other: Literature
+      portfolio_collection:
+        one: Collection
+        other: Collections
   hyrax:
     models:
       portfolio: Portfolio
       portfolio_item: Portfolio Item
+      portfolio_artefact: Artefact
+      portfolio_event: Event
+      portfolio_literature: Literature
+      portfolio_collection: Collection
     work:
       type:
         portfolio: Portfolio
         portfolio_item: Portfolio Item
+        portfolio_artefact: Artefact
+        portfolio_event: Event
+        portfolio_literature: Literature
+        portfolio_collection: Collection
     select_type:
       portfolio:
         name: Portfolio
@@ -110,3 +130,15 @@ en:
       portfolio_item:
         name: Portfolio Item
         description: A single typed output within a portfolio. Pick the item type on the next screen - artefact (composition, recording, performance, design), event (exhibition, conference, live performance), literature (article, methodology, monograph), or collection.
+      portfolio_artefact:
+        name: Artefact
+        description: A single artefact within a portfolio - a composition, recording, score, performance documentation, photograph, design, or other discrete creative output. Carries geo_locations for site-specific work.
+      portfolio_event:
+        name: Event
+        description: An event within a portfolio - an exhibition, performance, conference paper, public-facing presentation, or live-art happening with a venue and date. Carries geo_locations for the venue.
+      portfolio_literature:
+        name: Literature
+        description: A written output within a portfolio - an article, monograph, methodology essay, chapter, or other text-based publication accompanying the practice work. Carries place_of_publication.
+      portfolio_collection:
+        name: Collection
+        description: A grouped collection of items within a portfolio - a thematic set of related works, curated assemblage, or sub-series. Carries extent, extent_type, and collection_order.

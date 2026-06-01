@@ -1,0 +1,204 @@
+# Enact PortfolioLiterature - prototype work type. Carries
+# place_of_publication; does NOT carry geo_locations.
+attributes:
+  description:
+    type: string
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "description_tesim"
+    predicate: http://purl.org/dc/elements/1.1/description
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
+  context_statement:
+    type: string
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "context_statement_tesim"
+    predicate: https://prvoices.org/terms/contextStatement
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:description
+  date_created:
+    type: date_time
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "date_created_tesim"
+    predicate: http://purl.org/dc/terms/created
+    view:
+      render_as: "linked"
+      search_field: 'date_created_tesim'
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:date
+  date_made_public:
+    type: date_time
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "date_made_public_tesim"
+    predicate: http://purl.org/dc/terms/issued
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:date
+  item_subtype:
+    type: string
+    multiple: false
+    form:
+      primary: true
+    index_keys:
+      - "item_subtype_sim"
+      - "item_subtype_tesim"
+    predicate: https://prvoices.org/terms/itemSubtype
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:type
+  media_type:
+    type: string
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "media_type_sim"
+      - "media_type_tesim"
+    predicate: http://purl.org/dc/elements/1.1/format
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:format
+  related_item:
+    type: string
+    multiple: true
+    form:
+      primary: false
+    index_keys:
+      - "related_item_tesim"
+    predicate: http://purl.org/dc/terms/relation
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:relation
+  file_access_level:
+    type: string
+    multiple: false
+    form:
+      primary: false
+    index_keys:
+      - "file_access_level_sim"
+      - "file_access_level_tesim"
+    predicate: http://purl.org/dc/terms/accessRights
+    view:
+      render_as: "faceted"
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:rights
+  place_of_publication:
+    type: string
+    multiple: false
+    form:
+      primary: true
+    index_keys:
+      - "place_of_publication_tesim"
+    predicate: https://prvoices.org/terms/placeOfPublication
+    view:
+      html_dl: true
+  titles:
+    type: hash
+    multiple: true
+    form:
+      display: false
+    index_keys:
+      - "title_label_tesim"
+      - "title_label_sim"
+    predicate: http://purl.org/dc/terms/title
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:title
+  dates:
+    type: hash
+    multiple: true
+    form:
+      display: false
+    index_keys:
+      - "date_label_tesim"
+      - "date_label_sim"
+    predicate: http://purl.org/dc/elements/1.1/date
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:date
+  contributors:
+    type: hash
+    multiple: true
+    form:
+      display: false
+    index_keys:
+      - "contributor_label_tesim"
+      - "contributor_label_sim"
+    predicate: http://purl.org/dc/elements/1.1/contributor
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:contributor
+  identifiers:
+    type: hash
+    multiple: true
+    form:
+      display: false
+    index_keys:
+      - "identifier_value_tesim"
+      - "identifier_value_sim"
+    predicate: http://purl.org/dc/terms/identifier
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:identifier
+  funding_references:
+    type: hash
+    multiple: true
+    form:
+      display: false
+    index_keys:
+      - "funder_label_tesim"
+      - "funder_label_sim"
+    predicate: https://datacite.org/schema/fundingReference
+    view:
+      html_dl: true
+  organisational_units:
+    type: hash
+    multiple: true
+    form:
+      display: false
+    index_keys:
+      - "organisational_unit_label_tesim"
+      - "organisational_unit_label_sim"
+    predicate: https://prvoices.org/terms/organisationalUnit
+    view:
+      html_dl: true
+  licenses:
+    type: hash
+    multiple: true
+    form:
+      display: false
+    index_keys:
+      - "license_label_tesim"
+      - "license_label_sim"
+    predicate: http://purl.org/dc/terms/license
+    view:
+      html_dl: true
+    mappings:
+      simple_dc_pmh: dc:rights

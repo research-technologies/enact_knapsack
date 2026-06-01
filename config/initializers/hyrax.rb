@@ -13,5 +13,13 @@ Rails.application.config.after_initialize do
     # Enact work types - parent narrative container + typed child item.
     config.register_curation_concern :portfolio
     config.register_curation_concern :portfolio_item
+
+    # Prototype: typed-work-types alternative. Four sibling work types in
+    # place of one PortfolioItem with a portfolio_item_type discriminator.
+    # Tenants can enable/disable each via Admin > Work types.
+    config.register_curation_concern :portfolio_artefact
+    config.register_curation_concern :portfolio_event
+    config.register_curation_concern :portfolio_literature
+    config.register_curation_concern :portfolio_collection
   end
 end

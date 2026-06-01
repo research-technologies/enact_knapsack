@@ -1,0 +1,17 @@
+<%# Subtype selector for PortfolioArtefact. Static authority CV - no JS
+    swapping needed because the work type already fixes the parent type.
+    Authority loaded from config/authorities/artefact_type.yml. %>
+<% path = HykuKnapsack::Engine.root.join('config', 'authorities', 'artefact_type.yml') %>
+<% subtype_options = File.exist?(path) ? YAML.load_file(path)['terms'].map { |t| [t['label'], t['id']] } : [] %>
+<% required = f.object.required?(:item_subtype) %>
+<div class="form-group field <%= 'required' if required %>">
+  <%= f.label :item_subtype, class: 'control-label' do %>
+    <%= t('simple_form.labels.defaults.item_subtype') %>
+    <% if required %><abbr title="<%= t('simple_form.required.text') %>"><%= t('simple_form.required.mark') %></abbr><% end %>
+  <% end %>
+  <%= f.select :item_subtype,
+               subtype_options,
+               { include_blank: '— select a subtype —', selected: f.object.item_subtype },
+               { class: 'form-control' } %>
+  <p class="help-block"><%= t('simple_form.hints.defaults.item_subtype') %></p>
+</div>

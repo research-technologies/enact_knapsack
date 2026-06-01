@@ -21,7 +21,11 @@
 <% compound_id = "#{f.object_name}-#{compound_name}".parameterize %>
 
 <section class="enact-compound mb-4" data-enact-compound data-next-index="<%= rows.length %>" id="<%= compound_id %>">
-  <h3 class="h4 mt-4 mb-3"><%= display_label %></h3>
+  <%# Render the section heading at form-label size so compound headings
+      ("Titles", "Contributors", "Funding references"...) sit at the same
+      visual weight as scalar labels above ("Title", "Item subtype"...).
+      Keeps the h3 semantics for screen readers / outline. %>
+  <h3 class="h6 mt-4 mb-3 font-weight-bold"><%= display_label %></h3>
 
   <%# Always-submitted marker so the populator runs even when the user
       has removed every row from the DOM. The build helper drops the
