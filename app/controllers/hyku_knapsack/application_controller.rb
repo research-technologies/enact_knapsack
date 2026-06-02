@@ -2,5 +2,6 @@
 
 module HykuKnapsack
   class ApplicationController < ActionController::Base
+    include IiifAccessCookie
   end
 end
