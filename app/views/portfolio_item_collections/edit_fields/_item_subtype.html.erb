@@ -1,4 +1,4 @@
-<%# Subtype selector for PortfolioCollection. Static CV from collection_type.yml. %>
+<%# Subtype selector for PortfolioItemCollection. Static CV from collection_type.yml. %>
 <% path = HykuKnapsack::Engine.root.join('config', 'authorities', 'collection_type.yml') %>
 <% subtype_options = File.exist?(path) ? YAML.load_file(path)['terms'].map { |t| [t['label'], t['id']] } : [] %>
 <% required = f.object.required?(:item_subtype) %>

@@ -1,4 +1,4 @@
-# Enact PortfolioCollection - prototype work type. Carries extent / extent_type /
+# Enact PortfolioItemCollection - prototype work type. Carries extent / extent_type /
 # collection_order scalars; does NOT carry geo_locations or place_of_publication.
 attributes:
   description:

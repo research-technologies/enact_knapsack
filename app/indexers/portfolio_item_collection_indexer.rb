@@ -1,16 +1,16 @@
 # frozen_string_literal: true
 
-# Indexer for PortfolioCollection. Uses PortfolioIndexer's base
+# Indexer for PortfolioItemCollection. Uses PortfolioIndexer's base
 # COMPOUND_INDEX_MAP (no geo_locations).
-class PortfolioCollectionIndexer < Hyrax::ValkyrieWorkIndexer
+class PortfolioItemCollectionIndexer < Hyrax::ValkyrieWorkIndexer
   include EnactCompoundLabelHelpers
   include HykuIndexing
 
   if Hyrax.config.work_include_metadata?
     include Hyrax::Indexer(:core_metadata)
-    include Hyrax::Indexer(:portfolio_collection)
+    include Hyrax::Indexer(:portfolio_item_collection)
   end
-  check_if_flexible(PortfolioCollection)
+  check_if_flexible(PortfolioItemCollection)
 
   COMPOUND_INDEX_MAP = PortfolioIndexer::COMPOUND_INDEX_MAP
 
@@ -21,4 +21,4 @@ class PortfolioCollectionIndexer < Hyrax::ValkyrieWorkIndexer
   end
 end
 
-PortfolioCollectionResourceIndexer = PortfolioCollectionIndexer unless defined?(PortfolioCollectionResourceIndexer)
+PortfolioItemCollectionResourceIndexer = PortfolioItemCollectionIndexer unless defined?(PortfolioItemCollectionResourceIndexer)

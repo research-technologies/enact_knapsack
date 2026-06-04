@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
 # Generated via
-#  `rails generate hyrax:work_resource PortfolioCollection`
+#  `rails generate hyrax:work_resource PortfolioItemCollection`
 module Hyrax
-  # Generated controller for PortfolioCollection
-  class PortfolioCollectionsController < ApplicationController
+  # Generated controller for PortfolioItemCollection
+  class PortfolioItemCollectionsController < ApplicationController
     # Adds Hyrax behaviors to the controller.
     include Hyrax::WorksControllerBehavior
     include Hyku::WorksControllerBehavior
     include Hyrax::BreadcrumbsForWorks
-    self.curation_concern_type = ::PortfolioCollection
+    self.curation_concern_type = ::PortfolioItemCollection
 
     # Use a Valkyrie aware form service to generate Valkyrie::ChangeSet style
     # forms.

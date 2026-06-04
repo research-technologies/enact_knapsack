@@ -1,4 +1,4 @@
-<%# Form metadata for PortfolioCollection. No geo_locations compound. %>
+<%# Form metadata for PortfolioItemCollection. No geo_locations compound. %>
 <div class="base-terms">
   <% f.object.primary_terms.each do |term| %>
     <%= render_edit_field_partial(term, f: f) %>
@@ -19,7 +19,7 @@
   </div>
 <% end %>
 
-<% PortfolioCollectionForm::COMPOUND_ATTRIBUTES.each do |compound_name, sub_fields| %>
+<% PortfolioItemCollectionForm::COMPOUND_ATTRIBUTES.each do |compound_name, sub_fields| %>
   <%= render 'hyrax/compounds/compound_section',
              f: f,
              compound_name: compound_name,

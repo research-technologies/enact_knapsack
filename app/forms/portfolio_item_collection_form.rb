@@ -1,15 +1,15 @@
 # frozen_string_literal: true
 
-# Form for PortfolioCollection. Drops geo_locations from the compound set
+# Form for PortfolioItemCollection. Drops geo_locations from the compound set
 # (Collection has extent / extent_type / collection_order scalars instead).
 #
 # @see app/forms/portfolio_item_form.rb
-class PortfolioCollectionForm < Hyrax::Forms::ResourceForm(PortfolioCollection)
+class PortfolioItemCollectionForm < Hyrax::Forms::ResourceForm(PortfolioItemCollection)
   if Hyrax.config.work_include_metadata?
-    include Hyrax::FormFields(:portfolio_collection)
+    include Hyrax::FormFields(:portfolio_item_collection)
     include Hyrax::FormFields(:bulkrax_metadata)
   end
-  check_if_flexible(PortfolioCollection)
+  check_if_flexible(PortfolioItemCollection)
 
   COMPOUND_ATTRIBUTES = {
     titles: %w[value title_type lang],
@@ -100,4 +100,4 @@ class PortfolioCollectionForm < Hyrax::Forms::ResourceForm(PortfolioCollection)
   end
 end
 
-PortfolioCollectionResourceForm = PortfolioCollectionForm unless defined?(PortfolioCollectionResourceForm)
+PortfolioItemCollectionResourceForm = PortfolioItemCollectionForm unless defined?(PortfolioItemCollectionResourceForm)

@@ -104,7 +104,7 @@ en:
       portfolio_literature:
         one: Literature
         other: Literature
-      portfolio_collection:
+      portfolio_item_collection:
         one: Collection
         other: Collections
   hyrax:
@@ -114,7 +114,7 @@ en:
       portfolio_artefact: Artefact
       portfolio_event: Event
       portfolio_literature: Literature
-      portfolio_collection: Collection
+      portfolio_item_collection: Collection
     work:
       type:
         portfolio: Portfolio
@@ -122,7 +122,7 @@ en:
         portfolio_artefact: Artefact
         portfolio_event: Event
         portfolio_literature: Literature
-        portfolio_collection: Collection
+        portfolio_item_collection: Collection
     select_type:
       portfolio:
         name: Portfolio
@@ -139,6 +139,6 @@ en:
       portfolio_literature:
         name: Literature
         description: A written output within a portfolio - an article, monograph, methodology essay, chapter, or other text-based publication accompanying the practice work. Carries place_of_publication.
-      portfolio_collection:
+      portfolio_item_collection:
         name: Collection
         description: A grouped collection of items within a portfolio - a thematic set of related works, curated assemblage, or sub-series. Carries extent, extent_type, and collection_order.

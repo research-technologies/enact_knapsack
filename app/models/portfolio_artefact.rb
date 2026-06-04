@@ -4,7 +4,7 @@
 # under a Portfolio. Alternative architecture to the single PortfolioItem
 # with a portfolio_item_type discriminator. PortfolioArtefact + PortfolioEvent
 # carry geo_locations; PortfolioLiterature carries place_of_publication;
-# PortfolioCollection carries extent / extent_type / collection_order.
+# PortfolioItemCollection carries extent / extent_type / collection_order.
 #
 # All attributes (scalar and compound) are declared in
 # `config/metadata/portfolio_artefact.yaml`. Compound attributes use

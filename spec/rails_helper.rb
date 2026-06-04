@@ -3,8 +3,10 @@
 # Set environment variables BEFORE requiring Rails environment
 # so initializers read the correct values on first load.
 ENV["RAILS_ENV"] ||= "test"
-# Use Hyku default (false) unless a spec or .env sets HYRAX_FLEXIBLE.
-ENV['HYRAX_FLEXIBLE'] ||= 'false'
+# Default to flexible-on for the discovery spike, matching the branch default
+# in config/initializers/hyrax.rb. Individual specs can override by setting
+# ENV['HYRAX_FLEXIBLE'] = 'false' before the framework boots.
+ENV['HYRAX_FLEXIBLE'] ||= 'true'
 
 require "spec_helper"
 

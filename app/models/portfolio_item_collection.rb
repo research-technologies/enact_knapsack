@@ -1,13 +1,13 @@
 # frozen_string_literal: true
 
-# Enact PortfolioCollection - prototype work type, one of four typed siblings
+# Enact PortfolioItemCollection - prototype work type, one of four typed siblings
 # under a Portfolio. Carries extent / extent_type / collection_order scalars;
 # does not carry geo_locations.
-# All attributes are declared in `config/metadata/portfolio_collection.yaml`.
-class PortfolioCollection < Hyrax::Work
+# All attributes are declared in `config/metadata/portfolio_item_collection.yaml`.
+class PortfolioItemCollection < Hyrax::Work
   if Hyrax.config.work_include_metadata?
     include Hyrax::Schema(:core_metadata)
-    include Hyrax::Schema(:portfolio_collection)
+    include Hyrax::Schema(:portfolio_item_collection)
     include Hyrax::Schema(:bulkrax_metadata)
   end
 
@@ -26,4 +26,4 @@ class PortfolioCollection < Hyrax::Work
   def creator; end
 end
 
-PortfolioCollectionResource = PortfolioCollection unless defined?(PortfolioCollectionResource)
+PortfolioItemCollectionResource = PortfolioItemCollection unless defined?(PortfolioItemCollectionResource)
