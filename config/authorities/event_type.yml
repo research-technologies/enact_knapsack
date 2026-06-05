@@ -1,17 +1,43 @@
 terms:
-  - id: exhibition
-    label: Exhibition
-  - id: conference
+  - id: http://publications.europa.eu/resource/authority/public-event-type/COMPETITION_AWARD_CEREMONY
+    label: Award Ceremony
+  - id: https://schema.org/ChildrensEvent
+    label: Childrens Event
+  - id: http://publications.europa.eu/resource/authority/public-event-type/CONFERENCE_SUMMIT
     label: Conference
-  - id: live_performance
-    label: Live performance
-  - id: symposium
-    label: Symposium
-  - id: workshop
-    label: Workshop
-  - id: screening
-    label: Screening
-  - id: lecture
+  - id: https://schema.org/ComedyEvent
+    label: Comedy Event
+  - id: https://schema.org/DanceEvent
+    label: Dance Event
+  - id: https://github.com/research-technologies/prvoices_schema/wiki/DesignCharrette
+    label: Design Charrette
+  - id: https://schema.org/ExhibitionEvent
+    label: Exhibition
+  - id: https://schema.org/Festival
+    label: Festival
+  - id: https://schema.org/FoodEvent
+    label: Food Event
+  - id: https://schema.org/Hackathon
+    label: Hackathon
+  - id: http://vocab.getty.edu/page/aat/300026673
     label: Lecture
-  - id: residency
+  - id: https://schema.org/LiteraryEvent
+    label: Literary Event
+  - id: https://schema.org/MusicEvent
+    label: Music Event
+  - id: http://vocab.getty.edu/page/aat/300075520
     label: Residency
+  - id: https://schema.org/ScreeningEvent
+    label: Screening
+  - id: https://schema.org/SocialEvent
+    label: Social Event
+  - id: https://schema.org/SportsEvent
+    label: Sports Event
+  - id: http://vocab.getty.edu/page/aat/300054792
+    label: Symposia
+  - id: https://schema.org/TheaterEvent
+    label: Theatre Event
+  - id: https://schema.org/VisualArtsEvent
+    label: VisualArtsEvent
+  - id: http://publications.europa.eu/resource/authority/public-event-type/TRAINING_WORKSHOP
+    label: Workshop
