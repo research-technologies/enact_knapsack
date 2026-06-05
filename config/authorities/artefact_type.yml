@@ -1,0 +1,21 @@
+terms:
+  - id: composition
+    label: Composition
+  - id: recording
+    label: Recording
+  - id: performance
+    label: Performance (artefact of)
+  - id: design
+    label: Design
+  - id: installation
+    label: Installation
+  - id: script
+    label: Script
+  - id: score
+    label: Score
+  - id: documentation
+    label: Documentation
+  - id: software
+    label: Software
+  - id: choreography
+    label: Choreography

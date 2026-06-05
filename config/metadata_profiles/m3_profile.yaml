@@ -1,0 +1,927 @@
+---
+# Enact PR Voices M3 metadata profile.
+#
+# Drives every Enact deposit form and show page via the Hyrax compound
+# foundation (samvera/hyrax#nested-compound-metadata-foundation + the host-app
+# wiring in samvera/hyku#3093, which the hyrax-webapp submodule is locked to).
+# Class-based segmentation (`available_on.class`) keeps subtype-specific fields
+# (place_of_publication on Literature, extent on Collection, geo_locations on
+# Artefact + Event) off the wrong forms without any JS reveal logic.
+#
+# After bringing the stack up with HYRAX_FLEXIBLE=true, seed the profile into
+# the FlexibleSchema table per tenant:
+#
+#   bundle exec rake hyku:flexible_schema:initialize
+#
+# Controlled-vocab values on compound subfields come from the PR Voices wiki
+# (https://github.com/research-technologies/prvoices_schema/wiki) - verbatim
+# where the wiki gives an enum, free text where it doesn't.
+m3_version: 1.0.beta2
+
+profile:
+  date_modified: "2026-06-05"
+  responsibility: https://notch8.com
+  responsibility_statement: Notch8 / Enact PR Voices Discovery
+  type: Enact PR Voices Profile
+  version: 1
+
+classes:
+  # Hyrax-required classes (FlexibleSchemaValidatorService::REQUIRED_CLASSES).
+  AdminSetResource:
+    display_label: AdminSet
+  CollectionResource:
+    display_label: Collection
+  Hyrax::FileSet:
+    display_label: FileSet
+  # Enact: parent narrative container.
+  Portfolio:
+    display_label: Portfolio
+  # Enact: four typed work-type siblings (no legacy single PortfolioItem).
+  PortfolioArtefact:
+    display_label: Artefact
+  PortfolioEvent:
+    display_label: Event
+  PortfolioLiterature:
+    display_label: Literature
+  PortfolioItemCollection:
+    display_label: Portfolio Item Collection
+
+contexts:
+  default_context:
+    display_label: Default
+
+mappings:
+  simple_dc_pmh:
+    name: Simple DC OAI PMH
+
+properties:
+  # ---------------------------------------------------------------------------
+  # Hyrax core metadata. Required on every class in `classes` above per
+  # FlexibleSchemaValidators::CoreMetadataValidator. Do not narrow these.
+  # ---------------------------------------------------------------------------
+  title:
+    available_on:
+      class:
+        - AdminSetResource
+        - CollectionResource
+        - Hyrax::FileSet
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 1
+    data_type: array
+    display_label:
+      default: Title
+    indexing:
+      - title_sim
+      - title_tesim
+    form:
+      required: true
+      primary: true
+      multiple: true
+    mappings:
+      simple_dc_pmh: dc:title
+    property_uri: http://purl.org/dc/terms/title
+    range: http://www.w3.org/2001/XMLSchema#string
+  date_modified:
+    available_on:
+      class:
+        - AdminSetResource
+        - CollectionResource
+        - Hyrax::FileSet
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Last modified
+    property_uri: http://purl.org/dc/terms/modified
+    range: http://www.w3.org/2001/XMLSchema#dateTime
+  date_uploaded:
+    available_on:
+      class:
+        - AdminSetResource
+        - CollectionResource
+        - Hyrax::FileSet
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Date uploaded
+    property_uri: http://purl.org/dc/terms/dateSubmitted
+    range: http://www.w3.org/2001/XMLSchema#dateTime
+  depositor:
+    available_on:
+      class:
+        - AdminSetResource
+        - CollectionResource
+        - Hyrax::FileSet
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Depositor
+    indexing:
+      - depositor_ssim
+      - depositor_tesim
+    property_uri: http://id.loc.gov/vocabulary/relators/dpt
+    range: http://www.w3.org/2001/XMLSchema#string
+  creator:
+    available_on:
+      class:
+        - AdminSetResource
+        - CollectionResource
+        - Hyrax::FileSet
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+    data_type: array
+    display_label:
+      default: Creator
+    indexing:
+      - creator_sim
+      - creator_tesim
+    form:
+      display: false
+    mappings:
+      simple_dc_pmh: dc:creator
+    property_uri: http://purl.org/dc/elements/1.1/creator
+    range: http://www.w3.org/2001/XMLSchema#string
+  # FileSet label, required by FlexibleSchemaValidatorService#validate_label_prop.
+  label:
+    available_on:
+      class:
+        - Hyrax::FileSet
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Label
+    indexing:
+      - label_ssi
+      - label_tesim
+    property_uri: http://www.w3.org/2000/01/rdf-schema#label
+    range: http://www.w3.org/2001/XMLSchema#string
+
+  # ---------------------------------------------------------------------------
+  # Shared scalar fields: Portfolio + every PortfolioItem variant.
+  # ---------------------------------------------------------------------------
+  description:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Description
+    indexing:
+      - description_tesim
+    mappings:
+      simple_dc_pmh: dc:description
+    property_uri: http://purl.org/dc/elements/1.1/description
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
+  context_statement:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Context statement
+    indexing:
+      - context_statement_tesim
+    mappings:
+      simple_dc_pmh: dc:description
+    property_uri: https://prvoices.org/terms/contextStatement
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
+  date_created:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Date created
+    indexing:
+      - date_created_tesim
+    mappings:
+      simple_dc_pmh: dc:date
+    property_uri: http://purl.org/dc/terms/created
+    range: http://www.w3.org/2001/XMLSchema#dateTime
+    view:
+      render_as: linked
+      search_field: date_created_tesim
+      html_dl: true
+  date_made_public:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Date made public
+    indexing:
+      - date_made_public_tesim
+    mappings:
+      simple_dc_pmh: dc:date
+    property_uri: http://purl.org/dc/terms/issued
+    range: http://www.w3.org/2001/XMLSchema#dateTime
+    view:
+      html_dl: true
+  file_access_level:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: File access level
+    indexing:
+      - file_access_level_sim
+      - file_access_level_tesim
+    mappings:
+      simple_dc_pmh: dc:rights
+    property_uri: http://purl.org/dc/terms/accessRights
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      render_as: faceted
+      html_dl: true
+
+  # ---------------------------------------------------------------------------
+  # Portfolio-only scalar fields.
+  # ---------------------------------------------------------------------------
+  date_range_of_outputs:
+    available_on:
+      class:
+        - Portfolio
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Date range of outputs
+    indexing:
+      - date_range_of_outputs_tesim
+    property_uri: https://prvoices.org/terms/portfolioDateRange
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
+  publisher:
+    available_on:
+      class:
+        - Portfolio
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Publisher
+    indexing:
+      - publisher_sim
+      - publisher_tesim
+    mappings:
+      simple_dc_pmh: dc:publisher
+    property_uri: http://purl.org/dc/elements/1.1/publisher
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      render_as: faceted
+      html_dl: true
+  portfolio_identifier:
+    available_on:
+      class:
+        - Portfolio
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Portfolio identifier (RAiD)
+    indexing:
+      - portfolio_identifier_ssi
+    property_uri: https://raid.org/terms/identifier
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
+  keyword:
+    available_on:
+      class:
+        - Portfolio
+    cardinality:
+      minimum: 0
+    data_type: array
+    display_label:
+      default: Keywords
+    indexing:
+      - keyword_sim
+      - keyword_tesim
+    mappings:
+      simple_dc_pmh: dc:subject
+    property_uri: http://schema.org/keywords
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      render_as: faceted
+      html_dl: true
+  research_group:
+    available_on:
+      class:
+        - Portfolio
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Research group
+    indexing:
+      - research_group_sim
+      - research_group_tesim
+    property_uri: https://prvoices.org/terms/researchGroup
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      render_as: faceted
+      html_dl: true
+  rights_statement:
+    available_on:
+      class:
+        - Portfolio
+    cardinality:
+      minimum: 1
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Metadata rights statement
+    indexing:
+      - rights_statement_tesim
+    form:
+      required: true
+      primary: true
+    mappings:
+      simple_dc_pmh: dc:rights
+    property_uri: https://prvoices.org/terms/metadataRightsStatement
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
+  ref_unit_of_assessment:
+    available_on:
+      class:
+        - Portfolio
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: REF Unit of Assessment
+    indexing:
+      - ref_unit_of_assessment_sim
+      - ref_unit_of_assessment_tesim
+    property_uri: https://prvoices.org/terms/refUnitOfAssessment
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      render_as: faceted
+      html_dl: true
+
+  # ---------------------------------------------------------------------------
+  # Item-family shared scalar fields (every typed child).
+  # ---------------------------------------------------------------------------
+  item_subtype:
+    available_on:
+      class:
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Item subtype
+    indexing:
+      - item_subtype_sim
+      - item_subtype_tesim
+    form:
+      primary: true
+    mappings:
+      simple_dc_pmh: dc:type
+    property_uri: https://prvoices.org/terms/itemSubtype
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      render_as: faceted
+      html_dl: true
+  media_type:
+    available_on:
+      class:
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Media type
+    indexing:
+      - media_type_sim
+      - media_type_tesim
+    mappings:
+      simple_dc_pmh: dc:format
+    property_uri: http://purl.org/dc/elements/1.1/format
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      render_as: faceted
+      html_dl: true
+  related_item:
+    available_on:
+      class:
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+    data_type: array
+    display_label:
+      default: Related item
+    indexing:
+      - related_item_tesim
+    mappings:
+      simple_dc_pmh: dc:relation
+    property_uri: http://purl.org/dc/terms/relation
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
+
+  # ---------------------------------------------------------------------------
+  # PortfolioItem type-specific scalar fields. This is the test for the spike:
+  # in flex mode the deposit form filters fields by class (and/or context)
+  # automatically, without Stimulus reveal logic.
+  # ---------------------------------------------------------------------------
+  place_of_publication:
+    available_on:
+      class:
+        - PortfolioLiterature
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Place of publication
+    indexing:
+      - place_of_publication_tesim
+    form:
+      primary: true
+    property_uri: https://prvoices.org/terms/placeOfPublication
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
+  extent:
+    available_on:
+      class:
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Extent
+    indexing:
+      - extent_tesim
+    form:
+      primary: true
+    property_uri: http://purl.org/dc/terms/extent
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
+  extent_type:
+    available_on:
+      class:
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Extent type
+    indexing:
+      - extent_type_sim
+      - extent_type_tesim
+    form:
+      primary: true
+    property_uri: https://prvoices.org/terms/extentType
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
+  collection_order:
+    available_on:
+      class:
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Collection order
+    indexing:
+      - collection_order_tesim
+    form:
+      primary: true
+    property_uri: https://prvoices.org/terms/collectionOrder
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
+
+  # ---------------------------------------------------------------------------
+  # Compound (hash) fields. The PR Voices "compound row" pattern (contributor =
+  # name + role + ORCID + affiliation, etc.). Range resolves to `hash` via
+  # FlexibleSchema#lookup_type (`range.split('#').last.underscore`).
+  # Sub-field shapes are documented in config/metadata/portfolio.yaml /
+  # portfolio_item.yaml and rendered by the existing edit_fields partials.
+  # The spike question is whether these render cleanly under M3.
+  # ---------------------------------------------------------------------------
+  titles:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+    data_type: array
+    type: hash
+    display_label:
+      default: Titles
+    form:
+      primary: false
+    mappings:
+      simple_dc_pmh: dc:title
+    property_uri: http://purl.org/dc/terms/title
+    range: https://prvoices.org/types#hash
+    subfields:
+      value:
+        type: string
+        required: true
+        indexing: [title_value_tesim, title_value_sim]
+      title_type:
+        type: controlled
+        values: [AlternativeTitle, Subtitle, TranslatedTitle, Other]
+        indexing: [title_type_sim]
+      lang:
+        type: string
+    groups:
+      - { label: ~, cols: 6, fields: [value, title_type, lang] }
+    view:
+      render_as: compound
+      html_dl: true
+  dates:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+    data_type: array
+    type: hash
+    display_label:
+      default: Dates
+    form:
+      primary: false
+    mappings:
+      simple_dc_pmh: dc:date
+    property_uri: http://purl.org/dc/elements/1.1/date
+    range: https://prvoices.org/types#hash
+    # PR Voices wiki Date page lists this enum verbatim. example.xml also uses
+    # dateType="Duration", which the wiki does not document; pending Jenny.
+    subfields:
+      value:
+        type: string
+        required: true
+        indexing: [date_value_tesim, date_value_sim]
+      date_type:
+        type: controlled
+        values: [Accepted, Available, Copyrighted, Collected, Created, Issued, Submitted, Updated, Valid, Withdrawn, Other]
+        indexing: [date_type_sim]
+      date_information:
+        type: string
+    groups:
+      - { label: ~, cols: 4, fields: [value, date_type, date_information] }
+    view:
+      render_as: compound
+      html_dl: true
+  contributors:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+    data_type: array
+    type: hash
+    display_label:
+      default: Contributors
+    form:
+      primary: false
+    mappings:
+      simple_dc_pmh: dc:contributor
+    property_uri: http://purl.org/dc/elements/1.1/contributor
+    range: https://prvoices.org/types#hash
+    # name_type is the only PR-Voices-CV-enforced subfield (wiki Contributor page).
+    # role_label / role_id / role_vocabulary are left as free text pending PR
+    # Voices issue #1 (contributorType CV unresolved).
+    subfields:
+      given_name: { type: string }
+      family_name: { type: string }
+      contributor_name:
+        type: string
+        indexing: [contributor_name_tesim, contributor_name_sim]
+      name_type:
+        type: controlled
+        values: [Personal, Organizational]
+        indexing: [contributor_name_type_sim]
+      role_label:
+        type: string
+        indexing: [contributor_role_label_tesim, contributor_role_label_sim]
+      role_id: { type: string }
+      role_vocabulary: { type: string }
+      name_identifier:
+        type: string
+        indexing: [contributor_name_identifier_ssim]
+      scheme_uri: { type: string }
+      affiliation:
+        type: string
+        indexing: [contributor_affiliation_tesim, contributor_affiliation_sim]
+      affiliation_identifier:
+        type: string
+        indexing: [contributor_affiliation_identifier_ssim]
+    groups:
+      - { label: Identity, cols: 6, fields: [given_name, family_name, contributor_name, name_type] }
+      - { label: Role, cols: 4, fields: [role_label, role_id, role_vocabulary] }
+      - { label: Identifier, cols: 6, fields: [name_identifier, scheme_uri] }
+      - { label: Affiliation, cols: 6, fields: [affiliation, affiliation_identifier] }
+    view:
+      render_as: compound
+      html_dl: true
+  identifiers:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+    data_type: array
+    type: hash
+    display_label:
+      default: Identifiers
+    form:
+      primary: false
+    mappings:
+      simple_dc_pmh: dc:identifier
+    property_uri: http://purl.org/dc/terms/identifier
+    range: https://prvoices.org/types#hash
+    # PR Voices wiki Alternate-Identifier explicitly says alternateIdentifierType
+    # is free text; we honour that rather than inventing a CV.
+    subfields:
+      value:
+        type: string
+        required: true
+        indexing: [identifier_value_tesim, identifier_value_sim]
+      identifier_type:
+        type: string
+        indexing: [identifier_type_sim]
+    groups:
+      - { label: ~, cols: 6, fields: [value, identifier_type] }
+    view:
+      render_as: compound
+      html_dl: true
+  funding_references:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+    data_type: array
+    type: hash
+    display_label:
+      default: Funding references
+    form:
+      primary: false
+    property_uri: https://datacite.org/schema/fundingReference
+    range: https://prvoices.org/types#hash
+    # funder_identifier_type values verbatim from PR Voices wiki Funder page.
+    subfields:
+      funder_name:
+        type: string
+        required: true
+        indexing: [funder_name_tesim, funder_name_sim]
+      funder_identifier:
+        type: string
+        indexing: [funder_identifier_ssim]
+      funder_identifier_type:
+        type: controlled
+        values: ['Crossref Funder ID', GRID, ISNI, ROR, Other]
+        indexing: [funder_identifier_type_sim]
+      schemeURI: { type: string }
+      award_number:
+        type: string
+        indexing: [funder_award_number_ssim]
+      award_uri: { type: string }
+      award_title:
+        type: string
+        indexing: [funder_award_title_tesim]
+    groups:
+      - { label: Funder, cols: 6, fields: [funder_name, funder_identifier, funder_identifier_type, schemeURI] }
+      - { label: Award, cols: 4, fields: [award_number, award_uri, award_title] }
+    view:
+      render_as: compound
+      html_dl: true
+  organisational_units:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+    data_type: array
+    type: hash
+    display_label:
+      default: Organisational units
+    form:
+      primary: false
+    property_uri: https://prvoices.org/terms/organisationalUnit
+    range: https://prvoices.org/types#hash
+    # unit_type values verbatim from PR Voices wiki Organisational-unit page.
+    subfields:
+      name:
+        type: string
+        required: true
+        indexing: [organisational_unit_name_tesim, organisational_unit_name_sim]
+      pid:
+        type: string
+        indexing: [organisational_unit_pid_ssim]
+      unit_type:
+        type: controlled
+        values: [University, Faculty, School, Department, Group, Centre]
+        indexing: [organisational_unit_type_sim]
+    groups:
+      - { label: ~, cols: 4, fields: [name, pid, unit_type] }
+    view:
+      render_as: compound
+      html_dl: true
+  licenses:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+    data_type: array
+    type: hash
+    display_label:
+      default: Licenses
+    form:
+      primary: false
+    mappings:
+      simple_dc_pmh: dc:rights
+    property_uri: http://purl.org/dc/terms/license
+    range: https://prvoices.org/types#hash
+    # rights_identifier_scheme: PR Voices wiki License page only documents SPDX.
+    # holder: Notch8 extension not in PR Voices proper; flagged for Jenny.
+    subfields:
+      rights_label:
+        type: string
+        indexing: [license_label_tesim, license_label_sim]
+      rights_uri:
+        type: string
+        indexing: [license_uri_ssim]
+      rights_identifier:
+        type: string
+        indexing: [license_identifier_ssim]
+      rights_identifier_scheme:
+        type: controlled
+        values: [SPDX]
+        indexing: [license_identifier_scheme_sim]
+      scheme_uri: { type: string }
+      lang: { type: string }
+      holder:
+        type: string
+        indexing: [license_holder_tesim, license_holder_sim]
+    groups:
+      - { label: Statement, cols: 6, fields: [rights_label, rights_uri, holder] }
+      - { label: Identifier, cols: 4, fields: [rights_identifier, rights_identifier_scheme, scheme_uri] }
+      - { label: Language, cols: 4, fields: [lang] }
+    view:
+      render_as: compound
+      html_dl: true
+  geo_locations:
+    available_on:
+      class:
+        - PortfolioArtefact
+        - PortfolioEvent
+    cardinality:
+      minimum: 0
+    data_type: array
+    type: hash
+    display_label:
+      default: Geographic locations
+    form:
+      primary: false
+    property_uri: http://www.w3.org/2003/01/geo/wgs84_pos#Point
+    range: https://prvoices.org/types#hash
+    # PR Voices documents geoLocationPoint (lat/lng) and geoLocationBox (4 bounds)
+    # as separate sub-structs under one geoLocation. We flatten both into one
+    # row; per-row a depositor uses point OR box, not both.
+    subfields:
+      place_name:
+        type: string
+        indexing: [geo_place_name_tesim, geo_place_name_sim]
+      point_latitude: { type: string }
+      point_longitude: { type: string }
+      west_bound: { type: string }
+      east_bound: { type: string }
+      south_bound: { type: string }
+      north_bound: { type: string }
+    groups:
+      - { label: Point, cols: 4, fields: [place_name, point_latitude, point_longitude] }
+      - { label: Box, cols: 3, fields: [west_bound, east_bound, south_bound, north_bound] }
+    view:
+      render_as: compound
+      html_dl: true
