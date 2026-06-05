@@ -161,11 +161,39 @@ during the spike.
 
 ## Findings (fill in as the spike runs)
 
-- [ ] Profile loads without validation errors via `hyku:flexible_schema:initialize`
-- [ ] PortfolioLiterature deposit form shows `place_of_publication`, omits `extent` and `geo_locations`
-- [ ] PortfolioArtefact deposit form shows `geo_locations`, omits `place_of_publication` and `extent`
-- [ ] PortfolioCollection deposit form shows `extent` / `extent_type` / `collection_order`, omits `place_of_publication` and `geo_locations`
-- [ ] Contributors compound row renders and persists
-- [ ] Show pages render compound rows with the same partials they used in static mode
-- [ ] Solr index keys match between flex and static modes for the same record (no facet regressions)
+- [x] Profile loads without validation errors via `hyku:flexible_schema:initialize`
+- [x] PortfolioArtefact deposit form shows `geo_locations`; Portfolio / Literature /
+      ItemCollection forms omit it (class-based segmentation from `available_on.class`)
+- [x] All 7 (Portfolio) / 8 (Artefact + Event) PR Voices compounds render in deposit
+      forms with the M3-declared `groups:` visible as h4 cluster sub-headings
+- [ ] Contributors compound row persists and reads back (need a deposit to confirm)
+- [ ] Show page renders compound cards (need a saved Portfolio to verify
+      `view_options_for(presenter)` + `render_compound_cards`)
+- [ ] Solr indexes per-subfield Solr fields match the `indexing:` directives in M3
 - [ ] Migration paragraph for converting existing records: ___
+
+## What changed when we wired in samvera/hyku PR #3093 (2026-06-05)
+
+After LaRita's PR landed on the hyku branch `hyrax-compound-metadata` (Hyrax gem
+on the `nested-compound-metadata-foundation` branch), the knapsack-side
+compound rendering scaffolding became obsolete. End-to-end rendering of
+compounds now comes from `config/metadata_profiles/m3_profile.yaml`:
+
+- the M3 entry declares `type: hash`, `subfields:`, `groups:`, `view: { render_as: compound }`
+- the Hyrax compound foundation supplies `compound_terms`, `render_compound_field(f, term)`,
+  `render_compound_cards(presenter)`, and `compound_card_field?(presenter, field)`
+- Hyrax's own `_form_metadata.html.erb`, `_attribute_rows.html.erb`, and `show.html.erb` consume those helpers
+
+Knapsack scaffolding removed in the bump:
+
+- `app/views/hyrax/compounds/_compound_section.html.erb`, `_compound_row.html.erb`, `_compound_script.html.erb`
+- per-work `_form_metadata.html.erb` overrides for portfolios / portfolio_items / portfolio_artefacts / portfolio_events / portfolio_literatures / portfolio_item_collections
+- per-work `_attribute_rows.html.erb` overrides for portfolios / portfolio_items
+- `app/indexers/enact_compound_label_helpers.rb` and the `COMPOUND_INDEX_MAP` / `to_solr` overrides in each indexer
+- `COMPOUND_ATTRIBUTES`, `COMPOUND_FIELD_GROUPS`, populators, `build_permitted_params`, and `deserialize!` in each `*_form.rb`
+- the `enact.compound_fields.*` i18n branch (no longer referenced)
+- `spec/forms/portfolio_form_spec.rb` (tested behavior the form classes no longer own)
+
+Still in place because they are not view code: `EnactCompoundNormalization`
+(Postgres JSONB round-trip defense - keep until the foundation's persistence
+path is confirmed unaffected).

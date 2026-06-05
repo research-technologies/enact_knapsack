@@ -667,18 +667,30 @@ properties:
     cardinality:
       minimum: 0
     data_type: array
+    type: hash
     display_label:
       default: Titles
-    indexing:
-      - title_label_tesim
-      - title_label_sim
     form:
-      display: false
+      primary: false
     mappings:
       simple_dc_pmh: dc:title
     property_uri: http://purl.org/dc/terms/title
     range: https://prvoices.org/types#hash
+    subfields:
+      value:
+        type: string
+        required: true
+        indexing: [title_value_tesim, title_value_sim]
+      title_type:
+        type: controlled
+        values: [AlternativeTitle, Subtitle, TranslatedTitle, Other]
+        indexing: [title_type_sim]
+      lang:
+        type: string
+    groups:
+      - { label: ~, cols: 6, fields: [value, title_type, lang] }
     view:
+      render_as: compound
       html_dl: true
   dates:
     available_on:
@@ -692,18 +704,32 @@ properties:
     cardinality:
       minimum: 0
     data_type: array
+    type: hash
     display_label:
       default: Dates
-    indexing:
-      - date_label_tesim
-      - date_label_sim
     form:
-      display: false
+      primary: false
     mappings:
       simple_dc_pmh: dc:date
     property_uri: http://purl.org/dc/elements/1.1/date
     range: https://prvoices.org/types#hash
+    # PR Voices wiki Date page lists this enum verbatim. example.xml also uses
+    # dateType="Duration", which the wiki does not document; pending Jenny.
+    subfields:
+      value:
+        type: string
+        required: true
+        indexing: [date_value_tesim, date_value_sim]
+      date_type:
+        type: controlled
+        values: [Accepted, Available, Copyrighted, Collected, Created, Issued, Submitted, Updated, Valid, Withdrawn, Other]
+        indexing: [date_type_sim]
+      date_information:
+        type: string
+    groups:
+      - { label: ~, cols: 4, fields: [value, date_type, date_information] }
     view:
+      render_as: compound
       html_dl: true
   contributors:
     available_on:
@@ -717,18 +743,50 @@ properties:
     cardinality:
       minimum: 0
     data_type: array
+    type: hash
     display_label:
       default: Contributors
-    indexing:
-      - contributor_label_tesim
-      - contributor_label_sim
     form:
-      display: false
+      primary: false
     mappings:
       simple_dc_pmh: dc:contributor
     property_uri: http://purl.org/dc/elements/1.1/contributor
     range: https://prvoices.org/types#hash
+    # name_type is the only PR-Voices-CV-enforced subfield (wiki Contributor page).
+    # role_label / role_id / role_vocabulary are left as free text pending PR
+    # Voices issue #1 (contributorType CV unresolved).
+    subfields:
+      given_name: { type: string }
+      family_name: { type: string }
+      contributor_name:
+        type: string
+        indexing: [contributor_name_tesim, contributor_name_sim]
+      name_type:
+        type: controlled
+        values: [Personal, Organizational]
+        indexing: [contributor_name_type_sim]
+      role_label:
+        type: string
+        indexing: [contributor_role_label_tesim, contributor_role_label_sim]
+      role_id: { type: string }
+      role_vocabulary: { type: string }
+      name_identifier:
+        type: string
+        indexing: [contributor_name_identifier_ssim]
+      scheme_uri: { type: string }
+      affiliation:
+        type: string
+        indexing: [contributor_affiliation_tesim, contributor_affiliation_sim]
+      affiliation_identifier:
+        type: string
+        indexing: [contributor_affiliation_identifier_ssim]
+    groups:
+      - { label: Identity, cols: 6, fields: [given_name, family_name, contributor_name, name_type] }
+      - { label: Role, cols: 4, fields: [role_label, role_id, role_vocabulary] }
+      - { label: Identifier, cols: 6, fields: [name_identifier, scheme_uri] }
+      - { label: Affiliation, cols: 6, fields: [affiliation, affiliation_identifier] }
     view:
+      render_as: compound
       html_dl: true
   identifiers:
     available_on:
@@ -742,18 +800,29 @@ properties:
     cardinality:
       minimum: 0
     data_type: array
+    type: hash
     display_label:
       default: Identifiers
-    indexing:
-      - identifier_value_tesim
-      - identifier_value_sim
     form:
-      display: false
+      primary: false
     mappings:
       simple_dc_pmh: dc:identifier
     property_uri: http://purl.org/dc/terms/identifier
     range: https://prvoices.org/types#hash
+    # PR Voices wiki Alternate-Identifier explicitly says alternateIdentifierType
+    # is free text; we honour that rather than inventing a CV.
+    subfields:
+      value:
+        type: string
+        required: true
+        indexing: [identifier_value_tesim, identifier_value_sim]
+      identifier_type:
+        type: string
+        indexing: [identifier_type_sim]
+    groups:
+      - { label: ~, cols: 6, fields: [value, identifier_type] }
     view:
+      render_as: compound
       html_dl: true
   funding_references:
     available_on:
@@ -767,16 +836,39 @@ properties:
     cardinality:
       minimum: 0
     data_type: array
+    type: hash
     display_label:
       default: Funding references
-    indexing:
-      - funder_label_tesim
-      - funder_label_sim
     form:
-      display: false
+      primary: false
     property_uri: https://datacite.org/schema/fundingReference
     range: https://prvoices.org/types#hash
+    # funder_identifier_type values verbatim from PR Voices wiki Funder page.
+    subfields:
+      funder_name:
+        type: string
+        required: true
+        indexing: [funder_name_tesim, funder_name_sim]
+      funder_identifier:
+        type: string
+        indexing: [funder_identifier_ssim]
+      funder_identifier_type:
+        type: controlled
+        values: ['Crossref Funder ID', GRID, ISNI, ROR, Other]
+        indexing: [funder_identifier_type_sim]
+      schemeURI: { type: string }
+      award_number:
+        type: string
+        indexing: [funder_award_number_ssim]
+      award_uri: { type: string }
+      award_title:
+        type: string
+        indexing: [funder_award_title_tesim]
+    groups:
+      - { label: Funder, cols: 6, fields: [funder_name, funder_identifier, funder_identifier_type, schemeURI] }
+      - { label: Award, cols: 4, fields: [award_number, award_uri, award_title] }
     view:
+      render_as: compound
       html_dl: true
   organisational_units:
     available_on:
@@ -790,16 +882,30 @@ properties:
     cardinality:
       minimum: 0
     data_type: array
+    type: hash
     display_label:
       default: Organisational units
-    indexing:
-      - organisational_unit_label_tesim
-      - organisational_unit_label_sim
     form:
-      display: false
+      primary: false
     property_uri: https://prvoices.org/terms/organisationalUnit
     range: https://prvoices.org/types#hash
+    # unit_type values verbatim from PR Voices wiki Organisational-unit page.
+    subfields:
+      name:
+        type: string
+        required: true
+        indexing: [organisational_unit_name_tesim, organisational_unit_name_sim]
+      pid:
+        type: string
+        indexing: [organisational_unit_pid_ssim]
+      unit_type:
+        type: controlled
+        values: [University, Faculty, School, Department, Group, Centre]
+        indexing: [organisational_unit_type_sim]
+    groups:
+      - { label: ~, cols: 4, fields: [name, pid, unit_type] }
     view:
+      render_as: compound
       html_dl: true
   licenses:
     available_on:
@@ -813,18 +919,42 @@ properties:
     cardinality:
       minimum: 0
     data_type: array
+    type: hash
     display_label:
       default: Licenses
-    indexing:
-      - license_label_tesim
-      - license_label_sim
     form:
-      display: false
+      primary: false
     mappings:
       simple_dc_pmh: dc:rights
     property_uri: http://purl.org/dc/terms/license
     range: https://prvoices.org/types#hash
+    # rights_identifier_scheme: PR Voices wiki License page only documents SPDX.
+    # holder: Notch8 extension not in PR Voices proper; flagged for Jenny.
+    subfields:
+      rights_label:
+        type: string
+        indexing: [license_label_tesim, license_label_sim]
+      rights_uri:
+        type: string
+        indexing: [license_uri_ssim]
+      rights_identifier:
+        type: string
+        indexing: [license_identifier_ssim]
+      rights_identifier_scheme:
+        type: controlled
+        values: [SPDX]
+        indexing: [license_identifier_scheme_sim]
+      scheme_uri: { type: string }
+      lang: { type: string }
+      holder:
+        type: string
+        indexing: [license_holder_tesim, license_holder_sim]
+    groups:
+      - { label: Statement, cols: 6, fields: [rights_label, rights_uri, holder] }
+      - { label: Identifier, cols: 4, fields: [rights_identifier, rights_identifier_scheme, scheme_uri] }
+      - { label: Language, cols: 4, fields: [lang] }
     view:
+      render_as: compound
       html_dl: true
   geo_locations:
     available_on:
@@ -835,14 +965,29 @@ properties:
     cardinality:
       minimum: 0
     data_type: array
+    type: hash
     display_label:
       default: Geographic locations
-    indexing:
-      - geo_place_name_tesim
-      - geo_place_name_sim
     form:
-      display: false
+      primary: false
     property_uri: http://www.w3.org/2003/01/geo/wgs84_pos#Point
     range: https://prvoices.org/types#hash
+    # PR Voices documents geoLocationPoint (lat/lng) and geoLocationBox (4 bounds)
+    # as separate sub-structs under one geoLocation. We flatten both into one
+    # row; per-row a depositor uses point OR box, not both.
+    subfields:
+      place_name:
+        type: string
+        indexing: [geo_place_name_tesim, geo_place_name_sim]
+      point_latitude: { type: string }
+      point_longitude: { type: string }
+      west_bound: { type: string }
+      east_bound: { type: string }
+      south_bound: { type: string }
+      north_bound: { type: string }
+    groups:
+      - { label: Point, cols: 4, fields: [place_name, point_latitude, point_longitude] }
+      - { label: Box, cols: 3, fields: [west_bound, east_bound, south_bound, north_bound] }
     view:
+      render_as: compound
       html_dl: true

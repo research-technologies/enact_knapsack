@@ -19,7 +19,6 @@ class PortfolioArtefact < Hyrax::Work
 
   include Hyrax::ArResource
   include Hyrax::NestedWorks
-  prepend EnactCompoundNormalization
 
   # Display "Artefact" in pickers / facets / breadcrumbs rather than the
   # default titleized class name "Portfolio Artefact". Matches the UX

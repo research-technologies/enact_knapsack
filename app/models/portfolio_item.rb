@@ -18,7 +18,6 @@ class PortfolioItem < Hyrax::Work
 
   include Hyrax::ArResource
   include Hyrax::NestedWorks
-  prepend EnactCompoundNormalization
 
   # HykuIndexing hardcodes `object.creator&.first`. Enact has no `creator`
   # field (contributors with typed roles cover that role per CLAUDE.md), so

@@ -40,17 +40,19 @@ module SolrDocumentDecorator
     attribute :extent_type, array_type, 'extent_type_tesim'
     attribute :collection_order, array_type, 'collection_order_tesim'
 
-    # Flattened *_label / *_value / *_name fields written by the Enact indexers
-    # for each compound attribute. The show-page partial calls these directly
-    # via `attribute_to_html`.
-    attribute :title_label, array_type, 'title_label_tesim'
-    attribute :date_label, array_type, 'date_label_tesim'
-    attribute :contributor_label, array_type, 'contributor_label_tesim'
-    attribute :identifier_value, array_type, 'identifier_value_tesim'
-    attribute :funder_label, array_type, 'funder_label_tesim'
-    attribute :organisational_unit_label, array_type, 'organisational_unit_label_tesim'
-    attribute :license_label, array_type, 'license_label_tesim'
-    attribute :geo_place_name, array_type, 'geo_place_name_tesim'
+    # Compound (`type: hash`) readers. Hyrax::SolrDocument::Metadata hard-codes
+    # compound_attribute declarations only for its four sample compounds
+    # (agents/identifiers/compound_rights/relationships). The Enact compounds
+    # need their own readers so the compound foundation renderer can read each
+    # `<name>_json_ss` Solr field back into an Array<Hash> for the show page.
+    compound_attribute :titles
+    compound_attribute :dates
+    compound_attribute :contributors
+    compound_attribute :identifiers
+    compound_attribute :funding_references
+    compound_attribute :organisational_units
+    compound_attribute :licenses
+    compound_attribute :geo_locations
   end
 end
 
