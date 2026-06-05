@@ -55,5 +55,23 @@ Rails.application.config.after_initialize do
     config.register_curation_concern :portfolio_event
     config.register_curation_concern :portfolio_literature
     config.register_curation_concern :portfolio_item_collection
+
+    # Strip Hyku's default work types (GenericWork, Image, Etd, Oer) so only
+    # the Enact types are deposit-able. Hyrax::Configuration stores the
+    # concern list in @registered_concerns and exposes only an additive
+    # `register_curation_concern` API, so we reset the ivar directly.
+    # Both Hyku's `QuickClassificationQuery` picker and the Admin > Work
+    # types page read from this list, so resetting here covers both. New
+    # tenants pick up the trimmed list automatically at create time (Site
+    # seeds `available_works` from it - see hyrax-webapp/app/models/site.rb).
+    # Existing tenants need their `Site.instance.available_works` updated
+    # once, e.g.:
+    #   Account.find_each { |a| Apartment::Tenant.switch(a.tenant) {
+    #     Site.instance.update!(available_works: Hyrax.config.registered_curation_concern_types)
+    #   } }
+    config.instance_variable_set(
+      :@registered_concerns,
+      %i[portfolio portfolio_artefact portfolio_event portfolio_literature portfolio_item_collection]
+    )
   end
 end
