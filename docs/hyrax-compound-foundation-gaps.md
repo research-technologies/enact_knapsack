@@ -28,9 +28,13 @@ WARN -- : SolrDocument attempted to render titles, but no method exists with tha
 `hyrax/app/presenters/hyrax/presents_attributes.rb`) early-returns when
 the presenter does not `respond_to?(field)`. The presenter delegates
 unknown reads to its `SolrDocument`. `Hyrax::SolrDocument::Metadata`
-(`hyrax/app/models/concerns/hyrax/solr_document/metadata.rb`) hard-codes
-`compound_attribute` declarations for exactly the four sample compounds
-shipped with Hyrax:
+(`hyrax/app/models/concerns/hyrax/solr_document/metadata.rb`) provides a
+generic `compound_attribute(name)` macro (lines 16-21) that works for
+any name - it `define_method name do ... self["#{name}_json_ss"] ... end`.
+The macro itself is not constraining.
+
+What's missing is the auto-call. Lines 128-131 invoke the macro for
+exactly the four sample compounds Hyrax ships with:
 
 ```ruby
 compound_attribute :agents
@@ -39,25 +43,26 @@ compound_attribute :compound_rights
 compound_attribute :relationships
 ```
 
-There is no mechanism to discover host-app-declared compounds from the
-active M3 profile. A host app that adds a compound named `titles` has to
-either monkey-patch `SolrDocument` to call `compound_attribute :titles`
-or accept the silent drop. The Enact knapsack carried such a
-monkey-patch (`app/models/solr_document_decorator.rb`) until this branch
-removed it as the demonstrator. The show page is currently broken until
-Hyrax addresses one of the suggested fixes below.
+Nothing iterates the active M3 profile to invoke the same macro for
+host-app-declared compounds. A host app that adds a compound named
+`titles` has to either monkey-patch `SolrDocument` to call
+`compound_attribute :titles` or accept the silent drop. The Enact
+knapsack carried such a monkey-patch
+(`app/models/solr_document_decorator.rb`) until this branch removed it
+as the demonstrator. The show page is currently broken until Hyrax
+adds the auto-call, per the suggested fixes below.
 
 **Suggested upstream fix.** Two options, in order of preference:
 
-1. **Auto-discover from the active compound schema.** In
-   `Hyrax::SolrDocument::Metadata.included`, after the four sample
-   declarations, iterate `Hyrax::CompoundSchema.new.compound_names` (or
-   read the M3 YAML on disk via `Hyrax::Schema.m3_schema_loader`) and
-   call `compound_attribute` for any name not already declared. Caveat:
-   multi-tenant deployments may have per-tenant schemas — discovery
-   would have to happen at request time, not at class load. A safer
-   variant: declare for every compound name across all known schemas at
-   boot.
+1. **Auto-discover from the active compound schema.** Iterate
+   `Hyrax::CompoundSchema.new.compound_names` (or read the M3 YAML on
+   disk via `Hyrax::Schema.m3_schema_loader`) and call the existing
+   `compound_attribute` macro for every compound name. Could live in
+   `Hyrax::SolrDocument::Metadata.included` or in an `after_initialize`
+   hook. Caveat: multi-tenant deployments may have per-tenant schemas
+   — discovery would have to happen at request time, not at class load.
+   A safer variant: declare for every compound name across all known
+   schemas at boot.
 
 2. **Make `attribute_to_html` handle compound fields without a method
    declaration.** In `PresentsAttributes#attribute_to_html`, when
