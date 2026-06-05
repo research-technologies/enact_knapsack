@@ -925,3 +925,43 @@ properties:
     view:
       render_as: compound
       html_dl: true
+  # Relationships between this work and other works / URLs. Mirrors the sample
+  # compound shipped by Hyrax (samvera/hyku PR #3093) - same subfield shape so
+  # the upstream `work_or_url` widget and DataCite relationType values apply
+  # without per-host customisation. `view: { display: card }` renders it as
+  # its own card on the show page, above Relationships / Items, via the
+  # compound foundation's `render_compound_cards` helper.
+  relationships:
+    available_on:
+      class:
+        - Portfolio
+        - PortfolioArtefact
+        - PortfolioEvent
+        - PortfolioLiterature
+        - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+    data_type: array
+    type: hash
+    display_label:
+      default: Relationships
+    form:
+      primary: false
+    property_uri: http://purl.org/dc/terms/relation
+    range: http://www.w3.org/2001/XMLSchema#string
+    subfields:
+      related_item:
+        type: work_or_url
+        required: true
+        indexing: [relationships_item_ssim]
+      relationship_type:
+        type: controlled
+        required: true
+        values: [References, Is Referenced By, Is Part Of, Has Part, Is Version Of, Replaces, Requires, Other]
+        indexing: [relationships_type_sim]
+    groups:
+      - { label: ~, cols: 6, fields: [related_item, relationship_type] }
+    view:
+      render_as: compound
+      html_dl: true
+      display: card
