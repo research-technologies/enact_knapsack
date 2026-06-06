@@ -1,11 +1,25 @@
 terms:
-  - id: anthology
+  - id: http://vocab.getty.edu/page/aat/300026037
     label: Anthology
+  - id: http://vocab.getty.edu/page/aat/300375748
+    label: Archive
   - id: curated_set
     label: Curated set
-  - id: dataset
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.7/appendices/appendix-1/resourceTypeGeneral/#dataset
     label: Dataset
-  - id: archive
-    label: Archive
-  - id: portfolio_subset
+  - id: http://vocab.getty.edu/page/aat/300179434
     label: Portfolio subset
+  - id: https://schema.org/Menu 
+    label: Menu
+  - id: https://schema.org/MusicAlbum
+    label: Music Album
+  - id: https://schema.org/MusicPlayList
+    label: Music Play list
+  - id: https://schema.org/RadioSeason 
+    label: Radio Season
+  - id: https://schema.org/RadioSeries
+    label: Radio Series
+  - id: https://schema.org/TVSeason
+    label: TV Season
+  - id: https://schema.org/TVSeries
+    label: TV Series
