@@ -13,6 +13,7 @@ class PortfolioItemCollection < Hyrax::Work
 
   include Hyrax::ArResource
   include Hyrax::NestedWorks
+  prepend EnactCompoundNormalization
 
   def self.human_readable_type
     'Collection'
