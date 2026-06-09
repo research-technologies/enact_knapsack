@@ -10,13 +10,19 @@ RSpec.describe PortfolioIndexer do
   it_behaves_like 'a Hyrax::Resource indexer'
 
   describe 'compound flattening', :clean_repo do
+    # Hash keys must match the M3 subproperty names declared in
+    # config/metadata_profiles/m3_profile.yaml. The schema-driven indexer
+    # calls `resource.try(<subproperty_name>)` (see
+    # Hyrax::SchemaLoader#index_rules_for), and the generated reader
+    # extracts the hash entry whose key is exactly the subproperty name.
     let(:contributor) do
-      { 'given_name' => 'Avery', 'family_name' => 'Brooks', 'contributor_name' => 'Avery Brooks' }
+      { 'contributor_given_name' => 'Avery', 'contributor_family_name' => 'Brooks',
+        'contributor_name' => 'Avery Brooks' }
     end
-    let(:license) { { 'rights_label' => 'CC BY 4.0' } }
+    let(:license) { { 'license_rights_label' => 'CC BY 4.0' } }
     let(:funder) { { 'funder_name' => 'AHRC' } }
-    let(:unit) { { 'name' => 'School of Music' } }
-    let(:identifier) { { 'value' => 'doi:10.1234/foo', 'identifier_type' => 'doi' } }
+    let(:unit) { { 'organisational_unit_name' => 'School of Music' } }
+    let(:identifier) { { 'identifier_value' => 'doi:10.1234/foo', 'identifier_type' => 'doi' } }
     let(:resource) do
       Hyrax.persister.save(resource: Portfolio.new(
         title: ['Indexed portfolio'],
