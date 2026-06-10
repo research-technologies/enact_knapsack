@@ -30,6 +30,36 @@ mappings:
   simple_dc_pmh:
     name: Simple DC OAI PMH
 properties:
+  bulkrax_identifier:
+    # Round-trips Bulkrax's `source_identifier` so imported works can be
+    # re-found and have relationships re-resolved. In flexible mode the model's
+    # `include Hyrax::Schema(:bulkrax_metadata)` is ignored, so the property has
+    # to live in this profile or Bulkrax raises RecordInvalid on every row
+    # (the work saves, but the post-save find-by-source_identifier returns nil).
+    available_on:
+      class:
+      - Hyrax::FileSet
+      - Portfolio
+      - PortfolioArtefact
+      - PortfolioEvent
+      - PortfolioLiterature
+      - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Bulkrax Identifier
+    indexing:
+    - bulkrax_identifier_tesim
+    - bulkrax_identifier_ssi
+    form:
+      display: false
+      primary: false
+      required: false
+      multiple: false
+    property_uri: https://hykucommons.org/terms/bulkrax_identifier
+    range: http://www.w3.org/2001/XMLSchema#string
   title:
     available_on:
       class:
