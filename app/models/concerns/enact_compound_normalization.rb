@@ -20,9 +20,31 @@
 #     during reload from the persister.
 #   - `set_value` (instance, write path).
 #   - per-compound reader (instance, read path).
+#
+# Which attributes count as compounds is NOT hand-maintained: it is derived
+# from the M3 profile (`COMPOUND_ATTRS`), the single source of truth for which
+# properties are `type: hash`. Any compound added to the profile - by us or by
+# CoSector - is defended automatically, so the failure mode of "new compound
+# silently left unprotected and corrupted on round-trip" cannot happen.
 module EnactCompoundNormalization
-  COMPOUND_ATTRS = %i[titles dates contributors identifiers funding_references
-                      organisational_units geo_locations licenses].freeze
+  # The knapsack M3 profile. Read from disk rather than the FlexibleSchema DB
+  # record because `COMPOUND_ATTRS` is consumed at class-load (the readers
+  # below are generated with `define_method`), before a database is guaranteed
+  # to be available (e.g. `assets:precompile` eager-loads with no DB).
+  PROFILE_PATH = HykuKnapsack::Engine.root.join('config', 'metadata_profiles', 'm3_profile.yaml')
+
+  # Top-level properties declared as repeatable hash compounds in the M3
+  # profile. Subproperties (which carry `subproperty_of:`) are excluded; only
+  # the parent compound attribute is normalized.
+  def self.compound_attrs
+    profile = YAML.safe_load(::File.read(PROFILE_PATH))
+    (profile['properties'] || {}).select do |_name, defn|
+      defn.is_a?(::Hash) && !defn.key?('subproperty_of') &&
+        (defn['type'] == 'hash' || defn['range'].to_s.include?('#hash'))
+    end.keys.map(&:to_sym)
+  end
+
+  COMPOUND_ATTRS = compound_attrs.freeze
 
   # Prepended onto the host class's singleton so it wins over Dry::Struct's
   # own `.new`. Pre-normalizes compound attrs BEFORE dry-struct's strict
