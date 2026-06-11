@@ -77,6 +77,8 @@ en:
   enact:
     relationships:
       none: No related works within this project.
+      # Label for the button that opens the interactive relationship map.
+      map_button: Relationship map
       # Outbound relationship labels, keyed by the stored DataCite-aligned term.
       types:
         sequence: Leads to

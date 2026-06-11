@@ -10,8 +10,16 @@
       field     - the compound attribute name (Symbol)
 %>
 <div class="card hyrax-compound-card">
-  <div class="card-header">
-    <h2 class="card-title"><%= compound_card_label(presenter, field) %></h2>
+  <div class="card-header d-flex justify-content-between align-items-center">
+    <h2 class="card-title mb-0"><%= compound_card_label(presenter, field) %></h2>
+    <% if field.to_sym == :relationships %>
+      <%# Entry point to the interactive relationship map, focused on this work.
+          turbo/turbolinks off because the map is a standalone (layout: false) page. %>
+      <%= link_to t('enact.relationships.map_button'),
+                  "/relationship-map?focus=#{presenter.id}",
+                  class: 'btn btn-outline-secondary btn-sm enact-relationship-map-link',
+                  data: { turbolinks: false, turbo: false } %>
+    <% end %>
   </div>
   <div class="card-body">
     <% if field.to_sym == :relationships %>
