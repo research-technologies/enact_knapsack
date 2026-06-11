@@ -12,3 +12,7 @@ scratch.md
 file_cache/
 .bash_history
 /.cache
+
+# Local verification artifacts
+.playwright-mcp/
+relationship-map-live.png
