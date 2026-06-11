@@ -1,0 +1,25 @@
+<%# OVERRIDE Hyrax v5.2.0 hyrax/compounds/_compound_card
+    Special-cases the `relationships` compound to render the Enact "related
+    within this project" block (outbound edges plus inbound edges found by a
+    Solr reverse lookup). Every other card compound falls through to the
+    upstream rendering unchanged, so this override stays in sync with upstream
+    for non-relationship compounds.
+
+    Locals:
+      presenter - a work or collection show presenter
+      field     - the compound attribute name (Symbol)
+%>
+<div class="card hyrax-compound-card">
+  <div class="card-header">
+    <h2 class="card-title"><%= compound_card_label(presenter, field) %></h2>
+  </div>
+  <div class="card-body">
+    <% if field.to_sym == :relationships %>
+      <%# OVERRIDE: Enact patch-cables view (outbound + reverse-lookup inbound). %>
+      <%= render 'hyrax/compounds/related_within_project', presenter: presenter %>
+    <% else %>
+      <%# upstream behavior: render the compound entries via CompoundAttributeRenderer %>
+      <%= presenter.attribute_to_html(field.to_sym, render_as: :compound, value_only: true) %>
+    <% end %>
+  </div>
+</div>
