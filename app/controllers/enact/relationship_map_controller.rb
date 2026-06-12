@@ -58,7 +58,6 @@ module Enact
     end
 
     def node_for(doc)
-      solr_doc = ::SolrDocument.new(doc)
       model = Array(doc['has_model_ssim']).first.to_s
       {
         id: doc['id'],
@@ -67,7 +66,7 @@ module Enact
         date: Array(doc['date_created_tesim']).first,
         keywords: Array(doc['keyword_tesim']),
         description: Array(doc['description_tesim']).first,
-        thumb: thumbnail_url(solr_doc),
+        thumb: thumbnail_url(doc),
         closed: doc['visibility_ssi'] == 'restricted',
         path: model.present? ? "/concern/#{model.tableize}/#{doc['id']}" : "/#{doc['id']}"
       }
@@ -82,8 +81,13 @@ module Enact
     end
 
     # Outbound edges this work declares, via the #32 relationship reader.
+    #
+    # NOTE: `doc` is already a ::SolrDocument (SolrQueryService#solr_documents
+    # instantiates them). Wrapping a SolrDocument in another SolrDocument breaks
+    # `#[]` field access, which silently empties every edge list - so pass the
+    # document through as-is.
     def links_for(doc)
-      ::Enact::RelationshipGraph.new(::SolrDocument.new(doc)).outbound.map do |edge|
+      ::Enact::RelationshipGraph.new(doc).outbound.map do |edge|
         { source: doc['id'], target: edge.target_id, rel: edge.relation_type,
           note: edge.note, position: edge.position }
       end
