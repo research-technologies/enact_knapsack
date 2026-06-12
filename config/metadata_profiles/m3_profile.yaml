@@ -1145,9 +1145,9 @@ properties:
     display_label:
       default: Relationships
     form:
-      primary: false
+      primary: true
     property_uri: http://purl.org/dc/terms/relation
-    range: http://www.w3.org/2001/XMLSchema#string
+    range: https://prvoices.org/types#hash
     view:
       render_as: compound
       html_dl: true
@@ -1164,16 +1164,33 @@ properties:
     type: controlled
     subproperty_of: relationships
     required: true
+    # Controlled vocabulary aligned with DataCite relationType (Object Handling
+    # Spec v0.2 Sec 3.5). Stored value maps to a DataCite term so DataCite/RAiD/
+    # OpenAire can follow the edge; human labels live in the locale files.
     values:
-    - References
-    - Is Referenced By
-    - Is Part Of
-    - Has Part
-    - Is Version Of
-    - Replaces
-    - Requires
-    - Other
+    - sequence
+    - source-of
+    - pair-with
+    - response-to
+    - documents
+    - juxtaposed-with
     indexing:
     - relationships_type_sim
     form:
       cols: 6
+  relationship_position:
+    type: string
+    subproperty_of: relationships
+    required: false
+    indexing:
+    - relationships_position_ssim
+    form:
+      cols: 6
+  relationship_note:
+    type: string
+    subproperty_of: relationships
+    required: false
+    indexing:
+    - relationships_note_tesim
+    form:
+      cols: 12

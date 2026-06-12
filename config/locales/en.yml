@@ -17,10 +17,16 @@ en:
         extent: Extent
         extent_type: Extent type
         collection_order: Collection order
+        relationship_item: Related work
+        relationship_type: Relationship
+        relationship_position: Position
+        relationship_note: Note
     hints:
       defaults:
         rights_statement: Rights associated with the portfolio record (distinct from rights on individual portfolio items, which carry their own license claims).
         item_subtype: A finer-grained type controlled by vocabulary for the chosen item type.
+        relationship_position: Optional order number for sequenced relationships (lowest shown first).
+        relationship_note: Optional free text describing why these works are related (the curatorial "why").
   activerecord:
     models:
       portfolio:
@@ -68,3 +74,22 @@ en:
       portfolio_item_collection:
         name: Collection
         description: A grouped collection of items within a portfolio - a thematic set of related works, curated assemblage, or sub-series. Carries extent, extent_type, and collection_order.
+  enact:
+    relationships:
+      none: No related works within this project.
+      # Outbound relationship labels, keyed by the stored DataCite-aligned term.
+      types:
+        sequence: Leads to
+        source-of: Is the source for
+        pair-with: Pairs with
+        response-to: Is a response to
+        documents: Documents
+        juxtaposed-with: Is juxtaposed with
+      # Inbound labels: how the relationship reads from the target's point of view.
+      inverse_types:
+        sequence-of: Continues from
+        derived-from: Is derived from
+        pair-with: Pairs with
+        referenced-by: Is referenced by
+        documented-by: Is documented by
+        juxtaposed-with: Is juxtaposed with
