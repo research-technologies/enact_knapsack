@@ -61,6 +61,7 @@
 const REL = <%= raw @rel_types.to_json %>;
 const relColor = e => (REL[e.data('rel')] || { color:'#888' }).color;
 const relLabelOf = r => (REL[r] || { label:r }).label;
+const relInverseOf = r => (REL[r] || {}).inverse || relLabelOf(r);
 
 const G = { nodes: <%= raw @graph[:nodes].to_json %>, links: <%= raw @graph[:links].to_json %> };
 const FOCUS = "<%= j @focus %>";
@@ -147,7 +148,7 @@ function buildGraph(){
       edges.forEach(ed => {
         const out = ed.source().id() === d.id;
         const other = out ? ed.target().data('label') : ed.source().data('label');
-        const verb = out ? relLabelOf(ed.data('rel')) : "is " + relLabelOf(ed.data('rel')) + " (of)";
+        const verb = out ? relLabelOf(ed.data('rel')) : relInverseOf(ed.data('rel'));
         html += `<div class="meta" style="margin:6px 0"><span class="rel-name" style="color:${relColor(ed)}">${verb}</span> &rarr; ${other}</div>`;
       });
       html += `</div>`;

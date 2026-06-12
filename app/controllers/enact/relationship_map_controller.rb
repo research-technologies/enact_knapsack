@@ -93,10 +93,14 @@ module Enact
       end
     end
 
-    # term => { label, color, dc } for the legend and edge labels.
+    # term => { label, inverse, color, dc } for the legend and edge labels.
+    # `inverse` reads the edge from the target's point of view (same locale
+    # entries the relationships card uses for inbound edges).
     def rel_types
       REL_COLOR.keys.index_with do |term|
+        inverse_term = ::Enact::RelationshipGraph::INVERSE_OF.fetch(term, term)
         { label: t("enact.relationships.types.#{term}", default: term.tr('-', ' ')),
+          inverse: t("enact.relationships.inverse_types.#{inverse_term}", default: inverse_term.tr('-', ' ')),
           color: REL_COLOR[term],
           dc: REL_DATACITE[term] }
       end
