@@ -5,14 +5,24 @@
 #
 # * `EnumeratorValue#result`
 #   (`valkyrie/persistence/shared/json_value_mapper.rb:121-128`) unwraps
-#   single-element arrays to their first element.
-# * `NestedRecord#result` then re-symbolizes the unwrapped Hash's keys.
+#   single-element arrays to their first element - and because a Hash also
+#   responds to `#each`, it unwraps a single-KEY Hash to its first `[key,
+#   value]` pair the same way.
+# * `NestedRecord#result` then re-symbolizes an unwrapped Hash's keys.
 # * The resource attribute type is `Array.of(Hash)`, so when dry-struct
 #   coerces the single Hash back into an Array it calls `Array(hash)`, which
 #   splays a Hash into `[[:key, value], ...]` pairs.
 #
 # Net effect: a saved `[{a: 1, b: 2}]` reads back as `[[:a, 1], [:b, 2]]`,
-# and a saved `[{a: 1}]` reads back as `["a", 1]`.
+# a saved `[{a: 1}]` reads back as `["a", 1]`, and a saved
+# `[{a: 1}, {a: 2}]` reads back as `[[:a, 1], [:a, 2]]`.
+#
+# Hyrax main carries the same defense (Hyrax::CompoundNormalization, included
+# in Hyrax::Work), but its class-level `.new` hook resolves the compound list
+# from the CLASS schema, which is empty in flexible mode - so on reload the
+# splayed value reaches dry-struct's coercion unfixed and raises. This concern
+# stays as the flex-mode gap-filler until that is fixed upstream; the list is
+# derived from the M3 profile so any new compound is covered automatically.
 #
 # We intercept at three layers:
 #   - `klass.new(attrs)` (class-level, via singleton_class.prepend) so
@@ -21,8 +31,15 @@
 #   - `set_value` (instance, write path).
 #   - per-compound reader (instance, read path).
 module EnactCompoundNormalization
-  COMPOUND_ATTRS = %i[titles dates contributors identifiers funding_references
-                      organisational_units geo_locations licenses].freeze
+  # The knapsack M3 profile, read from disk rather than the FlexibleSchema DB
+  # record because COMPOUND_ATTRS is consumed at class-load (the readers below
+  # are generated with `define_method`), before a database is guaranteed to be
+  # available (e.g. assets:precompile eager-load).
+  PROFILE_PATH = HykuKnapsack::Engine.root.join('config', 'metadata_profiles', 'm3_profile.yaml')
+
+  COMPOUND_ATTRS = YAML.safe_load(::File.read(PROFILE_PATH))['properties']
+                       .select { |_name, config| config.is_a?(::Hash) && config['type'] == 'hash' }
+                       .keys.map(&:to_sym).freeze
 
   # Prepended onto the host class's singleton so it wins over Dry::Struct's
   # own `.new`. Pre-normalizes compound attrs BEFORE dry-struct's strict
@@ -43,7 +60,13 @@ module EnactCompoundNormalization
   end
 
   COMPOUND_ATTRS.each do |attr|
-    define_method(attr) { EnactCompoundNormalization.normalize_compound(super()) }
+    # In flexible mode the dry-struct reader for an attribute is not always in
+    # this wrapper's super chain (the singleton schema is applied per load), so
+    # fall back to the raw attribute read rather than assuming super exists.
+    define_method(attr) do
+      value = defined?(super) ? super() : self[attr]
+      EnactCompoundNormalization.normalize_compound(value)
+    end
   end
 
   # @api private
@@ -65,11 +88,23 @@ module EnactCompoundNormalization
     arr.map { |entry| entry.is_a?(::Hash) ? entry.transform_keys(&:to_s) : entry }
   end
 
-  # Multi-key splay: `[[:a, 1], [:b, 2]]` -> `[{a: 1, b: 2}]`. Returns nil
-  # if the input doesn't look like a pair array.
+  # Pair-array reconstruction. A pair array has two possible origins and the
+  # right reconstruction differs:
+  #
+  # * ONE multi-key entry, splayed: `[[:a, 1], [:b, 2]]` -> `[{a: 1, b: 2}]`.
+  # * SEVERAL single-key entries, each unwrapped to its first pair:
+  #   `[[:a, 1], [:a, 2]]` -> `[{a: 1}, {a: 2}]`.
+  #
+  # Duplicate keys can only come from the second origin (a single splayed
+  # entry cannot repeat a key), so rebuild one entry per pair; merging them
+  # (`Hash[arr]`) silently keeps only the last value. Distinct keys are
+  # genuinely ambiguous between the two origins; we keep the single-entry
+  # reading, which matches the far more common shape. Returns nil if the
+  # input doesn't look like a pair array.
   def self.collapse_pair_array(arr)
     return nil if arr.empty?
     return nil unless arr.all? { |e| pair?(e) }
+    return arr.map { |pair| ::Hash[[pair]] } if arr.map(&:first).map(&:to_s).uniq.length < arr.length
     [::Hash[arr]]
   end
 
