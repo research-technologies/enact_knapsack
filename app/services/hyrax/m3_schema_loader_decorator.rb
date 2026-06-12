@@ -2,6 +2,13 @@
 
 # OVERRIDE Hyrax: cache the parsed schema definitions per profile version.
 #
+# REMOVE AFTER UPSTREAM: the worst hot path (WorkShowPresenter re-reading the
+# profile once per property, per presenter) is fixed upstream by
+# https://github.com/samvera/hyrax/pull/7489. Once that merges and the
+# submodule is bumped past it, the FlexibleSchemaLatestCaching module below
+# becomes a minor optimization rather than a 504 fix, and this whole decorator
+# can likely be dropped (re-measure a member-heavy portfolio page first).
+#
 # In flexible mode every attribute render re-resolves the FlexibleSchema row
 # and re-parses the whole m3 profile into M3AttributeDefinition objects. A
 # single work show page does that ~90 times; a portfolio page renders a row
