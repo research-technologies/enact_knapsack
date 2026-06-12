@@ -1,0 +1,95 @@
+en:
+  simple_form:
+    labels:
+      defaults:
+        context_statement: Context statement
+        date_made_public: Date made public
+        date_range_of_outputs: Date range of outputs
+        portfolio_identifier: Portfolio identifier (RAiD)
+        research_group: Research group
+        rights_statement: Rights statement
+        file_access_level: File access level
+        ref_unit_of_assessment: REF unit of assessment
+        item_subtype: Item subtype
+        media_type: Media type
+        related_item: Related item
+        place_of_publication: Place of publication
+        extent: Extent
+        extent_type: Extent type
+        collection_order: Collection order
+        relationship_item: Related work
+        relationship_type: Relationship
+        relationship_position: Position
+        relationship_note: Note
+    hints:
+      defaults:
+        rights_statement: Rights associated with the portfolio record (distinct from rights on individual portfolio items, which carry their own license claims).
+        item_subtype: A finer-grained type controlled by vocabulary for the chosen item type.
+        relationship_position: Optional order number for sequenced relationships (lowest shown first).
+        relationship_note: Optional free text describing why these works are related (the curatorial "why").
+  activerecord:
+    models:
+      portfolio:
+        one: Portfolio
+        other: Portfolios
+      portfolio_artefact:
+        one: Artefact
+        other: Artefacts
+      portfolio_event:
+        one: Event
+        other: Events
+      portfolio_literature:
+        one: Literature
+        other: Literature
+      portfolio_item_collection:
+        one: Collection
+        other: Collections
+  hyrax:
+    models:
+      portfolio: Portfolio
+      portfolio_artefact: Artefact
+      portfolio_event: Event
+      portfolio_literature: Literature
+      portfolio_item_collection: Collection
+    work:
+      type:
+        portfolio: Portfolio
+        portfolio_artefact: Artefact
+        portfolio_event: Event
+        portfolio_literature: Literature
+        portfolio_item_collection: Collection
+    select_type:
+      portfolio:
+        name: Portfolio
+        description: A practice-research portfolio - the longitudinal container for a body of creative work. Aggregates artefacts, events, literature, and collection items, and carries project-level contributors, funding, organisational units, and rights.
+      portfolio_artefact:
+        name: Artefact
+        description: A single artefact within a portfolio - a composition, recording, score, performance documentation, photograph, design, or other discrete creative output. Carries geo_locations for site-specific work.
+      portfolio_event:
+        name: Event
+        description: An event within a portfolio - an exhibition, performance, conference paper, public-facing presentation, or live-art happening with a venue and date. Carries geo_locations for the venue.
+      portfolio_literature:
+        name: Literature
+        description: A written output within a portfolio - an article, monograph, methodology essay, chapter, or other text-based publication accompanying the practice work. Carries place_of_publication.
+      portfolio_item_collection:
+        name: Collection
+        description: A grouped collection of items within a portfolio - a thematic set of related works, curated assemblage, or sub-series. Carries extent, extent_type, and collection_order.
+  enact:
+    relationships:
+      none: No related works within this project.
+      # Outbound relationship labels, keyed by the stored DataCite-aligned term.
+      types:
+        sequence: Leads to
+        source-of: Is the source for
+        pair-with: Pairs with
+        response-to: Is a response to
+        documents: Documents
+        juxtaposed-with: Is juxtaposed with
+      # Inbound labels: how the relationship reads from the target's point of view.
+      inverse_types:
+        sequence-of: Continues from
+        derived-from: Is derived from
+        pair-with: Pairs with
+        referenced-by: Is referenced by
+        documented-by: Is documented by
+        juxtaposed-with: Is juxtaposed with

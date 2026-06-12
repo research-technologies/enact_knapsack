@@ -1,0 +1,47 @@
+<%# Enact "related within this project" block (Object Handling Spec v0.2 Sec 3.5).
+    Renders the patch-cables relationships for a work: OUTBOUND edges the work
+    itself declares, and INBOUND edges (works that point at it) found by a Solr
+    reverse lookup and labeled with the inverse relation term.
+
+    Locals:
+      presenter - a work show presenter (responds to #solr_document)
+%>
+<% graph = Enact::RelationshipGraph.new(presenter.solr_document)
+   outbound = graph.outbound
+   inbound = graph.inbound %>
+
+<% if outbound.empty? && inbound.empty? %>
+  <p class="text-muted mb-0"><%= t('enact.relationships.none') %></p>
+<% else %>
+  <% if outbound.any? %>
+    <ul class="list-unstyled enact-relationships enact-relationships--outbound mb-3">
+      <% outbound.each do |edge| %>
+        <li>
+          <span class="enact-relationship-type">
+            <%= t("enact.relationships.types.#{edge.relation_type}", default: edge.relation_type.to_s.humanize) %>
+          </span>
+          <%= link_to(edge.title, edge.path) %>
+          <% if edge.note.present? %>
+            <span class="enact-relationship-note text-muted">&mdash; <%= edge.note %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <% if inbound.any? %>
+    <ul class="list-unstyled enact-relationships enact-relationships--inbound mb-0">
+      <% inbound.each do |edge| %>
+        <li>
+          <span class="enact-relationship-type">
+            <%= t("enact.relationships.inverse_types.#{edge.relation_type}", default: edge.relation_type.to_s.humanize) %>
+          </span>
+          <%= link_to(edge.title, edge.path) %>
+          <% if edge.note.present? %>
+            <span class="enact-relationship-note text-muted">&mdash; <%= edge.note %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  <% end %>
+<% end %>
