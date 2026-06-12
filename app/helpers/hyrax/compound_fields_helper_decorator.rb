@@ -14,7 +14,7 @@ module Hyrax
       return rendered if presenter.try(:relationships).present? # card already rendered by super
       return rendered unless relationships_card_declared?(presenter) && inbound_relationships?(presenter)
 
-      rendered + render('hyrax/compounds/compound_card', presenter: presenter, field: :relationships)
+      rendered + render('hyrax/compounds/compound_card', presenter:, field: :relationships)
     rescue StandardError => e
       Hyrax.logger.debug("CompoundFieldsHelperDecorator#render_compound_cards: #{e.message}")
       rendered || ''.html_safe
