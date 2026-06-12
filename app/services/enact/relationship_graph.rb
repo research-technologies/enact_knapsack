@@ -5,10 +5,12 @@ module Enact
   # v0.2 Sec 3.5) into renderable edge lists for the read-only "related within
   # this project" block.
   #
-  # An edge is stored once, on the source work's `relationships` compound. The
-  # source's own edges are its OUTBOUND edges. A work's INBOUND edges (works that
-  # point AT it) are not stored on it; they are found with a Solr reverse lookup
-  # on `relationships_item_ssim`. This is the single-source-of-truth design: no
+  # An edge is stored once, on the source work's `relationships` compound, as an
+  # entry keyed by the M3 members' `name:`s ({"item", "type", "position",
+  # "note"}). The source's own edges are its OUTBOUND edges. A work's INBOUND
+  # edges (works that point AT it) are not stored on it; they are found with a
+  # Solr reverse lookup on `relationships_item_ssim` (the derived index field
+  # for the `item` member). This is the single-source-of-truth design: no
   # inverse edge is duplicated onto the target.
   #
   # Edge targets are internal works only (the compound's `work_or_url` field also
@@ -39,7 +41,7 @@ module Enact
     # @return [Array<Edge>]
     def outbound
       edges = relationship_entries(@document).filter_map do |entry|
-        build_edge(entry['relationship_item'], entry['relationship_type'], entry)
+        build_edge(entry['item'], entry['type'], entry)
       end
       sort_edges(edges)
     end
@@ -53,9 +55,9 @@ module Enact
 
       edges = sources_pointing_at(id).flat_map do |source|
         relationship_entries(source).filter_map do |entry|
-          next unless entry['relationship_item'].to_s == id.to_s
+          next unless entry['item'].to_s == id.to_s
 
-          stored = entry['relationship_type']
+          stored = entry['type']
           # Label the inbound edge with the inverse term; fall back to the
           # stored term when no inverse is mapped (e.g. legacy vocabulary).
           build_edge(source.id, INVERSE_OF.fetch(stored, stored), entry, target_id: source.id)
@@ -104,8 +106,8 @@ module Enact
         title:,
         path:,
         relation_type:,
-        note: entry['relationship_note'].presence,
-        position: entry['relationship_position'].presence
+        note: entry['note'].presence,
+        position: entry['position'].presence
       )
     end
 

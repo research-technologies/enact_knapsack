@@ -10,19 +10,19 @@ RSpec.describe PortfolioIndexer do
   it_behaves_like 'a Hyrax::Resource indexer'
 
   describe 'compound flattening', :clean_repo do
-    # Hash keys must match the M3 subproperty names declared in
-    # config/metadata_profiles/m3_profile.yaml. The schema-driven indexer
-    # calls `resource.try(<subproperty_name>)` (see
-    # Hyrax::SchemaLoader#index_rules_for), and the generated reader
-    # extracts the hash entry whose key is exactly the subproperty name.
+    # Hash keys are each member's `name:` from
+    # config/metadata_profiles/m3_profile.yaml (the key inside each entry).
+    # Hyrax::Indexers::CompoundIndexer derives the Solr field names per member
+    # as `<compound>_<name>_<suffix>` from the member's type, so a string
+    # member lands in `<compound>_<name>_tesim` (and `_sim`).
     let(:contributor) do
-      { 'contributor_given_name' => 'Avery', 'contributor_family_name' => 'Brooks',
-        'contributor_name' => 'Avery Brooks' }
+      { 'given_name' => 'Avery', 'family_name' => 'Brooks',
+        'name' => 'Avery Brooks' }
     end
-    let(:license) { { 'license_rights_label' => 'CC BY 4.0' } }
+    let(:license) { { 'rights_label' => 'CC BY 4.0' } }
     let(:funder) { { 'funder_name' => 'AHRC' } }
-    let(:unit) { { 'organisational_unit_name' => 'School of Music' } }
-    let(:identifier) { { 'identifier_value' => 'doi:10.1234/foo', 'identifier_type' => 'doi' } }
+    let(:unit) { { 'name' => 'School of Music' } }
+    let(:identifier) { { 'value' => 'doi:10.1234/foo', 'type' => 'doi' } }
     let(:resource) do
       Hyrax.persister.save(resource: Portfolio.new(
         title: ['Indexed portfolio'],
@@ -34,13 +34,13 @@ RSpec.describe PortfolioIndexer do
       ))
     end
 
-    it 'writes flattened *_label / *_value fields to Solr' do
+    it 'writes derived <compound>_<name>_tesim fields to Solr' do
       doc = described_class.new(resource:).to_solr
-      expect(doc['contributor_name_tesim']).to include('Avery Brooks')
-      expect(doc['license_label_tesim']).to include('CC BY 4.0')
-      expect(doc['funder_name_tesim']).to include('AHRC')
-      expect(doc['organisational_unit_name_tesim']).to include('School of Music')
-      expect(doc['identifier_value_tesim']).to include(a_string_including('doi:10.1234/foo'))
+      expect(doc['contributors_name_tesim']).to include('Avery Brooks')
+      expect(doc['licenses_rights_label_tesim']).to include('CC BY 4.0')
+      expect(doc['funding_references_funder_name_tesim']).to include('AHRC')
+      expect(doc['organisational_units_name_tesim']).to include('School of Music')
+      expect(doc['identifiers_value_tesim']).to include(a_string_including('doi:10.1234/foo'))
     end
   end
 end

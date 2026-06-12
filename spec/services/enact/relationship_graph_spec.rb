@@ -18,9 +18,9 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
   # Re-save the source carrying a relationship that points at target, then index
   # it so the edge is queryable. Returns the source's SolrDocument.
   def relate(from:, to:, type:, position: nil, note: nil)
-    entry = { 'relationship_item' => to.id.to_s, 'relationship_type' => type }
-    entry['relationship_position'] = position if position
-    entry['relationship_note'] = note if note
+    entry = { 'item' => to.id.to_s, 'type' => type }
+    entry['position'] = position if position
+    entry['note'] = note if note
     updated = Hyrax.persister.save(resource: Hyrax.query_service.find_by(id: from.id).tap do |r|
       r.relationships = [entry]
     end)
@@ -47,8 +47,8 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
     it 'orders sequenced edges by position' do
       other = index(Hyrax.persister.save(resource: Portfolio.new(title: ['Second target'])))
       entries = [
-        { 'relationship_item' => other.id.to_s, 'relationship_type' => 'sequence', 'relationship_position' => '2' },
-        { 'relationship_item' => target.id.to_s, 'relationship_type' => 'sequence', 'relationship_position' => '1' }
+        { 'item' => other.id.to_s, 'type' => 'sequence', 'position' => '2' },
+        { 'item' => target.id.to_s, 'type' => 'sequence', 'position' => '1' }
       ]
       updated = Hyrax.persister.save(resource: Hyrax.query_service.find_by(id: source.id).tap { |r| r.relationships = entries })
       index(updated)
@@ -59,7 +59,7 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
 
     it 'skips external URLs (internal targets only)' do
       updated = Hyrax.persister.save(resource: Hyrax.query_service.find_by(id: source.id).tap do |r|
-        r.relationships = [{ 'relationship_item' => 'https://example.org/thing', 'relationship_type' => 'documents' }]
+        r.relationships = [{ 'item' => 'https://example.org/thing', 'type' => 'documents' }]
       end)
       index(updated)
 
@@ -68,7 +68,7 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
 
     it 'skips targets that do not resolve to an indexed work' do
       updated = Hyrax.persister.save(resource: Hyrax.query_service.find_by(id: source.id).tap do |r|
-        r.relationships = [{ 'relationship_item' => 'nonexistent-id', 'relationship_type' => 'documents' }]
+        r.relationships = [{ 'item' => 'nonexistent-id', 'type' => 'documents' }]
       end)
       index(updated)
 

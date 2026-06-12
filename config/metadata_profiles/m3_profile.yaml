@@ -604,28 +604,32 @@ properties:
       html_dl: true
   title_value:
     type: string
-    subproperty_of: titles
+    name: value
+    available_on:
+      properties:
+      - titles
     required: true
-    indexing:
-    - title_value_tesim
-    - title_value_sim
     form:
       cols: 6
   title_type:
     type: controlled
-    subproperty_of: titles
+    name: type
+    available_on:
+      properties:
+      - titles
     values:
     - AlternativeTitle
     - Subtitle
     - TranslatedTitle
     - Other
-    indexing:
-    - title_type_sim
     form:
       cols: 6
   title_lang:
     type: string
-    subproperty_of: titles
+    name: lang
+    available_on:
+      properties:
+      - titles
     form:
       cols: 6
   dates:
@@ -653,16 +657,19 @@ properties:
       html_dl: true
   date_value:
     type: string
-    subproperty_of: dates
+    name: value
+    available_on:
+      properties:
+      - dates
     required: true
-    indexing:
-    - date_value_tesim
-    - date_value_sim
     form:
       cols: 4
   date_type:
     type: controlled
-    subproperty_of: dates
+    name: type
+    available_on:
+      properties:
+      - dates
     values:
     - Accepted
     - Available
@@ -675,13 +682,14 @@ properties:
     - Valid
     - Withdrawn
     - Other
-    indexing:
-    - date_type_sim
     form:
       cols: 4
   date_information:
     type: string
-    subproperty_of: dates
+    name: information
+    available_on:
+      properties:
+      - dates
     form:
       cols: 4
   contributors:
@@ -718,86 +726,104 @@ properties:
       html_dl: true
   contributor_given_name:
     type: string
-    subproperty_of: contributors
+    name: given_name
+    available_on:
+      properties:
+      - contributors
     group: identity
     form:
       cols: 6
   contributor_family_name:
     type: string
-    subproperty_of: contributors
+    name: family_name
+    available_on:
+      properties:
+      - contributors
     group: identity
     form:
       cols: 6
   contributor_name:
     type: string
-    subproperty_of: contributors
+    name: name
+    available_on:
+      properties:
+      - contributors
     group: identity
-    indexing:
-    - contributor_name_tesim
-    - contributor_name_sim
     form:
       cols: 6
   contributor_name_type:
     type: controlled
-    subproperty_of: contributors
+    name: name_type
+    available_on:
+      properties:
+      - contributors
     group: identity
     values:
     - Personal
     - Organizational
-    indexing:
-    - contributor_name_type_sim
     form:
       cols: 6
   contributor_role_label:
     type: string
-    subproperty_of: contributors
+    name: role_label
+    available_on:
+      properties:
+      - contributors
     group: role
-    indexing:
-    - contributor_role_label_tesim
-    - contributor_role_label_sim
     form:
       cols: 4
   contributor_role_id:
     type: string
-    subproperty_of: contributors
+    name: role_id
+    available_on:
+      properties:
+      - contributors
     group: role
     form:
       cols: 4
   contributor_role_vocabulary:
     type: string
-    subproperty_of: contributors
+    name: role_vocabulary
+    available_on:
+      properties:
+      - contributors
     group: role
     form:
       cols: 4
   contributor_name_identifier:
     type: string
-    subproperty_of: contributors
+    name: name_identifier
+    available_on:
+      properties:
+      - contributors
     group: identifier
-    indexing:
-    - contributor_name_identifier_ssim
     form:
       cols: 6
   contributor_scheme_uri:
     type: string
-    subproperty_of: contributors
+    name: scheme_uri
+    available_on:
+      properties:
+      - contributors
     group: identifier
     form:
       cols: 6
   contributor_affiliation:
     type: string
-    subproperty_of: contributors
+    name: affiliation
+    available_on:
+      properties:
+      - contributors
     group: affiliation
-    indexing:
-    - contributor_affiliation_tesim
-    - contributor_affiliation_sim
     form:
       cols: 6
   contributor_affiliation_identifier:
     type: string
-    subproperty_of: contributors
+    name: affiliation_identifier
+    available_on:
+      properties:
+      - contributors
     group: affiliation
-    indexing:
-    - contributor_affiliation_identifier_ssim
     form:
       cols: 6
   identifiers:
@@ -825,18 +851,19 @@ properties:
       html_dl: true
   identifier_value:
     type: string
-    subproperty_of: identifiers
+    name: value
+    available_on:
+      properties:
+      - identifiers
     required: true
-    indexing:
-    - identifier_value_tesim
-    - identifier_value_sim
     form:
       cols: 6
   identifier_type:
     type: string
-    subproperty_of: identifiers
-    indexing:
-    - identifier_type_sim
+    name: type
+    available_on:
+      properties:
+      - identifiers
     form:
       cols: 6
   funding_references:
@@ -867,25 +894,29 @@ properties:
       html_dl: true
   funder_name:
     type: string
-    subproperty_of: funding_references
+    name: funder_name
+    available_on:
+      properties:
+      - funding_references
     group: funder
     required: true
-    indexing:
-    - funder_name_tesim
-    - funder_name_sim
     form:
       cols: 6
   funder_identifier:
     type: string
-    subproperty_of: funding_references
+    name: funder_identifier
+    available_on:
+      properties:
+      - funding_references
     group: funder
-    indexing:
-    - funder_identifier_ssim
     form:
       cols: 6
   funder_identifier_type:
     type: controlled
-    subproperty_of: funding_references
+    name: funder_identifier_type
+    available_on:
+      properties:
+      - funding_references
     group: funder
     values:
     - Crossref Funder ID
@@ -893,36 +924,42 @@ properties:
     - ISNI
     - ROR
     - Other
-    indexing:
-    - funder_identifier_type_sim
     form:
       cols: 6
   funder_scheme_uri:
     type: string
-    subproperty_of: funding_references
+    name: scheme_uri
+    available_on:
+      properties:
+      - funding_references
     group: funder
     form:
       cols: 6
   funder_award_number:
     type: string
-    subproperty_of: funding_references
+    name: award_number
+    available_on:
+      properties:
+      - funding_references
     group: award
-    indexing:
-    - funder_award_number_ssim
     form:
       cols: 4
   funder_award_uri:
     type: string
-    subproperty_of: funding_references
+    name: award_uri
+    available_on:
+      properties:
+      - funding_references
     group: award
     form:
       cols: 4
   funder_award_title:
     type: string
-    subproperty_of: funding_references
+    name: award_title
+    available_on:
+      properties:
+      - funding_references
     group: award
-    indexing:
-    - funder_award_title_tesim
     form:
       cols: 4
   organisational_units:
@@ -948,23 +985,27 @@ properties:
       html_dl: true
   organisational_unit_name:
     type: string
-    subproperty_of: organisational_units
+    name: name
+    available_on:
+      properties:
+      - organisational_units
     required: true
-    indexing:
-    - organisational_unit_name_tesim
-    - organisational_unit_name_sim
     form:
       cols: 4
   organisational_unit_pid:
     type: string
-    subproperty_of: organisational_units
-    indexing:
-    - organisational_unit_pid_ssim
+    name: pid
+    available_on:
+      properties:
+      - organisational_units
     form:
       cols: 4
   organisational_unit_type:
     type: controlled
-    subproperty_of: organisational_units
+    name: unit_type
+    available_on:
+      properties:
+      - organisational_units
     values:
     - University
     - Faculty
@@ -972,8 +1013,6 @@ properties:
     - Department
     - Group
     - Centre
-    indexing:
-    - organisational_unit_type_sim
     form:
       cols: 4
   licenses:
@@ -1008,57 +1047,66 @@ properties:
       html_dl: true
   license_rights_label:
     type: string
-    subproperty_of: licenses
+    name: rights_label
+    available_on:
+      properties:
+      - licenses
     group: statement
-    indexing:
-    - license_label_tesim
-    - license_label_sim
     form:
       cols: 6
   license_rights_uri:
     type: string
-    subproperty_of: licenses
+    name: rights_uri
+    available_on:
+      properties:
+      - licenses
     group: statement
-    indexing:
-    - license_uri_ssim
     form:
       cols: 6
   license_holder:
     type: string
-    subproperty_of: licenses
+    name: holder
+    available_on:
+      properties:
+      - licenses
     group: statement
-    indexing:
-    - license_holder_tesim
-    - license_holder_sim
     form:
       cols: 6
   license_rights_identifier:
     type: string
-    subproperty_of: licenses
+    name: rights_identifier
+    available_on:
+      properties:
+      - licenses
     group: identifier
-    indexing:
-    - license_identifier_ssim
     form:
       cols: 4
   license_rights_identifier_scheme:
     type: controlled
-    subproperty_of: licenses
+    name: rights_identifier_scheme
+    available_on:
+      properties:
+      - licenses
     group: identifier
     values:
     - SPDX
-    indexing:
-    - license_identifier_scheme_sim
     form:
       cols: 4
   license_scheme_uri:
     type: string
-    subproperty_of: licenses
+    name: scheme_uri
+    available_on:
+      properties:
+      - licenses
     group: identifier
     form:
       cols: 4
   license_lang:
     type: string
-    subproperty_of: licenses
+    name: lang
+    available_on:
+      properties:
+      - licenses
     group: language
     form:
       cols: 4
@@ -1087,46 +1135,64 @@ properties:
       html_dl: true
   geo_place_name:
     type: string
-    subproperty_of: geo_locations
+    name: place_name
+    available_on:
+      properties:
+      - geo_locations
     group: point
-    indexing:
-    - geo_place_name_tesim
-    - geo_place_name_sim
     form:
       cols: 4
   geo_point_latitude:
     type: string
-    subproperty_of: geo_locations
+    name: point_latitude
+    available_on:
+      properties:
+      - geo_locations
     group: point
     form:
       cols: 4
   geo_point_longitude:
     type: string
-    subproperty_of: geo_locations
+    name: point_longitude
+    available_on:
+      properties:
+      - geo_locations
     group: point
     form:
       cols: 4
   geo_west_bound:
     type: string
-    subproperty_of: geo_locations
+    name: west_bound
+    available_on:
+      properties:
+      - geo_locations
     group: box
     form:
       cols: 3
   geo_east_bound:
     type: string
-    subproperty_of: geo_locations
+    name: east_bound
+    available_on:
+      properties:
+      - geo_locations
     group: box
     form:
       cols: 3
   geo_south_bound:
     type: string
-    subproperty_of: geo_locations
+    name: south_bound
+    available_on:
+      properties:
+      - geo_locations
     group: box
     form:
       cols: 3
   geo_north_bound:
     type: string
-    subproperty_of: geo_locations
+    name: north_bound
+    available_on:
+      properties:
+      - geo_locations
     group: box
     form:
       cols: 3
@@ -1154,15 +1220,19 @@ properties:
       display: card
   relationship_item:
     type: work_or_url
-    subproperty_of: relationships
+    name: item
+    available_on:
+      properties:
+      - relationships
     required: true
-    indexing:
-    - relationships_item_ssim
     form:
       cols: 6
   relationship_type:
     type: controlled
-    subproperty_of: relationships
+    name: type
+    available_on:
+      properties:
+      - relationships
     required: true
     # Controlled vocabulary aligned with DataCite relationType (Object Handling
     # Spec v0.2 Sec 3.5). Stored value maps to a DataCite term so DataCite/RAiD/
@@ -1174,22 +1244,26 @@ properties:
     - response-to
     - documents
     - juxtaposed-with
-    indexing:
-    - relationships_type_sim
     form:
       cols: 6
   relationship_position:
     type: string
-    subproperty_of: relationships
+    name: position
+    available_on:
+      properties:
+      - relationships
     required: false
-    indexing:
-    - relationships_position_ssim
     form:
       cols: 6
   relationship_note:
     type: string
-    subproperty_of: relationships
+    name: note
+    available_on:
+      properties:
+      - relationships
     required: false
+    # Free-text curatorial note: full-text searchable, but a facet over prose
+    # adds nothing, so override the derived (_sim + _tesim) pair.
     indexing:
     - relationships_note_tesim
     form:

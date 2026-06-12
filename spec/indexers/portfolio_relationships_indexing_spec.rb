@@ -3,18 +3,21 @@
 require 'rails_helper'
 
 # Flex-mode (HYRAX_FLEXIBLE=true, the suite default) round-trip for the
-# `relationships` compound (the patch cables). Asserts that a stored entry's
-# subfields land in their declared Solr fields and in the display blob, which is
-# what the read-only relationship view reads back.
+# `relationships` compound (the patch cables). Entry keys are the M3 members'
+# `name:`s; Solr fields are the derived `<compound>_<name>_<suffix>` names from
+# each member's type (work_or_url -> _ssim, controlled -> _sim, string -> _sim +
+# _tesim), except `note`, which declares an explicit `indexing:` override
+# (full-text only). The display blob is what the read-only relationship view
+# reads back.
 RSpec.describe 'Portfolio relationships indexing', :clean_repo do
   let(:target) { Hyrax.persister.save(resource: Portfolio.new(title: ['Target work'])) }
 
   let(:relationship) do
     {
-      'relationship_item' => target.id.to_s,
-      'relationship_type' => 'source-of',
-      'relationship_position' => '1',
-      'relationship_note' => 'The model is the source for the export'
+      'item' => target.id.to_s,
+      'type' => 'source-of',
+      'position' => '1',
+      'note' => 'The model is the source for the export'
     }
   end
 
@@ -27,21 +30,25 @@ RSpec.describe 'Portfolio relationships indexing', :clean_repo do
 
   let(:doc) { PortfolioIndexer.new(resource:).to_solr }
 
-  it 'indexes each subfield into its declared Solr field' do
+  it 'indexes each subfield into its derived (or overridden) Solr field' do
     expect(doc['relationships_item_ssim']).to include(target.id.to_s)
     expect(doc['relationships_type_sim']).to include('source-of')
-    expect(doc['relationships_position_ssim']).to include('1')
+    expect(doc['relationships_position_sim']).to include('1')
     expect(doc['relationships_note_tesim'])
       .to include(a_string_including('source for the export'))
   end
 
+  it 'does not facet the free-text note (explicit indexing override)' do
+    expect(doc).not_to have_key('relationships_note_sim')
+  end
+
   it 'writes the full entry into the relationships display blob' do
-    entries = Hyrax::Solr::CompoundEntries.coerce(doc['relationships_json_ss'])
+    entries = Hyrax::SolrDocument::Metadata::Solr::CompoundEntries.coerce(doc['relationships_json_ss'])
     expect(entries.size).to eq(1)
     expect(entries.first).to include(
-      'relationship_item' => target.id.to_s,
-      'relationship_type' => 'source-of',
-      'relationship_position' => '1'
+      'item' => target.id.to_s,
+      'type' => 'source-of',
+      'position' => '1'
     )
   end
 end
