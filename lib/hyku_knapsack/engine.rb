@@ -81,6 +81,8 @@ module HykuKnapsack
       HykuKnapsack::Engine.root.glob("lib/**/*_decorator*.rb").sort.each do |c|
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
+
+      ::ApplicationController.include HykuKnapsack::IiifCloudfrontCookies
     end
 
     config.after_initialize do

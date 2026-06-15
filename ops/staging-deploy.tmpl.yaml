@@ -169,7 +169,13 @@ extraEnvVars: &envVars
   - name: HYKU_SHOW_BACKTRACE
     value: "true"
   - name: EXTERNAL_IIIF_URL
-    value: iiif.enacthyku.com/iiif/2
+    value: https://iiif.enacthyku.com/iiif/2
+  - name: IIIF_CF_KEY_PAIR_ID
+    value: $IIIF_CF_KEY_PAIR_ID
+  - name: IIIF_CF_PRIVATE_KEY
+    value: $IIIF_CF_PRIVATE_KEY
+  - name: IIIF_S3_FOLDER_PREFIX
+    value: staging
   - name: NEGATIVE_CAPTCHA_SECRET
     value: $NEGATIVE_CAPTCHA_SECRET
   # Need to flesh out a mail server for them

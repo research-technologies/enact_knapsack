@@ -102,6 +102,12 @@ extraEnvVars: &envVars
     value: "true"
   - name: EXTERNAL_IIIF_URL
     value: https://iiif.enacthyku.com/iiif/2
+  - name: IIIF_CF_KEY_PAIR_ID
+    value: $IIIF_CF_KEY_PAIR_ID
+  - name: IIIF_CF_PRIVATE_KEY
+    value: $IIIF_CF_PRIVATE_KEY
+  - name: IIIF_S3_FOLDER_PREFIX
+    value: production
   # Running WINGS OFF MODE, so FCREPO env vars are not needed
   # - name: GOOGLE_ANALYTICS_ID
   #   value: $GOOGLE_ANALYTICS_ID
