@@ -13,10 +13,14 @@
   <div class="card-header d-flex justify-content-between align-items-center">
     <h2 class="card-title mb-0"><%= compound_card_label(presenter, field) %></h2>
     <% if field.to_sym == :relationships %>
-      <%# Entry point to the interactive relationship map, focused on this work.
-          turbo/turbolinks off because the map is a standalone (layout: false) page. %>
+      <%# Entry point to the interactive relationship map. From a Portfolio it
+          opens the whole-project diagram (?portfolio=); from a single work it
+          opens that work's focused view (?focus=). turbo/turbolinks off because
+          the map is a standalone (layout: false) page. %>
+      <% is_portfolio = Array(presenter.solr_document['has_model_ssim']).first.to_s == 'Portfolio' %>
+      <% map_query = is_portfolio ? "portfolio=#{presenter.id}" : "focus=#{presenter.id}" %>
       <%= link_to t('enact.relationships.map_button'),
-                  "/relationship-map?focus=#{presenter.id}",
+                  "/relationship-map?#{map_query}",
                   class: 'btn btn-outline-secondary btn-sm enact-relationship-map-link',
                   data: { turbolinks: false, turbo: false } %>
     <% end %>

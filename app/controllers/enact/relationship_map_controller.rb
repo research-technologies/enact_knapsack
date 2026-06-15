@@ -32,7 +32,7 @@ module Enact
     MAX_WORKS = 1_000
 
     def show
-      docs = work_documents
+      docs = scoped_documents
       ids = docs.map { |d| d['id'] }.to_set
       links = docs.flat_map { |d| links_for(d) }.select { |l| ids.include?(l[:target]) }
       # Only graph works that actually take part in a relationship. The map is
@@ -51,6 +51,32 @@ module Enact
     end
 
     private
+
+    # The works the map is built from. `?portfolio=<id>` scopes to a single
+    # project (the portfolio plus its member works) so a portfolio's "full
+    # diagram linked together" can be shown; otherwise the whole accessible
+    # corpus is used (then trimmed to connected works in #show).
+    def scoped_documents
+      portfolio_id = params[:portfolio].to_s
+      portfolio_id.present? ? portfolio_documents(portfolio_id) : work_documents
+    end
+
+    # The portfolio plus its member works (`member_ids_ssim`), scoped by ability.
+    # Returns [] if the portfolio is not found / not visible, which renders the
+    # empty-map message rather than erroring.
+    def portfolio_documents(portfolio_id)
+      portfolio = Hyrax::SolrQueryService.new
+                                         .with_field_pairs(field_pairs: { 'id' => portfolio_id })
+                                         .accessible_by(ability: current_ability)
+                                         .solr_documents(rows: 1).first
+      return [] if portfolio.nil?
+
+      ids = ([portfolio_id] + Array(portfolio['member_ids_ssim'])).uniq.first(MAX_WORKS)
+      Hyrax::SolrQueryService.new
+                             .with_field_pairs(field_pairs: { 'id' => ids }, join_with: 'OR')
+                             .accessible_by(ability: current_ability)
+                             .solr_documents(rows: MAX_WORKS)
+    end
 
     # Enact work types accessible to the current user. We pull the whole set and
     # filter edges to in-set targets (mirrors the prototype); fine for a
