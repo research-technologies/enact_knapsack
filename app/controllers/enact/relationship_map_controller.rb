@@ -34,9 +34,15 @@ module Enact
     def show
       docs = work_documents
       ids = docs.map { |d| d['id'] }.to_set
+      links = docs.flat_map { |d| links_for(d) }.select { |l| ids.include?(l[:target]) }
+      # Only graph works that actually take part in a relationship. The map is
+      # about the edges (Object Handling Spec v0.2 Sec 3.5); including every work
+      # in the tenant buries the connected web under a field of unconnected
+      # nodes. A node survives iff it is the source or target of a kept link.
+      connected = links.flat_map { |l| [l[:source], l[:target]] }.to_set
       @graph = {
-        nodes: docs.map { |d| node_for(d) },
-        links: docs.flat_map { |d| links_for(d) }.select { |l| ids.include?(l[:target]) }
+        nodes: docs.select { |d| connected.include?(d['id']) }.map { |d| node_for(d) },
+        links:
       }
       @rel_types = rel_types
       @focus = params[:focus].to_s
