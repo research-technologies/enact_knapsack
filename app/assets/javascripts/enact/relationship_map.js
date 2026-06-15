@@ -41,6 +41,12 @@
         ...G.links.map((l,i) => ({ data: { id:'e'+i, source:l.source, target:l.target, rel:l.rel, note:l.note, rl:relLabelOf(l.rel) } }))
       ];
 
+      // Shared force-directed layout. Roomy spacing so the full project web
+      // (~27 nodes) reads clearly; fit:true zooms to show everything.
+      const COSE = { name:'cose', animate:false, fit:true, padding:80,
+        nodeRepulsion:50000, idealEdgeLength:240, nodeOverlap:48,
+        componentSpacing:220, gravity:0.2 };
+
       const cy = cytoscape({
         container, elements, minZoom:0.3, maxZoom:1.4,
         style: [
@@ -59,13 +65,12 @@
             'text-background-opacity':1, 'text-background-padding':2 } },
           { selector:'.dimmed', style:{ 'display':'none' } }
         ],
-        layout: { name:'cose', animate:false, padding:60, nodeRepulsion: 22000, idealEdgeLength: 170, nodeOverlap: 32, componentSpacing: 150, gravity: 0.3 }
+        layout: COSE
       });
 
       const detail = document.getElementById("detail");
       const focusbar = document.getElementById("focusbar");
 
-      const COSE = { name:'cose', animate:false, padding:60, nodeRepulsion:22000, idealEdgeLength:170, nodeOverlap:32, componentSpacing:150, gravity:0.3 };
       function focusNode(node){
         const nbh = node.closedNeighborhood();
         cy.elements().addClass('dimmed'); nbh.removeClass('dimmed');
@@ -75,12 +80,16 @@
         // lay the focused node + its relations out as a clean ego graph (focused
         // node centred, relations in a ring) so labels never collide
         nbh.layout({ name:'concentric', concentric: n => (n.id() === node.id() ? 2 : 1),
-                     levelWidth: () => 1, minNodeSpacing: 90, animate:false, fit:true, padding:100 }).run();
+                     levelWidth: () => 1, minNodeSpacing: 110, animate:false, fit:true, padding:120 }).run();
+        // Fit bounds to node boxes, not labels; pad generously (> a label's
+        // half-width) so peripheral labels are not clipped on large ego rings.
+        cy.fit(nbh, 120);
       }
       function clearFocus(){
         cy.elements().removeClass('dimmed'); cy.nodes().removeClass('primary');
         focusbar.style.display = "none";
         cy.layout(COSE).run(); // re-spread the full graph
+        cy.fit(cy.elements(), 70); // zoom to fit the whole web
       }
       document.getElementById("focusclear").addEventListener("click", () => { clearFocus(); resetPanel(); });
 
@@ -136,7 +145,7 @@
         if (FOCUS && cy.getElementById(FOCUS).nonempty()) {
           const n = cy.getElementById(FOCUS); showNode(n); focusNode(n);
         } else {
-          cy.fit(cy.elements(), 50);
+          cy.fit(cy.elements(), 70);
         }
       });
     }
