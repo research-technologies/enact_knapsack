@@ -16,3 +16,4 @@ file_cache/
 # Local verification artifacts
 .playwright-mcp/
 relationship-map-live.png
+plans/*
