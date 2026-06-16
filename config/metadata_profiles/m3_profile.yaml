@@ -213,10 +213,6 @@ properties:
     available_on:
       class:
       - Portfolio
-      - PortfolioArtefact
-      - PortfolioEvent
-      - PortfolioLiterature
-      - PortfolioItemCollection
     cardinality:
       minimum: 0
       maximum: 1
