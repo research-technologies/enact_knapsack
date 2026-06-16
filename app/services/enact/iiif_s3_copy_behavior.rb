@@ -27,7 +27,7 @@ module Enact
         return unless configured?
 
         key = key_for(filename)
-        Aws::S3::TransferManager.new.upload_file(bucket: bucket_name, key: key, path: filename)
+        Aws::S3::TransferManager.new.upload_file(filename, bucket: bucket_name, key:)
         Rails.logger.info("IiifS3CopyBehavior: uploaded #{filename} to s3://#{bucket_name}/#{key}")
       end
     end

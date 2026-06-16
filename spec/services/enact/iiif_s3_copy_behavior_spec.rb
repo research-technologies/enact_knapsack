@@ -11,7 +11,7 @@ RSpec.describe Enact::IiifS3CopyBehavior do
     end.tap { |c| c.prepend(Enact::IiifS3CopyBehavior) } # rubocop:disable Style/MultilineBlockChain
   end
 
-  let(:instance)      { dummy_class.new }
+  let(:instance) { dummy_class.new }
   let(:test_file) do
     Tempfile.new(['iiif_test', '.jpg']).tap do |f|
       f.write('fake image data')
@@ -92,9 +92,9 @@ RSpec.describe Enact::IiifS3CopyBehavior do
     it 'uploads the file to the correct S3 bucket and key' do
       described_class.upload(filename)
       expect(fake_manager).to have_received(:upload_file).with(
+        filename,
         bucket: 'enact-iiif-images',
-        key: "staging/#{sha1}",
-        path: filename
+        key: "staging/#{sha1}"
       )
     end
 
@@ -133,9 +133,9 @@ RSpec.describe Enact::IiifS3CopyBehavior do
     it 'uploads the file to S3' do
       instance.create_derivatives(filename)
       expect(fake_manager).to have_received(:upload_file).with(
+        filename,
         bucket: 'enact-iiif-images',
-        key: sha1,
-        path: filename
+        key: sha1
       )
     end
 
