@@ -27,20 +27,20 @@ require 'cgi'
 module Enact
   module DisplayImagePresenterDecorator
     # OVERRIDE: rewrite the IIIF endpoint URL to use the same-origin proxy path.
-    def iiif_endpoint(file_id, base_url: request.base_url)
+    def iiif_endpoint(file_id, base_url: hostname)
       return super unless iiif_proxy_enabled?
 
       IIIFManifest::IIIFEndpoint.new(
-        File.join(request.base_url, 'iiif', '2', file_id),
+        File.join(base_url, 'iiif', '2', file_id),
         profile: Hyrax.config.iiif_image_compliance_level_uri
       )
     end
 
     # OVERRIDE: build the display image URL via the same-origin proxy path.
-    def display_image_url(hostname)
+    def display_image_url(base_url)
       return super unless iiif_proxy_enabled?
 
-      proxy_base = "#{request.base_url}/iiif/2"
+      proxy_base = "#{base_url}/iiif/2"
       url_builder = Hyrax.config.iiif_image_url_builder
       args = [latest_file_id, proxy_base, Hyrax.config.iiif_image_size_default]
       args << image_format(alpha_channels) if url_builder.arity == 4

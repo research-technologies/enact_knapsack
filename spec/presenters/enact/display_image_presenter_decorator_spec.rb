@@ -17,10 +17,13 @@ RSpec.describe Enact::DisplayImagePresenterDecorator do
         @data
       end
 
-      # Minimal stubs for IiifPrint override call chain
-      def request
-        @request ||= OpenStruct.new(base_url: 'https://demo.enact-knapsack-staging.enacthyku.com')
+      # Mirrors Hyrax::IiifManifestPresenter::DisplayImagePresenter — hostname is written
+      # by the parent presenter; the default matches what IiifPrint ships with.
+      def hostname
+        @hostname || 'localhost'
       end
+
+      attr_writer :hostname
 
       def latest_file_id
         model['digest_ssim']&.first&.sub(/\Aurn:[^:]+:/, '')
@@ -87,19 +90,16 @@ RSpec.describe Enact::DisplayImagePresenterDecorator do
 
   describe '#iiif_endpoint' do
     let(:digest_values) { ['abc123def456'] }
-    let(:expected_base) { 'https://demo.enact-knapsack-staging.enacthyku.com' }
+    let(:host) { 'https://demo.enact-knapsack-staging.enacthyku.com' }
+
+    before { presenter.hostname = host }
 
     context 'when IIIF_PROXY_ENABLED is set' do
       before { allow(ENV).to receive(:[]).with('IIIF_PROXY_ENABLED').and_return('true') }
 
       it 'returns an endpoint rooted at the same-origin /iiif/2/ path' do
-        endpoint = presenter.iiif_endpoint('abc123def456')
-        expect(endpoint.url).to eq("#{expected_base}/iiif/2/abc123def456")
-      end
-
-      it 'ignores the base_url keyword argument in favour of request.base_url' do
-        endpoint = presenter.iiif_endpoint('abc123def456', base_url: 'https://ignored.example.com')
-        expect(endpoint.url).to start_with(expected_base)
+        endpoint = presenter.iiif_endpoint('abc123def456', base_url: host)
+        expect(endpoint.url).to eq("#{host}/iiif/2/abc123def456")
       end
     end
 
@@ -107,8 +107,7 @@ RSpec.describe Enact::DisplayImagePresenterDecorator do
       before { allow(ENV).to receive(:[]).with('IIIF_PROXY_ENABLED').and_return(nil) }
 
       it 'falls through to super' do
-        # The minimal host class has no super, so we verify the guard returns early.
-        expect { presenter.iiif_endpoint('abc123def456') }.to raise_error(NoMethodError)
+        expect { presenter.iiif_endpoint('abc123def456', base_url: host) }.to raise_error(NoMethodError)
       end
     end
   end
@@ -130,7 +129,7 @@ RSpec.describe Enact::DisplayImagePresenterDecorator do
       before { allow(ENV).to receive(:[]).with('IIIF_PROXY_ENABLED').and_return('true') }
 
       it 'builds the image URL using the same-origin /iiif/2 base' do
-        result = presenter.display_image_url('https://ignored.example.com')
+        result = presenter.display_image_url('https://demo.enact-knapsack-staging.enacthyku.com')
         expect(result).to eq(
           'https://demo.enact-knapsack-staging.enacthyku.com/iiif/2/abc123def456/full/full/0/default.jpg'
         )
@@ -141,7 +140,7 @@ RSpec.describe Enact::DisplayImagePresenterDecorator do
       before { allow(ENV).to receive(:[]).with('IIIF_PROXY_ENABLED').and_return(nil) }
 
       it 'falls through to super' do
-        expect { presenter.display_image_url('https://base.example.com') }.to raise_error(NoMethodError)
+        expect { presenter.display_image_url('https://demo.enact-knapsack-staging.enacthyku.com') }.to raise_error(NoMethodError)
       end
     end
   end
