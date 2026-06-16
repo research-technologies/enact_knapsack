@@ -229,7 +229,12 @@ properties:
       simple_dc_pmh: dc:description
     property_uri: https://prvoices.org/terms/contextStatement
     range: http://www.w3.org/2001/XMLSchema#string
+    form:
+      primary: true
+      input_type: rich_text       # -> TinyMCE WYSIWYG editor (from Hyrax)
     view:
+      render_as: html             # -> sanitized HTML on the show page
+      position: featured          # -> top of show page (Tier 2; needs Hyku branch)
       html_dl: true
   date_created:
     available_on:
