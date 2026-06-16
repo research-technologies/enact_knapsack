@@ -50,10 +50,14 @@ module HykuKnapsack
     end
 
     def signed_cookies
-      IiifCloudfrontCookies.signer.signed_cookie(
-        "#{IiifCloudfrontCookies.base_url}/*",
-        expires: 1.hour.from_now
-      )
+      # Custom policy supports wildcard Resources so one cookie covers all image paths.
+      policy = {
+        "Statement" => [{
+          "Resource" => "#{IiifCloudfrontCookies.base_url}/*",
+          "Condition" => { "DateLessThan" => { "AWS:EpochTime" => 1.hour.from_now.to_i } }
+        }]
+      }.to_json
+      IiifCloudfrontCookies.signer.signed_cookie(policy:)
     end
 
     def iiif_cloudfront_configured?

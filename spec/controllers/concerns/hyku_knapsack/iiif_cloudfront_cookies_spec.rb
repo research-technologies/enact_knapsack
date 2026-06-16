@@ -126,11 +126,10 @@ RSpec.describe HykuKnapsack::IiifCloudfrontCookies, type: :controller do
         expect(response.cookies['CloudFront-Key-Pair-Id']).to eq(key_pair_id)
       end
 
-      it 'signs cookies for the wildcard base URL' do
+      it 'signs cookies using a custom policy so the wildcard Resource is honoured' do
         get :index
         expect(signer).to have_received(:signed_cookie).with(
-          'https://iiif.enacthyku.com/*',
-          expires: an_instance_of(ActiveSupport::TimeWithZone)
+          policy: a_string_matching(/"Resource":"https:\/\/iiif\.enacthyku\.com\/\*"/)
         )
       end
 
