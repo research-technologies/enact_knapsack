@@ -184,6 +184,8 @@ extraEnvVars: &envVars
     value: enact-repository-staging-822951369940
   - name: REPOSITORY_S3_REGION
     value: eu-west-1
+  - name: AWS_REGION
+    value: eu-west-1
   - name: NEGATIVE_CAPTCHA_SECRET
     value: $NEGATIVE_CAPTCHA_SECRET
   # Need to flesh out a mail server for them

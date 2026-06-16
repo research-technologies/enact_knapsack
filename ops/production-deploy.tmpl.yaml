@@ -116,6 +116,8 @@ extraEnvVars: &envVars
     value: enact-repository-production-822951369940
   - name: REPOSITORY_S3_REGION
     value: eu-west-1
+  - name: AWS_REGION
+    value: eu-west-1
   # Running WINGS OFF MODE, so FCREPO env vars are not needed
   # - name: GOOGLE_ANALYTICS_ID
   #   value: $GOOGLE_ANALYTICS_ID

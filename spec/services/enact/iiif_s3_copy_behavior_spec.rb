@@ -11,23 +11,21 @@ RSpec.describe Enact::IiifS3CopyBehavior do
     end.tap { |c| c.prepend(Enact::IiifS3CopyBehavior) } # rubocop:disable Style/MultilineBlockChain
   end
 
-  let(:instance)    { dummy_class.new }
-  let(:test_file)   do
+  let(:instance)      { dummy_class.new }
+  let(:test_file) do
     Tempfile.new(['iiif_test', '.jpg']).tap do |f|
       f.write('fake image data')
       f.flush
     end
   end
-  let(:filename)    { test_file.path }
-  let(:sha1)        { Digest::SHA1.file(filename).hexdigest }
-  let(:fake_object) { instance_double(Aws::S3::Object, upload_file: true) }
-  let(:fake_bucket) { instance_double(Aws::S3::Bucket, object: fake_object) }
-  let(:fake_s3)     { instance_double(Aws::S3::Resource, bucket: fake_bucket) }
+  let(:filename)      { test_file.path }
+  let(:sha1)          { Digest::SHA1.file(filename).hexdigest }
+  let(:fake_manager)  { instance_double(Aws::S3::TransferManager, upload_file: true) }
 
   before do
     allow(ENV).to receive(:[]).and_call_original
     allow(ENV).to receive(:fetch).and_call_original
-    allow(Aws::S3::Resource).to receive(:new).and_return(fake_s3)
+    allow(Aws::S3::TransferManager).to receive(:new).and_return(fake_manager)
   end
 
   after { test_file.unlink }
@@ -91,10 +89,13 @@ RSpec.describe Enact::IiifS3CopyBehavior do
       allow(ENV).to receive(:fetch).with('IIIF_S3_BUCKET', 'enact-iiif-images').and_return('enact-iiif-images')
     end
 
-    it 'uploads the file to the correct S3 key' do
+    it 'uploads the file to the correct S3 bucket and key' do
       described_class.upload(filename)
-      expect(fake_bucket).to have_received(:object).with("staging/#{sha1}")
-      expect(fake_object).to have_received(:upload_file).with(filename)
+      expect(fake_manager).to have_received(:upload_file).with(
+        bucket: 'enact-iiif-images',
+        key: "staging/#{sha1}",
+        path: filename
+      )
     end
 
     it 'logs the upload' do
@@ -108,7 +109,7 @@ RSpec.describe Enact::IiifS3CopyBehavior do
 
       it 'does not upload' do
         described_class.upload(filename)
-        expect(fake_object).not_to have_received(:upload_file)
+        expect(fake_manager).not_to have_received(:upload_file)
       end
     end
   end
@@ -131,12 +132,16 @@ RSpec.describe Enact::IiifS3CopyBehavior do
 
     it 'uploads the file to S3' do
       instance.create_derivatives(filename)
-      expect(fake_object).to have_received(:upload_file).with(filename)
+      expect(fake_manager).to have_received(:upload_file).with(
+        bucket: 'enact-iiif-images',
+        key: sha1,
+        path: filename
+      )
     end
 
     context 'when an S3 error occurs' do
       before do
-        allow(fake_object).to receive(:upload_file).and_raise(
+        allow(fake_manager).to receive(:upload_file).and_raise(
           Aws::S3::Errors::ServiceError.new(nil, 'Access Denied')
         )
       end
@@ -161,7 +166,7 @@ RSpec.describe Enact::IiifS3CopyBehavior do
 
       it 'does not upload' do
         instance.create_derivatives(filename)
-        expect(fake_object).not_to have_received(:upload_file)
+        expect(fake_manager).not_to have_received(:upload_file)
       end
     end
   end
