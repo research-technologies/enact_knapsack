@@ -87,6 +87,11 @@ module HykuKnapsack
       Hyrax::DerivativeService.services = [
         IiifPrint::PluggableDerivativeService
       ]
+      # iiif_print registers its own prepend in its own to_prepare block,
+      # sometimes after our `to_prepare has `, so in order for our decorator
+      # to be called, we need to put this in the `after_initialize` block
+      Hyrax::IiifManifestPresenter::DisplayImagePresenter
+        .prepend(Enact::DisplayImagePresenterDecorator)
 
       # This is the opposite of what you usually want to do.  Normally app views override engine
       # views but in our case things in the Knapsack override what is in the application.

@@ -2,15 +2,31 @@
 
 require 'rails_helper'
 
+# Test the module's behaviour directly via a minimal host class so the spec is
+# independent of the presenter load order (which engine/gem prepends last in CI).
 RSpec.describe Enact::DisplayImagePresenterDecorator do
-  subject(:presenter) { Hyrax::IiifManifestPresenter::DisplayImagePresenter.new(solr_doc) }
-  let(:solr_doc) { SolrDocument.new(id: 'fs-123', **fields) }
+  let(:host_class) do
+    Class.new do
+      prepend Enact::DisplayImagePresenterDecorator
+
+      def initialize(data)
+        @data = data
+      end
+
+      def model
+        @data
+      end
+    end
+  end
+
+  subject(:presenter) { host_class.new(solr_doc) }
+  let(:solr_doc) { { 'digest_ssim' => digest_values } }
 
   before { allow(ENV).to receive(:[]).and_call_original }
 
   describe '#external_latest_file_id' do
     context 'when digest_ssim is a plain MD5 hex string (Valkyrie mode)' do
-      let(:fields) { { 'digest_ssim' => ['542cd898c5be91687e6c6f2c4f53f2d5'] } }
+      let(:digest_values) { ['542cd898c5be91687e6c6f2c4f53f2d5'] }
 
       context 'without a folder prefix' do
         before { allow(ENV).to receive(:[]).with('IIIF_S3_FOLDER_PREFIX').and_return(nil) }
@@ -32,7 +48,7 @@ RSpec.describe Enact::DisplayImagePresenterDecorator do
     end
 
     context 'when digest_ssim is in urn:sha1 format (Wings/Fedora mode)' do
-      let(:fields) { { 'digest_ssim' => ['urn:sha1:620cae0e5cf89d9a788cb7d8e31fcbfa78340284'] } }
+      let(:digest_values) { ['urn:sha1:620cae0e5cf89d9a788cb7d8e31fcbfa78340284'] }
 
       before { allow(ENV).to receive(:[]).with('IIIF_S3_FOLDER_PREFIX').and_return(nil) }
 
@@ -43,7 +59,8 @@ RSpec.describe Enact::DisplayImagePresenterDecorator do
     end
 
     context 'when digest_ssim is absent' do
-      let(:fields) { {} }
+      let(:solr_doc) { {} }
+      let(:digest_values) { nil }
 
       it 'returns nil' do
         expect(presenter.send(:external_latest_file_id)).to be_nil
