@@ -44,7 +44,7 @@ module HykuKnapsack
           domain: iiif_cookie_domain,
           secure: true,
           http_only: true,
-          same_site: :lax
+          same_site: :none
         }
       end
     rescue OpenSSL::PKey::RSAError, ArgumentError => e

@@ -134,12 +134,12 @@ RSpec.describe HykuKnapsack::IiifCloudfrontCookies, type: :controller do
         )
       end
 
-      it 'sets cookies with secure, http_only, and lax same_site attributes' do
+      it 'sets cookies with secure, http_only, and SameSite=None so the IIIF viewer can send them cross-origin' do
         get :index
         set_cookie = response.headers['Set-Cookie']
         expect(set_cookie).to match(/\bsecure\b/i)
         expect(set_cookie).to match(/\bhttponly\b/i)
-        expect(set_cookie).to match(/SameSite=Lax/i)
+        expect(set_cookie).to match(/SameSite=None/i)
       end
 
       it 'sets the cookie domain to the root domain' do
