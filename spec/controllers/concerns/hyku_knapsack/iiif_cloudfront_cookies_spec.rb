@@ -113,17 +113,17 @@ RSpec.describe HykuKnapsack::IiifCloudfrontCookies, type: :controller do
     context 'when IIIF CloudFront is configured' do
       include_context 'with IIIF env vars'
 
-      it 'sets all three CloudFront cookies on HTML requests' do
+      it 'sets all three CloudFront cookies on any request format' do
         get :index, format: :html
         expect(response.cookies['CloudFront-Policy']).to eq('policy-value')
         expect(response.cookies['CloudFront-Signature']).to eq('sig-value')
         expect(response.cookies['CloudFront-Key-Pair-Id']).to eq(key_pair_id)
       end
 
-      it 'does not set cookies for non-HTML requests' do
+      it 'also sets cookies on JSON requests so the IIIF viewer manifest fetch refreshes credentials' do
         get :index, format: :json
-        expect(described_class).not_to have_received(:signer)
-        expect(response.cookies['CloudFront-Policy']).to be_nil
+        expect(response.cookies['CloudFront-Policy']).to eq('policy-value')
+        expect(response.cookies['CloudFront-Key-Pair-Id']).to eq(key_pair_id)
       end
 
       it 'signs cookies for the wildcard base URL' do

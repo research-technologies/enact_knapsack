@@ -36,8 +36,6 @@ module HykuKnapsack
     private
 
     def set_iiif_cloudfront_cookies
-      return unless request.format.html?
-
       signed_cookies.each do |name, value|
         cookies[name] = {
           value:,

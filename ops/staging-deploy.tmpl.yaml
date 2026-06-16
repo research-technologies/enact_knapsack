@@ -170,6 +170,8 @@ extraEnvVars: &envVars
     value: "true"
   - name: EXTERNAL_IIIF_URL
     value: https://iiif.enacthyku.com/iiif/2
+  - name: IIIF_PROXY_ENABLED
+    value: "true"
   - name: IIIF_CF_KEY_PAIR_ID
     value: $IIIF_CF_KEY_PAIR_ID
   - name: IIIF_CF_PRIVATE_KEY
@@ -391,6 +393,16 @@ nginx:
           add_header Last-Modified "";
           add_header ETag "";
           break;
+        }
+
+        # Reverse-proxy IIIF requests to CloudFront so UV.js sends cookies same-origin.
+        # UV uses fetch() with credentials:'same-origin', so it won't send CloudFront signed
+        # cookies to iiif.enacthyku.com (a different origin).  Proxying /iiif/ here makes all
+        # image and info.json requests same-origin; Nginx forwards cookies upstream to CloudFront.
+        location /iiif/ {
+          proxy_set_header Host iiif.enacthyku.com;
+          proxy_ssl_server_name on;
+          proxy_pass https://iiif.enacthyku.com/iiif/;
         }
 
         # send non-static file requests to the app server
