@@ -16,6 +16,23 @@ RSpec.describe Enact::DisplayImagePresenterDecorator do
       def model
         @data
       end
+
+      # Minimal stubs for IiifPrint override call chain
+      def request
+        @request ||= OpenStruct.new(base_url: 'https://demo.enact-knapsack-staging.enacthyku.com')
+      end
+
+      def latest_file_id
+        model['digest_ssim']&.first&.sub(/\Aurn:[^:]+:/, '')
+      end
+
+      def alpha_channels
+        nil
+      end
+
+      def image_format(_channels)
+        'image/jpeg'
+      end
     end
   end
 
@@ -64,6 +81,67 @@ RSpec.describe Enact::DisplayImagePresenterDecorator do
 
       it 'returns nil' do
         expect(presenter.send(:external_latest_file_id)).to be_nil
+      end
+    end
+  end
+
+  describe '#iiif_endpoint' do
+    let(:digest_values) { ['abc123def456'] }
+    let(:expected_base) { 'https://demo.enact-knapsack-staging.enacthyku.com' }
+
+    context 'when IIIF_PROXY_ENABLED is set' do
+      before { allow(ENV).to receive(:[]).with('IIIF_PROXY_ENABLED').and_return('true') }
+
+      it 'returns an endpoint rooted at the same-origin /iiif/2/ path' do
+        endpoint = presenter.iiif_endpoint('abc123def456')
+        expect(endpoint.url).to eq("#{expected_base}/iiif/2/abc123def456")
+      end
+
+      it 'ignores the base_url keyword argument in favour of request.base_url' do
+        endpoint = presenter.iiif_endpoint('abc123def456', base_url: 'https://ignored.example.com')
+        expect(endpoint.url).to start_with(expected_base)
+      end
+    end
+
+    context 'when IIIF_PROXY_ENABLED is not set' do
+      before { allow(ENV).to receive(:[]).with('IIIF_PROXY_ENABLED').and_return(nil) }
+
+      it 'falls through to super' do
+        # The minimal host class has no super, so we verify the guard returns early.
+        expect { presenter.iiif_endpoint('abc123def456') }.to raise_error(NoMethodError)
+      end
+    end
+  end
+
+  describe '#display_image_url' do
+    let(:digest_values) { ['abc123def456'] }
+    let(:url_builder) do
+      lambda do |file_id, base_url, _size, _format|
+        "#{base_url}/images/#{file_id}/full/full/0/default.jpg"
+      end
+    end
+
+    before do
+      allow(Hyrax.config).to receive(:iiif_image_url_builder).and_return(url_builder)
+      allow(Hyrax.config).to receive(:iiif_image_size_default).and_return('full')
+    end
+
+    context 'when IIIF_PROXY_ENABLED is set' do
+      before { allow(ENV).to receive(:[]).with('IIIF_PROXY_ENABLED').and_return('true') }
+
+      it 'builds the image URL using the same-origin /iiif/2 base' do
+        result = presenter.display_image_url('https://ignored.example.com')
+        expect(result).to eq(
+          'https://demo.enact-knapsack-staging.enacthyku.com/iiif/2/abc123def456/full/full/0/default.jpg'
+        )
+      end
+    end
+
+    context 'when IIIF_PROXY_ENABLED is not set' do
+      before { allow(ENV).to receive(:[]).with('IIIF_PROXY_ENABLED').and_return(nil) }
+
+      it 'falls through to super' do
+        expect { presenter.display_image_url('https://base.example.com') }.to raise_error(NoMethodError)
       end
     end
   end
