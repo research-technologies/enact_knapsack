@@ -8,6 +8,12 @@ require 'cgi'
 # string (no URN prefix), so digest_sha1 returns nil and the manifest has no canvases.
 # We read digest_ssim directly, strip any URN prefix for Wings compat, and apply the S3 prefix.
 # Remove when: IiifPrint handles plain hex digests in digest_sha1.
+#
+# NOTE: Hyrax::IiifManifestPresenter is a class, so mirroring its path would require
+# reopening a class as a module — invalid Ruby. The Enact namespace is used instead.
+#
+# NOTE: The prepend call lives in config/application.rb (to_prepare), not here, so that
+# it runs after IiifPrint's own to_prepare and wins the method lookup in CI.
 module Enact
   module DisplayImagePresenterDecorator
     private
@@ -22,6 +28,3 @@ module Enact
     end
   end
 end
-
-Hyrax::IiifManifestPresenter::DisplayImagePresenter
-  .prepend(Enact::DisplayImagePresenterDecorator)

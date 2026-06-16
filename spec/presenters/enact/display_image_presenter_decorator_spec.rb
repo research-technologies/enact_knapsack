@@ -4,7 +4,6 @@ require 'rails_helper'
 
 RSpec.describe Enact::DisplayImagePresenterDecorator do
   subject(:presenter) { Hyrax::IiifManifestPresenter::DisplayImagePresenter.new(solr_doc) }
-
   let(:solr_doc) { SolrDocument.new(id: 'fs-123', **fields) }
 
   before { allow(ENV).to receive(:[]).and_call_original }
