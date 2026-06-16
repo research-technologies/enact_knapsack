@@ -18,9 +18,9 @@ module Enact
       end
 
       def key_for(filename)
-        sha1   = Digest::SHA1.file(filename).hexdigest
+        md5    = Digest::MD5.file(filename).hexdigest
         prefix = ENV['IIIF_S3_FOLDER_PREFIX'].presence
-        [prefix, sha1].compact.join('/')
+        [prefix, md5].compact.join('/')
       end
 
       def upload(filename)
@@ -29,11 +29,18 @@ module Enact
         key = key_for(filename)
         Aws::S3::TransferManager.new.upload_file(filename, bucket: bucket_name, key:)
         Rails.logger.info("IiifS3CopyBehavior: uploaded #{filename} to s3://#{bucket_name}/#{key}")
+        key
       end
     end
 
     def create_derivatives(filename)
       super
+      upload_to_iiif(filename)
+    end
+
+    private
+
+    def upload_to_iiif(filename)
       Enact::IiifS3CopyBehavior.upload(filename)
     rescue Aws::S3::Errors::ServiceError, Errno::ENOENT, Errno::EACCES => e
       Rails.logger.error("IiifS3CopyBehavior: failed to copy to IIIF bucket: #{e.message}")

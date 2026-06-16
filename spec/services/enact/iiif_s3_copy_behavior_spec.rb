@@ -18,9 +18,9 @@ RSpec.describe Enact::IiifS3CopyBehavior do
       f.flush
     end
   end
-  let(:filename)      { test_file.path }
-  let(:sha1)          { Digest::SHA1.file(filename).hexdigest }
-  let(:fake_manager)  { instance_double(Aws::S3::TransferManager, upload_file: true) }
+  let(:filename)     { test_file.path }
+  let(:md5)          { Digest::MD5.file(filename).hexdigest }
+  let(:fake_manager) { instance_double(Aws::S3::TransferManager, upload_file: true) }
 
   before do
     allow(ENV).to receive(:[]).and_call_original
@@ -64,16 +64,16 @@ RSpec.describe Enact::IiifS3CopyBehavior do
     context 'without a folder prefix' do
       before { allow(ENV).to receive(:[]).with('IIIF_S3_FOLDER_PREFIX').and_return(nil) }
 
-      it 'returns the SHA1 of the file' do
-        expect(described_class.key_for(filename)).to eq(sha1)
+      it 'returns the MD5 of the file' do
+        expect(described_class.key_for(filename)).to eq(md5)
       end
     end
 
     context 'with a folder prefix' do
       before { allow(ENV).to receive(:[]).with('IIIF_S3_FOLDER_PREFIX').and_return('staging') }
 
-      it 'prepends the prefix to the SHA1' do
-        expect(described_class.key_for(filename)).to eq("staging/#{sha1}")
+      it 'prepends the prefix to the MD5' do
+        expect(described_class.key_for(filename)).to eq("staging/#{md5}")
       end
     end
 
@@ -94,14 +94,18 @@ RSpec.describe Enact::IiifS3CopyBehavior do
       expect(fake_manager).to have_received(:upload_file).with(
         filename,
         bucket: 'enact-iiif-images',
-        key: "staging/#{sha1}"
+        key: "staging/#{md5}"
       )
+    end
+
+    it 'returns the S3 key' do
+      expect(described_class.upload(filename)).to eq("staging/#{md5}")
     end
 
     it 'logs the upload' do
       allow(Rails.logger).to receive(:info)
       described_class.upload(filename)
-      expect(Rails.logger).to have_received(:info).with(/uploaded.*s3:\/\/enact-iiif-images\/staging\/#{sha1}/)
+      expect(Rails.logger).to have_received(:info).with(/uploaded.*s3:\/\/enact-iiif-images\/staging\/#{md5}/)
     end
 
     context 'when not configured' do
@@ -110,6 +114,10 @@ RSpec.describe Enact::IiifS3CopyBehavior do
       it 'does not upload' do
         described_class.upload(filename)
         expect(fake_manager).not_to have_received(:upload_file)
+      end
+
+      it 'returns nil' do
+        expect(described_class.upload(filename)).to be_nil
       end
     end
   end
@@ -135,7 +143,7 @@ RSpec.describe Enact::IiifS3CopyBehavior do
       expect(fake_manager).to have_received(:upload_file).with(
         filename,
         bucket: 'enact-iiif-images',
-        key: sha1
+        key: md5
       )
     end
 
