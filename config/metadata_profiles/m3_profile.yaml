@@ -393,7 +393,7 @@ properties:
   rights_statement:
     available_on:
       class:
-        - Portfolio
+      - Portfolio
     cardinality:
       minimum: 1
       maximum: 1
@@ -401,13 +401,13 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#string
       sources:
-        - rights_statements
+      - rights_statements
     display_label:
       default: blacklight.search.fields.index.rights_statement_tesim
     index_documentation: displayable, searchable
     indexing:
-      - rights_statement_sim
-      - rights_statement_tesim
+    - rights_statement_sim
+    - rights_statement_tesim
     form:
       primary: true
       required: true
@@ -416,7 +416,7 @@ properties:
     property_uri: http://www.europeana.eu/schemas/edm/rights
     range: http://www.w3.org/2001/XMLSchema#string
     sample_values:
-      - http://rightsstatements.org/vocab/InC/1.0/
+    - http://rightsstatements.org/vocab/InC/1.0/
     view:
       html_dl: true
       render_as: rights_statement
@@ -599,7 +599,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#bool
       sources:
-      - "null"
+      - 'null'
     display_label:
       default: Show PDF Viewer
     indexing:
@@ -612,8 +612,8 @@ properties:
     property_uri: http://id.loc.gov/vocabulary/identifiers/show_pdf_viewer
     range: http://www.w3.org/2001/XMLSchema#bool
     sample_values:
-    - "0"
-    - "1"
+    - '0'
+    - '1'
   show_pdf_download_button:
     available_on:
       class:
@@ -629,7 +629,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#bool
       sources:
-      - "null"
+      - 'null'
     display_label:
       default: Show PDF Download Button
     indexing:
@@ -642,8 +642,8 @@ properties:
     property_uri: http://id.loc.gov/vocabulary/identifiers/show_pdf_download_button
     range: http://www.w3.org/2001/XMLSchema#bool
     sample_values:
-    - "0"
-    - "1"
+    - '0'
+    - '1'
   titles:
     available_on:
       class:
@@ -673,6 +673,7 @@ properties:
     available_on:
       properties:
       - titles
+      class: []
     required: true
     form:
       cols: 6
@@ -682,6 +683,7 @@ properties:
     available_on:
       properties:
       - titles
+      class: []
     values:
     - AlternativeTitle
     - Subtitle
@@ -695,6 +697,7 @@ properties:
     available_on:
       properties:
       - titles
+      class: []
     form:
       cols: 6
   dates:
@@ -726,6 +729,7 @@ properties:
     available_on:
       properties:
       - dates
+      class: []
     required: true
     form:
       cols: 4
@@ -735,6 +739,7 @@ properties:
     available_on:
       properties:
       - dates
+      class: []
     values:
     - Accepted
     - Available
@@ -755,6 +760,7 @@ properties:
     available_on:
       properties:
       - dates
+      class: []
     form:
       cols: 4
   contributors:
@@ -795,6 +801,7 @@ properties:
     available_on:
       properties:
       - contributors
+      class: []
     group: identity
     form:
       cols: 6
@@ -804,6 +811,7 @@ properties:
     available_on:
       properties:
       - contributors
+      class: []
     group: identity
     form:
       cols: 6
@@ -813,6 +821,7 @@ properties:
     available_on:
       properties:
       - contributors
+      class: []
     group: identity
     form:
       cols: 6
@@ -822,6 +831,7 @@ properties:
     available_on:
       properties:
       - contributors
+      class: []
     group: identity
     values:
     - Personal
@@ -834,6 +844,7 @@ properties:
     available_on:
       properties:
       - contributors
+      class: []
     group: role
     form:
       cols: 4
@@ -843,6 +854,7 @@ properties:
     available_on:
       properties:
       - contributors
+      class: []
     group: role
     form:
       cols: 4
@@ -852,6 +864,7 @@ properties:
     available_on:
       properties:
       - contributors
+      class: []
     group: role
     form:
       cols: 4
@@ -861,6 +874,7 @@ properties:
     available_on:
       properties:
       - contributors
+      class: []
     group: identifier
     form:
       cols: 6
@@ -870,6 +884,7 @@ properties:
     available_on:
       properties:
       - contributors
+      class: []
     group: identifier
     form:
       cols: 6
@@ -879,6 +894,7 @@ properties:
     available_on:
       properties:
       - contributors
+      class: []
     group: affiliation
     form:
       cols: 6
@@ -888,6 +904,7 @@ properties:
     available_on:
       properties:
       - contributors
+      class: []
     group: affiliation
     form:
       cols: 6
@@ -920,6 +937,7 @@ properties:
     available_on:
       properties:
       - identifiers
+      class: []
     required: true
     form:
       cols: 6
@@ -929,6 +947,7 @@ properties:
     available_on:
       properties:
       - identifiers
+      class: []
     form:
       cols: 6
   funding_references:
@@ -963,6 +982,7 @@ properties:
     available_on:
       properties:
       - funding_references
+      class: []
     group: funder
     required: true
     form:
@@ -973,6 +993,7 @@ properties:
     available_on:
       properties:
       - funding_references
+      class: []
     group: funder
     form:
       cols: 6
@@ -982,6 +1003,7 @@ properties:
     available_on:
       properties:
       - funding_references
+      class: []
     group: funder
     values:
     - Crossref Funder ID
@@ -997,6 +1019,7 @@ properties:
     available_on:
       properties:
       - funding_references
+      class: []
     group: funder
     form:
       cols: 6
@@ -1006,6 +1029,7 @@ properties:
     available_on:
       properties:
       - funding_references
+      class: []
     group: award
     form:
       cols: 4
@@ -1015,6 +1039,7 @@ properties:
     available_on:
       properties:
       - funding_references
+      class: []
     group: award
     form:
       cols: 4
@@ -1024,6 +1049,7 @@ properties:
     available_on:
       properties:
       - funding_references
+      class: []
     group: award
     form:
       cols: 4
@@ -1054,6 +1080,7 @@ properties:
     available_on:
       properties:
       - organisational_units
+      class: []
     required: true
     form:
       cols: 4
@@ -1063,6 +1090,7 @@ properties:
     available_on:
       properties:
       - organisational_units
+      class: []
     form:
       cols: 4
   organisational_unit_type:
@@ -1071,6 +1099,7 @@ properties:
     available_on:
       properties:
       - organisational_units
+      class: []
     values:
     - University
     - Faculty
@@ -1116,6 +1145,7 @@ properties:
     available_on:
       properties:
       - licenses
+      class: []
     group: statement
     form:
       cols: 6
@@ -1125,6 +1155,7 @@ properties:
     available_on:
       properties:
       - licenses
+      class: []
     group: statement
     form:
       cols: 6
@@ -1134,6 +1165,7 @@ properties:
     available_on:
       properties:
       - licenses
+      class: []
     group: statement
     form:
       cols: 6
@@ -1143,6 +1175,7 @@ properties:
     available_on:
       properties:
       - licenses
+      class: []
     group: identifier
     form:
       cols: 4
@@ -1152,6 +1185,7 @@ properties:
     available_on:
       properties:
       - licenses
+      class: []
     group: identifier
     values:
     - SPDX
@@ -1163,6 +1197,7 @@ properties:
     available_on:
       properties:
       - licenses
+      class: []
     group: identifier
     form:
       cols: 4
@@ -1172,6 +1207,7 @@ properties:
     available_on:
       properties:
       - licenses
+      class: []
     group: language
     form:
       cols: 4
@@ -1204,6 +1240,7 @@ properties:
     available_on:
       properties:
       - geo_locations
+      class: []
     group: point
     form:
       cols: 4
@@ -1213,6 +1250,7 @@ properties:
     available_on:
       properties:
       - geo_locations
+      class: []
     group: point
     form:
       cols: 4
@@ -1222,6 +1260,7 @@ properties:
     available_on:
       properties:
       - geo_locations
+      class: []
     group: point
     form:
       cols: 4
@@ -1231,6 +1270,7 @@ properties:
     available_on:
       properties:
       - geo_locations
+      class: []
     group: box
     form:
       cols: 3
@@ -1240,6 +1280,7 @@ properties:
     available_on:
       properties:
       - geo_locations
+      class: []
     group: box
     form:
       cols: 3
@@ -1249,6 +1290,7 @@ properties:
     available_on:
       properties:
       - geo_locations
+      class: []
     group: box
     form:
       cols: 3
@@ -1258,6 +1300,7 @@ properties:
     available_on:
       properties:
       - geo_locations
+      class: []
     group: box
     form:
       cols: 3
@@ -1289,6 +1332,7 @@ properties:
     available_on:
       properties:
       - relationships
+      class: []
     required: true
     form:
       cols: 6
@@ -1298,6 +1342,7 @@ properties:
     available_on:
       properties:
       - relationships
+      class: []
     required: true
     # Controlled vocabulary aligned with DataCite relationType (Object Handling
     # Spec v0.2 Sec 3.5). Stored value maps to a DataCite term so DataCite/RAiD/
@@ -1317,6 +1362,7 @@ properties:
     available_on:
       properties:
       - relationships
+      class: []
     required: false
     form:
       cols: 6
@@ -1326,6 +1372,7 @@ properties:
     available_on:
       properties:
       - relationships
+      class: []
     required: false
     # Free-text curatorial note: full-text searchable, but a facet over prose
     # adds nothing, so override the derived (_sim + _tesim) pair.
