@@ -106,8 +106,16 @@ extraEnvVars: &envVars
     value: $IIIF_CF_KEY_PAIR_ID
   - name: IIIF_CF_PRIVATE_KEY
     value: $IIIF_CF_PRIVATE_KEY
+  - name: IIIF_S3_BUCKET
+    value: enact-iiif-images
   - name: IIIF_S3_FOLDER_PREFIX
     value: production
+  - name: REPOSITORY_S3_STORAGE
+    value: "true"
+  - name: REPOSITORY_S3_BUCKET
+    value: enact-repository-production-822951369940
+  - name: REPOSITORY_S3_REGION
+    value: eu-west-1
   # Running WINGS OFF MODE, so FCREPO env vars are not needed
   # - name: GOOGLE_ANALYTICS_ID
   #   value: $GOOGLE_ANALYTICS_ID

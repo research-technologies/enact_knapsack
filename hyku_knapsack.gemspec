@@ -26,6 +26,7 @@ Gem::Specification.new do |spec|
 
   spec.add_dependency "rails", ">= 7.2.0"
   spec.add_dependency "aws-sdk-cloudfront"
+  spec.add_dependency "aws-sdk-s3"
 
   spec.add_development_dependency "rubocop-rake"
 end
