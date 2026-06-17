@@ -13,9 +13,12 @@ module Enact
   # for the `item` member). This is the single-source-of-truth design: no
   # inverse edge is duplicated onto the target.
   #
-  # Edge targets are internal works only (the compound's `work_or_url` field also
-  # accepts external URLs, but external links are a separate concern); a target
-  # value that does not resolve to an indexed work is skipped.
+  # Edge targets are internal works (the compound's `work_or_url` field) resolved
+  # to a title/path, or external URLs, emitted as external edges (the URL as both
+  # title and path) so the relationships card can link to them. An internal
+  # target that does not resolve to an indexed work is skipped. (The relationship
+  # map still graphs work-to-work edges only; external targets are not in its
+  # node set, so the map controller filters them out.)
   class RelationshipGraph
     # The DataCite-aligned controlled terms (m3 profile `relationship_type`) and
     # their inverse, used to label an inbound edge from the target's point of
@@ -29,7 +32,7 @@ module Enact
       'juxtaposed-with' => 'juxtaposed-with'
     }.freeze
 
-    Edge = Struct.new(:target_id, :title, :path, :relation_type, :note, :position, keyword_init: true)
+    Edge = Struct.new(:target_id, :title, :path, :relation_type, :note, :position, :external, keyword_init: true)
 
     # @param document [SolrDocument, #relationships] the work whose edges we render
     def initialize(document)
@@ -90,25 +93,30 @@ module Enact
       Hyrax::SolrDocument::Metadata::Solr::CompoundEntries.coerce(blob)
     end
 
-    # Build an Edge from a target value + relation type, resolving the target to
-    # an indexed internal work. Returns nil for blank values, external URLs, or
+    # Build an Edge from a target value + relation type. Internal works are
+    # resolved to their title/path; external URLs are emitted as external edges
+    # (the URL is both title and path, `external: true`) so the relationships
+    # card can link to them. Returns nil only for blank values or internal
     # targets that do not resolve to a real record.
     def build_edge(target_value, relation_type, entry, target_id: nil)
       target_value = target_value.to_s
-      return nil if target_value.blank? || Hyrax::CompoundWorkResolver.url?(target_value)
+      title, path, external = resolve_target(target_value)
+      return nil if title.nil?
+
+      Edge.new(target_id: target_id || target_value, title:, path:, relation_type:, external:,
+               note: entry['note'].presence, position: entry['position'].presence)
+    end
+
+    # Resolve a relationship target value to [title, path, external?]. External
+    # URLs use the URL as both title and path; internal ids resolve to a work's
+    # title/path. Returns nil to skip a blank value or an id that does not
+    # resolve to an indexed work.
+    def resolve_target(target_value)
+      return nil if target_value.blank?
+      return [target_value, target_value, true] if Hyrax::CompoundWorkResolver.url?(target_value)
 
       resolved = Hyrax::CompoundWorkResolver.resolve(target_value)
-      return nil if resolved.nil?
-
-      title, path = resolved
-      Edge.new(
-        target_id: target_id || target_value,
-        title:,
-        path:,
-        relation_type:,
-        note: entry['note'].presence,
-        position: entry['position'].presence
-      )
+      resolved.nil? ? nil : [*resolved, false]
     end
 
     # Sequenced edges first, in numeric position order; the rest keep their
