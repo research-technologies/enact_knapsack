@@ -48,29 +48,14 @@ RSpec.describe Enact::DisplayImagePresenterDecorator do
     context 'when digest_ssim is a plain MD5 hex string (Valkyrie mode)' do
       let(:digest_values) { ['542cd898c5be91687e6c6f2c4f53f2d5'] }
 
-      context 'without a folder prefix' do
-        before { allow(ENV).to receive(:[]).with('IIIF_S3_FOLDER_PREFIX').and_return(nil) }
-
-        it 'returns the MD5 as-is' do
-          expect(presenter.send(:external_latest_file_id))
-            .to eq('542cd898c5be91687e6c6f2c4f53f2d5')
-        end
-      end
-
-      context 'with a folder prefix' do
-        before { allow(ENV).to receive(:[]).with('IIIF_S3_FOLDER_PREFIX').and_return('staging') }
-
-        it 'percent-encodes the slash so the key is a single IIIF path segment' do
-          expect(presenter.send(:external_latest_file_id))
-            .to eq('staging%2F542cd898c5be91687e6c6f2c4f53f2d5')
-        end
+      it 'returns the MD5 as-is (Lambda resolver_template handles the S3 prefix)' do
+        expect(presenter.send(:external_latest_file_id))
+          .to eq('542cd898c5be91687e6c6f2c4f53f2d5')
       end
     end
 
     context 'when digest_ssim is in urn:sha1 format (Wings/Fedora mode)' do
       let(:digest_values) { ['urn:sha1:620cae0e5cf89d9a788cb7d8e31fcbfa78340284'] }
-
-      before { allow(ENV).to receive(:[]).with('IIIF_S3_FOLDER_PREFIX').and_return(nil) }
 
       it 'strips the URN prefix and returns the hex digest' do
         expect(presenter.send(:external_latest_file_id))
@@ -100,6 +85,12 @@ RSpec.describe Enact::DisplayImagePresenterDecorator do
       it 'returns an endpoint rooted at the same-origin /iiif/2/ path' do
         endpoint = presenter.iiif_endpoint('abc123def456', base_url: host)
         expect(endpoint.url).to eq("#{host}/iiif/2/abc123def456")
+      end
+
+      it 'prepends https:// when Hyku passes a bare hostname without scheme' do
+        # Hyku overrides Hyrax and sets hostname = request.hostname (no scheme)
+        endpoint = presenter.iiif_endpoint('abc123def456', base_url: 'demo.enact-knapsack-staging.enacthyku.com')
+        expect(endpoint.url).to eq('https://demo.enact-knapsack-staging.enacthyku.com/iiif/2/abc123def456')
       end
     end
 

@@ -1,7 +1,5 @@
 # frozen_string_literal: true
 
-require 'cgi'
-
 # OVERRIDE IiifPrint v3.0.12 – fix external_latest_file_id for Valkyrie mode and
 # route IIIF image requests through an Nginx reverse proxy so UV.js sends cookies.
 #
@@ -30,8 +28,10 @@ module Enact
     def iiif_endpoint(file_id, base_url: hostname)
       return super unless iiif_proxy_enabled?
 
+      # Hyku sets hostname = request.hostname (no scheme); ensure we have a full HTTPS URL.
+      base = base_url.start_with?('http') ? base_url : "https://#{base_url}"
       IIIFManifest::IIIFEndpoint.new(
-        File.join(base_url, 'iiif', '2', file_id),
+        "#{base}/iiif/2/#{file_id}",
         profile: Hyrax.config.iiif_image_compliance_level_uri
       )
     end
@@ -40,7 +40,8 @@ module Enact
     def display_image_url(base_url)
       return super unless iiif_proxy_enabled?
 
-      proxy_base = "#{base_url}/iiif/2"
+      base = base_url.start_with?('http') ? base_url : "https://#{base_url}"
+      proxy_base = "#{base}/iiif/2"
       url_builder = Hyrax.config.iiif_image_url_builder
       args = [latest_file_id, proxy_base, Hyrax.config.iiif_image_size_default]
       args << image_format(alpha_channels) if url_builder.arity == 4
@@ -53,9 +54,8 @@ module Enact
       raw = model['digest_ssim']&.first
       return nil if raw.blank?
 
-      hex    = raw.sub(/\Aurn:[^:]+:/, '')
-      prefix = ENV['IIIF_S3_FOLDER_PREFIX'].presence
-      CGI.escape([prefix, hex].compact.join('/'))
+      # Return just the hex digest. The Lambda resolver_template handles the S3 prefix.
+      raw.sub(/\Aurn:[^:]+:/, '')
     end
 
     def iiif_proxy_enabled?
