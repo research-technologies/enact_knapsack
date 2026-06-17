@@ -58,6 +58,12 @@
             'text-valign':'bottom', 'text-halign':'center', 'text-margin-y':6,
             'text-wrap':'wrap', 'text-max-width':'110px' } },
           { selector:'node.primary', style:{ 'border-color':'#6cc04a', 'border-width':4, 'width':58, 'height':58 } },
+          // External-URL targets: a distinct link node (rounded blue chip, dashed
+          // border, no thumbnail) so they read as "outside the repository".
+          { selector:'node[?external]', style:{
+            'shape':'round-rectangle', 'background-color':'#3b7ddd', 'background-image':'none',
+            'border-color':'#9ec5ff', 'border-width':1.5, 'border-style':'dashed',
+            'width':54, 'height':30 } },
           { selector:'edge', style:{
             'line-color': relColor, 'width':2.5, 'curve-style':'bezier',
             'label':'data(rl)', 'font-size':'9px', 'color':'#9a9a9a',
@@ -103,7 +109,12 @@
         if (d.keywords && d.keywords.length) html += `<div class="meta"><b>Keywords:</b> ${d.keywords.join(', ')}</div>`;
         if (d.closed) html += `<div class="meta"><b>Access:</b> restricted</div>`;
         if (d.description) html += `<p class="meta" style="margin-top:8px">${d.description}</p>`;
-        html += `<p style="clear:both;margin:12px 0 2px"><a class="pagelink" href="${d.path}">&#8599; View this work's page</a></p>`;
+        if (d.external) {
+          html += `<div class="meta" style="margin-top:8px;word-break:break-all"><b>URL:</b> ${d.path}</div>`;
+          html += `<p style="clear:both;margin:12px 0 2px"><a class="pagelink" href="${d.path}" target="_blank" rel="noopener noreferrer">&#8599; Open link</a></p>`;
+        } else {
+          html += `<p style="clear:both;margin:12px 0 2px"><a class="pagelink" href="${d.path}">&#8599; View this work's page</a></p>`;
+        }
         const edges = node.connectedEdges();
         if (edges.length){
           html += `<div class="legend" style="border:0;padding-top:12px"><h2>Relationships</h2>`;

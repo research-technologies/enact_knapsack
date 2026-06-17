@@ -33,17 +33,8 @@ module Enact
 
     def show
       docs = scoped_documents
-      ids = docs.map { |d| d['id'] }.to_set
-      links = docs.flat_map { |d| links_for(d) }.select { |l| ids.include?(l[:target]) }
-      # Only graph works that actually take part in a relationship. The map is
-      # about the edges (Object Handling Spec v0.2 Sec 3.5); including every work
-      # in the tenant buries the connected web under a field of unconnected
-      # nodes. A node survives iff it is the source or target of a kept link.
-      connected = links.flat_map { |l| [l[:source], l[:target]] }.to_set
-      @graph = {
-        nodes: docs.select { |d| connected.include?(d['id']) }.map { |d| node_for(d) },
-        links:
-      }
+      links = kept_links(docs)
+      @graph = { nodes: graph_nodes(docs, links), links: }
       @rel_types = rel_types
       @focus = params[:focus].to_s
       @truncated = docs.length >= MAX_WORKS
@@ -51,6 +42,23 @@ module Enact
     end
 
     private
+
+    # Edges kept for the graph: those to in-project works (the work-to-work web,
+    # Object Handling Spec v0.2 Sec 3.5) plus those to external URLs (work_or_url
+    # targets outside the repository), which render as their own link nodes.
+    def kept_links(docs)
+      ids = docs.map { |d| d['id'] }.to_set
+      docs.flat_map { |d| links_for(d) }.select { |l| ids.include?(l[:target]) || l[:external] }
+    end
+
+    # Nodes for the graph: connected works (a work survives iff it is on a kept
+    # edge, so unconnected works are dropped) plus a link node per external URL.
+    def graph_nodes(docs, links)
+      connected = links.flat_map { |l| [l[:source], l[:target]] }.to_set
+      work_nodes = docs.select { |d| connected.include?(d['id']) }.map { |d| node_for(d) }
+      url_nodes = links.select { |l| l[:external] }.map { |l| l[:target] }.uniq.map { |u| url_node_for(u) }
+      work_nodes + url_nodes
+    end
 
     # The works the map is built from. `?portfolio=<id>` scopes to a single
     # project (the portfolio plus its member works) so a portfolio's "full
@@ -104,6 +112,21 @@ module Enact
       }
     end
 
+    # A node for an external URL target (a work_or_url pointing outside the
+    # repository). Marked `external: true` so the view styles it as a link node
+    # and opens the URL instead of a work show page.
+    def url_node_for(url)
+      { id: url, label: external_label(url), type: 'External link', external: true, path: url }
+    end
+
+    # A compact, human-readable label for a URL node (its host), falling back to
+    # the full URL when it can't be parsed.
+    def external_label(url)
+      URI.parse(url).host || url
+    rescue URI::InvalidURIError
+      url
+    end
+
     # Only a real string URL is usable as a Cytoscape `background-image`;
     # thumbnail_path can return a non-string (or a default placeholder), which
     # would otherwise stringify to "[object Object]" and 404.
@@ -121,7 +144,7 @@ module Enact
     def links_for(doc)
       ::Enact::RelationshipGraph.new(doc).outbound.map do |edge|
         { source: doc['id'], target: edge.target_id, rel: edge.relation_type,
-          note: edge.note, position: edge.position }
+          note: edge.note, position: edge.position, external: edge.external }
       end
     end
 
