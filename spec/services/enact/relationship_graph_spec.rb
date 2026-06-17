@@ -57,13 +57,18 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
       expect(titles).to eq(['Target work', 'Second target'])
     end
 
-    it 'skips external URLs (internal targets only)' do
+    it 'emits external URLs as external edges (the URL is both title and path)' do
       updated = Hyrax.persister.save(resource: Hyrax.query_service.find_by(id: source.id).tap do |r|
-        r.relationships = [{ 'item' => 'https://example.org/thing', 'type' => 'documents' }]
+        r.relationships = [{ 'item' => 'https://example.org/thing', 'type' => 'documents', 'note' => 'see also' }]
       end)
       index(updated)
 
-      expect(described_class.new(solr_doc_for(updated.id)).outbound).to be_empty
+      edge = described_class.new(solr_doc_for(updated.id)).outbound.first
+      expect(edge.external).to be(true)
+      expect(edge.title).to eq('https://example.org/thing')
+      expect(edge.path).to eq('https://example.org/thing')
+      expect(edge.relation_type).to eq('documents')
+      expect(edge.note).to eq('see also')
     end
 
     it 'skips targets that do not resolve to an indexed work' do
