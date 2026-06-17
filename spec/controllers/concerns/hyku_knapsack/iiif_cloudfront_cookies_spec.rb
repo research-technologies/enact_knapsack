@@ -129,6 +129,7 @@ RSpec.describe HykuKnapsack::IiifCloudfrontCookies, type: :controller do
       it 'signs cookies using a custom policy so the wildcard Resource is honoured' do
         get :index
         expect(signer).to have_received(:signed_cookie).with(
+          'https://iiif.enacthyku.com/*',
           policy: a_string_matching(/"Resource":"https:\/\/iiif\.enacthyku\.com\/\*"/)
         )
       end

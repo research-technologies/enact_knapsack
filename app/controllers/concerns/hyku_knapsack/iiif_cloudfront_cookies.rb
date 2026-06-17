@@ -57,7 +57,7 @@ module HykuKnapsack
           "Condition" => { "DateLessThan" => { "AWS:EpochTime" => 1.hour.from_now.to_i } }
         }]
       }.to_json
-      IiifCloudfrontCookies.signer.signed_cookie(policy:)
+      IiifCloudfrontCookies.signer.signed_cookie("#{IiifCloudfrontCookies.base_url}/*", policy:)
     end
 
     def iiif_cloudfront_configured?
