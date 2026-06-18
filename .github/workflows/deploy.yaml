@@ -41,6 +41,8 @@ jobs:
       SOLR_ADMIN_PASSWORD: ${{ secrets.SOLR_ADMIN_PASSWORD }}
       TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
       TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+      IIIF_CF_KEY_PAIR_ID: ${{ secrets.IIIF_CF_KEY_PAIR_ID }}
+      IIIF_CF_PRIVATE_KEY: ${{ secrets.IIIF_CF_PRIVATE_KEY }}
     steps:
       - id: setup
         name: Setup

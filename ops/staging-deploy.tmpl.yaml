@@ -169,7 +169,25 @@ extraEnvVars: &envVars
   - name: HYKU_SHOW_BACKTRACE
     value: "true"
   - name: EXTERNAL_IIIF_URL
-    value: iiif.enacthyku.com/iiif/2
+    value: https://iiif.enacthyku.com/iiif/2
+  - name: IIIF_PROXY_ENABLED
+    value: "true"
+  - name: IIIF_CF_KEY_PAIR_ID
+    value: $IIIF_CF_KEY_PAIR_ID
+  - name: IIIF_CF_PRIVATE_KEY
+    value: $IIIF_CF_PRIVATE_KEY
+  - name: IIIF_S3_BUCKET
+    value: enact-iiif-images
+  - name: IIIF_S3_FOLDER_PREFIX
+    value: ""
+  - name: REPOSITORY_S3_STORAGE
+    value: "true"
+  - name: REPOSITORY_S3_BUCKET
+    value: enact-repository-staging-822951369940
+  - name: REPOSITORY_S3_REGION
+    value: eu-west-1
+  - name: AWS_REGION
+    value: eu-west-1
   - name: NEGATIVE_CAPTCHA_SECRET
     value: $NEGATIVE_CAPTCHA_SECRET
   # Need to flesh out a mail server for them
@@ -375,6 +393,16 @@ nginx:
           add_header Last-Modified "";
           add_header ETag "";
           break;
+        }
+
+        # Reverse-proxy IIIF requests to CloudFront so UV.js sends cookies same-origin.
+        # UV uses fetch() with credentials:'same-origin', so it won't send CloudFront signed
+        # cookies to iiif.enacthyku.com (a different origin).  Proxying /iiif/ here makes all
+        # image and info.json requests same-origin; Nginx forwards cookies upstream to CloudFront.
+        location /iiif/ {
+          proxy_set_header Host iiif.enacthyku.com;
+          proxy_ssl_server_name on;
+          proxy_pass https://iiif.enacthyku.com/iiif/;
         }
 
         # send non-static file requests to the app server
