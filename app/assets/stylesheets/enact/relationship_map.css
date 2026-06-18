@@ -1,0 +1,34 @@
+/*
+ * Styles for the standalone Enact relationship-map page
+ * (app/views/enact/relationship_map/show.html.erb). The page renders with
+ * `layout: false`, so it pulls this in with its own `stylesheet_link_tag`
+ * rather than the application stylesheet. Precompiled in
+ * config/initializers/relationship_map_assets.rb.
+ */
+:root { --bg:#181818; --panel:#222; --ink:#e8e8e8; --muted:#9a9a9a; }
+* { box-sizing:border-box; }
+html, body { margin:0; height:100%; background:var(--bg); color:var(--ink);
+  font:14px/1.5 -apple-system, Segoe UI, Roboto, Helvetica, Arial, sans-serif; }
+#app { display:flex; height:100vh; }
+#graphwrap { flex:1; position:relative; }
+#cy { position:absolute; inset:0; }
+#empty { position:absolute; inset:0; display:flex; align-items:center; justify-content:center; color:var(--muted); }
+#focusbar { position:absolute; top:12px; left:12px; background:#2b2b2b; border:1px solid #3a3a3a;
+  border-radius:6px; padding:7px 12px; font-size:12px; display:none; align-items:center; gap:10px; z-index:5; }
+#focusbar b { color:#fff; } #focusbar a { color:#6cc04a; cursor:pointer; }
+#side { width:350px; background:var(--panel); border-left:1px solid #333; padding:18px; overflow:auto; }
+h1 { font-size:15px; margin:0 0 4px; } .sub { color:var(--muted); font-size:12px; margin-bottom:16px; }
+.hint { color:var(--muted); font-size:12px; }
+.pill { display:inline-block; padding:2px 8px; border-radius:10px; font-size:11px; background:#333; color:#ddd; margin:2px 4px 2px 0; }
+.datacite { color:var(--muted); font-size:11px; font-family:ui-monospace,Menlo,monospace; }
+.rel-name { font-weight:600; }
+.narr { background:#1b1b1b; border-left:3px solid #6cc04a; padding:10px 12px; border-radius:4px; margin-top:10px; color:#d7d7d7; font-style:italic; }
+.legend { margin-top:18px; border-top:1px solid #333; padding-top:14px; }
+.legend h2 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
+.legend .row { display:flex; align-items:center; gap:8px; margin:5px 0; font-size:12px; }
+.swatch { width:22px; border-top:3px solid; flex:none; }
+.meta { color:var(--muted); font-size:12px; margin:2px 0; } .meta b { color:#ddd; font-weight:600; }
+.trunc { color:#c9a23e; font-size:11px; margin-top:10px; }
+a.reset { color:#6cc04a; cursor:pointer; font-size:12px; }
+a.pagelink { color:#6cc04a; cursor:pointer; font-weight:600; text-decoration:none; font-size:13px; }
+a.pagelink:hover { text-decoration:underline; }
