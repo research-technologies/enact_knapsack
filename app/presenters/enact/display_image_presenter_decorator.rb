@@ -4,11 +4,12 @@
 # route IIIF image requests through an Nginx reverse proxy so UV.js sends cookies.
 #
 # external_latest_file_id fix:
-#   IiifPrint's digest_sha1 expects digest_ssim in "urn:sha1:..." URN format (Wings/Fedora era).
-#   In Valkyrie mode, IiifPrint's FileSetIndexerDecorator writes digest_ssim as a plain MD5 hex
-#   string (no URN prefix), so digest_sha1 returns nil and the manifest has no canvases.
-#   We read digest_ssim directly, strip any URN prefix for Wings compat, and apply the S3 prefix.
-#   Remove when: IiifPrint handles plain hex digests in digest_sha1.
+#   The serverless-iiif Lambda reads images from the Valkyrie repository S3 bucket using the
+#   Shrine storage key as the IIIF identifier.  Shrine stores files under "uuid1/uuid2" paths;
+#   the "/" must be percent-encoded as "%2F" in the IIIF identifier segment so it isn't parsed
+#   as an IIIF path delimiter.  The Lambda decodes "%2F" back to "/" before the S3 key lookup.
+#   We look up the Shrine key via Valkyrie's custom query rather than reading digest_ssim.
+#   Remove when: IiifPrint has a first-class hook for the IIIF identifier.
 #
 # Nginx proxy fix (IIIF_PROXY_ENABLED):
 #   UV.js uses fetch() with credentials:'same-origin' (the default), so it will not send
@@ -51,11 +52,10 @@ module Enact
     private
 
     def external_latest_file_id
-      raw = model['digest_ssim']&.first
-      return nil if raw.blank?
+      key = model['iiif_file_identifier_ss']
+      return nil if key.blank?
 
-      # Return just the hex digest. The Lambda resolver_template handles the S3 prefix.
-      raw.sub(/\Aurn:[^:]+:/, '')
+      key.gsub('/', '%2F')
     end
 
     def iiif_proxy_enabled?

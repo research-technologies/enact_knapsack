@@ -45,27 +45,16 @@ RSpec.describe Enact::DisplayImagePresenterDecorator do
   before { allow(ENV).to receive(:[]).and_call_original }
 
   describe '#external_latest_file_id' do
-    context 'when digest_ssim is a plain MD5 hex string (Valkyrie mode)' do
-      let(:digest_values) { ['542cd898c5be91687e6c6f2c4f53f2d5'] }
+    context 'when iiif_file_identifier_ss is present in the Solr document' do
+      let(:solr_doc) { { 'iiif_file_identifier_ss' => 'uuid-part-1/uuid-part-2' } }
 
-      it 'returns the MD5 as-is (Lambda resolver_template handles the S3 prefix)' do
-        expect(presenter.send(:external_latest_file_id))
-          .to eq('542cd898c5be91687e6c6f2c4f53f2d5')
+      it 'returns the S3 key with / encoded as %2F' do
+        expect(presenter.send(:external_latest_file_id)).to eq('uuid-part-1%2Fuuid-part-2')
       end
     end
 
-    context 'when digest_ssim is in urn:sha1 format (Wings/Fedora mode)' do
-      let(:digest_values) { ['urn:sha1:620cae0e5cf89d9a788cb7d8e31fcbfa78340284'] }
-
-      it 'strips the URN prefix and returns the hex digest' do
-        expect(presenter.send(:external_latest_file_id))
-          .to eq('620cae0e5cf89d9a788cb7d8e31fcbfa78340284')
-      end
-    end
-
-    context 'when digest_ssim is absent' do
+    context 'when iiif_file_identifier_ss is absent (disk-stored or not yet reindexed)' do
       let(:solr_doc) { {} }
-      let(:digest_values) { nil }
 
       it 'returns nil' do
         expect(presenter.send(:external_latest_file_id)).to be_nil
