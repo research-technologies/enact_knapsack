@@ -168,8 +168,8 @@ extraEnvVars: &envVars
     value: enact-knapsack-staging.enacthyku.com
   - name: HYKU_SHOW_BACKTRACE
     value: "true"
-  # - name: EXTERNAL_IIIF_URL
-  #   value: https://iiif.enacthyku.com/iiif/2
+  - name: EXTERNAL_IIIF_URL
+    value: https://iiif-staging.enacthyku.com/iiif/2
   - name: REPOSITORY_S3_STORAGE
     value: "true"
   - name: REPOSITORY_S3_BUCKET
