@@ -24,7 +24,7 @@ on:
 jobs:
   build:
     permissions: write-all
-    uses: notch8/actions/.github/workflows/build.yaml@v1.0.10
+    uses: notch8/actions/.github/workflows/build.yaml@log_in_to_dockerhub_for_build
     secrets: inherit
     with:
       components: '["web","worker","solr"]'
