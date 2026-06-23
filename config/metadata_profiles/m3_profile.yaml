@@ -5,7 +5,7 @@ profile:
   responsibility: https://notch8.com
   responsibility_statement: Notch8 / Enact PR Voices Discovery
   type: Enact PR Voices Profile
-  version: 3
+  version: 4
 classes:
   AdminSetResource:
     display_label: AdminSet
@@ -772,125 +772,102 @@ properties:
     display_label:
       default: Contributors
     form:
-      primary: false
+      primary: true
     mappings:
       simple_dc_pmh: dc:contributor
     property_uri: http://purl.org/dc/elements/1.1/contributor
     range: https://prvoices.org/types#hash
-    groups:
-      identity:
-        label: Identity
-      role:
-        label: Role
-      identifier:
-        label: Identifier
-      affiliation:
-        label: Affiliation
     view:
       render_as: compound
       html_dl: true
-  contributor_given_name:
-    type: string
-    name: given_name
+      display: card
+  contributor_ref:
+    type: linked_record
+    name: contributor
+    # Names the registered linked-record source (Hyrax::CompoundLinkedRecordResolver
+    # + the generic linked_record QA authority at
+    # /authorities/search/linked_record/contributors).
+    authority: contributors
+    # Which field of the resolved contributor supplies the show-page link text.
+    view:
+      label_field: display_name
+    # Profile-driven lookup-OR-create: when a search finds no match, the picker
+    # offers "Add new" and shows this form. Field input types are declared here
+    # so the generic add-form renders without model knowledge.
+    creatable: true
+    create_fields:
+    - name: display_name
+      as: string
+      required: true
+    - name: orcid
+      as: string
+    - name: agent_type
+      as: select
+      values:
+      - person
+      - organization
+    # Affiliations — a repeatable plain-string field; the create form renders
+    # add/remove rows and posts back an array of strings into the model's
+    # multi-valued `affiliations`.
+    - name: affiliations
+      as: string
+      repeatable: true
+    # Name identifiers (ISNI/VIAF/ROR/…) — a repeatable group of {value, scheme}
+    # pairs, distinct from the dedicated ORCID field above. Posts back an array
+    # of hashes into the model's `name_identifiers`.
+    - name: name_identifiers
+      as: group
+      repeatable: true
+      fields:
+      - name: value
+        as: string
+      - name: scheme
+        as: select
+        values:
+        - ISNI
+        - VIAF
+        - ROR
+        - Other
     available_on:
       properties:
       - contributors
-    group: identity
+    required: true
     form:
       cols: 6
-  contributor_family_name:
-    type: string
-    name: family_name
-    available_on:
-      properties:
-      - contributors
-    group: identity
-    form:
-      cols: 6
-  contributor_name:
-    type: string
-    name: name
-    available_on:
-      properties:
-      - contributors
-    group: identity
-    form:
-      cols: 6
-  contributor_name_type:
+  contributor_role:
     type: controlled
-    name: name_type
+    name: role
     available_on:
       properties:
       - contributors
-    group: identity
-    values:
-    - Personal
-    - Organizational
+    required: false
+    # Controlled role vocabulary backed by the `contributor_roles` local QA
+    # authority (config/authorities/contributor_roles.yml) — the 14 NISO CRediT
+    # terms plus practice-research roles. The STORED value is the authority `id`
+    # code (e.g. "data-curation"), never the label, exactly as `relationship_type`
+    # stores "source-of". The same authority is the single source of truth for
+    # Enact::ContributorRolesService (labels + the CRediT URI / DataCite
+    # contributorType / MARC relator interop mapping a future minter reads), so the deposit
+    # vocabulary and the interop lookups cannot drift.
+    authority: contributor_roles
     form:
       cols: 6
-  contributor_role_label:
+  contributor_role_other:
     type: string
-    name: role_label
+    name: role_other
     available_on:
       properties:
       - contributors
-    group: role
+    required: false
+    # Free-text fallback (Principle 4: never block deposit, no data lost). When a
+    # contributor's role is not in the controlled list, it is captured here
+    # verbatim; a curator later promotes a recurring term into the controlled
+    # vocabulary + Enact::ContributorRolesService. Full-text searchable only — a facet
+    # over free prose adds nothing, so override the derived (_sim + _tesim) pair.
+    indexing:
+    - contributors_role_other_tesim
     form:
-      cols: 4
-  contributor_role_id:
-    type: string
-    name: role_id
-    available_on:
-      properties:
-      - contributors
-    group: role
-    form:
-      cols: 4
-  contributor_role_vocabulary:
-    type: string
-    name: role_vocabulary
-    available_on:
-      properties:
-      - contributors
-    group: role
-    form:
-      cols: 4
-  contributor_name_identifier:
-    type: string
-    name: name_identifier
-    available_on:
-      properties:
-      - contributors
-    group: identifier
-    form:
-      cols: 6
-  contributor_scheme_uri:
-    type: string
-    name: scheme_uri
-    available_on:
-      properties:
-      - contributors
-    group: identifier
-    form:
-      cols: 6
-  contributor_affiliation:
-    type: string
-    name: affiliation
-    available_on:
-      properties:
-      - contributors
-    group: affiliation
-    form:
-      cols: 6
-  contributor_affiliation_identifier:
-    type: string
-    name: affiliation_identifier
-    available_on:
-      properties:
-      - contributors
-    group: affiliation
-    form:
-      cols: 6
+      cols: 12
   identifiers:
     available_on:
       class:

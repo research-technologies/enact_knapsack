@@ -76,18 +76,18 @@ compound_mappings = {
   'relationship_note' => { from: ['relationship_note'], object: 'relationships', nested_attributes: true, name: 'note' }
 }
 
-# Hyku's defaults ship sample-compound mappings (participants, identifiers,
-# relationships) that read the same CSV columns as ours or target compounds the
-# Enact profile does not declare. Drop them so a column like relationship_item
-# is consumed exactly once, by our mapping. (`path`/`is_display_url` stay -
-# redirects is a real Hyku feature, not a sample.)
-HYKU_SAMPLE_COMPOUND_KEYS = %w[name role participant_title value identifier_type
-                               item relationship_type relationship_title].freeze
-
+# Hyku's defaults ship their own sample-compound mappings for some of the same
+# CSV columns we map here. Rather than maintain a hand-written list of keys to
+# drop (which drifts as Hyku's defaults change), derive it per parser: drop the
+# Hyku default keys our `compound_mappings` also defines, then merge ours in, so
+# each shared column is consumed exactly once by our mapping. Redirects keys
+# (`path` / `is_display_url`) and any Hyku mapping we do not redefine are left
+# untouched.
 mappings = Hyku.default_bulkrax_field_mappings.deep_dup
 mappings.each_key do |parser|
+  overlapping = mappings[parser].keys & compound_mappings.keys
   mappings[parser] = mappings[parser]
-                     .except(*HYKU_SAMPLE_COMPOUND_KEYS)
+                     .except(*overlapping)
                      .merge(compound_mappings)
 end
 Hyku.default_bulkrax_field_mappings = mappings
