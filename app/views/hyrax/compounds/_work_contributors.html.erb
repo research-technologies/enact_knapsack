@@ -1,0 +1,40 @@
+<%# Enact contributors block for a work show page. Renders the work's
+    `contributors` compound GROUPED by contributor, so a person/organization with
+    several roles appears once with all of its roles joined (rather than the
+    generic compound renderer's one-row-per-entry, which repeats the name).
+
+    Each contributor links to its profile; an ORCID (when present) links out; the
+    role codes resolve to labels via Enact::ContributorRolesService. Mirrors the
+    relationships card's _related_within_project partial.
+
+    Locals:
+      presenter - a work show presenter (responds to #solr_document)
+%>
+<% credits = Enact::WorkContributors.new(presenter.solr_document).credits %>
+
+<% if credits.empty? %>
+  <p class="text-muted mb-0"><%= t('enact.contributors.none') %></p>
+<% else %>
+  <ul class="list-unstyled enact-contributors mb-0">
+    <% credits.each do |credit| %>
+      <li class="enact-contributor mb-2">
+        <span class="enact-contributor-name">
+          <%= credit.path.present? ? link_to(credit.label, credit.path) : credit.label %>
+        </span>
+        <% if credit.orcid.present? %>
+          <%# ORCID icon (Hyrax ships app/assets/images/orcid.png); links to the
+              ORCID record. The id stays in the title/alt for accessibility. %>
+          <%= link_to credit.orcid, class: 'enact-contributor-orcid', target: '_blank',
+                      rel: 'noopener', title: credit.orcid do %>
+            <%= image_tag 'orcid.png', alt: t('enact.contributors.orcid'), width: 16, height: 16,
+                          class: 'enact-orcid-icon' %>
+          <% end %>
+        <% end %>
+        <% roles = credit.roles.map { |code| Enact::ContributorRolesService.label(code) } + credit.role_other %>
+        <% if roles.present? %>
+          <span class="enact-contributor-roles text-muted">— <%= roles.join(', ') %></span>
+        <% end %>
+      </li>
+    <% end %>
+  </ul>
+<% end %>
