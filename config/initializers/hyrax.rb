@@ -54,7 +54,7 @@ Rails.application.config.to_prepare do
   CatalogController.blacklight_config.facet_fields['generic_type_sim'].helper_method = :work_type_facet_label
 
   member_of_collections = CatalogController.blacklight_config.facet_fields['member_of_collections_ssim']
-  member_of_collections.label = 'User Collections' if member_of_collections
+  member_of_collections.label = I18n.t('activerecord.models.collection_resource', count: 2) if member_of_collections
 
   # Ensure knapsack view overrides win over the hyrax-webapp / Hyrax-gem copies.
   # HykuKnapsack::Engine prepends the knapsack view path in an `after_initialize`
@@ -64,9 +64,15 @@ Rails.application.config.to_prepare do
   # knapsack override. Re-prepending here (to_prepare runs on every reload) keeps
   # knapsack overrides effective. Knapsack `app/views` holds only Enact-specific
   # views plus our intentional overrides, so this only affects those partials.
+  #
+  # Use prepend_view_path (guarded so it is a no-op once knapsack is already
+  # first) rather than reassigning view_paths from stringified resolvers, which
+  # would drop any non-filesystem resolvers (e.g. Hyku's theme resolvers).
   knapsack_views = HykuKnapsack::Engine.root.join('app', 'views').to_s
   ([::ApplicationController] + ::ApplicationController.descendants).each do |klass|
-    klass.view_paths = ([knapsack_views] + klass.view_paths.collect(&:to_s)).uniq
+    next if klass.view_paths.first&.to_s == knapsack_views
+
+    klass.prepend_view_path(knapsack_views)
   end
 end
 

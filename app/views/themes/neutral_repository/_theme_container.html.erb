@@ -1,6 +1,7 @@
-<%# OVERRIDE Hyku v7.1.0 (neutral_repository theme): "Collections" -> "User Collections" heading to %>
-<%# disambiguate from the PortfolioItemCollection work type. Only the heading %>
-<%# text differs from the webapp copy. %>
+<%# OVERRIDE Hyku v7.1.0 (neutral_repository theme): relabel the collections %>
+<%# section heading "Collections" -> "User Collections" to disambiguate from the %>
+<%# PortfolioItemCollection work type. Only the heading text differs from the %>
+<%# webapp copy. %>
 <div class="theme-container">
   <div class="col-12 col-lg-8 mb-30 pr-4">
     <!-- Adding a mobile style for the homepage text content block, hidden on md and lg -->
@@ -26,7 +27,7 @@
 
     <div class="row mb-30 mt-4">
       <div class="col-12 featured-collection-section">
-        <h2 class='mt-4'>User Collections</h2>
+        <h2 class='mt-4'><%= t('activerecord.models.collection_resource', count: 2) %></h2>
         <%= render 'featured_collection_section' %>
       </div>
     </div>
