@@ -68,6 +68,33 @@ RSpec.describe Enact::ContributorGraph do
       expect(works.first.roles).to eq(['conceptualization', 'data-curation'])
     end
 
+    it 'collects free-text role_other alongside controlled roles' do
+      docs = [
+        work_doc(
+          id: 'work-1', title: 'First Work',
+          entries: [
+            { 'contributor' => '42', 'role' => 'conceptualization' },
+            { 'contributor' => '42', 'role_other' => 'Artist' }
+          ]
+        )
+      ]
+      stub_query_service(docs)
+
+      credit = graph.works.first
+      expect(credit.roles).to eq(['conceptualization'])
+      expect(credit.role_other).to eq(['Artist'])
+    end
+
+    it 'surfaces a role_other when the entry has no controlled role' do
+      docs = [work_doc(id: 'work-1', title: 'First Work',
+                       entries: [{ 'contributor' => '42', 'role_other' => 'Artist' }])]
+      stub_query_service(docs)
+
+      credit = graph.works.first
+      expect(credit.roles).to eq([])
+      expect(credit.role_other).to eq(['Artist'])
+    end
+
     it 'carries the work thumbnail and type label for the credited-works list' do
       docs = [work_doc(id: 'work-1', title: 'First Work', thumbnail: '/assets/work-thumb.png',
                        type_label: 'Event', entries: [{ 'contributor' => '42', 'role' => 'methodology' }])]

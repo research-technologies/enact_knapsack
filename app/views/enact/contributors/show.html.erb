@@ -63,10 +63,13 @@
                 <% end %>
                 <%= work.path.present? ? link_to(title, work.path) : title %>
               </div>
-              <% if work.roles.present? %>
+              <% if work.roles.present? || work.role_other.present? %>
                 <div class="enact-contributor-work-roles mt-1">
                   <% work.roles.each do |code| %>
                     <span class="badge enact-role-badge"><%= Enact::ContributorRolesService.label(code) %></span>
+                  <% end %>
+                  <% work.role_other.each do |role| %>
+                    <span class="badge enact-role-badge"><%= role %></span>
                   <% end %>
                 </div>
               <% end %>

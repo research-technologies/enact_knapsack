@@ -16,7 +16,7 @@ module Enact
   # roles on the same work).
   class ContributorGraph
     # A work this contributor is credited on.
-    Credit = Struct.new(:id, :title, :path, :roles, :thumbnail, :type_label, keyword_init: true)
+    Credit = Struct.new(:id, :title, :path, :roles, :role_other, :thumbnail, :type_label, keyword_init: true)
 
     # @param contributor [Enact::Contributor, #id]
     # @param ability [Ability] the viewer's abilities; the reverse lookup is
@@ -48,17 +48,19 @@ module Enact
                              .solr_documents(rows: 1_000)
     end
 
-    # Build a Credit from a work doc, collecting only the roles whose entry
-    # belongs to this contributor.
+    # Build a Credit from a work doc, collecting both the controlled roles and
+    # the free-text role_other whose entry belongs to this contributor. The view
+    # renders both as role badges (controlled codes via ContributorRolesService,
+    # role_other verbatim), so a credit whose only role is free text still shows
+    # a role — mirroring the work-side Enact::WorkContributors card.
     def build_credit(doc, id)
-      roles = contributor_entries(doc)
-              .select { |entry| entry['contributor'].to_s == id }
-              .filter_map { |entry| entry['role'].presence }
+      ours = contributor_entries(doc).select { |entry| entry['contributor'].to_s == id }
       Credit.new(
         id: doc.id,
         title: Array(doc['title_tesim']).first.to_s,
         path: Hyrax::CompoundWorkResolver.path_for(doc.id),
-        roles:,
+        roles: ours.filter_map { |entry| entry['role'].presence },
+        role_other: ours.filter_map { |entry| entry['role_other'].presence },
         # The work's indexed thumbnail (thumbnail_path_ss), exposed by
         # SolrDocument#thumbnail_path; nil for a raw hit without the reader.
         thumbnail: (doc.thumbnail_path if doc.respond_to?(:thumbnail_path)),
