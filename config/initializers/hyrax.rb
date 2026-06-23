@@ -42,6 +42,34 @@ Hyrax.config do |config|
   ].uniq
 end
 
+# Rename the generic "Collection" label in the Type facet to "User Collection"
+# so it is distinct from PortfolioItemCollection. The work_type_facet_label
+# helper already translates class-name strings via activerecord.models.*, so
+# "Collection" → activerecord.models.collection → "User Collection".
+#
+# Also relabel the "member of collections" facet. catalog_controller.rb sets its
+# label inline ('Collections'), which beats any blacklight.* locale key, so it
+# must be overridden on the config here rather than via a translation.
+Rails.application.config.to_prepare do
+  CatalogController.blacklight_config.facet_fields['generic_type_sim'].helper_method = :work_type_facet_label
+
+  member_of_collections = CatalogController.blacklight_config.facet_fields['member_of_collections_ssim']
+  member_of_collections.label = 'User Collections' if member_of_collections
+
+  # Ensure knapsack view overrides win over the hyrax-webapp / Hyrax-gem copies.
+  # HykuKnapsack::Engine prepends the knapsack view path in an `after_initialize`
+  # hook, but in development the code reloader resets each controller's
+  # `view_paths` on reload, so that one-time prepend is lost and the webapp's
+  # copy of a partial (e.g. catalog/_index_list_default) renders instead of the
+  # knapsack override. Re-prepending here (to_prepare runs on every reload) keeps
+  # knapsack overrides effective. Knapsack `app/views` holds only Enact-specific
+  # views plus our intentional overrides, so this only affects those partials.
+  knapsack_views = HykuKnapsack::Engine.root.join('app', 'views').to_s
+  ([::ApplicationController] + ::ApplicationController.descendants).each do |klass|
+    klass.view_paths = ([knapsack_views] + klass.view_paths.collect(&:to_s)).uniq
+  end
+end
+
 # Curation-concern registration needs the work-type constants resolvable, so
 # defer it to after_initialize when Zeitwerk has set up autoload paths.
 Rails.application.config.after_initialize do
