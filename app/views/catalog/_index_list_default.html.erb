@@ -9,7 +9,7 @@
 <%#   - i18n the collection count-badge labels so "Collections" reads as %>
 <%#     "User Collections", distinct from the PortfolioItemCollection work type %>
 
-<div class="ol-md-9 col-lg-6">
+<div class="col-md-9 col-lg-6">
   <div class="metadata">
     <dl>
       <% doc_presenter = index_presenter(document) %>
@@ -27,7 +27,7 @@
       <% if current_account.search_only %>
         <% if document.account_institution_name.first.present? %>
           <small class="search-only-institution-link">
-            <span>From: <%= link_to "//#{document.account_cname.first}", target: :_blank do %>
+            <span>From: <%= link_to "//#{document.account_cname.first}", target: :_blank, rel: "noopener noreferrer" do %>
               <%= document.account_institution_name&.join %>
             <% end %></span>
           </small>

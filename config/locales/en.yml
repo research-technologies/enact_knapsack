@@ -106,7 +106,7 @@ en:
         action:
           add_to_collection: Add to user collection
           collection_create_success: User Collection was successfully created.
-          collection_delete_success: User Collection was successfully deleted
+          collection_delete_success: User Collection was successfully deleted.
           collection_update_success: User Collection was successfully updated.
       collection_type_actions:
         create_collection: Create user collection
