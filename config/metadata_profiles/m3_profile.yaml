@@ -10,7 +10,7 @@ classes:
   AdminSetResource:
     display_label: AdminSet
   CollectionResource:
-    display_label: Collection
+    display_label: User Collection
   Hyrax::FileSet:
     display_label: FileSet
   Portfolio:
