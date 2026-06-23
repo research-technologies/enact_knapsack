@@ -21,12 +21,22 @@ en:
         relationship_type: Relationship
         relationship_position: Position
         relationship_note: Note
+        member_of_collection_ids: Add to user collection
+    placeholders:
+      defaults:
+        member_of_collection_ids: Select a user collection…
     hints:
       defaults:
         rights_statement: Rights associated with the portfolio record (distinct from rights on individual portfolio items, which carry their own license claims).
         item_subtype: A finer-grained type controlled by vocabulary for the chosen item type.
         relationship_position: Optional order number for sequenced relationships (lowest shown first).
         relationship_note: Optional free text describing why these works are related (the curatorial "why").
+  # Top-level Rails helpers namespace (NOT under `hyrax`). Hyrax renders the
+  # "Add New Collection" button via t('helpers.action.collection.new').
+  helpers:
+    action:
+      collection:
+        new: Add New User Collection
   activerecord:
     models:
       portfolio:
@@ -44,20 +54,85 @@ en:
       portfolio_item_collection:
         one: Collection
         other: Collections
+      collection:
+        one: User Collection
+        other: User Collections
+      collection_resource:
+        one: User Collection
+        other: User Collections
   hyrax:
+    admin:
+      sidebar:
+        collections: User Collections
+        collections_report: User Collections Report
+      analytics:
+        collection_reports:
+          index:
+            title: User Collections Report
+            report_header: Custom User Collections Report
+          show:
+            title: User Collection Report
+            return_to_btn: Return to User Collections Report
+          top_collections:
+            top_collections: Top User Collections
+    # Labels for the count badges on a collection's catalog search-result row
+    # (sub-collections nested within it, and member works). "User Collections"
+    # disambiguates from the PortfolioItemCollection work type.
+    collection_counts:
+      collections: User Collections
+      works: Works
+    # Rename the generic Hyrax "Collection" object to "User Collection" wherever a
+    # depositor/admin sees the bare noun, to disambiguate from the
+    # PortfolioItemCollection work type. We intentionally do NOT rename the
+    # collection-TYPE system (hyrax.admin.sidebar.collection_types,
+    # hyrax.admin.collection_types.*): "User Collection" is one type among Admin
+    # Set / Exhibits, so "User Collection Types" would be incorrect.
+    collection:
+      select_form:
+        title: Add to user collection
+        create_new: Add to new User Collection
+    dashboard:
+      breadcrumbs:
+        collections_report: User Collections Report
+      all:
+        collections: All User Collections
+      managed:
+        collections: Managed User Collections
+      my:
+        collections: User Collections
+        your_collections: Your User Collections
+        facet_label:
+          collections: 'Filter user collections:'
+        action:
+          add_to_collection: Add to user collection
+          collection_create_success: User Collection was successfully created.
+          collection_delete_success: User Collection was successfully deleted
+          collection_update_success: User Collection was successfully updated.
+      collection_type_actions:
+        create_collection: Create user collection
+      stats:
+        collections: User Collections created
+    homepage:
+      admin_sets:
+        link: View all user collections
+        tab_label: Explore User Collections
+        title: Explore User Collections
+      featured_collections:
+        no_collections: No user collections have been featured.
+        title: Featured User Collections
+    search:
+      form:
+        option:
+          my_collections:
+            label_long: My User Collections
+            label_short: My User Collections
     models:
       portfolio: Portfolio
       portfolio_artefact: Artefact
       portfolio_event: Event
       portfolio_literature: Literature
       portfolio_item_collection: Collection
-    work:
-      type:
-        portfolio: Portfolio
-        portfolio_artefact: Artefact
-        portfolio_event: Event
-        portfolio_literature: Literature
-        portfolio_item_collection: Collection
+      collection_resource: User Collection
     select_type:
       portfolio:
         name: Portfolio
