@@ -155,6 +155,9 @@ en:
         reset: Reset
         type_label: Type
         type_all: All
+        pagination: Research profiles pages
+        prev_page: "‹ Prev"
+        next_page: "Next ›"
       works:
         heading: Works
         empty: No works yet.

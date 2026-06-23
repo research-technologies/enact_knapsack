@@ -45,6 +45,22 @@ RSpec.describe 'Enact contributors pages', type: :request, singletenant: true do
       get '/contributors', params: { q: 'Ada' }
       expect(response.body).to include('>Reset<')
     end
+
+    it 'renders pagination links when there is more than one page' do
+      # 24 per page; create enough to spill onto a second page so the paginator
+      # renders its page-link URLs for this engine-mounted route.
+      30.times { |i| Enact::Contributor.create!(display_name: format('Pager %02d', i)) }
+      get '/contributors'
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('/contributors?page=2')
+    end
+
+    it 'keeps the active filter in the pagination links' do
+      30.times { |i| Enact::Contributor.create!(display_name: format('Org %02d', i), agent_type: 'organization') }
+      get '/contributors', params: { agent_type: 'organization' }
+      expect(response).to have_http_status(:ok)
+      expect(response.body).to include('agent_type=organization').and include('page=2')
+    end
   end
 
   describe 'GET /contributors/:id (show)' do
