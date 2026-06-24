@@ -1,12 +1,11 @@
 <%# OVERRIDE / bring-forward of Hyrax/Hyku's themed _featured_researcher partial
-    into the knapsack so we can add a "View all researchers" button beneath the
-    curated featured-researcher content block. Resolved for the default home
-    theme (no theme view path injected); mirrors the theme partials' content.
+    into the knapsack so we can add a "View all research profiles" button beneath
+    the curated featured-researcher content block.
 
-    @featured_researcher is the admin-curated `featured_researcher` ContentBlock
-    (rich text). The button is pure navigation to the contributors browse index;
-    it is styled to match the home page "view all collections" button
-    (btn btn-secondary mt-1 inside a list-inline). %>
+    The button's placement here is TEMPORARY — a stop-gap so the profiles page is
+    reachable at all. Revisit and relocate it once where the "research profiles"
+    link belongs (nav, a landing section, …) is decided. The button is pure
+    navigation to the contributors browse index. %>
 <div class="featured-researcher mb-4 p-2">
   <% if @featured_researcher.value.present? %>
     <%= displayable_content_block @featured_researcher %>

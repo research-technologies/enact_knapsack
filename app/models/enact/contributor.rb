@@ -19,11 +19,19 @@ module Enact
 
     validates :display_name, presence: true
 
+    # Optional, but unique when present (a partial unique index is the DB-level
+    # guarantee; this surfaces a clean error rather than a raw constraint violation).
+    validates :orcid, uniqueness: { case_sensitive: false }, allow_nil: true
+
     # The enum `default:` only applies when `agent_type` is never assigned; a
     # form that submits a blank select option assigns "" and clobbers it, hitting
     # the NOT NULL column. Coerce any blank value back to the default so every
     # write path (inline picker, profile edit, import) is safe.
     before_validation { self.agent_type = 'person' if agent_type.blank? }
+
+    # A blank ORCID is stored as NULL, not "", so ORCID-less contributors stay
+    # outside the uniqueness constraint instead of colliding as empty strings.
+    before_validation { self.orcid = nil if orcid.blank? }
 
     # Affiliations are multi-valued, stored as an array under the `affiliation`
     # jsonb key. The reader coerces for backward compatibility: a value saved as

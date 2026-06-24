@@ -45,6 +45,31 @@ RSpec.describe Enact::Contributor do
     end
   end
 
+  describe 'orcid (optional, unique when present)' do
+    it 'allows many contributors with no orcid' do
+      described_class.create!(display_name: 'No ORCID One')
+      expect(described_class.new(display_name: 'No ORCID Two')).to be_valid
+    end
+
+    it 'stores a blank orcid as nil rather than an empty string' do
+      contributor = described_class.create!(display_name: 'Blank ORCID', orcid: '')
+      expect(contributor.orcid).to be_nil
+    end
+
+    it 'rejects a second contributor with the same orcid (case-insensitive)' do
+      described_class.create!(display_name: 'First', orcid: 'https://orcid.org/0000-0002-1825-0097')
+      dup = described_class.new(display_name: 'Second', orcid: 'HTTPS://ORCID.ORG/0000-0002-1825-0097')
+      expect(dup).not_to be_valid
+      expect(dup.errors[:orcid]).to be_present
+    end
+
+    it 'allows the same contributor to keep its orcid on update' do
+      contributor = described_class.create!(display_name: 'Ada', orcid: 'https://orcid.org/0000-0001-2345-6789')
+      contributor.display_name = 'Ada Lovelace'
+      expect(contributor).to be_valid
+    end
+  end
+
   describe 'affiliations (multi-valued, jsonb-backed)' do
     it 'stores an array of affiliations in the metadata blob' do
       contributor = described_class.create!(display_name: 'Ada', affiliations: ['Analytical Society', 'Westminster'])

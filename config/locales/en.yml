@@ -159,6 +159,5 @@ en:
         prev_page: "‹ Prev"
         next_page: "Next ›"
       works:
-        heading: Works
         empty: No works yet.
         untitled: Untitled
