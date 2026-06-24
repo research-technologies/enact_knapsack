@@ -36,18 +36,26 @@ module Enact
 
     # CRediT role URI, or nil for a practice role / unknown code.
     def credit_uri(code)
-      authority.find(code.to_s)['credit_uri']
+      term(code)['credit_uri']
     end
 
     # DataCite contributorType for the code, "Other" for an unknown code so a
     # minter always has a valid DataCite value to emit.
     def datacite(code)
-      authority.find(code.to_s)['datacite'] || 'Other'
+      term(code)['datacite'] || 'Other'
     end
 
     # MARC relator code where one fits, else nil.
     def marc(code)
-      authority.find(code.to_s)['marc']
+      term(code)['marc']
+    end
+
+    # The authority's full term hash for a code, or {} for an unknown code. The
+    # QA local authority returns {} today, but `find` is a pinned-dependency
+    # contract that could return nil on a future bump; normalizing here keeps the
+    # interop lookups degrading as documented rather than raising.
+    def term(code)
+      authority.find(code.to_s) || {}
     end
   end
 end

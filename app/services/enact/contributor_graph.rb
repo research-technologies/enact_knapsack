@@ -40,7 +40,9 @@ module Enact
     private
 
     # Works whose `contributors` compound names this contributor, scoped to the
-    # viewer's ability.
+    # viewer's ability. The `rows` cap is a stop-gap: the profile renders an
+    # unpaginated list, so it is impractical well before 1000 works anyway.
+    # Pagination + search is tracked in issue #54.
     def accessible_docs_crediting(id)
       Hyrax::SolrQueryService.new
                              .with_field_pairs(field_pairs: { 'contributors_contributor_ssim' => id })

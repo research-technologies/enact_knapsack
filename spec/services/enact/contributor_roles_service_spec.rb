@@ -76,4 +76,23 @@ RSpec.describe Enact::ContributorRolesService do
       expect(profile.dig('properties', 'contributor_role', 'values')).to be_nil
     end
   end
+
+  # The QA local authority returns {} for an unknown code today, but `find` is a
+  # pinned-dependency contract; a future bump could return nil instead. The interop
+  # lookups must degrade as their docstrings promise either way, never raising.
+  describe 'unknown code when the authority returns nil' do
+    before { allow(described_class.authority).to receive(:find).and_return(nil) }
+
+    it 'credit_uri is nil' do
+      expect(described_class.credit_uri('whatever')).to be_nil
+    end
+
+    it 'marc is nil' do
+      expect(described_class.marc('whatever')).to be_nil
+    end
+
+    it 'datacite still falls back to "Other"' do
+      expect(described_class.datacite('whatever')).to eq('Other')
+    end
+  end
 end

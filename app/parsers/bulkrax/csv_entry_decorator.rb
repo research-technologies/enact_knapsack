@@ -40,13 +40,19 @@ module Bulkrax
     # Sourced from the M3 profile on disk (the file EnactCompoundNormalization
     # loads), so an import decision needs no DB/schema context.
     def self.linked_record_member(source:, compound:)
-      properties = YAML.safe_load(::File.read(EnactCompoundNormalization::PROFILE_PATH))['properties'] || {}
-      properties.values.find do |config|
+      profile_properties.values.find do |config|
         config.is_a?(::Hash) &&
           config['type'] == 'linked_record' &&
           config['authority'].to_s == source.to_s &&
           Array(config.dig('available_on', 'properties')).include?(compound)
       end
+    end
+
+    # The M3 profile's `properties` hash, parsed once and memoized — build_metadata
+    # runs per imported row, so reading and parsing the YAML each call would be a
+    # per-row I/O + parse cost on large imports. The profile is static at runtime.
+    def self.profile_properties
+      @profile_properties ||= YAML.safe_load(::File.read(EnactCompoundNormalization::PROFILE_PATH))['properties'] || {}
     end
 
     private
@@ -69,8 +75,9 @@ module Bulkrax
     # keys actually present in the CSV are forwarded, so an absent column never
     # overwrites a model default with a blank.
     def extract_contributor_attrs(entry)
-      attrs = { display_name: entry.delete(CONTRIBUTOR_MEMBER).to_s.strip,
-                orcid: entry.delete('orcid').to_s.strip }
+      attrs = { display_name: entry.delete(CONTRIBUTOR_MEMBER).to_s.strip }
+      orcid = entry.delete('orcid').to_s.strip
+      attrs[:orcid] = orcid if orcid.present?
       agent_type = entry.delete('agent_type').to_s.strip
       attrs[:agent_type] = agent_type if agent_type.present?
       attrs[:affiliations] = split_entries(entry.delete('affiliation')) if entry.key?('affiliation')

@@ -60,4 +60,22 @@ RSpec.describe 'Enact :contributors linked_record match proc' do
       expect(result.agent_type).to eq('person')
     end
   end
+
+  # Both procs accept string-keyed attrs, not only symbols — so a caller passing
+  # a string-keyed Hash (or ActionController::Parameters) matches and creates
+  # correctly rather than reading every key as blank.
+  describe 'string-keyed attributes' do
+    it 'matches an existing record from string keys' do
+      expect(Hyrax::CompoundLinkedRecordResolver.match(:contributors, 'display_name' => 'Ada Lovelace')).to eq(ada)
+    end
+
+    it 'creates from string keys with attributes assigned' do
+      created = Hyrax::CompoundLinkedRecordResolver.create(
+        :contributors, 'display_name' => 'Grace Hopper', 'orcid' => 'https://orcid.org/0000-0003-0001-0002'
+      )
+      expect(created).to be_persisted
+      expect(created.display_name).to eq('Grace Hopper')
+      expect(created.orcid).to eq('https://orcid.org/0000-0003-0001-0002')
+    end
+  end
 end

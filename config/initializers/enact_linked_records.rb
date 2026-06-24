@@ -49,6 +49,7 @@ module Enact
     # `name_identifiers` a repeatable group (an Array of {value, scheme} hashes);
     # both feed the model's multi-valued writers.
     def create(attrs)
+      attrs = indifferent(attrs)
       contributor = Enact::Contributor.new(attrs.slice(:display_name, :orcid, :agent_type))
       contributor.affiliations = attrs[:affiliations] if attrs.key?(:affiliations)
       contributor.name_identifiers = attrs[:name_identifiers] if attrs.key?(:name_identifiers)
@@ -64,6 +65,7 @@ module Enact
     # alone. Both comparisons are exact and case-insensitive; order(:id) makes the
     # result deterministic if legacy duplicates exist.
     def match(attrs)
+      attrs = indifferent(attrs)
       orcid = attrs[:orcid].to_s.strip
       if orcid.present?
         found = Enact::Contributor.where('LOWER(orcid) = LOWER(?)', orcid).order(:id).first
@@ -73,6 +75,15 @@ module Enact
       return nil if name.blank?
 
       Enact::Contributor.where('LOWER(display_name) = LOWER(?)', name).order(:id).first
+    end
+
+    # Accept symbol- or string-keyed attrs (and ActionController::Parameters):
+    # the import decorator passes symbols and the Hyrax create endpoint already
+    # deep-symbolizes, but normalizing here keeps both procs working for any
+    # caller rather than silently reading every key as blank.
+    def indifferent(attrs)
+      raw = attrs.respond_to?(:to_unsafe_h) ? attrs.to_unsafe_h : attrs
+      raw.to_h.with_indifferent_access
     end
   end
 end
