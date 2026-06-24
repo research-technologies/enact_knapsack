@@ -1,0 +1,78 @@
+/* Enact contributors card (work show page). The ORCID affordance is an icon-
+   only link, so suppress the default link underline (and any hover underline)
+   that would otherwise draw a line under the icon. Loaded into the global app
+   bundle via an explicit `require enact/contributors` in
+   hyku_knapsack/application.css (the manifest's `require_tree .` only sweeps its
+   own directory, not this enact/ subdir), so it applies under every theme. */
+.enact-contributor-orcid,
+.enact-contributor-orcid:hover,
+.enact-contributor-orcid:focus {
+  text-decoration: none;
+}
+
+.enact-contributor-orcid .enact-orcid-icon {
+  vertical-align: text-bottom;
+}
+
+/* Browse-index cards. The meta row keeps the type badge and ORCID icon on one
+   baseline; affiliation sits beneath the name. */
+.enact-contributors-index .enact-contributor-card .card-title a {
+  text-decoration: none;
+}
+
+.enact-contributors-index .enact-contributor-meta {
+  display: flex;
+  align-items: center;
+}
+
+.enact-contributors-index .enact-contributor-affiliation {
+  color: #6c757d;
+}
+
+/* Profile show page. Header groups identity (type badge + ORCID icon) on one
+   row; affiliations read as a separated inline list; each credit's roles render
+   as light badges after the work title. */
+.enact-contributor-show .enact-contributor-header {
+  border-bottom: 1px solid #e9ecef;
+  padding-bottom: 1rem;
+}
+
+.enact-contributor-show .enact-contributor-identity {
+  display: flex;
+  align-items: center;
+}
+
+.enact-contributor-show .enact-contributor-affiliations .list-inline-item:not(:last-child)::after {
+  content: "\00b7"; /* middot separator between affiliations */
+  margin-left: 0.5rem;
+  color: #adb5bd;
+}
+
+/* Role badges. Give explicit, self-contained colors rather than relying on
+   Bootstrap's `.badge-light`, which the theme renders as near-invisible light
+   text on a light background. Readable gray-on-light with a subtle border. */
+.enact-contributor-show .enact-role-badge {
+  font-weight: 400;
+  margin-left: 0.25rem;
+  color: #343a40 !important;
+  background-color: #e9ecef !important;
+  border: 1px solid #ced4da !important;
+}
+
+.enact-contributor-show .enact-contributor-work-title {
+  font-weight: 500;
+}
+
+/* Work thumbnails in the credited-works list. Match the work-show member-list
+   treatment (Hyrax's `.related-files .thumbnail`): a fixed-width box with the
+   image scaled to fit and aspect ratio preserved — not shown full size. */
+.enact-contributor-show .enact-contributor-work-thumb {
+  flex: 0 0 auto;
+  width: 80px;
+}
+
+.enact-contributor-show .enact-work-thumb-img {
+  display: block;
+  max-width: 100%;
+  height: auto;
+}

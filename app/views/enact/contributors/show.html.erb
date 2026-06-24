@@ -1,0 +1,84 @@
+<%# Contributor profile page: a profile header (name, type badge, ORCID icon,
+    affiliations) over a "Works" section listing the works crediting this
+    contributor (access-scoped to the viewer), with each credit's roles shown as
+    badges. The claimed/unclaimed indicator and claim CTA come later. %>
+<div class="container enact-contributor-show">
+  <header class="enact-contributor-header mb-4">
+    <div class="d-flex justify-content-between align-items-start">
+      <h1 class="mb-2"><%= @contributor.display_name %></h1>
+      <%# Edit is admin-gated in the controller; only surface the link to admins. %>
+      <% if current_ability.admin? %>
+        <%= link_to t('enact.contributors.edit.link', default: 'Edit'),
+                    "/contributors/#{@contributor.id}/edit",
+                    class: 'btn btn-outline-secondary btn-sm' %>
+      <% end %>
+    </div>
+
+    <div class="enact-contributor-identity text-muted">
+      <span class="badge badge-secondary enact-contributor-type">
+        <%= t("enact.contributors.types.#{@contributor.agent_type}", default: @contributor.agent_type.humanize) %>
+      </span>
+      <% if @contributor.orcid.present? %>
+        <%= link_to @contributor.orcid, class: 'enact-contributor-orcid ml-1', target: '_blank',
+                    rel: 'noopener', title: @contributor.orcid do %>
+          <%= image_tag 'orcid.png', alt: t('enact.contributors.orcid'), width: 16, height: 16,
+                        class: 'enact-orcid-icon' %>
+        <% end %>
+      <% end %>
+      <%# General name identifiers (ISNI/VIAF/ROR/…), multi-valued, distinct from ORCID. %>
+      <% @contributor.name_identifiers.each do |ident| %>
+        <span class="enact-contributor-identifier ml-2">
+          <% if ident['scheme'].present? %>
+            <span class="enact-contributor-identifier-scheme"><%= ident['scheme'] %>:</span>
+          <% end %>
+          <%= ident['value'] %>
+        </span>
+      <% end %>
+    </div>
+
+    <% if @contributor.affiliations.present? %>
+      <ul class="list-inline enact-contributor-affiliations text-muted mt-2 mb-0">
+        <% @contributor.affiliations.each do |affiliation| %>
+          <li class="list-inline-item"><%= affiliation %></li>
+        <% end %>
+      </ul>
+    <% end %>
+  </header>
+
+  <section class="enact-contributor-works">
+    <% if @works.present? %>
+      <ul class="list-unstyled">
+        <% @works.each do |work| %>
+          <li class="enact-contributor-work d-flex align-items-start mb-3">
+            <% if work.thumbnail.present? %>
+              <%= link_to(work.path || '#', class: 'enact-contributor-work-thumb mr-3', tabindex: -1, 'aria-hidden': true) do %>
+                <%= image_tag work.thumbnail, alt: '', class: 'enact-work-thumb-img' %>
+              <% end %>
+            <% end %>
+            <div class="enact-contributor-work-body">
+              <% title = work.title.presence || t('enact.contributors.works.untitled', default: 'Untitled') %>
+              <div class="enact-contributor-work-title">
+                <% if work.type_label.present? %>
+                  <span class="enact-contributor-work-type text-muted"><%= work.type_label %>:</span>
+                <% end %>
+                <%= work.path.present? ? link_to(title, work.path) : title %>
+              </div>
+              <% if work.roles.present? || work.role_other.present? %>
+                <div class="enact-contributor-work-roles mt-1">
+                  <% Array(work.roles).each do |code| %>
+                    <span class="badge enact-role-badge"><%= Enact::ContributorRolesService.label(code) %></span>
+                  <% end %>
+                  <% Array(work.role_other).each do |role| %>
+                    <span class="badge enact-role-badge"><%= role %></span>
+                  <% end %>
+                </div>
+              <% end %>
+            </div>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-muted"><%= t('enact.contributors.works.empty', default: 'No works yet.') %></p>
+    <% end %>
+  </section>
+</div>

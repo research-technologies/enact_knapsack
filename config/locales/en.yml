@@ -21,12 +21,15 @@ en:
         relationship_type: Relationship
         relationship_position: Position
         relationship_note: Note
+        contributor_role: Role
+        contributor_role_other: Other role
     hints:
       defaults:
         rights_statement: Rights associated with the portfolio record (distinct from rights on individual portfolio items, which carry their own license claims).
         item_subtype: A finer-grained type controlled by vocabulary for the chosen item type.
         relationship_position: Optional order number for sequenced relationships (lowest shown first).
         relationship_note: Optional free text describing why these works are related (the curatorial "why").
+        contributor_role_other: Use only when the role is not in the list above; a curator may add it to the controlled vocabulary later.
   activerecord:
     models:
       portfolio:
@@ -45,6 +48,25 @@ en:
         one: Collection
         other: Collections
   hyrax:
+    compound_fields:
+      linked_record:
+        # Fallback placeholder for any linked_record picker.
+        placeholder: Search
+        add_new: "+ Add new"
+        create: Create
+        cancel: Cancel
+        # Per-source placeholder, keyed by the subproperty's `authority:`.
+        contributors:
+          placeholder: Search for a contributor
+        # Add-form field labels, keyed by create_field name (and group sub-field name).
+        fields:
+          display_name: Name
+          orcid: ORCID
+          agent_type: Type
+          affiliations: Affiliation
+          name_identifiers: Name identifiers
+          value: Identifier
+          scheme: Scheme
     models:
       portfolio: Portfolio
       portfolio_artefact: Artefact
@@ -95,3 +117,47 @@ en:
         referenced-by: Is referenced by
         documented-by: Is documented by
         juxtaposed-with: Is juxtaposed with
+    homepage:
+      featured_researcher:
+        # Button on the home page Featured Researcher tab linking to the
+        # contributors browse index ("Research profiles").
+        view_all: View all research profiles
+    contributors:
+      agent_type: Type
+      affiliation: Affiliation
+      affiliations: Affiliations
+      display_name: Name
+      name_identifiers: Name identifiers
+      # Empty state + ORCID link label for the work show-page contributors card.
+      none: No contributors listed.
+      orcid: ORCID
+      # Admin-gated profile edit (Phase 1: no owner/claim yet).
+      edit:
+        title: Edit profile
+        link: Edit
+        submit: Save
+        cancel: Cancel
+        updated: Profile updated.
+        forbidden: You are not authorized to edit this profile.
+        affiliations_hint: One affiliation per line.
+        name_identifiers_hint: "One identifier per line as `value | scheme` (e.g. 0000000121032683 | ISNI)."
+      # Human labels for the agent_type enum (person | organization).
+      types:
+        person: Person
+        organization: Organization
+      index:
+        title: Research profiles
+        empty: No research profiles yet.
+        no_results: No research profiles match your search.
+        search_label: Search
+        search_placeholder: Search by name or ORCID
+        search_submit: Search
+        reset: Reset
+        type_label: Type
+        type_all: All
+        pagination: Research profiles pages
+        prev_page: "‹ Prev"
+        next_page: "Next ›"
+      works:
+        empty: No works yet.
+        untitled: Untitled

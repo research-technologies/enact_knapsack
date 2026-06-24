@@ -15,9 +15,11 @@ RSpec.describe PortfolioIndexer do
     # Hyrax::Indexers::CompoundIndexer derives the Solr field names per member
     # as `<compound>_<name>_<suffix>` from the member's type, so a string
     # member lands in `<compound>_<name>_tesim` (and `_sim`).
+    # A contributors entry is a `contributor` linked_record reference (a record
+    # id -> `contributors_contributor_ssim`), a controlled `role`, and a
+    # free-text `role_other` (-> `contributors_role_other_tesim`).
     let(:contributor) do
-      { 'given_name' => 'Avery', 'family_name' => 'Brooks',
-        'name' => 'Avery Brooks' }
+      { 'contributor' => '42', 'role' => 'conceptualization', 'role_other' => 'Sound design' }
     end
     let(:license) { { 'rights_label' => 'CC BY 4.0' } }
     let(:funder) { { 'funder_name' => 'AHRC' } }
@@ -36,7 +38,10 @@ RSpec.describe PortfolioIndexer do
 
     it 'writes derived <compound>_<name>_tesim fields to Solr' do
       doc = described_class.new(resource:).to_solr
-      expect(doc['contributors_name_tesim']).to include('Avery Brooks')
+      # The linked_record contributor ref indexes its id for reverse lookup;
+      # the free-text role_other indexes full-text.
+      expect(doc['contributors_contributor_ssim']).to include('42')
+      expect(doc['contributors_role_other_tesim']).to include(a_string_including('Sound design'))
       expect(doc['licenses_rights_label_tesim']).to include('CC BY 4.0')
       expect(doc['funding_references_funder_name_tesim']).to include('AHRC')
       expect(doc['organisational_units_name_tesim']).to include('School of Music')

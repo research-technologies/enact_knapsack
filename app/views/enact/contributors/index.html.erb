@@ -1,0 +1,98 @@
+<%# Browse-all contributors (linked from the home page Featured Researcher tab):
+    a search box (name / ORCID) + person/organization filter above a card grid.
+    Each card shows the type badge, ORCID icon (consistent with the work
+    contributors card), and affiliation when present. Work-credit counts are a
+    later addition. %>
+<div class="container enact-contributors-index">
+  <h1><%= t('enact.contributors.index.title', default: 'Research profiles') %></h1>
+
+  <%# GET form so the search/filter is bookmarkable and paginates cleanly. %>
+  <%= form_with url: '/contributors', method: :get, class: 'enact-contributors-search mb-4' do |f| %>
+    <div class="form-row align-items-end">
+      <div class="col-md-6 mb-2">
+        <%= label_tag :q, t('enact.contributors.index.search_label', default: 'Search'), class: 'form-label small text-muted' %>
+        <%= search_field_tag :q, @search,
+                             placeholder: t('enact.contributors.index.search_placeholder', default: 'Search by name or ORCID'),
+                             class: 'form-control' %>
+      </div>
+      <div class="col-md-3 mb-2">
+        <%= label_tag :agent_type, t('enact.contributors.index.type_label', default: 'Type'), class: 'form-label small text-muted' %>
+        <%= select_tag :agent_type,
+                       options_for_select(contributor_type_options, @agent_type),
+                       class: 'form-control' %>
+      </div>
+      <div class="col-md-3 mb-2">
+        <%= submit_tag t('enact.contributors.index.search_submit', default: 'Search'), class: 'btn btn-primary' %>
+        <%# Reset clears every filter by linking to the bare index (no params).
+            Shown only when a search term or type filter is active. %>
+        <% if @search.present? || @agent_type %>
+          <%= link_to t('enact.contributors.index.reset', default: 'Reset'),
+                      '/contributors', class: 'btn btn-outline-secondary ml-1' %>
+        <% end %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @contributors.any? %>
+    <div class="row enact-contributor-cards">
+      <% @contributors.each do |contributor| %>
+        <div class="col-sm-6 col-lg-4 mb-3">
+          <div class="card h-100 enact-contributor-card">
+            <div class="card-body">
+              <h2 class="h5 card-title mb-1">
+                <%= link_to contributor.display_name, "/contributors/#{contributor.id}" %>
+              </h2>
+              <div class="enact-contributor-meta text-muted small">
+                <span class="badge badge-secondary enact-contributor-type">
+                  <%= t("enact.contributors.types.#{contributor.agent_type}", default: contributor.agent_type.humanize) %>
+                </span>
+                <% if contributor.orcid.present? %>
+                  <%= link_to contributor.orcid, class: 'enact-contributor-orcid ml-1', target: '_blank',
+                              rel: 'noopener', title: contributor.orcid do %>
+                    <%= image_tag 'orcid.png', alt: t('enact.contributors.orcid'), width: 16, height: 16,
+                                  class: 'enact-orcid-icon' %>
+                  <% end %>
+                <% end %>
+              </div>
+              <% if contributor.affiliations.present? %>
+                <div class="enact-contributor-affiliation small mt-1"><%= contributor.affiliations.join(', ') %></div>
+              <% end %>
+            </div>
+          </div>
+        </div>
+      <% end %>
+    </div>
+
+    <%# Pagination is rendered manually rather than with Kaminari's `paginate`:
+        this route lives in the knapsack's isolated engine, and Kaminari resolves
+        page links by string-keyed controller/action through url_for, which only
+        honors symbol keys — so the engine route never matches. Building links from
+        the engine path helper sidesteps that and keeps the active filters. %>
+    <% if @contributors.total_pages > 1 %>
+      <% page_link = ->(page) { HykuKnapsack::Engine.routes.url_helpers.enact_contributors_path(page: page, q: @search.presence, agent_type: @agent_type) } %>
+      <nav aria-label="<%= t('enact.contributors.index.pagination', default: 'Research profiles pages') %>">
+        <ul class="pagination justify-content-center">
+          <li class="page-item <%= 'disabled' unless @contributors.prev_page %>">
+            <%= link_to t('enact.contributors.index.prev_page', default: '‹ Prev'), page_link.call(@contributors.prev_page || 1), class: 'page-link' %>
+          </li>
+          <% (1..@contributors.total_pages).each do |page| %>
+            <li class="page-item <%= 'active' if page == @contributors.current_page %>">
+              <%= link_to page, page_link.call(page), class: 'page-link' %>
+            </li>
+          <% end %>
+          <li class="page-item <%= 'disabled' unless @contributors.next_page %>">
+            <%= link_to t('enact.contributors.index.next_page', default: 'Next ›'), page_link.call(@contributors.next_page || @contributors.total_pages), class: 'page-link' %>
+          </li>
+        </ul>
+      </nav>
+    <% end %>
+  <% else %>
+    <p class="text-muted">
+      <% if @search.present? || @agent_type %>
+        <%= t('enact.contributors.index.no_results', default: 'No research profiles match your search.') %>
+      <% else %>
+        <%= t('enact.contributors.index.empty', default: 'No research profiles yet.') %>
+      <% end %>
+    </p>
+  <% end %>
+</div>

@@ -1,0 +1,64 @@
+<%# Admin-gated contributor profile edit (Phase 1: no owner/claim yet, so only
+    admins/curators reach this — see ContributorsController#require_admin!).
+    Edits the identity fields the model holds; affiliation is jsonb-backed. %>
+<div class="container enact-contributor-edit">
+  <h1><%= t('enact.contributors.edit.title', default: 'Edit profile') %></h1>
+
+  <% if @contributor.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% @contributor.errors.full_messages.each do |msg| %>
+          <li><%= msg %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @contributor, url: "/contributors/#{@contributor.id}", method: :patch,
+                scope: :contributor, local: true do |f| %>
+    <div class="form-group">
+      <%= f.label :display_name, t('enact.contributors.display_name', default: 'Name') %>
+      <%= f.text_field :display_name, class: 'form-control', required: true %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :agent_type, t('enact.contributors.agent_type', default: 'Type') %>
+      <%= f.select :agent_type,
+                   Enact::Contributor.agent_types.keys.map { |type| [t("enact.contributors.types.#{type}", default: type.humanize), type] },
+                   {}, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :orcid, t('enact.contributors.orcid', default: 'ORCID') %>
+      <%= f.url_field :orcid, class: 'form-control',
+                      placeholder: 'https://orcid.org/0000-0000-0000-0000' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :affiliations, t('enact.contributors.affiliations', default: 'Affiliations') %>
+      <%= f.text_area :affiliations, value: @contributor.affiliations.join("\n"), rows: 3, class: 'form-control' %>
+      <small class="form-text text-muted">
+        <%= t('enact.contributors.edit.affiliations_hint', default: 'One affiliation per line.') %>
+      </small>
+    </div>
+
+    <%# Name identifiers (ISNI/VIAF/ROR/…), multi-valued and distinct from the
+        dedicated ORCID field. One per line as `value | scheme`, mirroring the
+        affiliations textarea idiom; the controller parses the lines into the
+        model's `name_identifiers` array of {value, scheme} hashes. %>
+    <div class="form-group">
+      <%= f.label :name_identifiers, t('enact.contributors.name_identifiers', default: 'Name identifiers') %>
+      <%= f.text_area :name_identifiers, rows: 3, class: 'form-control',
+                      value: @contributor.name_identifiers.map { |n| [n['value'], n['scheme']].compact.join(' | ') }.join("\n") %>
+      <small class="form-text text-muted">
+        <%= t('enact.contributors.edit.name_identifiers_hint', default: 'One identifier per line as `value | scheme` (e.g. 0000000121032683 | ISNI).') %>
+      </small>
+    </div>
+
+    <div class="form-group">
+      <%= f.submit t('enact.contributors.edit.submit', default: 'Save'), class: 'btn btn-primary' %>
+      <%= link_to t('enact.contributors.edit.cancel', default: 'Cancel'),
+                  "/contributors/#{@contributor.id}", class: 'btn btn-outline-secondary ml-1' %>
+    </div>
+  <% end %>
+</div>
