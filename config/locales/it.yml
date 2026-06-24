@@ -1,0 +1,103 @@
+# Knapsack "User Collection" terminology overrides (Italian).
+# Mirrors the collection-rename keys in en.yml so the Collection -> User
+# Collection relabel is consistent in the Italian UI. Hyku/Hyrax supply all other
+# Italian strings. NOTE: machine-assisted translations - please have a native
+# Italian speaker review before relying on these in production.
+it:
+  simple_form:
+    labels:
+      defaults:
+        member_of_collection_ids: Aggiungi a collezione utente
+    placeholders:
+      defaults:
+        member_of_collection_ids: Seleziona una collezione utente…
+  helpers:
+    action:
+      collection:
+        new: Aggiungi nuova collezione utente
+  activerecord:
+    models:
+      collection:
+        one: Collezione utente
+        other: Collezioni utente
+      collection_resource:
+        one: Collezione utente
+        other: Collezioni utente
+  hyrax:
+    admin:
+      sidebar:
+        collections: Collezioni utente
+        collections_report: Report delle collezioni utente
+      analytics:
+        collection_reports:
+          index:
+            title: Report delle collezioni utente
+            report_header: Report personalizzato delle collezioni utente
+          show:
+            title: Report della collezione utente
+            return_to_btn: Torna al report delle collezioni utente
+          top_collections:
+            top_collections: Collezioni utente principali
+    base:
+      member_of_collections:
+        header: Membro di collezioni utente
+    collections:
+      collection_counts:
+        collections: Collezioni utente
+    collection:
+      select_form:
+        title: Aggiungi a collezione utente
+        create_new: Aggiungi a nuova collezione utente
+    dashboard:
+      breadcrumbs:
+        collections_report: Report delle collezioni utente
+      all:
+        collections: Tutte le collezioni utente
+      managed:
+        collections: Collezioni utente gestite
+      my:
+        collections: Collezioni utente
+        your_collections: Le tue collezioni utente
+        facet_label:
+          collections: 'Filtra collezioni utente:'
+        action:
+          add_to_collection: Aggiungi a collezione utente
+          collection_create_success: Collezione utente creata con successo.
+          collection_delete_success: Collezione utente eliminata con successo.
+          collection_update_success: Collezione utente aggiornata con successo.
+      collection_type_actions:
+        create_collection: Crea collezione utente
+      stats:
+        collections: Collezioni utente create
+    homepage:
+      admin_sets:
+        link: Visualizza tutte le collezioni utente
+        tab_label: Esplora le collezioni utente
+        title: Esplora le collezioni utente
+      featured_collections:
+        no_collections: Nessuna collezione utente è stata messa in evidenza.
+        title: Collezioni utente in evidenza
+    search:
+      form:
+        option:
+          my_collections:
+            label_long: Le mie collezioni utente
+            label_short: Le mie collezioni utente
+    models:
+      collection_resource: Collezione utente
+  hyku:
+    admin:
+      stats:
+        tab_collections: Collezioni utente
+        collections_over_time: Collezioni utente nel tempo
+    generic_type:
+      collection: Collezione utente
+    themes:
+      browse_by_collection: Sfoglia per collezione utente
+      collections: Collezioni utente
+      featured_collections: Collezioni utente in evidenza
+  blacklight:
+    search:
+      fields:
+        facet:
+          member_of_collections_ssim: Collezioni utente

@@ -1,0 +1,103 @@
+# Knapsack "User Collection" terminology overrides (Chinese).
+# Mirrors the collection-rename keys in en.yml so the Collection -> User
+# Collection relabel is consistent in the Chinese UI. Hyku/Hyrax supply all other
+# Chinese strings. NOTE: machine-assisted translations - please have a native
+# Chinese speaker review before relying on these in production.
+zh:
+  simple_form:
+    labels:
+      defaults:
+        member_of_collection_ids: 添加到用户收藏
+    placeholders:
+      defaults:
+        member_of_collection_ids: 选择一个用户收藏…
+  helpers:
+    action:
+      collection:
+        new: 添加新的用户收藏
+  activerecord:
+    models:
+      collection:
+        one: 用户收藏
+        other: 用户收藏
+      collection_resource:
+        one: 用户收藏
+        other: 用户收藏
+  hyrax:
+    admin:
+      sidebar:
+        collections: 用户收藏
+        collections_report: 用户收藏报告
+      analytics:
+        collection_reports:
+          index:
+            title: 用户收藏报告
+            report_header: 自定义用户收藏报告
+          show:
+            title: 用户收藏报告
+            return_to_btn: 返回用户收藏报告
+          top_collections:
+            top_collections: 热门用户收藏
+    base:
+      member_of_collections:
+        header: 所属用户收藏
+    collections:
+      collection_counts:
+        collections: 用户收藏
+    collection:
+      select_form:
+        title: 添加到用户收藏
+        create_new: 添加到新的用户收藏
+    dashboard:
+      breadcrumbs:
+        collections_report: 用户收藏报告
+      all:
+        collections: 所有用户收藏
+      managed:
+        collections: 管理的用户收藏
+      my:
+        collections: 用户收藏
+        your_collections: 您的用户收藏
+        facet_label:
+          collections: '筛选用户收藏：'
+        action:
+          add_to_collection: 添加到用户收藏
+          collection_create_success: 用户收藏创建成功。
+          collection_delete_success: 用户收藏删除成功。
+          collection_update_success: 用户收藏更新成功。
+      collection_type_actions:
+        create_collection: 创建用户收藏
+      stats:
+        collections: 已创建的用户收藏
+    homepage:
+      admin_sets:
+        link: 查看所有用户收藏
+        tab_label: 浏览用户收藏
+        title: 浏览用户收藏
+      featured_collections:
+        no_collections: 尚未推荐任何用户收藏。
+        title: 推荐用户收藏
+    search:
+      form:
+        option:
+          my_collections:
+            label_long: 我的用户收藏
+            label_short: 我的用户收藏
+    models:
+      collection_resource: 用户收藏
+  hyku:
+    admin:
+      stats:
+        tab_collections: 用户收藏
+        collections_over_time: 用户收藏随时间变化
+    generic_type:
+      collection: 用户收藏
+    themes:
+      browse_by_collection: 按用户收藏浏览
+      collections: 用户收藏
+      featured_collections: 推荐用户收藏
+  blacklight:
+    search:
+      fields:
+        facet:
+          member_of_collections_ssim: 用户收藏

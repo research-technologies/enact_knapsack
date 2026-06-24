@@ -1,0 +1,103 @@
+# Knapsack "User Collection" terminology overrides (Brazilian Portuguese).
+# Mirrors the collection-rename keys in en.yml so the Collection -> User
+# Collection relabel is consistent in the pt-BR UI. Hyku/Hyrax supply all other
+# pt-BR strings. NOTE: machine-assisted translations - please have a native
+# Brazilian Portuguese speaker review before relying on these in production.
+pt-BR:
+  simple_form:
+    labels:
+      defaults:
+        member_of_collection_ids: Adicionar à coleção do usuário
+    placeholders:
+      defaults:
+        member_of_collection_ids: Selecione uma coleção do usuário…
+  helpers:
+    action:
+      collection:
+        new: Adicionar nova coleção do usuário
+  activerecord:
+    models:
+      collection:
+        one: Coleção do usuário
+        other: Coleções do usuário
+      collection_resource:
+        one: Coleção do usuário
+        other: Coleções do usuário
+  hyrax:
+    admin:
+      sidebar:
+        collections: Coleções do usuário
+        collections_report: Relatório de coleções do usuário
+      analytics:
+        collection_reports:
+          index:
+            title: Relatório de coleções do usuário
+            report_header: Relatório personalizado de coleções do usuário
+          show:
+            title: Relatório de coleção do usuário
+            return_to_btn: Voltar ao relatório de coleções do usuário
+          top_collections:
+            top_collections: Principais coleções do usuário
+    base:
+      member_of_collections:
+        header: Membro de coleções do usuário
+    collections:
+      collection_counts:
+        collections: Coleções do usuário
+    collection:
+      select_form:
+        title: Adicionar à coleção do usuário
+        create_new: Adicionar a nova coleção do usuário
+    dashboard:
+      breadcrumbs:
+        collections_report: Relatório de coleções do usuário
+      all:
+        collections: Todas as coleções do usuário
+      managed:
+        collections: Coleções do usuário gerenciadas
+      my:
+        collections: Coleções do usuário
+        your_collections: Suas coleções do usuário
+        facet_label:
+          collections: 'Filtrar coleções do usuário:'
+        action:
+          add_to_collection: Adicionar à coleção do usuário
+          collection_create_success: Coleção do usuário criada com sucesso.
+          collection_delete_success: Coleção do usuário excluída com sucesso.
+          collection_update_success: Coleção do usuário atualizada com sucesso.
+      collection_type_actions:
+        create_collection: Criar coleção do usuário
+      stats:
+        collections: Coleções do usuário criadas
+    homepage:
+      admin_sets:
+        link: Ver todas as coleções do usuário
+        tab_label: Explorar coleções do usuário
+        title: Explorar coleções do usuário
+      featured_collections:
+        no_collections: Nenhuma coleção do usuário foi destacada.
+        title: Coleções do usuário em destaque
+    search:
+      form:
+        option:
+          my_collections:
+            label_long: Minhas coleções do usuário
+            label_short: Minhas coleções do usuário
+    models:
+      collection_resource: Coleção do usuário
+  hyku:
+    admin:
+      stats:
+        tab_collections: Coleções do usuário
+        collections_over_time: Coleções do usuário ao longo do tempo
+    generic_type:
+      collection: Coleção do usuário
+    themes:
+      browse_by_collection: Navegar por coleção do usuário
+      collections: Coleções do usuário
+      featured_collections: Coleções do usuário em destaque
+  blacklight:
+    search:
+      fields:
+        facet:
+          member_of_collections_ssim: Coleções do usuário

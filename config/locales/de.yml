@@ -1,0 +1,103 @@
+# Knapsack "User Collection" terminology overrides (German).
+# Mirrors the collection-rename keys in en.yml so the Collection -> User
+# Collection relabel is consistent in the German UI. Hyku/Hyrax supply all other
+# German strings. NOTE: machine-assisted translations - please have a native
+# German speaker review before relying on these in production.
+de:
+  simple_form:
+    labels:
+      defaults:
+        member_of_collection_ids: Zur Benutzersammlung hinzufügen
+    placeholders:
+      defaults:
+        member_of_collection_ids: Benutzersammlung auswählen…
+  helpers:
+    action:
+      collection:
+        new: Neue Benutzersammlung hinzufügen
+  activerecord:
+    models:
+      collection:
+        one: Benutzersammlung
+        other: Benutzersammlungen
+      collection_resource:
+        one: Benutzersammlung
+        other: Benutzersammlungen
+  hyrax:
+    admin:
+      sidebar:
+        collections: Benutzersammlungen
+        collections_report: Bericht zu Benutzersammlungen
+      analytics:
+        collection_reports:
+          index:
+            title: Bericht zu Benutzersammlungen
+            report_header: Angepasster Bericht zu Benutzersammlungen
+          show:
+            title: Bericht zu Benutzersammlung
+            return_to_btn: Zurück zum Bericht zu Benutzersammlungen
+          top_collections:
+            top_collections: Top-Benutzersammlungen
+    base:
+      member_of_collections:
+        header: Mitglied von Benutzersammlungen
+    collections:
+      collection_counts:
+        collections: Benutzersammlungen
+    collection:
+      select_form:
+        title: Zur Benutzersammlung hinzufügen
+        create_new: Zu neuer Benutzersammlung hinzufügen
+    dashboard:
+      breadcrumbs:
+        collections_report: Bericht zu Benutzersammlungen
+      all:
+        collections: Alle Benutzersammlungen
+      managed:
+        collections: Verwaltete Benutzersammlungen
+      my:
+        collections: Benutzersammlungen
+        your_collections: Ihre Benutzersammlungen
+        facet_label:
+          collections: 'Benutzersammlungen filtern:'
+        action:
+          add_to_collection: Zur Benutzersammlung hinzufügen
+          collection_create_success: Benutzersammlung wurde erfolgreich erstellt.
+          collection_delete_success: Benutzersammlung wurde erfolgreich gelöscht.
+          collection_update_success: Benutzersammlung wurde erfolgreich aktualisiert.
+      collection_type_actions:
+        create_collection: Benutzersammlung erstellen
+      stats:
+        collections: Erstellte Benutzersammlungen
+    homepage:
+      admin_sets:
+        link: Alle Benutzersammlungen anzeigen
+        tab_label: Benutzersammlungen entdecken
+        title: Benutzersammlungen entdecken
+      featured_collections:
+        no_collections: Es wurden keine Benutzersammlungen vorgestellt.
+        title: Vorgestellte Benutzersammlungen
+    search:
+      form:
+        option:
+          my_collections:
+            label_long: Meine Benutzersammlungen
+            label_short: Meine Benutzersammlungen
+    models:
+      collection_resource: Benutzersammlung
+  hyku:
+    admin:
+      stats:
+        tab_collections: Benutzersammlungen
+        collections_over_time: Benutzersammlungen im Zeitverlauf
+    generic_type:
+      collection: Benutzersammlung
+    themes:
+      browse_by_collection: Nach Benutzersammlung durchsuchen
+      collections: Benutzersammlungen
+      featured_collections: Vorgestellte Benutzersammlungen
+  blacklight:
+    search:
+      fields:
+        facet:
+          member_of_collections_ssim: Benutzersammlungen

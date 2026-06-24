@@ -1,0 +1,103 @@
+# Knapsack "User Collection" terminology overrides (Spanish).
+# Mirrors the collection-rename keys in en.yml so the Collection -> User
+# Collection relabel is consistent in the Spanish UI. Hyku/Hyrax supply all other
+# Spanish strings. NOTE: machine-assisted translations - please have a native
+# Spanish speaker review before relying on these in production.
+es:
+  simple_form:
+    labels:
+      defaults:
+        member_of_collection_ids: Añadir a colección de usuario
+    placeholders:
+      defaults:
+        member_of_collection_ids: Seleccione una colección de usuario…
+  helpers:
+    action:
+      collection:
+        new: Añadir nueva colección de usuario
+  activerecord:
+    models:
+      collection:
+        one: Colección de usuario
+        other: Colecciones de usuario
+      collection_resource:
+        one: Colección de usuario
+        other: Colecciones de usuario
+  hyrax:
+    admin:
+      sidebar:
+        collections: Colecciones de usuario
+        collections_report: Informe de colecciones de usuario
+      analytics:
+        collection_reports:
+          index:
+            title: Informe de colecciones de usuario
+            report_header: Informe personalizado de colecciones de usuario
+          show:
+            title: Informe de colección de usuario
+            return_to_btn: Volver al informe de colecciones de usuario
+          top_collections:
+            top_collections: Colecciones de usuario principales
+    base:
+      member_of_collections:
+        header: Miembro de colecciones de usuario
+    collections:
+      collection_counts:
+        collections: Colecciones de usuario
+    collection:
+      select_form:
+        title: Añadir a colección de usuario
+        create_new: Añadir a nueva colección de usuario
+    dashboard:
+      breadcrumbs:
+        collections_report: Informe de colecciones de usuario
+      all:
+        collections: Todas las colecciones de usuario
+      managed:
+        collections: Colecciones de usuario gestionadas
+      my:
+        collections: Colecciones de usuario
+        your_collections: Sus colecciones de usuario
+        facet_label:
+          collections: 'Filtrar colecciones de usuario:'
+        action:
+          add_to_collection: Añadir a colección de usuario
+          collection_create_success: La colección de usuario se creó correctamente.
+          collection_delete_success: La colección de usuario se eliminó correctamente.
+          collection_update_success: La colección de usuario se actualizó correctamente.
+      collection_type_actions:
+        create_collection: Crear colección de usuario
+      stats:
+        collections: Colecciones de usuario creadas
+    homepage:
+      admin_sets:
+        link: Ver todas las colecciones de usuario
+        tab_label: Explorar colecciones de usuario
+        title: Explorar colecciones de usuario
+      featured_collections:
+        no_collections: No se ha destacado ninguna colección de usuario.
+        title: Colecciones de usuario destacadas
+    search:
+      form:
+        option:
+          my_collections:
+            label_long: Mis colecciones de usuario
+            label_short: Mis colecciones de usuario
+    models:
+      collection_resource: Colección de usuario
+  hyku:
+    admin:
+      stats:
+        tab_collections: Colecciones de usuario
+        collections_over_time: Colecciones de usuario a lo largo del tiempo
+    generic_type:
+      collection: Colección de usuario
+    themes:
+      browse_by_collection: Explorar por colección de usuario
+      collections: Colecciones de usuario
+      featured_collections: Colecciones de usuario destacadas
+  blacklight:
+    search:
+      fields:
+        facet:
+          member_of_collections_ssim: Colecciones de usuario
