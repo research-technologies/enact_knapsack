@@ -75,12 +75,19 @@ en:
             return_to_btn: Return to User Collections Report
           top_collections:
             top_collections: Top User Collections
-    # Labels for the count badges on a collection's catalog search-result row
-    # (sub-collections nested within it, and member works). "User Collections"
-    # disambiguates from the PortfolioItemCollection work type.
-    collection_counts:
-      collections: User Collections
-      works: Works
+    base:
+      # Work show page "Member of Collections" row header. Hyrax renders it via
+      # t('hyrax.base.member_of_collections.header') (samvera/hyrax#7505).
+      member_of_collections:
+        header: Member of User Collections
+    collections:
+      # Labels for the count badges on a collection's catalog search-result row
+      # (sub-collections nested within it, and member works). "User Collections"
+      # disambiguates from the PortfolioItemCollection work type. Hyrax renders
+      # these via t('hyrax.collections.collection_counts.*') (samvera/hyrax#7505).
+      collection_counts:
+        collections: User Collections
+        works: Works
     # Rename the generic Hyrax "Collection" object to "User Collection" wherever a
     # depositor/admin sees the bare noun, to disambiguate from the
     # PortfolioItemCollection work type. We intentionally do NOT rename the
@@ -170,3 +177,27 @@ en:
         referenced-by: Is referenced by
         documented-by: Is documented by
         juxtaposed-with: Is juxtaposed with
+  # Hyku-namespaced strings that Hyku renders via t() (samvera/hyku#3113).
+  # Relabel only the collection-y ones to "User Collection"; leave Works/Users
+  # etc. untouched.
+  hyku:
+    admin:
+      stats:
+        tab_collections: User Collections
+        collections_over_time: User Collections over time
+    # Values of the "Type" facet (generic_type_sim). Hyku maps each token via
+    # generic_type_facet_label -> t(token, scope: 'hyku.generic_type'). Only the
+    # bare "Collection" noun is renamed; Work / Admin Set are left to default.
+    generic_type:
+      collection: User Collection
+    themes:
+      browse_by_collection: Browse by User Collection
+      collections: User Collections
+      featured_collections: Featured User Collections
+  # "Member of Collections" facet heading. Hyku (samvera/hyku#3113) dropped the
+  # inline label from catalog_controller, so the blacklight locale key now wins.
+  blacklight:
+    search:
+      fields:
+        facet:
+          member_of_collections_ssim: User Collections

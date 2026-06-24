@@ -42,20 +42,13 @@ Hyrax.config do |config|
   ].uniq
 end
 
-# Rename the generic "Collection" label in the Type facet to "User Collection"
-# so it is distinct from PortfolioItemCollection. The work_type_facet_label
-# helper already translates class-name strings via activerecord.models.*, so
-# "Collection" → activerecord.models.collection → "User Collection".
-#
-# Also relabel the "member of collections" facet. catalog_controller.rb sets its
-# label inline ('Collections'), which beats any blacklight.* locale key, so it
-# must be overridden on the config here rather than via a translation.
+# The "Type" and "Member of Collections" facet labels are now relabeled purely
+# via locale: Hyku (samvera/hyku#3113) wires `generic_type_facet_label` by default
+# (which reads `hyku.generic_type.*`, so `hyku.generic_type.collection` renames the
+# value) and dropped the inline `member_of_collections_ssim` label from
+# catalog_controller (so the `blacklight.*` facet key now wins). No
+# blacklight_config patching is needed here anymore — see config/locales/*.yml.
 Rails.application.config.to_prepare do
-  CatalogController.blacklight_config.facet_fields['generic_type_sim'].helper_method = :work_type_facet_label
-
-  member_of_collections = CatalogController.blacklight_config.facet_fields['member_of_collections_ssim']
-  member_of_collections.label = I18n.t('activerecord.models.collection_resource', count: 2) if member_of_collections
-
   # Ensure knapsack view overrides win over the hyrax-webapp / Hyrax-gem copies.
   # HykuKnapsack::Engine prepends the knapsack view path in an `after_initialize`
   # hook, but in development the code reloader resets each controller's
