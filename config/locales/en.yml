@@ -50,23 +50,25 @@ en:
   hyrax:
     compound_fields:
       linked_record:
-        # Fallback placeholder for any linked_record picker.
-        placeholder: Search
-        add_new: "+ Add new"
-        create: Create
-        cancel: Cancel
         # Per-source placeholder, keyed by the subproperty's `authority:`.
         contributors:
           placeholder: Search for a contributor
-        # Add-form field labels, keyed by create_field name (and group sub-field name).
+        # Add-form field labels (headings / sub-field hints), keyed by create_field
+        # name (and group sub-field name). Only those that differ from the
+        # humanized default are set.
         fields:
           display_name: Name
           orcid: ORCID
-          agent_type: Type
+          agent_type: Agent type
           affiliations: Affiliation
-          name_identifiers: Name identifiers
+          name_identifiers: Name identifier
           value: Identifier
-          scheme: Scheme
+          scheme: Identifier scheme
+        # The noun used in the add buttons, keyed by create_field name. Only set
+        # where it should differ from the field's display label (here, lowercase).
+        item_label:
+          affiliations: affiliation
+          name_identifiers: name identifier
     models:
       portfolio: Portfolio
       portfolio_artefact: Artefact
