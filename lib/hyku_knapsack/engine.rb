@@ -73,21 +73,10 @@ module HykuKnapsack
       end
     end
 
-    config.to_prepare do
-      HykuKnapsack::Engine.root.glob("app/**/*_decorator*.rb").sort.each do |c|
-        Rails.configuration.cache_classes ? require(c) : load(c)
-      end
-
-      HykuKnapsack::Engine.root.glob("lib/**/*_decorator*.rb").sort.each do |c|
-        Rails.configuration.cache_classes ? require(c) : load(c)
-      end
-    end
-
-    config.after_initialize do
-      Hyrax::DerivativeService.services = [
-        IiifPrint::PluggableDerivativeService
-      ]
-
+    # Re-prepend the knapsack view paths so its `app/views` overrides win over the
+    # webapp/Hyrax copies. See #prepend_knapsack_view_paths! for why this must re-run
+    # on every reload (it is invoked from both `to_prepare` and `after_initialize`).
+    def self.prepend_knapsack_view_paths!
       # This is the opposite of what you usually want to do.  Normally app views override engine
       # views but in our case things in the Knapsack override what is in the application.
       # Furthermore we need to account for when the ApplicationController and it's descendants set
@@ -105,6 +94,34 @@ module HykuKnapsack
         klass.view_paths = paths.uniq
       end
       ::ApplicationController.send :helper, HykuKnapsack::Engine.helpers
+    end
+
+    config.to_prepare do
+      HykuKnapsack::Engine.root.glob("app/**/*_decorator*.rb").sort.each do |c|
+        Rails.configuration.cache_classes ? require(c) : load(c)
+      end
+
+      HykuKnapsack::Engine.root.glob("lib/**/*_decorator*.rb").sort.each do |c|
+        Rails.configuration.cache_classes ? require(c) : load(c)
+      end
+
+      # Re-pin the knapsack view paths and locale precedence on every reload. Rails'
+      # dev reloader resets controller view_paths and reloads the i18n backend, which
+      # undoes the boot-time pinning done in `after_initialize` (that hook runs only
+      # once). `to_prepare` re-runs on each reload, so without this the knapsack's view
+      # and locale overrides silently revert to the webapp/Hyrax defaults until the
+      # next full boot. Skip the view-path loop when ApplicationController isn't loaded
+      # yet (early boot `to_prepare`); `after_initialize` handles the boot pass.
+      HykuKnapsack::Engine.prepend_knapsack_view_paths! if defined?(::ApplicationController)
+      HykuKnapsack::Engine.load_translations!
+    end
+
+    config.after_initialize do
+      Hyrax::DerivativeService.services = [
+        IiifPrint::PluggableDerivativeService
+      ]
+
+      HykuKnapsack::Engine.prepend_knapsack_view_paths!
 
       ##
       # Ensure that all knapsack locales are the "first choice" of keys.  We've already done this in

@@ -5,12 +5,12 @@ profile:
   responsibility: https://notch8.com
   responsibility_statement: Notch8 / Enact PR Voices Discovery
   type: Enact PR Voices Profile
-  version: 4
+  version: 5
 classes:
   AdminSetResource:
     display_label: AdminSet
   CollectionResource:
-    display_label: Collection
+    display_label: User Collection
   Hyrax::FileSet:
     display_label: FileSet
   Portfolio:

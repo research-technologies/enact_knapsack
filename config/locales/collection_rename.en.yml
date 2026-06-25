@@ -1,0 +1,370 @@
+# Generic Hyrax/Hyku "Collection" -> "User Collection" relabeling, applied
+# mechanically across every collection-bearing UI key in the pinned Hyrax.
+# 'subcollection'/'sub-collection' compounds are intentionally left intact.
+# KEEP-LIST (NOT renamed, defined elsewhere): the collection-TYPE system
+# (hyrax.admin.collection_types.*), Admin Sets, and the PortfolioItemCollection
+# work type. Deep-merges with config/locales/en.yml (separate file = no
+# duplicate-key clobbering). Audit phrasings here; some read awkwardly.
+
+en:
+  activerecord:
+    models:
+      collection:
+        one: User Collection
+        other: User Collections
+      collection_resource:
+        one: User Collection
+        other: User Collections
+  blacklight:
+    search:
+      fields:
+        facet:
+          member_of_collections_ssim: User Collection
+  bulkrax:
+    exporter:
+      labels:
+        collection: User Collection
+        collection_entries: User Collection Entries
+    importer:
+      edit_form:
+        update_only_hint: Only update the values in the importer form. Do not import metadata or files for any works or user collections.
+        update_only_no_update_hint: Only update the values in the importer form. Do not update metadata or files for any works or user collections.
+      guided_import:
+        js:
+          appears_in_collections: Appears in %{count} user collections
+          review_total: "%{total} total — %{collections} user collections, %{works} works, %{file_sets} file sets"
+        page_subtitle: Import user collections, works, and files via CSV
+        step1:
+          collections: User Collections
+      labels:
+        collection_entries: User Collection Entries
+        total_collections: Total User Collections
+    table_header:
+      labels:
+        total_collection_entries: Total User Collection Entries
+  helpers:
+    action:
+      collection:
+        new: Add New User Collection
+  hyrax:
+    admin:
+      analytics:
+        collection_reports:
+          custom_range:
+            collection_home_page_views: User Collection home page views
+          index:
+            report_header: Custom User Collections Report
+            title: User Collections Report
+          monthly_summary:
+            collection_views: User Collection home page views
+          show:
+            return_to_btn: Return to User Collections Report
+            title: User Collection Report
+            view_collection_btn: View User Collection
+          summary:
+            collection_home_page_views: User Collection home page views
+          top_collections:
+            collection_page_views: User Collection Page Views
+            collection_title: User Collection Title
+            deleted: User Collection deleted
+            file_downloads_in_collection: File Set Downloads In This User Collection
+            top_collections: Top User Collections
+            works_in_collection_views: Works In This User Collection Views
+      sidebar:
+        collections: User Collections
+        collections_report: User Collections Report
+    base:
+      form_member_of_collections:
+        actions:
+          remove: Remove from user collection
+        caption: This work is currently in these user collections
+        confirm:
+          text: Removing this work will not remove it from the repository, only from
+            this user collection. Are you sure you want to remove this work from the
+            user collection?
+        header:
+          title: User Collection title
+      member_of_collections:
+        header: Member of User Collections
+      relationships:
+        empty: This %{type} is not currently in any user collections.
+      relationships_parent_row:
+        collection_label: "In User Collection:"
+        label: "In %{type}:"
+    batch_uploads:
+      new:
+        in_collections: These Works in User Collections
+    collection:
+      actions:
+        add_existing_works:
+          desc: Add existing works to this User Collection
+          label: Add existing works to this user collection
+        add_new_nested_collection:
+          desc: Add new user collection to this User Collection
+          label: Create new user collection as subcollection
+        add_new_work:
+          desc: Deposit new work through this user collection
+          label: Deposit new work through this user collection
+        delete:
+          confirmation: Deleting this user collection will permanently remove this
+            user collection from the repository. Any items in this user collection
+            will remain in the repository. Are you sure you want to delete this user
+            collection?
+          desc: Delete this user collection
+          label: Delete user collection
+        edit:
+          desc: Edit this user collection
+          label: Edit user collection
+        nest_collections:
+          desc: Nest other user collections within this User Collection
+          label: Add existing user collections to this user collection
+          modal_title: Add a Subcollection to User Collection
+        nested_subcollection:
+          button_label: Add to user collection
+          desc: Add existing user collections to this user collection
+          modal_title: Add this User Collection Within Another User Collection
+          select_label: Select user collection
+      document_list:
+        no_visible_works: The user collection is either empty or does not contain
+          items to which you have access.
+      edit:
+        manage_items: Manage Items in this User Collection
+      select_form:
+        create_new: Add to new User Collection
+        no_collections: You do not have access to any existing user collections. You
+          may create a new user collection.
+        select_heading: 'Select the user collection to add your files to:'
+        title: Add to user collection
+    collections:
+      collection_counts:
+        collections: User Collections
+      search_form:
+        label: Search User Collection %{title}
+        placeholder: Search subcollections and works in this user collection
+      show:
+        no_visible_parent_collections: There are no visible parent user collections.
+        parent_collection_header: Parent User Collections
+    dashboard:
+      all:
+        collections: All User Collections
+      breadcrumbs:
+        collections_report: User Collections Report
+      collections:
+        collection_title: User Collection Title
+        form:
+          permission_update_errors:
+            sharing: The user collection's sharing options failed to update.
+          permission_update_notices:
+            participants: The user collection's sharing options have been updated.
+            sharing: The user collection's sharing options have been updated.
+        form_branding:
+          banner:
+            description: An image to be displayed at the top of the user collection
+              page.  For best results, upload an image (JPG, GIF or PNG) that is at
+              least 120 pixels tall and 1200 pixels wide.
+          branding:
+            description: Optionally, you can upload a banner image and/or logo images
+              to associate with this user collection.  If uploaded, these images will
+              be displayed at the top of the user collection page to provide unique
+              branding for the user collection.
+          logo:
+            description: One or more images to be displayed at the top of the user
+              collection page.  For best results, upload an image (JPG, GIF or PNG)
+              that is 40 pixels in height.  Larger images will be resized to 40 pixels
+              in height.
+        form_discovery:
+          para1: These settings determine who is able to discover and view this user
+            collection's landing page; they do not affect the visibility of items
+            in the user collection.
+          para2: If you chose not to make this user collection open access, you can
+            still share the user collection with specific users and groups using the
+            Sharing tab.
+        form_relationships:
+          add_other_collections_as_sub_collections_description: You can manage the
+            sub-collections of this user collection.
+          collection_is_subcollection_description: This user collection is currently
+            a sub-collection of these user collections
+          headlines:
+            other_collections_in_this_collection: Other User Collections in This User
+              Collection
+            this_collection_in_other_collections: This User Collection in Other User
+              Collections
+          modals:
+            remove_from_collection_description: Removing this user collection will
+              not remove it from the repository, only as a parent of this user collection.  Are
+              you sure you want to remove this user collection?
+            remove_parent_collection_deny: You do not have sufficient privileges for
+              the parent user collection to be able to remove it.
+            remove_this_sub_collection_description: Removing this sub-collection will
+              not remove it from the repository, only from this parent user collection.  Are
+              you sure you want to remove this sub-collection?
+          sub_collections_of_collection_description: These user collections are currently
+            sub-collections of this user collection
+          table:
+            collection_title: User Collection Title
+          this_collection_in_other_collections_description: You can add this user
+            collection to other user collections as a sub-collection.
+        form_share:
+          note: Regardless of the visibility settings of this user collection, you
+            can share this user collection with specific groups and users.
+        form_share_table:
+          depositors:
+            empty: No depositors have been added to this user collection.
+            help: Depositors of this user collection can view the user collection
+              and add works to it, even if the visibility permissions of the user
+              collection otherwise would not permit them to view it.
+          managers:
+            empty: No managers have been added to this user collection.
+            help: Managers of this user collection can add to and remove works from
+              the user collection, modify user collection metadata, and delete the
+              user collection.
+            help_with_works: For user collections of type %{type_title}, when works
+              are created directly in this user collection, the managers are given
+              edit access to the new work.
+          viewers:
+            empty: No viewers have been added to this user collection.
+            help: Viewers of this user collection can view it even if the visibility
+              permissions of the user collection otherwise would not permit them to
+              view it.
+            help_with_works: For user collections of type %{type_title}, when works
+              are created directly in this user collection, the viewers are given
+              read access to the new work.
+        show:
+          header: User Collection
+          metadata_header: User Collection Details
+          parent_collection_header: Parent User Collections
+          public_view_label: Public view of User Collection
+          search_results: Search Results within this User Collection
+        show_document_list:
+          list_items_in_collection: List of items in this user collection
+        title: User Collections
+        work_action_menu:
+          remove_from_collection: Remove from user collection
+      collection_type_actions:
+        create_collection: Create user collection
+      managed:
+        collections: Managed User Collections
+      my:
+        action:
+          add_to_collection: Add to user collection
+          collection_create_success: User Collection was successfully created.
+          collection_delete_fail: User Collection could not be deleted
+          collection_delete_success: User Collection was successfully deleted
+          collection_deny_add_members: You do not have sufficient privileges to add
+            members to the user collection
+          collection_update_success: User Collection was successfully updated.
+          collections_confirmation_html: Deleting <span class='pluralized'>this user
+            collection</span> will permanently remove <span class='pluralized'>this
+            user collection</span> from the repository.  Items in <span class='pluralized'>this
+            user collection</span> will remain in the repository.  Are you sure you
+            want to delete <span class='pluralized'>this user collection</span>?
+          collections_confirmation_no_items_html: Are you sure you want to delete
+            this user collection? This action cannot be undone.
+          collections_confirmation_plural: these user collections
+          collections_confirmation_singular: this user collection
+          delete_collection: Delete user collection
+          delete_collection_deny: You do not have sufficient privileges to delete
+            this user collection.
+          delete_collections: Delete user collections
+          delete_collections_deny: You do not have sufficient privileges to delete
+            one or more user collections.
+          edit_collection: Edit user collection
+          edit_collection_deny: You do not have sufficient privileges to edit this
+            user collection.
+          nesting_not_allowed: User Collections of this type do not support nesting.
+          nesting_permission_denied: You do not have sufficient privileges to add
+            this user collection to another user collection.
+          view_collection: View user collection
+        collections: User Collections
+        facet_label:
+          collections: 'Filter user collections:'
+        heading:
+          caption: List of items in this user collection
+          collection:
+            visibility: Visibility of User Collection
+        sr:
+          batch_checkbox: Check to add to a user collection or edit list
+          check_all_label: Select all files to be added to a user collection or edited
+        your_collections: Your User Collections
+      repository_growth:
+        collections: User Collections
+      stats:
+        collections: User Collections created
+    homepage:
+      admin_sets:
+        link: View all user collections
+        tab_label: Explore User Collections
+        title: Explore User Collections
+      featured_collections:
+        no_collections: No user collections have been featured.
+        title: Featured User Collections
+    models:
+      hyrax/pcdm_collection: User Collection
+    my:
+      count:
+        collections:
+          collections_listing: User Collections listing
+          in_repo: "<strong>%{total_count} user collections</strong> in the repository"
+          you_manage: "<strong>%{total_count} user collections</strong> you can manage
+            in the repository"
+          you_own: "<strong>%{total_count} user collections</strong> you own in the
+            repository"
+    search:
+      form:
+        option:
+          my_collections:
+            label_long: My User Collections
+            label_short: My User Collections
+      collection_resource: User Collection
+    works:
+      form:
+        in_collections: User Collections
+  hyku:
+    admin:
+      stats:
+        tab_collections: User Collections
+        collections_over_time: User Collections over time
+    generic_type:
+      collection: User Collection
+    themes:
+      browse_by_collection: Browse by User Collection
+      collections: User Collections
+      featured_collections: Featured User Collections
+  simple_form:
+    hints:
+      collection:
+        based_near: A place name related to the user collection, such as its site
+          of publication, or the city, state, or country the user collection contents
+          are about. Calls upon the <a href='http://www.geonames.org'>GeoNames web
+          service</a>.
+        contributor: A person or group you want to recognize for playing a role in
+          the creation of the user collection, but not the primary role.
+        creator: 'The person or group responsible for the user collection. Usually
+          this is the author of the content. Personal names should be entered with
+          the last name first: Smith, John'
+        date_created: The date on which the user collection was created.
+        description: Free-text notes about the user collection. Examples include abstracts
+          of a paper or citation information for a journal article.
+        identifier: A unique handle identifying the user collection. An example would
+          be a DOI for a journal article, or an ISBN or OCLC number for a book.
+        keyword: Words or phrases you select to describe what the user collection
+          is about. These are used to search for content.
+        language: The language of the user collection's content.
+        license: Licensing and distribution information governing access to the user
+          collection. Select from the provided drop-down list.
+        publisher: The person or group making the user collection available. Generally
+          this is the institution.
+        related_url: A link to a website or other specific content (audio, video,
+          PDF document) related to the user collection. An example is the URL of a
+          research project from which the user collection was derived.
+        subject: Headings or index terms describing what the user collection is about;
+          these do need to conform to an existing vocabulary.
+        title: A name to aid in identifying a user collection.
+    labels:
+      defaults:
+        member_of_collection_ids: Add to user collection
+      exporter:
+        export_source_collection: User Collection
+    placeholders:
+      defaults:
+        member_of_collection_ids: Select a user collection…
