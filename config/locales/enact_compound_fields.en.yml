@@ -1,0 +1,24 @@
+# Human-friendly labels for compound sub-properties on show-page cards.
+# Hyrax::Renderers::CompoundAttributeRenderer#sub_property_label looks up
+# `hyrax.compound_fields.<compound>.<sub_property>` and falls back to the
+# humanized field name (which produced "Rightsuri", "Rightsidentifierscheme",
+# etc.). The card title already supplies the "Rights"/"Provenance" context, so
+# the sub-labels are kept short.
+en:
+  hyrax:
+    compound_fields:
+      rights:
+        statement: Statement
+        holder: Rights holder
+      provenance:
+        provenanceScheme: Scheme
+        schemeURI: Scheme URL
+        provenanceEmbedded: Embedded in file
+        embedFormat: Embedded format
+      contributors:
+        contributor_name: Name
+        given_name: Given name
+        family_name: Family name
+        role_label: Role
+        name_identifier: ORCID
+        affiliation: Affiliation
