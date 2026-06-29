@@ -42,17 +42,14 @@ Hyrax.config do |config|
   ].uniq
 end
 
+Rails.application.config.to_prepare do
+  Hyrax.config.iiif_av_viewer = :clover
+end
+
 # Curation-concern registration needs the work-type constants resolvable, so
 # defer it to after_initialize when Zeitwerk has set up autoload paths.
 Rails.application.config.after_initialize do
   Hyrax.config do |config|
-    # Use the Clover IIIF viewer for audio/video works. Assets live in the
-    # knapsack's public/clover (served via hyku_knapsack.static_assets) and the
-    # partial in app/views/hyrax/base/iiif_viewers/_clover.html.erb. The image
-    # viewer path stays on :universal_viewer (hardcoded in the presenter).
-    # Injected via `rails generate hyrax:iiif_viewer clover`.
-    config.iiif_av_viewer = :clover
-
     # Portfolio: narrative parent container.
     config.register_curation_concern :portfolio
 
