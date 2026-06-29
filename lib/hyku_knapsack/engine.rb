@@ -25,6 +25,11 @@ module HykuKnapsack
       I18n.backend.reload!
     end
 
+    # Serve the knapsack's public/ dir; Rails only serves hyrax-webapp/public.
+    initializer 'hyku_knapsack.static_assets' do |app|
+      app.middleware.use ::ActionDispatch::Static, HykuKnapsack::Engine.root.join('public').to_s
+    end
+
     initializer :append_migrations do |app|
       # only add the migrations if they are not already copied
       # via the rake task. Allows gem to work both with the install:migrations
