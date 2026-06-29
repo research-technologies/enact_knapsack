@@ -1,11 +1,11 @@
 ---
 m3_version: 1.0.beta2
 profile:
-  date_modified: '2026-06-08'
+  date_modified: '2026-06-25'
   responsibility: https://notch8.com
   responsibility_statement: Notch8 / Enact PR Voices Discovery
   type: Enact PR Voices Profile
-  version: 5
+  version: 1
 classes:
   AdminSetResource:
     display_label: AdminSet
@@ -187,6 +187,163 @@ properties:
     - label_tesim
     property_uri: http://www.w3.org/2000/01/rdf-schema#label
     range: http://www.w3.org/2001/XMLSchema#string
+  alt_text:
+    # Accessibility alternative text for the file's rendered image. Not part of
+    # the PR Voices schema; sourced from WAI alt-text guidance. Indexed so the
+    # SolrDocument can surface it to the image view override (`alt=` attribute).
+    available_on:
+      class:
+      - Hyrax::FileSet
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Alternative text
+    index_documentation: Accessibility alt text for the file's image rendering.
+    indexing:
+    - alt_text_tesim
+    - alt_text_ssi
+    form:
+      primary: true
+      multiple: false
+    property_uri: https://hykucommons.org/terms/alt_text
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
+  note:
+    # Free-text note about the file. Secondary (form.primary: false), so it
+    # renders under "Additional fields" on the edit form rather than up top.
+    available_on:
+      class:
+      - Hyrax::FileSet
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Note
+    indexing:
+    - note_tesim
+    - note_ssi
+    form:
+      primary: false
+      multiple: false
+    property_uri: http://www.w3.org/2004/02/skos/core#note
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
+  rights:
+    # File-level rights as a compound (per client review): the controlled
+    # rightsstatements.org statement paired with the rights holder. Credit/
+    # attribution is inferred from the holder at display time, so there is no
+    # separate `credit` field. Repeatable so a file can carry layered claims.
+    available_on:
+      class:
+      - Hyrax::FileSet
+    cardinality:
+      minimum: 0
+    data_type: array
+    type: hash
+    display_label:
+      default: Rights
+    form:
+      primary: true
+    property_uri: http://purl.org/dc/terms/rights
+    range: https://prvoices.org/types#hash
+    view:
+      render_as: compound
+      html_dl: true
+      display: card
+  rights_statement_term:
+    # Controlled rights statement via the shared `rights_statements` QA authority
+    # (rightsstatements.org) - same vocab as the Portfolio rights_statement field,
+    # here as a compound sub-property so it pairs with the holder.
+    type: controlled
+    name: statement
+    available_on:
+      properties:
+      - rights
+    authority: rights_statements
+    form:
+      cols: 6
+  rights_holder:
+    # The rights holder (person or organisation, e.g. "PRS for Music"). Credit/
+    # attribution is derived from this at display time.
+    type: string
+    name: holder
+    available_on:
+      properties:
+      - rights
+    form:
+      cols: 6
+  provenance:
+    # PR Voices File provenance block (schema wiki: Files). Repeatable compound;
+    # provenanceScheme is C2PA per the schema example.
+    available_on:
+      class:
+      - Hyrax::FileSet
+    cardinality:
+      minimum: 0
+    data_type: array
+    type: hash
+    display_label:
+      default: Provenance
+    form:
+      primary: false
+    property_uri: https://prvoices.org/terms/provenance
+    range: https://prvoices.org/types#hash
+    groups:
+      scheme:
+        label: Scheme
+    view:
+      render_as: compound
+      html_dl: true
+  provenance_scheme:
+    type: controlled
+    name: provenanceScheme
+    available_on:
+      properties:
+      - provenance
+    group: scheme
+    values:
+    - C2PA
+    form:
+      cols: 6
+  provenance_scheme_uri:
+    type: string
+    name: schemeURI
+    available_on:
+      properties:
+      - provenance
+    group: scheme
+    form:
+      cols: 6
+  provenance_embedded:
+    type: controlled
+    name: provenanceEmbedded
+    available_on:
+      properties:
+      - provenance
+    group: scheme
+    values:
+    - "true"
+    - "false"
+    form:
+      cols: 6
+  provenance_embed_format:
+    type: controlled
+    name: embedFormat
+    available_on:
+      properties:
+      - provenance
+    group: scheme
+    values:
+    - Exif
+    - XMP
+    - IPTC
+    form:
+      cols: 6
   description:
     available_on:
       class:
@@ -761,6 +918,7 @@ properties:
   contributors:
     available_on:
       class:
+      - Hyrax::FileSet
       - Portfolio
       - PortfolioArtefact
       - PortfolioEvent
