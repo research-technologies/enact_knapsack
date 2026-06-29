@@ -25,6 +25,9 @@
       </div>
     <% end %>
   <% else %>
+    <%# Non-flexible fallback. Dead in Enact (we run HYRAX_FLEXIBLE=true), but kept %>
+    <%# verbatim from upstream so this override stays a clean delete when #7513 lands; %>
+    <%# upstream needs it for installs running with flexibility off. %>
     <% { description: nil, creator: nil, license: nil, subject: nil, keyword: nil,
          date_created: nil, related_url: nil, resource_type: nil, alt_text: nil }.each_key do |field| %>
       <% values = Array(@presenter.try(field)).reject(&:blank?) %>
