@@ -42,6 +42,10 @@ Hyrax.config do |config|
   ].uniq
 end
 
+Rails.application.config.to_prepare do
+  Hyrax.config.iiif_av_viewer = :clover
+end
+
 # Curation-concern registration needs the work-type constants resolvable, so
 # defer it to after_initialize when Zeitwerk has set up autoload paths.
 Rails.application.config.after_initialize do
