@@ -1311,3 +1311,29 @@ properties:
     - relationships_note_tesim
     form:
       cols: 12
+  media_viewer:
+    available_on:
+      class:
+      - Portfolio
+      - PortfolioArtefact
+      - PortfolioEvent
+      - PortfolioLiterature
+      - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    controlled_values:
+      format: http://www.w3.org/2001/XMLSchema#string
+      sources:
+      - media_viewer
+    display_label:
+      default: Viewer
+    indexing:
+    - media_viewer_ssi
+    form:
+      primary: false
+      required: false
+      multiple: false
+    property_uri: https://prvoices.org/terms/mediaViewer
+    range: http://www.w3.org/2001/XMLSchema#string
