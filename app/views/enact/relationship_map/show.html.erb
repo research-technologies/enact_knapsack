@@ -20,6 +20,15 @@
 <body>
 <div id="app">
   <div id="graphwrap">
+    <div id="toolbar">
+      <input id="node-search" type="search" placeholder="Search works&hellip;" aria-label="Search works" autocomplete="off" />
+      <span id="layoutswitch" role="group" aria-label="Layout">
+        <span class="lbl">Layout</span>
+        <button type="button" data-layout="cose" aria-pressed="true">Force</button>
+        <button type="button" data-layout="concentric" aria-pressed="false">Radial</button>
+        <button type="button" data-layout="breadthfirst" aria-pressed="false">Tree</button>
+      </span>
+    </div>
     <div id="cy"></div>
     <div id="empty">No related works are visible to you.</div>
     <div id="focusbar"><span>Showing how <b id="focuslabel"></b> relates</span><a id="focusclear">show all &times;</a></div>
@@ -27,9 +36,9 @@
   <div id="side">
     <h1>Relationship map</h1>
     <div class="sub">Enact &middot; relationships (Object Handling Spec v0.2 &sect;3.5)</div>
-    <div id="detail"><p class="hint">Click a <b>node</b> to see how it relates to everything else (others hide).
+    <div id="detail"><p class="hint">Hover a <b>node</b> to spotlight its connections; click it to focus and see details.
       Click a <b>line</b> for the relationship and its curatorial note. Drag to rearrange; scroll to zoom.</p></div>
-    <div class="legend"><h2>Relationship types (spec &sect;3.5)</h2><div id="rel-legend"></div></div>
+    <div class="legend"><h2>Relationship types &middot; click to filter</h2><div id="rel-legend"></div></div>
     <% if @truncated %><div class="trunc">Showing the first <%= ::Enact::RelationshipMapController::MAX_WORKS %> works; some may be omitted.</div><% end %>
   </div>
 </div>
