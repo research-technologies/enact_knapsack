@@ -1,68 +1,77 @@
-<%# OVERRIDE Hyrax 5.2.0 (samvera/hyrax main @ f9f471f): the upstream flexible %>
-<%# Metadata list iterates every view-visible field and renders it as %>
-<%# `auto_link(values.join(', '))`, which dumps a compound's raw row hashes %>
-<%# (e.g. {"rights"=>"In Copyright", ...}), and only handles compounds in the %>
-<%# flexible branch. Render compounds regardless of flexible mode (matching the %>
-<%# work show page, base/_attribute_rows): card compounds render via %>
-<%# render_compound_cards on the show page; inline compounds render in their own %>
-<%# column-count: 2 list below; scalars render per mode. Separate lists keep a %>
-<%# tall compound block from unbalancing the scalar columns. %>
-<%# Tracked for upstreaming (samvera/hyrax PR #7513). %>
+<%# OVERRIDE Hyrax 5.x (samvera/hyrax main @ ab3f45b): mirrors upstream %>
+<%# hyrax/file_sets/_metadata.html.erb verbatim and adds one enact-specific row: %>
+<%# Credit. Credit/attribution is inferred from the `rights` compound's %>
+<%# holder(s) rather than entered as its own field (per client decision; see %>
+<%# Hyrax::FileSetPresenterDecorator#credit), so it is not a profile field and %>
+<%# upstream's field-driven list never renders it. Everything else - the %>
+<%# two-column split, inline-compound rendering via attribute_to_html, card %>
+<%# skipping, field_visible? gating, embargo/lease - comes from upstream; keep %>
+<%# this file in sync with it on future hyrax bumps. %>
 <h2><%= t('.metadata') %></h2>
 <% compound_schema = compound_schema_for(@presenter) %>
-<% inline_compounds = compound_schema.inline_compound_names.select { |name| Array(@presenter.try(name)).reject(&:blank?).any? } %>
 
-<dl class="file-show-term file-show-details">
-  <% if @presenter.try(:flexible?) %>
-    <% view_options_for(@presenter).each do |field, options| %>
-      <% view_options = conform_options(field, options) %>
-      <% next unless field_visible?(view_options, @presenter) %>
-      <% next if compound_schema.card?(field) || compound_schema.inline_compound_names.include?(field.to_sym) %>
-      <% next if Array(@presenter.try(field)).reject(&:blank?).empty? %>
-      <div class="row">
-        <dt class="col-5"><%= view_options["label"] %></dt>
-        <dd class="col-7"><%= auto_link(Array(@presenter.try(field)).reject(&:blank?).join(', '), html: { target: '_blank' }) %></dd>
-      </div>
-    <% end %>
-  <% else %>
-    <%# Non-flexible fallback. Dead in Enact (we run HYRAX_FLEXIBLE=true), but kept %>
-    <%# verbatim from upstream so this override stays a clean delete when #7513 lands; %>
-    <%# upstream needs it for installs running with flexibility off. %>
+<% if @presenter.try(:flexible?) %>
+  <%
+    rows = view_options_for(@presenter).filter_map do |field, options|
+      next if compound_card_field?(@presenter, field) # rendered as its own card
+      render_field = conform_field(field, options)
+      view_options = conform_options(field, options)
+      next unless field_visible?(view_options, @presenter)
+      next unless @presenter.respond_to?(render_field) && Array(@presenter.public_send(render_field)).reject(&:blank?).present?
+      [render_field, view_options]
+    end
+    half = (rows.count / 2.0).ceil
+    left_rows = rows[0...half]
+    right_rows = rows[half..] || []
+  %>
+  <div class="row" <%= @presenter.microdata_type_to_html %>>
+    <div class="col-md-6">
+      <dl class="file-show-term file-show-details" style="column-count: unset; columns: unset;">
+        <% left_rows.each do |render_field, view_options| %>
+          <%= @presenter.attribute_to_html(render_field, view_options.merge(html_dl: true)) %>
+        <% end %>
+      </dl>
+    </div>
+    <div class="col-md-6">
+      <dl class="file-show-term file-show-details" style="column-count: unset; columns: unset;">
+        <% right_rows.each do |render_field, view_options| %>
+          <%= @presenter.attribute_to_html(render_field, view_options.merge(html_dl: true)) %>
+        <% end %>
+        <%# Credit: distinct rights-holders, derived from the rights compound. %>
+        <% credit = Array(@presenter.try(:credit)).reject(&:blank?) %>
+        <% if credit.any? %>
+          <dt><%= t('hyrax.file_sets.show.credit', default: 'Credit') %></dt>
+          <dd><%= credit.join('; ') %></dd>
+        <% end %>
+        <%= render 'hyrax/file_sets/metadata_embargo_lease', presenter: @presenter %>
+      </dl>
+    </div>
+  </div>
+<% else %>
+  <%# Non-flexible mode has no per-field view options to gate or render_as to key
+      off: render the standard scalar list, then any compound the model class
+      declares (resolved from compound_schema). Dead in Enact (HYRAX_FLEXIBLE=true). %>
+  <dl class="file-show-term file-show-details">
     <% { description: nil, creator: nil, license: nil, subject: nil, keyword: nil,
          date_created: nil, related_url: nil, resource_type: nil, alt_text: nil }.each_key do |field| %>
       <% values = Array(@presenter.try(field)).reject(&:blank?) %>
       <% next if values.empty? %>
       <div class="row">
         <dt class="col-5"><%= t("blacklight.search.fields.show.#{field}_tesim", default: field.to_s.humanize) %></dt>
-        <dd class="col-7"><%= auto_link(values.join(', '), html: { target: '_blank' }) %></dd>
+        <dd class="col-7"><%= auto_link(values.join(', '), html: { target: '_blank', rel: 'noopener noreferrer' }) %></dd>
       </div>
     <% end %>
-  <% end %>
-  <%# Credit is inferred from the rights compound's holder(s) (no separate
-      credit field). See Hyrax::FileSetPresenterDecorator#credit. %>
-  <% credit = Array(@presenter.try(:credit)).reject(&:blank?) %>
-  <% if credit.any? %>
-    <div class="row">
-      <dt class="col-5"><%= t('hyrax.file_sets.show.credit', default: 'Credit') %></dt>
-      <dd class="col-7"><%= credit.join('; ') %></dd>
-    </div>
-  <% end %>
-  <% [:embargo_release_date, :lease_expiration_date].each do |field| %>
-    <% value = @presenter.try(field) %>
-    <% next unless value.present? %>
-    <div class="row">
-      <dt class="col-5"><%= t("blacklight.search.fields.show.#{field}_dtsi", default: field.to_s.humanize) %></dt>
-      <dd class="col-7"><%= value %></dd>
-    </div>
-  <% end %>
-</dl>
-
-<% if inline_compounds.any? %>
-  <dl class="file-show-term file-show-details">
-    <% inline_compounds.each do |field| %>
-      <div class="compound-inline" style="break-inside: avoid;">
-        <%= @presenter.attribute_to_html(field.to_sym, render_as: :compound, html_dl: true) %>
+    <% compound_schema.inline_compound_names.each do |field| %>
+      <% next if Array(@presenter.try(field)).reject(&:blank?).empty? %>
+      <%= @presenter.attribute_to_html(field.to_sym, render_as: :compound, html_dl: true) %>
+    <% end %>
+    <% credit = Array(@presenter.try(:credit)).reject(&:blank?) %>
+    <% if credit.any? %>
+      <div class="row">
+        <dt class="col-5"><%= t('hyrax.file_sets.show.credit', default: 'Credit') %></dt>
+        <dd class="col-7"><%= credit.join('; ') %></dd>
       </div>
     <% end %>
+    <%= render 'hyrax/file_sets/metadata_embargo_lease', presenter: @presenter %>
   </dl>
 <% end %>
