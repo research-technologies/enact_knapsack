@@ -20,6 +20,13 @@ module Hyrax
         }]
       )
     end
+
+    private
+
+    # OVERRIDE to always return https, consider contributing back to Hyrax
+    def download_path(extension)
+      Hyrax::Engine.routes.url_helpers.download_url(object, file: extension, host: hostname, protocol: 'https')
+    end
   end
 end
 
