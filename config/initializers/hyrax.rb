@@ -77,5 +77,19 @@ Rails.application.config.after_initialize do
       :@registered_concerns,
       %i[portfolio portfolio_artefact portfolio_event portfolio_literature portfolio_item_collection]
     )
+
+    # Hyrax::NestedWorks copies `Hyrax.config.curation_concerns` into each work
+    # type's `valid_child_concerns` class_attribute at class-load time. In
+    # production, eager-load runs BEFORE this after_initialize block, so the
+    # Enact types capture Hyku's *default* concerns (GenericWork/Image/Etd/Oer)
+    # that we strip just above - never the Portfolio types. The "Attach Child"
+    # dropdown (Hyku::WorkShowPresenter#valid_child_concerns) then intersects
+    # that stale list with Site#available_works to nothing and the button
+    # disappears. Re-sync each type to the finalized list now that the concern
+    # registration is complete. (No-op in dev, where lazy loading already sees
+    # the final list.)
+    config.curation_concerns.each do |klass|
+      klass.valid_child_concerns = config.curation_concerns if klass.respond_to?(:valid_child_concerns=)
+    end
   end
 end
