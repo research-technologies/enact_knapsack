@@ -58,10 +58,15 @@
     Object.keys(REL).forEach(k => {
       const row = document.createElement('div');
       row.className = 'row filterable';
-      row.setAttribute('role', 'button');
+      // A per-type on/off checkbox: checked = shown. Reads as a switch, not a
+      // "show only this" filter (feedback: the old "click to filter" label
+      // implied positive filtering, but each row is really a show/hide toggle).
+      row.setAttribute('role', 'checkbox');
+      row.setAttribute('aria-checked', 'true');
       row.setAttribute('tabindex', '0');
       row.dataset.rel = k;
-      row.innerHTML = `<span class="swatch" style="border-color:${REL[k].color}"></span>`
+      row.innerHTML = `<span class="rel-toggle" aria-hidden="true"></span>`
+        + `<span class="swatch" style="border-color:${REL[k].color}"></span>`
         + `<span>${REL[k].label} <span class="datacite">${REL[k].dc}</span></span>`;
       legendEl.appendChild(row);
     });
@@ -248,6 +253,7 @@
         const k = row.dataset.rel;
         if (hiddenRels.has(k)) { hiddenRels.delete(k); row.classList.remove('off'); }
         else { hiddenRels.add(k); row.classList.add('off'); }
+        row.setAttribute('aria-checked', String(!hiddenRels.has(k)));
         applyRelFilter();
       }
       legendEl.querySelectorAll('.filterable').forEach(row => {

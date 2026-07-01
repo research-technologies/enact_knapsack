@@ -41,10 +41,17 @@ h1 { font-size:15px; margin:0 0 4px; } .sub { color:var(--muted); font-size:12px
 .legend { margin-top:18px; border-top:1px solid #333; padding-top:14px; }
 .legend h2 { font-size:12px; text-transform:uppercase; letter-spacing:.06em; color:var(--muted); margin:0 0 8px; }
 .legend .row { display:flex; align-items:center; gap:8px; margin:5px 0; font-size:12px; }
-.legend .row.filterable { cursor:pointer; padding:2px 4px; margin:3px -4px; border-radius:4px; }
+.legend .row.filterable { cursor:pointer; padding:3px 4px; margin:3px -4px; border-radius:4px; }
 .legend .row.filterable:hover { background:#2b2b2b; }
 .legend .row.filterable:focus-visible { outline:2px solid #6cc04a; outline-offset:1px; }
-.legend .row.off { opacity:.4; }
+.legend .row.off { opacity:.55; }
+.legend-hint { color:var(--muted); font-size:11px; margin:0 0 8px; }
+/* per-type on/off checkbox: filled with a check when shown, empty when hidden */
+.rel-toggle { width:14px; height:14px; border-radius:3px; border:1.5px solid #6cc04a; background:#6cc04a; flex:none; position:relative; }
+.rel-toggle::after { content:"\2713"; position:absolute; inset:0; color:#181818; font-size:11px; line-height:14px; text-align:center; font-weight:700; }
+.legend .row.off .rel-toggle { background:transparent; border-color:#5a5a5a; }
+.legend .row.off .rel-toggle::after { content:""; }
+.legend .row.off .swatch { opacity:.5; }
 .swatch { width:22px; border-top:3px solid; flex:none; }
 .type-dot { display:inline-block; width:9px; height:9px; border-radius:50%; margin-right:5px; vertical-align:middle; }
 .meta { color:var(--muted); font-size:12px; margin:2px 0; } .meta b { color:#ddd; font-weight:600; }
