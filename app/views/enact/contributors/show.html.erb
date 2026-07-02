@@ -6,12 +6,19 @@
   <header class="enact-contributor-header mb-4">
     <div class="d-flex justify-content-between align-items-start">
       <h1 class="mb-2"><%= @contributor.display_name %></h1>
-      <%# Edit is admin-gated in the controller; only surface the link to admins. %>
-      <% if current_ability.admin? %>
-        <%= link_to t('enact.contributors.edit.link', default: 'Edit'),
-                    "/contributors/#{@contributor.id}/edit",
-                    class: 'btn btn-outline-secondary btn-sm' %>
-      <% end %>
+      <div class="enact-contributor-actions">
+        <%# Opens the research-network map centred on this person: their direct
+            (first-order) collaborators, plus who is one step further out. %>
+        <%= link_to t('enact.people_map.profile_link', default: 'Research network'),
+                    "/people-map?focus=#{@contributor.id}",
+                    class: 'btn btn-outline-primary btn-sm' %>
+        <%# Edit is admin-gated in the controller; only surface the link to admins. %>
+        <% if current_ability.admin? %>
+          <%= link_to t('enact.contributors.edit.link', default: 'Edit'),
+                      "/contributors/#{@contributor.id}/edit",
+                      class: 'btn btn-outline-secondary btn-sm ml-1' %>
+        <% end %>
+      </div>
     </div>
 
     <div class="enact-contributor-identity text-muted">

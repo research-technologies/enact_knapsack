@@ -20,6 +20,14 @@ html,body{ margin:0; height:100%; background:var(--ground); color:var(--text);
 #graphwrap{ flex:1; position:relative; background:radial-gradient(120% 120% at 50% 0%,#191c22,#121419); }
 #cy{ position:absolute; inset:0; }
 #empty{ position:absolute; inset:0; display:none; align-items:center; justify-content:center; color:var(--muted); }
+/* focus bar: shown when the map is centred on one person (?focus=) */
+#focusbar{ position:absolute; top:56px; left:12px; z-index:5; display:none; align-items:center; gap:12px;
+  background:rgba(27,30,36,.94); backdrop-filter:blur(6px); border:1px solid var(--line); border-radius:9px;
+  padding:7px 12px; font-size:12px; color:var(--muted); }
+#focusbar.show{ display:inline-flex; }
+#focusbar b{ color:var(--text); } #focusbar .t1n,#focusbar .t2n{ color:var(--text); }
+#focusbar .reset{ color:var(--accent); cursor:pointer; }
+#focusbar .reset:hover{ text-decoration:underline; }
 
 /* toolbar: search + layout switch, floating over the graph */
 #toolbar{ position:absolute; top:12px; left:12px; right:12px; display:flex; gap:8px; flex-wrap:wrap;
@@ -52,6 +60,7 @@ h1{ font-family:var(--display); font-size:16px; font-weight:700; letter-spacing:
 .orcid{ color:#a6ce39; }
 .worklist{ margin:8px 0 0; padding:0; list-style:none; }
 .worklist li{ font-size:13px; padding:5px 0; border-top:1px solid var(--line); color:var(--text); }
+.adjacent{ margin-top:6px; } .muted-more{ color:var(--faint); font-size:11px; }
 .profilelink{ display:inline-block; margin-top:12px; font-size:13px; font-weight:600; color:var(--accent); text-decoration:none; }
 .profilelink:hover{ text-decoration:underline; }
 

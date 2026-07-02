@@ -23,6 +23,12 @@ module Enact
       real = Enact::PeopleGraph.new(ability: current_ability).call.as_json
       @illustrative = real[:nodes].length < MIN_REAL_NODES
       @graph = @illustrative ? Enact::PeopleMapSample.data : real
+      # `?focus=<contributor id>` centres the graph on one person and tiers the
+      # rest as first-order (direct collaborators) vs second-order (adjacent
+      # communities). This is how the "Research network" button on a contributor
+      # profile opens the map. Ignored for the illustrative fallback, whose node
+      # ids are sample slugs, not real contributor ids.
+      @focus = @illustrative ? '' : params[:focus].to_s
       render layout: false
     end
   end

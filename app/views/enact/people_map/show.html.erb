@@ -27,8 +27,12 @@
         <button type="button" data-layout="breadthfirst" aria-pressed="false">Tree</button>
       </span>
     </div>
-    <div id="cy"></div>
+    <div id="cy" data-focus="<%= @focus %>"></div>
     <div id="empty">No contributor network is visible to you yet.</div>
+    <div id="focusbar">
+      <span>Around <b class="who"></b> &middot; <span class="t1n">0</span> direct &middot; <span class="t2n">0</span> adjacent</span>
+      <a class="reset" role="button" tabindex="0">show everyone &times;</a>
+    </div>
   </div>
   <div id="side">
     <h1>Research network</h1>

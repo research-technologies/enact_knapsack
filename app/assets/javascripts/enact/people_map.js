@@ -7,13 +7,16 @@
 // config/initializers/people_map_assets.rb.
 //
 // Knapsack-local custom code (not a Hyrax override). Same interaction
-// vocabulary as the relationship map:
+// vocabulary as the relationship map, with a people-network focus model:
 //   - nodes are people/organisations, sized by how many collaborators they have;
 //   - colour encodes institution; the legend filters institutions on/off;
-//   - hovering spotlights a person and their collaborators (edge weights show);
-//   - labels thin out when zoomed out and sharpen as you zoom in;
-//   - clicking a person pins the detail panel; clicking a line lists the shared
-//     works; layout switches between force/radial/tree and search jumps to a person.
+//   - hovering spotlights a person and their direct collaborators;
+//   - clicking a person (or arriving via ?focus=<id> from their profile) centres
+//     the map on them and tiers the rest: first-order = direct collaborators
+//     (solid), second-order = people one step further out, in adjacent
+//     communities (lighter, dashed) - the "who's near my world" signal;
+//   - labels thin out when zoomed out; layout switches force/radial/tree; search
+//     jumps to a person.
 (function () {
   var el = document.getElementById('people-data');
   var D = JSON.parse(el.textContent);
@@ -58,6 +61,9 @@
         'transition-property': 'opacity', 'transition-duration': '150ms' } },
       { selector: 'edge.show-label', style: { 'label': 'data(weight)', 'line-color': '#8a93a3', 'opacity': 0.95 } },
       { selector: 'node.hidelabel', style: { 'text-opacity': 0 } },
+      // second-order (adjacent) tier when the map is focused on one person
+      { selector: 'node.second', style: { 'opacity': 0.5, 'border-color': '#5b6270', 'border-width': 1 } },
+      { selector: 'edge.second', style: { 'opacity': 0.32, 'line-style': 'dashed', 'line-color': '#5b6270' } },
       { selector: '.faded', style: { 'opacity': 0.07 } },
       { selector: 'node.faded', style: { 'text-opacity': 0 } }
     ]
@@ -72,20 +78,46 @@
   function updateZoom() { var z = cy.zoom(); cy.nodes().forEach(function (n) { var keep = z > 0.6 || (n.data('deg') || 0) >= 4; n[keep ? 'removeClass' : 'addClass']('hidelabel'); }); }
   cy.on('zoom', updateZoom);
 
+  function clearSpot() { cy.elements().removeClass('faded show-label second'); }
   function spotlight(n) { cy.elements().addClass('faded'); var nb = n.closedNeighborhood(); nb.removeClass('faded'); nb.edges().addClass('show-label'); }
-  function clearSpot() { cy.elements().removeClass('faded'); cy.edges().removeClass('show-label'); }
   cy.on('mouseover', 'node', function (e) { if (!pinned) spotlight(e.target); });
   cy.on('mouseout', 'node', function () { if (!pinned) clearSpot(); });
+
+  // Focus bar (shown when centred on one person)
+  var fb = document.getElementById('focusbar');
+  function showFocusbar(name, t1, t2) {
+    fb.querySelector('.who').textContent = name;
+    fb.querySelector('.t1n').textContent = t1;
+    fb.querySelector('.t2n').textContent = t2;
+    fb.classList.add('show');
+  }
+  function hideFocusbar() { fb.classList.remove('show'); }
 
   var DETAIL = document.getElementById('detail');
   function esc(s) { return String(s == null ? '' : s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
   function nameOf(id) { var n = D.nodes.find(function (x) { return x.id === id; }); return n ? n.label : id; }
-  function showPerson(n) {
-    var d = n.data(), it = INST[d.inst] || {};
+  function personHtml(d) {
+    var it = INST[d.inst] || {};
     var h = '<h4>' + esc(d.label) + '</h4><div class="drow-sub"><span class="dot" style="background:' + (it.color || d.instColor) + '"></span>' + esc(it.label || d.instLabel || '') + (d.agent_type === 'organization' ? ' &middot; organisation' : '') + '</div>';
     if (d.orcid) h += '<div class="row"><b class="orcid">ORCID</b> ' + esc(d.orcid) + '</div>';
     h += '<div class="row"><b>' + d.works + '</b> work' + (d.works === 1 ? '' : 's') + ' &middot; <b>' + d.deg + '</b> collaborator' + (d.deg === 1 ? '' : 's') + '</div>';
     if (d.roles && d.roles.length) { h += '<div class="row" style="margin-top:10px">'; d.roles.forEach(function (r) { h += '<span class="badge">' + esc(r) + '</span>'; }); h += '</div>'; }
+    return h;
+  }
+  function badges(coll, limit) {
+    var names = coll.map(function (x) { return x.data('label'); }).slice(0, limit);
+    var h = '<div class="adjacent">' + names.map(function (nm) { return '<span class="badge">' + esc(nm) + '</span>'; }).join('');
+    if (coll.length > names.length) h += ' <span class="muted-more">+' + (coll.length - names.length) + ' more</span>';
+    return h + '</div>';
+  }
+  function showPersonFocus(n, t1, t2) {
+    var d = n.data();
+    var h = personHtml(d);
+    h += '<div class="row" style="margin-top:12px"><b>' + t1.length + '</b> direct collaborator' + (t1.length === 1 ? '' : 's') + ' (first order)</div>';
+    if (t1.length) h += badges(t1, 10);
+    if (t2.length) {
+      h += '<div class="row"><b>' + t2.length + '</b> in adjacent communities (second order)</div>' + badges(t2, 10);
+    }
     h += '<a class="profilelink" href="' + esc(d.path || '#') + '">&#8599; View full profile</a>';
     DETAIL.innerHTML = h;
   }
@@ -96,10 +128,36 @@
     works.forEach(function (w) { h += '<li>' + esc(w) + '</li>'; }); h += '</ul>';
     DETAIL.innerHTML = h;
   }
-  function reset() { DETAIL.innerHTML = '<p class="hint">Hover a <b>person</b> to spotlight their collaborators; click to pin their details. Click a <b>line</b> to see the works two people share.</p>'; }
-  cy.on('tap', 'node', function (e) { pinned = e.target; clearSpot(); spotlight(e.target); cy.nodes().removeClass('primary'); e.target.addClass('primary'); showPerson(e.target); });
+  function reset() { DETAIL.innerHTML = '<p class="hint">Hover a <b>person</b> to spotlight their collaborators; click to centre the map on them and see who is one step further out. Click a <b>line</b> to see the works two people share.</p>'; }
+
+  // Centre on a person and tier the graph: first-order (direct) solid, second-order
+  // (collaborators of collaborators, in adjacent communities) lighter + dashed.
+  function focusOn(node) {
+    pinned = node;
+    cy.elements().addClass('faded').removeClass('show-label second');
+    var closed = node.closedNeighborhood();          // node + first-order + their edges
+    closed.removeClass('faded'); closed.edges().addClass('show-label');
+    var t1 = node.neighborhood('node');
+    var t2 = t1.neighborhood('node').difference(t1).difference(node);
+    t2.removeClass('faded').addClass('second');
+    t2.connectedEdges().forEach(function (e) {
+      if (!e.source().hasClass('faded') && !e.target().hasClass('faded')) { e.removeClass('faded').addClass('second'); }
+    });
+    cy.nodes().removeClass('primary'); node.addClass('primary');
+    showPersonFocus(node, t1, t2);
+    showFocusbar(node.data('label'), t1.length, t2.length);
+    cy.animate({ fit: { eles: closed.union(t2), padding: 80 } }, { duration: 300 });
+  }
+  function clearFocus() {
+    pinned = null; clearSpot(); cy.nodes().removeClass('primary'); hideFocusbar(); reset();
+    cy.animate({ fit: { eles: cy.elements(), padding: 60 } }, { duration: 300 }); updateZoom();
+  }
+
+  cy.on('tap', 'node', function (e) { focusOn(e.target); });
   cy.on('tap', 'edge', function (e) { showEdge(e.target); });
-  cy.on('tap', function (e) { if (e.target === cy) { pinned = null; clearSpot(); cy.nodes().removeClass('primary'); reset(); } });
+  cy.on('tap', function (e) { if (e.target === cy) clearFocus(); });
+  fb.querySelector('.reset').addEventListener('click', clearFocus);
+  fb.querySelector('.reset').addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); clearFocus(); } });
 
   function applyFilter() {
     cy.nodes().forEach(function (n) { if (hidden.has(n.data('inst'))) { n.style('display', 'none'); } else { n.removeStyle('display'); } });
@@ -122,7 +180,7 @@
     b.addEventListener('click', function () {
       activeLayout = LAYOUTS[b.dataset.layout] ? b.dataset.layout : 'cose';
       document.querySelectorAll('#layoutswitch button').forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.layout === activeLayout)); });
-      pinned = null; clearSpot(); cy.nodes().removeClass('primary'); reset();
+      clearFocus();
       cy.layout(LAYOUTS[activeLayout]).run(); cy.fit(cy.elements(), 60); updateZoom();
     });
   });
@@ -136,8 +194,12 @@
   search.addEventListener('keydown', function (ev) {
     if (ev.key !== 'Enter') return; var q = search.value.trim().toLowerCase(); if (!q) return;
     var m = cy.nodes().filter(function (n) { return (n.data('label') || '').toLowerCase().indexOf(q) !== -1; })[0];
-    if (m) { cy.nodes().removeClass('faded'); pinned = m; cy.nodes().removeClass('primary'); m.addClass('primary'); spotlight(m); showPerson(m); cy.animate({ center: { eles: m }, zoom: 1.3 }, { duration: 300 }); }
+    if (m) focusOn(m);
   });
 
-  cy.ready(function () { cy.layout(LAYOUTS.cose).run(); cy.fit(cy.elements(), 60); updateZoom(); });
+  cy.ready(function () {
+    cy.layout(LAYOUTS.cose).run(); cy.fit(cy.elements(), 60); updateZoom();
+    var focusId = (document.getElementById('cy').dataset.focus || '').trim();
+    if (focusId) { var node = cy.getElementById(focusId); if (node && node.length) focusOn(node); }
+  });
 })();
