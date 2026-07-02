@@ -247,7 +247,14 @@
 
       // ---- relationship-type filter (clickable legend) -----------------------
       function applyRelFilter() {
-        cy.edges().forEach(e => { e.style('display', hiddenRels.has(e.data('rel')) ? 'none' : 'element'); });
+        // Only bypass `display` on hidden edges; clear it on shown ones so the
+        // stylesheet (e.g. `.dimmed { display:none }` used by focusNode) still
+        // governs them. Setting an inline `display:element` bypass on every edge
+        // would override `.dimmed` and break focus-dimming after any filtering.
+        cy.edges().forEach(e => {
+          if (hiddenRels.has(e.data('rel'))) { e.style('display', 'none'); }
+          else { e.removeStyle('display'); }
+        });
       }
       function toggleRel(row) {
         const k = row.dataset.rel;
@@ -302,7 +309,7 @@
 
       cy.ready(() => {
         cy.resize();
-        if (FOCUS && cy.getElementById(FOCUS).nonempty()) {
+        if (FOCUS && !cy.getElementById(FOCUS).empty()) {
           const n = cy.getElementById(FOCUS); pinned = n; showNode(n); focusNode(n);
         } else {
           cy.fit(cy.elements(), 70);

@@ -13,11 +13,13 @@ This doc is how to turn it on.
 
 ## How the gate works
 
-`Enact::RelationshipMapController` checks, on each request, whether any registered
-curation concern type declares a `relationships` attribute
-(`relationships_configured?`). This class-level attribute check works in both
-flexible (`HYRAX_FLEXIBLE=true`) and classic metadata modes and needs no query.
-If no work type has it, the controller renders a 404.
+`Enact::RelationshipMapController` includes `Enact::RequiresRelationshipsCompound`
+and runs `before_action :require_relationships_compound`. That check (via
+`relationships_compound_configured?`) tests, on each request, whether any
+registered curation concern type declares a `relationships` attribute. This
+class-level attribute check works in both flexible (`HYRAX_FLEXIBLE=true`) and
+classic metadata modes and needs no query. If no work type has it, the
+controller renders a 404.
 
 ## Steps to enable
 
