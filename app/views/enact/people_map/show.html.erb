@@ -4,92 +4,46 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Research network &mdash; Enact</title>
-<%# Standalone "representing people" map, ported from the design prototype
-    (claude.ai artifact aff512de) the team is reacting to. Companion to the
-    work relationship map. Cytoscape.js is vendored at
-    app/assets/javascripts/cytoscape.js; page CSS/JS live in
-    app/assets/{stylesheets,javascripts}/enact/people_map.*. Renders with
-    `layout: false`, so it pulls its own assets here; server data (the
-    contributor network from Enact::PeopleGraph, or the illustrative fallback)
-    is handed to the JS through the JSON data island below. Precompiled in
-    config/initializers/people_map_assets.rb. %>
+<%# Standalone people map: contributors linked where they share credit on a
+    work, coloured by institution. Companion to the relationship map and built
+    the same way - Cytoscape.js is vendored at app/assets/javascripts/cytoscape.js;
+    page CSS/JS live in app/assets/{stylesheets,javascripts}/enact/people_map.*.
+    Renders with `layout: false`, so it pulls its own assets here; server data
+    (the contributor network from Enact::PeopleGraph, or the illustrative
+    fallback) is handed to the JS through the JSON data island below.
+    Precompiled in config/initializers/people_map_assets.rb. %>
 <%= stylesheet_link_tag 'enact/people_map', media: 'all' %>
 <%= javascript_include_tag 'cytoscape' %>
 </head>
 <body>
-<div class="wrap">
-  <header>
-    <p class="eyebrow">Enact &middot; Research network &middot; representing people</p>
-    <h1>How people relate</h1>
-    <p class="lede">A companion to the works relationship map: contributors as a network, connected where they've <b>worked together</b>. The goal is the same &ndash; <b>clarity, not overwhelm</b> &ndash; and it reuses the same visual language you already approved.</p>
-    <div class="spectrum" aria-hidden="true" id="spectrum"></div>
-    <% if @illustrative %>
-      <div class="illus">&#9888; Illustrative data &ndash; a plausible network for reacting to, not real records yet</div>
-    <% end %>
-  </header>
-
-  <div class="stage-row">
-    <div class="stage">
-      <div class="toolbar">
-        <input id="search" type="search" placeholder="Search people&hellip;" aria-label="Search people" autocomplete="off" />
-        <span class="lswitch" role="group" aria-label="Layout"><span class="lbl">Layout</span>
-          <button type="button" data-layout="cose" aria-pressed="true">Force</button>
-          <button type="button" data-layout="concentric" aria-pressed="false">Radial</button>
-          <button type="button" data-layout="breadthfirst" aria-pressed="false">Tree</button></span>
-      </div>
-      <div id="cy"></div>
-      <div class="hint" id="hint">Hover a person to spotlight collaborators &middot; click a line to see the works they share &middot; scroll to zoom</div>
+<div id="app">
+  <div id="graphwrap">
+    <div id="toolbar">
+      <input id="search" type="search" placeholder="Search people&hellip;" aria-label="Search people" autocomplete="off" />
+      <span id="layoutswitch" role="group" aria-label="Layout">
+        <span class="lbl">Layout</span>
+        <button type="button" data-layout="cose" aria-pressed="true">Force</button>
+        <button type="button" data-layout="concentric" aria-pressed="false">Radial</button>
+        <button type="button" data-layout="breadthfirst" aria-pressed="false">Tree</button>
+      </span>
     </div>
-
-    <div class="side">
-      <div class="card">
-        <h3>Institution</h3>
-        <p class="legend-hint">Click to show or hide</p>
-        <div id="legend"></div>
-      </div>
-      <div class="card" style="flex:1">
-        <h3>Detail</h3>
-        <div id="detail"><p class="ph">Hover or click a person, or a connecting line.</p></div>
-      </div>
+    <div id="cy"></div>
+    <div id="empty">No contributor network is visible to you yet.</div>
+  </div>
+  <div id="side">
+    <h1>Research network</h1>
+    <div class="sub">Enact &middot; contributors, linked where they share credit on a work</div>
+    <% if @illustrative %>
+      <div class="illus" role="note">Showing sample data &ndash; this repository has no linked contributors yet.</div>
+    <% end %>
+    <div id="detail"><p class="hint">Hover a <b>person</b> to spotlight their collaborators; click to pin their details.
+      Click a <b>line</b> to see the works two people share. Drag to rearrange; scroll to zoom.</p></div>
+    <div class="legend">
+      <h2>Institution</h2>
+      <p class="legend-hint">Click a name to show or hide it</p>
+      <div id="legend"></div>
     </div>
   </div>
-
-  <section>
-    <div class="sec-head"><span class="idx">A</span><h2>How to read it</h2></div>
-    <div class="grid">
-      <div class="opt" style="--otc:var(--indep)">
-        <span class="tag">nodes</span><h4>Each circle is a person</h4>
-        <p>Sized by how many collaborators they have, so the people at the centre of the work are obvious. Organisations (e.g. a school) show as a rounded tag.</p>
-      </div>
-      <div class="opt" style="--otc:var(--westminster)">
-        <span class="tag">colour</span><h4>Coloured by institution</h4>
-        <p>You can see the Westminster / Leeds / QMUL / Glasgow clusters at a glance. Click any institution in the legend to isolate it.</p>
-      </div>
-      <div class="opt" style="--otc:var(--gsa)">
-        <span class="tag">edges</span><h4>Lines are shared work</h4>
-        <p>Two people are linked when they're credited on the same output; the thicker the line, the more they've made together. Click a line to see exactly which works.</p>
-      </div>
-      <div class="opt" style="--otc:var(--dalry)">
-        <span class="tag">into the repository</span><h4>Every person is a profile</h4>
-        <p>These already exist at <span style="font-family:var(--mono);font-size:12px">/contributors/:id</span> (name, ORCID, affiliations, their works). A node is just a doorway into the profile that's already built.</p>
-      </div>
-    </div>
-  </section>
-
-  <section>
-    <div class="sec-head"><span class="idx">B</span><h2>For you to react to</h2></div>
-    <p class="sec-sub">These are the real decisions. There's a sensible default for each so there's something concrete to look at &ndash; tell us where your instinct differs and we refine from there.</p>
-
-    <div class="qcard"><p class="q">What should "relate" mean?</p><p class="a"><b>Default shown:</b> worked together (shared outputs). Could also mean same portfolio, same institution, or a specific role relationship (e.g. supervised by).</p></div>
-    <div class="qcard"><p class="q">A people view on its own, or people layered onto the works map?</p><p class="a"><b>Default shown:</b> people on their own, for legibility. Alternative: one graph where people and works appear together.</p></div>
-    <div class="qcard"><p class="q">Where should it live?</p><p class="a"><b>Default shown:</b> a standalone "research network" page. Alternative: a small "collaborators" graph embedded on each person's existing profile.</p></div>
-    <div class="qcard"><p class="q">Do organisations belong here as their own nodes?</p><p class="a"><b>Default shown:</b> people, with institution as colour; organisations appear only when directly credited (like the school). Could promote institutions to full nodes.</p></div>
-  </section>
-
-  <footer>
-    <p class="eyebrow">Next</p>
-    <p>Once you've reacted, the real version is mostly assembly: contributors, their profiles, and the shared-work links all already exist in the repository &ndash; this view just draws them. Nothing here needs new data modelling.</p>
-  </footer>
 </div>
 
 <%# Server data for app/assets/javascripts/enact/people_map.js. Kept in a JSON

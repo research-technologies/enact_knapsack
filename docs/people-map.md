@@ -46,8 +46,8 @@ content, and delete `PeopleMapSample` when it is no longer needed.
 
 ## Still open (for reaction)
 
-These are deliberate defaults, not decisions - see the "For you to react to"
-section on the page itself:
+The page ships as a working feature; these are the design defaults it takes,
+still open for the team to react to:
 
 - what "relate" means (shared work vs shared portfolio/institution/role);
 - a standalone people view vs people layered onto the works map;
