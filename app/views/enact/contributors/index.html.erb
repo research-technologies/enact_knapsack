@@ -7,8 +7,11 @@
   <div class="d-flex justify-content-between align-items-center flex-wrap">
     <h1 class="mb-0"><%= t('enact.contributors.index.title', default: 'Research profiles') %></h1>
     <%# The whole contributor collaboration network (the "research network" map). %>
+    <%# turbolinks/turbo false: /people-map is standalone (layout:false), so load
+        it as a full request rather than let Turbolinks swap it in. %>
     <%= link_to t('enact.people_map.index_link', default: 'View as network'),
-                '/people-map', class: 'btn btn-outline-primary btn-sm' %>
+                '/people-map', class: 'btn btn-outline-primary btn-sm',
+                data: { turbolinks: false, turbo: false } %>
   </div>
 
   <%# GET form so the search/filter is bookmarkable and paginates cleanly. %>
