@@ -14,7 +14,7 @@ module Hyrax
         # workaround to use 'audio/mp3' (which isn't even an official MIME type).
         format: Hyrax.config.iiif_av_viewer == :universal_viewer ? 'audio/mp3' : mime_type,
         thumbnail: [{
-          id: "https://#{hostname}/assets/audio.png",
+          id: "https://#{hostname}#{ActionController::Base.helpers.asset_path('audio.png')}",
           type: 'Image',
           format: 'image/png'
         }]
