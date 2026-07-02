@@ -13,6 +13,7 @@ module Enact
   # production design is a first-class relationship model + deposit UI, still in
   # co-design). The view renders with `layout: false`.
   class RelationshipMapController < ApplicationController
+    include ::Enact::RequiresRelationshipsCompound
     # Presentation-only metadata for the six controlled relation terms
     # (m3 profile `relationship_type`). Human labels come from the locale files
     # (`enact.relationships.types.*`); colour + DataCite mapping live here
@@ -30,6 +31,14 @@ module Enact
     # Cap on works pulled into a single map. A project's corpus is small; this
     # is a backstop, surfaced in the response rather than silently truncating.
     MAX_WORKS = 1_000
+
+    # Opt-in gate: the map only works when the tenant's metadata profile declares
+    # the `relationships` compound (see docs/relationship-map-setup.md). Without
+    # it there is nothing to draw, so the standalone page 404s rather than showing
+    # an empty graph. The in-page "Relationship map" button is already implicitly
+    # gated - it renders only inside the relationships compound card, which the
+    # profile drives.
+    before_action :require_relationships_compound, only: :show
 
     def show
       docs = scoped_documents
