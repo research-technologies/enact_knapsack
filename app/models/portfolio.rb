@@ -22,6 +22,12 @@ class Portfolio < Hyrax::Work
   include Hyrax::NestedWorks
   prepend EnactCompoundNormalization
 
+  # Read by Enact::ReseedValidChildConcerns to keep Portfolio out of every
+  # type's valid_child_concerns, so it can never be nested as a child.
+  def self.valid_child_concern?
+    false
+  end
+
   # HykuIndexing hardcodes `object.creator&.first`. Enact has no `creator`
   # field (contributors with typed roles cover that role per CLAUDE.md), so
   # we expose a nil stub purely to keep the shared indexer happy.

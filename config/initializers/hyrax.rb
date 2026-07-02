@@ -77,5 +77,9 @@ Rails.application.config.after_initialize do
       :@registered_concerns,
       %i[portfolio portfolio_artefact portfolio_event portfolio_literature portfolio_item_collection]
     )
+
+    # Boot pass: must run here (not an engine hook) because engine hooks run
+    # before this deferred block. See HykuKnapsack::ReseedValidChildConcerns.
+    HykuKnapsack::ReseedValidChildConcerns.call
   end
 end
