@@ -30,7 +30,9 @@
     <div id="cy" data-focus="<%= @focus %>"></div>
     <div id="empty">No contributor network is visible to you yet.</div>
     <div id="focusbar">
-      <span>Around <b class="who"></b> &middot; <span class="t1n">0</span> direct &middot; <span class="t2n">0</span> adjacent</span>
+      <span class="who-wrap">Around <b class="who"></b></span>
+      <span class="fkey"><i class="keyline"></i><b class="t1n">0</b> direct</span>
+      <span class="fkey" title="Linked through a shared collaborator, not directly"><i class="keyline dash"></i><b class="t2n">0</b> adjacent</span>
       <a class="reset" role="button" tabindex="0">show everyone &times;</a>
     </div>
   </div>
@@ -46,6 +48,12 @@
       <h2>Institution</h2>
       <p class="legend-hint">Click a name to show or hide it</p>
       <div id="legend"></div>
+    </div>
+    <div class="legend linekey">
+      <h2>Lines</h2>
+      <div class="lk-row"><i class="keyline"></i> Direct collaborator</div>
+      <div class="lk-row"><i class="keyline dash"></i> Adjacent &ndash; linked through a shared collaborator</div>
+      <p class="legend-hint mt">A line is a shared work; its number is how many, and a thicker line means more.</p>
     </div>
   </div>
 </div>
