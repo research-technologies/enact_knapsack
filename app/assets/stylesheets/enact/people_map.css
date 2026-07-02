@@ -63,6 +63,8 @@ h1{ font-family:var(--display); font-size:16px; font-weight:700; letter-spacing:
 .badge{ display:inline-block; font-size:11px; background:var(--panel-2); border:1px solid var(--line); color:var(--text);
   padding:2px 8px; border-radius:20px; margin:3px 4px 0 0; }
 .orcid{ color:#a6ce39; }
+.orcid-link{ color:#a6ce39; font-weight:600; text-decoration:none; }
+.orcid-link:hover{ text-decoration:underline; }
 .worklist{ margin:8px 0 0; padding:0; list-style:none; }
 .worklist li{ font-size:13px; padding:5px 0; border-top:1px solid var(--line); color:var(--text); }
 .adjacent{ margin-top:6px; } .muted-more{ color:var(--faint); font-size:11px; }
@@ -73,6 +75,8 @@ h1{ font-family:var(--display); font-size:16px; font-weight:700; letter-spacing:
 .legend{ margin-top:18px; border-top:1px solid var(--line); padding-top:14px; }
 .legend h2{ font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:var(--muted); margin:0 0 8px; font-weight:500; }
 .legend-hint{ color:var(--muted); font-size:11px; margin:0 0 8px; }
+.legend-hint.mt{ margin:10px 0 4px; }
+.lk-row{ display:flex; align-items:center; font-size:12.5px; color:var(--muted); margin:5px 0; }
 .lrow{ display:flex; align-items:center; gap:9px; padding:5px 4px; margin:2px -4px; border-radius:6px; cursor:pointer; user-select:none; font-size:13px; }
 .lrow:hover{ background:var(--panel-2); } .lrow.off{ opacity:.55; }
 .lrow:focus-visible{ outline:2px solid var(--accent); outline-offset:1px; }
