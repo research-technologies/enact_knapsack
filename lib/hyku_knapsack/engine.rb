@@ -110,6 +110,11 @@ module HykuKnapsack
         Rails.configuration.cache_classes ? require(c) : load(c)
       end
 
+      # Reload pass only: to_prepare runs before concern registration, so the
+      # boot pass is the inline call in config/initializers/hyrax.rb.
+      # See HykuKnapsack::ReseedValidChildConcerns.
+      HykuKnapsack::ReseedValidChildConcerns.call
+
       # Re-pin the knapsack view paths and locale precedence on every reload. Rails'
       # dev reloader resets controller view_paths and reloads the i18n backend, which
       # undoes the boot-time pinning done in `after_initialize` (that hook runs only
