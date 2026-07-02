@@ -7,7 +7,13 @@ affiliation) and sized by how many collaborators they have. It is a
 reaction-stage prototype, co-designed with Nick, built from the design artifact
 the team is iterating on.
 
-- **URL:** `/people-map`
+- **URL:** `/people-map` (whole network); `/people-map?focus=<contributor id>`
+  centres on one person.
+- **Getting there:** the map is person-centric (unlike the work-centric
+  relationship map, whose button is on the work show page), so the entry points
+  are the contributor pages - a **"Research network"** button on a contributor
+  profile (`/contributors/:id`, opens `?focus=<id>`) and a **"View as network"**
+  link on the contributors browse index (`/contributors`).
 - **Controller:** `Enact::PeopleMapController` (renders `layout: false`)
 - **Graph:** `Enact::PeopleGraph` + `Enact::PeopleGraph::Palette`
 - **Assets:** vendored `cytoscape.js` (shared with the relationship map) plus
@@ -33,6 +39,22 @@ compound. `Enact::PeopleGraph`:
 Institution colour is deterministic per affiliation (`Palette`), so a given
 institution keeps its swatch across loads; contributors with no affiliation
 share a neutral "unaffiliated" swatch.
+
+## First- and second-order connections
+
+Centring on a person (clicking a node, or arriving via `?focus=`) tiers the
+graph around them:
+
+- **first-order** - their direct collaborators (people they share a work with),
+  drawn solid;
+- **second-order** - collaborators of those collaborators, i.e. people in
+  *adjacent* research communities, drawn lighter and dashed;
+- everyone else is faded out.
+
+A focus bar shows the first/second-order counts and the detail panel lists the
+adjacent names. This is the "who is near my world" signal a plain co-author list
+can't give. Tiering is computed client-side over the loaded graph; server-side
+ego extraction is the scale follow-up for very large networks.
 
 ## Illustrative fallback
 
