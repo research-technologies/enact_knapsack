@@ -99,7 +99,10 @@
   function personHtml(d) {
     var it = INST[d.inst] || {};
     var h = '<h4>' + esc(d.label) + '</h4><div class="drow-sub"><span class="dot" style="background:' + (it.color || d.instColor) + '"></span>' + esc(it.label || d.instLabel || '') + (d.agent_type === 'organization' ? ' &middot; organisation' : '') + '</div>';
-    if (d.orcid) h += '<div class="row"><b class="orcid">ORCID</b> ' + esc(d.orcid) + '</div>';
+    if (d.orcid) {
+      var orcidUrl = /^https?:/.test(d.orcid) ? d.orcid : 'https://orcid.org/' + d.orcid;
+      h += '<div class="row"><b class="orcid">ORCID</b> <a href="' + esc(orcidUrl) + '" target="_blank" rel="noopener">' + esc(d.orcid) + '</a></div>';
+    }
     h += '<div class="row"><b>' + d.works + '</b> work' + (d.works === 1 ? '' : 's') + ' &middot; <b>' + d.deg + '</b> collaborator' + (d.deg === 1 ? '' : 's') + '</div>';
     if (d.roles && d.roles.length) { h += '<div class="row" style="margin-top:10px">'; d.roles.forEach(function (r) { h += '<span class="badge">' + esc(r) + '</span>'; }); h += '</div>'; }
     return h;

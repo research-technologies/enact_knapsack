@@ -73,8 +73,6 @@ h1{ font-family:var(--display); font-size:16px; font-weight:700; letter-spacing:
 .legend{ margin-top:18px; border-top:1px solid var(--line); padding-top:14px; }
 .legend h2{ font-family:var(--mono); font-size:11px; text-transform:uppercase; letter-spacing:.14em; color:var(--muted); margin:0 0 8px; font-weight:500; }
 .legend-hint{ color:var(--muted); font-size:11px; margin:0 0 8px; }
-.legend-hint.mt{ margin:8px 0 0; }
-.lk-row{ display:flex; align-items:center; font-size:12.5px; color:var(--muted); margin:5px 0; }
 .lrow{ display:flex; align-items:center; gap:9px; padding:5px 4px; margin:2px -4px; border-radius:6px; cursor:pointer; user-select:none; font-size:13px; }
 .lrow:hover{ background:var(--panel-2); } .lrow.off{ opacity:.55; }
 .lrow:focus-visible{ outline:2px solid var(--accent); outline-offset:1px; }
