@@ -33,9 +33,20 @@ module Enact
     def flexible_profile_declares_relationships?
       return false unless ::Hyrax.config.respond_to?(:flexible?) && ::Hyrax.config.flexible?
 
-      profile = ::Hyrax::FlexibleSchema.order(:created_at).last&.profile
+      profile = current_flexible_profile
       properties = profile.is_a?(Hash) ? (profile['properties'] || profile['attributes']) : nil
       properties.is_a?(Hash) && properties.key?('relationships')
+    end
+
+    # The *active* M3 profile. Hyrax tracks it via `current_schema_id`; fall back
+    # to the most recent schema if that accessor is unavailable or unset, so we
+    # never key the gate off a stale/non-active schema when several exist.
+    def current_flexible_profile
+      schema = nil
+      if ::Hyrax::FlexibleSchema.respond_to?(:current_schema_id) && (id = ::Hyrax::FlexibleSchema.current_schema_id)
+        schema = ::Hyrax::FlexibleSchema.find_by(id:)
+      end
+      (schema || ::Hyrax::FlexibleSchema.order(:created_at).last)&.profile
     end
 
     # Classic mode: any registered work type declaring a `relationships`

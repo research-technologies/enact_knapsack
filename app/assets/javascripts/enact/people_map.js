@@ -22,6 +22,15 @@
   var D = JSON.parse(el.textContent);
   var INST = {}; D.institutions.forEach(function (i) { INST[i.key] = i; });
 
+  // HTML-escape before interpolating into innerHTML or attribute values -
+  // labels/colours derive from user-entered affiliations. Quotes are escaped
+  // too, since escaped values are also placed inside href="..." attributes.
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
   var empty = document.getElementById('empty');
   if (!D.nodes.length) { if (empty) empty.style.display = 'flex'; return; }
 
@@ -41,7 +50,7 @@
     var row = document.createElement('div');
     row.className = 'lrow'; row.dataset.inst = it.key;
     row.setAttribute('role', 'checkbox'); row.setAttribute('aria-checked', 'true'); row.tabIndex = 0;
-    row.innerHTML = '<span class="lcheck" aria-hidden="true"></span><span class="dot" style="background:' + it.color + '"></span><span>' + it.label + '</span>';
+    row.innerHTML = '<span class="lcheck" aria-hidden="true"></span><span class="dot" style="background:' + esc(it.color) + '"></span><span>' + esc(it.label) + '</span>';
     legend.appendChild(row);
   });
 
@@ -94,7 +103,6 @@
   function hideFocusbar() { fb.classList.remove('show'); }
 
   var DETAIL = document.getElementById('detail');
-  function esc(s) { return String(s == null ? '' : s).replace(/[&<>]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;' }[c]; }); }
   function nameOf(id) { var n = D.nodes.find(function (x) { return x.id === id; }); return n ? n.label : id; }
   function personHtml(d) {
     var it = INST[d.inst] || {};
