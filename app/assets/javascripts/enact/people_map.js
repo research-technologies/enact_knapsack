@@ -103,6 +103,25 @@
   function hideFocusbar() { fb.classList.remove('show'); }
 
   var DETAIL = document.getElementById('detail');
+
+  // Mobile: the side panel is a collapsible drawer, revealed by #panel-toggle
+  // (only displayed on narrow screens via CSS). openPanelOnMobile() opens it
+  // when the user taps a node/edge, so the details they asked for are shown.
+  var panelToggle = document.getElementById('panel-toggle');
+  var side = document.getElementById('side');
+  function setPanel(open) {
+    if (!side || !panelToggle) { return; }
+    side.classList.toggle('open', open);
+    panelToggle.setAttribute('aria-expanded', String(open));
+    panelToggle.textContent = open ? 'Close' : 'Details';
+  }
+  function openPanelOnMobile() {
+    if (panelToggle && getComputedStyle(panelToggle).display !== 'none') { setPanel(true); }
+  }
+  if (panelToggle) {
+    panelToggle.addEventListener('click', function () { setPanel(!side.classList.contains('open')); });
+  }
+
   function nameOf(id) { var n = D.nodes.find(function (x) { return x.id === id; }); return n ? n.label : id; }
   function personHtml(d) {
     var it = INST[d.inst] || {};
@@ -164,8 +183,8 @@
     cy.animate({ fit: { eles: cy.elements(), padding: 60 } }, { duration: 300 }); updateZoom();
   }
 
-  cy.on('tap', 'node', function (e) { focusOn(e.target); });
-  cy.on('tap', 'edge', function (e) { showEdge(e.target); });
+  cy.on('tap', 'node', function (e) { focusOn(e.target); openPanelOnMobile(); });
+  cy.on('tap', 'edge', function (e) { showEdge(e.target); openPanelOnMobile(); });
   cy.on('tap', function (e) { if (e.target === cy) clearFocus(); });
   fb.querySelector('.reset').addEventListener('click', clearFocus);
   fb.querySelector('.reset').addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); clearFocus(); } });

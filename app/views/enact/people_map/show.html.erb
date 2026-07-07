@@ -27,6 +27,9 @@
         <button type="button" data-layout="breadthfirst" aria-pressed="false">Tree</button>
       </span>
     </div>
+    <%# Mobile only (CSS): floats above the graph and toggles the side panel,
+        which becomes a right-hand drawer on narrow screens. %>
+    <button type="button" id="panel-toggle" aria-controls="side" aria-expanded="false">Details</button>
     <div id="cy" data-focus="<%= @focus %>"></div>
     <div id="empty">No contributor network is visible to you yet.</div>
     <div id="focusbar">

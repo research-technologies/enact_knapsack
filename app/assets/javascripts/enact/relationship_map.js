@@ -23,6 +23,24 @@
     if (!dataEl) { return; }
     var payload = JSON.parse(dataEl.textContent);
 
+    // Mobile: the side panel is a collapsible drawer, revealed by #panel-toggle
+    // (only displayed on narrow screens via CSS). openPanelOnMobile() opens it
+    // when the user taps a node/edge so the details they asked for are shown.
+    var panelToggle = document.getElementById('panel-toggle');
+    var sidePanel = document.getElementById('side');
+    function setPanel(open) {
+      if (!panelToggle || !sidePanel) { return; }
+      sidePanel.classList.toggle('open', open);
+      panelToggle.setAttribute('aria-expanded', String(open));
+      panelToggle.textContent = open ? 'Close' : 'Details';
+    }
+    function openPanelOnMobile() {
+      if (panelToggle && getComputedStyle(panelToggle).display !== 'none') { setPanel(true); }
+    }
+    if (panelToggle) {
+      panelToggle.addEventListener('click', function () { setPanel(!sidePanel.classList.contains('open')); });
+    }
+
     const REL = payload.rel_types || {};
     const relColor = e => (REL[e.data('rel')] || { color: '#888' }).color;
     const relLabelOf = r => (REL[r] || { label: r }).label;
@@ -241,8 +259,8 @@
           Click a <b>line</b> for the relationship and its curatorial note.</p>`;
       }
 
-      cy.on('tap', 'node', e => { pinned = e.target; clearSpotlight(); showNode(e.target); focusNode(e.target); });
-      cy.on('tap', 'edge', e => showLink(e.target));
+      cy.on('tap', 'node', e => { pinned = e.target; clearSpotlight(); showNode(e.target); focusNode(e.target); openPanelOnMobile(); });
+      cy.on('tap', 'edge', e => { showLink(e.target); openPanelOnMobile(); });
       cy.on('tap', e => { if (e.target === cy) { resetPanel(); clearFocus(); } });
 
       // ---- relationship-type filter (clickable legend) -----------------------
