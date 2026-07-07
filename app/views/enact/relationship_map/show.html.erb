@@ -3,6 +3,14 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<%# This is a standalone (layout:false) document that boots Cytoscape against its
+    own head-loaded assets. Turbolinks/Turbo partial visits swap it into the
+    current page and leave the graph half-initialised (blank until a hard
+    refresh), so force a full page load whenever anything navigates here -
+    buttons, links authored in a work's narrative, pasted links, all of them.
+    This is why the entry links don't each need data-turbolinks=false. %>
+<meta name="turbolinks-visit-control" content="reload">
+<meta name="turbo-visit-control" content="reload">
 <title>Relationship map &mdash; Enact</title>
 <%# Ported from the Hyrax prototype (wip-enact-relationship-map) into the
     knapsack as custom code. Cytoscape.js is vendored at

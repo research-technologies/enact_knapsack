@@ -3,6 +3,13 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
+<%# Standalone (layout:false) document that boots Cytoscape against its own
+    head-loaded assets. Turbolinks/Turbo partial visits swap it into the current
+    page and leave the graph half-initialised (blank until a hard refresh), so
+    force a full page load whenever anything navigates here. This is why the
+    entry links don't each need data-turbolinks=false. %>
+<meta name="turbolinks-visit-control" content="reload">
+<meta name="turbo-visit-control" content="reload">
 <title>Research network &mdash; Enact</title>
 <%# Standalone people map: contributors linked where they share credit on a
     work, coloured by institution. Companion to the relationship map and built
