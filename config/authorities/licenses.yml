@@ -1,0 +1,3647 @@
+terms:
+  -
+    id: "https://spdx.org/licenses/0BSD.html"
+    active: true
+    term: BSD Zero Clause License
+    licenseId: "0BSD"
+  -
+    id: "https://spdx.org/licenses/3D-Slicer-1.0.html"
+    active: true
+    term: "3D Slicer License v1.0"
+    licenseId: "3D-Slicer-1.0"
+  -
+    id: "https://spdx.org/licenses/AAL.html"
+    active: true
+    term: Attribution Assurance License
+    licenseId: AAL
+  -
+    id: "https://spdx.org/licenses/Abstyles.html"
+    active: true
+    term: Abstyles License
+    licenseId: Abstyles
+  -
+    id: "https://spdx.org/licenses/AdaCore-doc.html"
+    active: true
+    term: AdaCore Doc License
+    licenseId: AdaCore-doc
+  -
+    id: "https://spdx.org/licenses/Adobe-2006.html"
+    active: true
+    term: Adobe Systems Incorporated Source Code License Agreement
+    licenseId: Adobe-2006
+  -
+    id: "https://spdx.org/licenses/Adobe-Display-PostScript.html"
+    active: true
+    term: Adobe Display PostScript License
+    licenseId: Adobe-Display-PostScript
+  -
+    id: "https://spdx.org/licenses/Adobe-Glyph.html"
+    active: true
+    term: Adobe Glyph List License
+    licenseId: Adobe-Glyph
+  -
+    id: "https://spdx.org/licenses/Adobe-Utopia.html"
+    active: true
+    term: Adobe Utopia Font License
+    licenseId: Adobe-Utopia
+  -
+    id: "https://spdx.org/licenses/ADSL.html"
+    active: true
+    term: Amazon Digital Services License
+    licenseId: ADSL
+  -
+    id: "https://spdx.org/licenses/Advanced-Cryptics-Dictionary.html"
+    active: true
+    term: Advanced Cryptics Dictionary License
+    licenseId: Advanced-Cryptics-Dictionary
+  -
+    id: "https://spdx.org/licenses/AFL-1.1.html"
+    active: true
+    term: Academic Free License v1.1
+    licenseId: AFL-1.1
+  -
+    id: "https://spdx.org/licenses/AFL-1.2.html"
+    active: true
+    term: Academic Free License v1.2
+    licenseId: AFL-1.2
+  -
+    id: "https://spdx.org/licenses/AFL-2.0.html"
+    active: true
+    term: Academic Free License v2.0
+    licenseId: AFL-2.0
+  -
+    id: "https://spdx.org/licenses/AFL-2.1.html"
+    active: true
+    term: Academic Free License v2.1
+    licenseId: AFL-2.1
+  -
+    id: "https://spdx.org/licenses/AFL-3.0.html"
+    active: true
+    term: Academic Free License v3.0
+    licenseId: AFL-3.0
+  -
+    id: "https://spdx.org/licenses/Afmparse.html"
+    active: true
+    term: Afmparse License
+    licenseId: Afmparse
+  -
+    id: "https://spdx.org/licenses/AGPL-1.0.html"
+    active: false
+    term: Affero General Public License v1.0
+    licenseId: AGPL-1.0
+  -
+    id: "https://spdx.org/licenses/AGPL-1.0-only.html"
+    active: true
+    term: Affero General Public License v1.0 only
+    licenseId: AGPL-1.0-only
+  -
+    id: "https://spdx.org/licenses/AGPL-1.0-or-later.html"
+    active: true
+    term: Affero General Public License v1.0 or later
+    licenseId: AGPL-1.0-or-later
+  -
+    id: "https://spdx.org/licenses/AGPL-3.0.html"
+    active: false
+    term: GNU Affero General Public License v3.0
+    licenseId: AGPL-3.0
+  -
+    id: "https://spdx.org/licenses/AGPL-3.0-only.html"
+    active: true
+    term: GNU Affero General Public License v3.0 only
+    licenseId: AGPL-3.0-only
+  -
+    id: "https://spdx.org/licenses/AGPL-3.0-or-later.html"
+    active: true
+    term: GNU Affero General Public License v3.0 or later
+    licenseId: AGPL-3.0-or-later
+  -
+    id: "https://spdx.org/licenses/Aladdin.html"
+    active: true
+    term: Aladdin Free Public License
+    licenseId: Aladdin
+  -
+    id: "https://spdx.org/licenses/ALGLIB-Documentation.html"
+    active: true
+    term: ALGLIB Documentation License
+    licenseId: ALGLIB-Documentation
+  -
+    id: "https://spdx.org/licenses/AMD-newlib.html"
+    active: true
+    term: AMD newlib License
+    licenseId: AMD-newlib
+  -
+    id: "https://spdx.org/licenses/AMDPLPA.html"
+    active: true
+    term: "AMD's plpa_map.c License"
+    licenseId: AMDPLPA
+  -
+    id: "https://spdx.org/licenses/AML.html"
+    active: true
+    term: Apple MIT License
+    licenseId: AML
+  -
+    id: "https://spdx.org/licenses/AML-glslang.html"
+    active: true
+    term: AML glslang variant License
+    licenseId: AML-glslang
+  -
+    id: "https://spdx.org/licenses/AMPAS.html"
+    active: true
+    term: Academy of Motion Picture Arts and Sciences BSD
+    licenseId: AMPAS
+  -
+    id: "https://spdx.org/licenses/ANTLR-PD.html"
+    active: true
+    term: ANTLR Software Rights Notice
+    licenseId: ANTLR-PD
+  -
+    id: "https://spdx.org/licenses/ANTLR-PD-fallback.html"
+    active: true
+    term: ANTLR Software Rights Notice with license fallback
+    licenseId: ANTLR-PD-fallback
+  -
+    id: "https://spdx.org/licenses/any-OSI.html"
+    active: true
+    term: Any OSI License
+    licenseId: any-OSI
+  -
+    id: "https://spdx.org/licenses/any-OSI-perl-modules.html"
+    active: true
+    term: Any OSI License - Perl Modules
+    licenseId: any-OSI-perl-modules
+  -
+    id: "https://spdx.org/licenses/Apache-1.0.html"
+    active: true
+    term: Apache License 1.0
+    licenseId: Apache-1.0
+  -
+    id: "https://spdx.org/licenses/Apache-1.1.html"
+    active: true
+    term: Apache License 1.1
+    licenseId: Apache-1.1
+  -
+    id: "https://spdx.org/licenses/Apache-2.0.html"
+    active: true
+    term: Apache License 2.0
+    licenseId: Apache-2.0
+  -
+    id: "https://spdx.org/licenses/APAFML.html"
+    active: true
+    term: Adobe Postscript AFM License
+    licenseId: APAFML
+  -
+    id: "https://spdx.org/licenses/APL-1.0.html"
+    active: true
+    term: Adaptive Public License 1.0
+    licenseId: APL-1.0
+  -
+    id: "https://spdx.org/licenses/App-s2p.html"
+    active: true
+    term: "App::s2p License"
+    licenseId: App-s2p
+  -
+    id: "https://spdx.org/licenses/APSL-1.0.html"
+    active: true
+    term: Apple Public Source License 1.0
+    licenseId: APSL-1.0
+  -
+    id: "https://spdx.org/licenses/APSL-1.1.html"
+    active: true
+    term: Apple Public Source License 1.1
+    licenseId: APSL-1.1
+  -
+    id: "https://spdx.org/licenses/APSL-1.2.html"
+    active: true
+    term: Apple Public Source License 1.2
+    licenseId: APSL-1.2
+  -
+    id: "https://spdx.org/licenses/APSL-2.0.html"
+    active: true
+    term: Apple Public Source License 2.0
+    licenseId: APSL-2.0
+  -
+    id: "https://spdx.org/licenses/Arphic-1999.html"
+    active: true
+    term: Arphic Public License
+    licenseId: Arphic-1999
+  -
+    id: "https://spdx.org/licenses/Artistic-1.0.html"
+    active: true
+    term: Artistic License 1.0
+    licenseId: Artistic-1.0
+  -
+    id: "https://spdx.org/licenses/Artistic-1.0-cl8.html"
+    active: true
+    term: Artistic License 1.0 w/clause 8
+    licenseId: Artistic-1.0-cl8
+  -
+    id: "https://spdx.org/licenses/Artistic-1.0-Perl.html"
+    active: true
+    term: Artistic License 1.0 (Perl)
+    licenseId: Artistic-1.0-Perl
+  -
+    id: "https://spdx.org/licenses/Artistic-2.0.html"
+    active: true
+    term: Artistic License 2.0
+    licenseId: Artistic-2.0
+  -
+    id: "https://spdx.org/licenses/Artistic-dist.html"
+    active: true
+    term: Artistic License 1.0 (dist)
+    licenseId: Artistic-dist
+  -
+    id: "https://spdx.org/licenses/Aspell-RU.html"
+    active: true
+    term: Aspell Russian License
+    licenseId: Aspell-RU
+  -
+    id: "https://spdx.org/licenses/ASWF-Digital-Assets-1.0.html"
+    active: true
+    term: ASWF Digital Assets License version 1.0
+    licenseId: ASWF-Digital-Assets-1.0
+  -
+    id: "https://spdx.org/licenses/ASWF-Digital-Assets-1.1.html"
+    active: true
+    term: ASWF Digital Assets License 1.1
+    licenseId: ASWF-Digital-Assets-1.1
+  -
+    id: "https://spdx.org/licenses/Baekmuk.html"
+    active: true
+    term: Baekmuk License
+    licenseId: Baekmuk
+  -
+    id: "https://spdx.org/licenses/Bahyph.html"
+    active: true
+    term: Bahyph License
+    licenseId: Bahyph
+  -
+    id: "https://spdx.org/licenses/Barr.html"
+    active: true
+    term: Barr License
+    licenseId: Barr
+  -
+    id: "https://spdx.org/licenses/bcrypt-Solar-Designer.html"
+    active: true
+    term: bcrypt Solar Designer License
+    licenseId: bcrypt-Solar-Designer
+  -
+    id: "https://spdx.org/licenses/Beerware.html"
+    active: true
+    term: Beerware License
+    licenseId: Beerware
+  -
+    id: "https://spdx.org/licenses/Bitstream-Charter.html"
+    active: true
+    term: Bitstream Charter Font License
+    licenseId: Bitstream-Charter
+  -
+    id: "https://spdx.org/licenses/Bitstream-Vera.html"
+    active: true
+    term: Bitstream Vera Font License
+    licenseId: Bitstream-Vera
+  -
+    id: "https://spdx.org/licenses/BitTorrent-1.0.html"
+    active: true
+    term: BitTorrent Open Source License v1.0
+    licenseId: BitTorrent-1.0
+  -
+    id: "https://spdx.org/licenses/BitTorrent-1.1.html"
+    active: true
+    term: BitTorrent Open Source License v1.1
+    licenseId: BitTorrent-1.1
+  -
+    id: "https://spdx.org/licenses/blessing.html"
+    active: true
+    term: SQLite Blessing
+    licenseId: blessing
+  -
+    id: "https://spdx.org/licenses/BlueOak-1.0.0.html"
+    active: true
+    term: Blue Oak Model License 1.0.0
+    licenseId: BlueOak-1.0.0
+  -
+    id: "https://spdx.org/licenses/Boehm-GC.html"
+    active: true
+    term: Boehm-Demers-Weiser GC License
+    licenseId: Boehm-GC
+  -
+    id: "https://spdx.org/licenses/Boehm-GC-without-fee.html"
+    active: true
+    term: Boehm-Demers-Weiser GC License (without fee)
+    licenseId: Boehm-GC-without-fee
+  -
+    id: "https://spdx.org/licenses/BOLA-1.1.html"
+    active: true
+    term: Buena Onda License Agreement v1.1
+    licenseId: BOLA-1.1
+  -
+    id: "https://spdx.org/licenses/Borceux.html"
+    active: true
+    term: Borceux license
+    licenseId: Borceux
+  -
+    id: "https://spdx.org/licenses/Brian-Gladman-2-Clause.html"
+    active: true
+    term: Brian Gladman 2-Clause License
+    licenseId: Brian-Gladman-2-Clause
+  -
+    id: "https://spdx.org/licenses/Brian-Gladman-3-Clause.html"
+    active: true
+    term: Brian Gladman 3-Clause License
+    licenseId: Brian-Gladman-3-Clause
+  -
+    id: "https://spdx.org/licenses/Brian-Gladman-3-Clause-no-conversion.html"
+    active: true
+    term: Brian Gladman 3-Clause License (no conversion clause)
+    licenseId: Brian-Gladman-3-Clause-no-conversion
+  -
+    id: "https://spdx.org/licenses/BSD-1-Clause.html"
+    active: true
+    term: BSD 1-Clause License
+    licenseId: BSD-1-Clause
+  -
+    id: "https://spdx.org/licenses/BSD-2-Clause.html"
+    active: true
+    term: "BSD 2-Clause \"Simplified\" License"
+    licenseId: BSD-2-Clause
+  -
+    id: "https://spdx.org/licenses/BSD-2-Clause-Darwin.html"
+    active: true
+    term: BSD 2-Clause - Ian Darwin variant
+    licenseId: BSD-2-Clause-Darwin
+  -
+    id: "https://spdx.org/licenses/BSD-2-Clause-first-lines.html"
+    active: true
+    term: BSD 2-Clause - first lines requirement
+    licenseId: BSD-2-Clause-first-lines
+  -
+    id: "https://spdx.org/licenses/BSD-2-Clause-FreeBSD.html"
+    active: false
+    term: BSD 2-Clause FreeBSD License
+    licenseId: BSD-2-Clause-FreeBSD
+  -
+    id: "https://spdx.org/licenses/BSD-2-Clause-NetBSD.html"
+    active: false
+    term: BSD 2-Clause NetBSD License
+    licenseId: BSD-2-Clause-NetBSD
+  -
+    id: "https://spdx.org/licenses/BSD-2-Clause-Patent.html"
+    active: true
+    term: BSD-2-Clause Plus Patent License
+    licenseId: BSD-2-Clause-Patent
+  -
+    id: "https://spdx.org/licenses/BSD-2-Clause-pkgconf-disclaimer.html"
+    active: true
+    term: BSD 2-Clause pkgconf disclaimer variant
+    licenseId: BSD-2-Clause-pkgconf-disclaimer
+  -
+    id: "https://spdx.org/licenses/BSD-2-Clause-Views.html"
+    active: true
+    term: BSD 2-Clause with views sentence
+    licenseId: BSD-2-Clause-Views
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause.html"
+    active: true
+    term: "BSD 3-Clause \"New\" or \"Revised\" License"
+    licenseId: BSD-3-Clause
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-acpica.html"
+    active: true
+    term: BSD 3-Clause acpica variant
+    licenseId: BSD-3-Clause-acpica
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-Attribution.html"
+    active: true
+    term: BSD with attribution
+    licenseId: BSD-3-Clause-Attribution
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-Clear.html"
+    active: true
+    term: BSD 3-Clause Clear License
+    licenseId: BSD-3-Clause-Clear
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-flex.html"
+    active: true
+    term: BSD 3-Clause Flex variant
+    licenseId: BSD-3-Clause-flex
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-HP.html"
+    active: true
+    term: Hewlett-Packard BSD variant license
+    licenseId: BSD-3-Clause-HP
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-LBNL.html"
+    active: true
+    term: Lawrence Berkeley National Labs BSD variant license
+    licenseId: BSD-3-Clause-LBNL
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-Modification.html"
+    active: true
+    term: BSD 3-Clause Modification
+    licenseId: BSD-3-Clause-Modification
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-No-Military-License.html"
+    active: true
+    term: BSD 3-Clause No Military License
+    licenseId: BSD-3-Clause-No-Military-License
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-No-Nuclear-License.html"
+    active: true
+    term: BSD 3-Clause No Nuclear License
+    licenseId: BSD-3-Clause-No-Nuclear-License
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-No-Nuclear-License-2014.html"
+    active: true
+    term: BSD 3-Clause No Nuclear License 2014
+    licenseId: BSD-3-Clause-No-Nuclear-License-2014
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-No-Nuclear-Warranty.html"
+    active: true
+    term: BSD 3-Clause No Nuclear Warranty
+    licenseId: BSD-3-Clause-No-Nuclear-Warranty
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-Open-MPI.html"
+    active: true
+    term: BSD 3-Clause Open MPI variant
+    licenseId: BSD-3-Clause-Open-MPI
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-Sun.html"
+    active: true
+    term: BSD 3-Clause Sun Microsystems
+    licenseId: BSD-3-Clause-Sun
+  -
+    id: "https://spdx.org/licenses/BSD-3-Clause-Tso.html"
+    active: true
+    term: BSD 3-Clause Tso variant
+    licenseId: BSD-3-Clause-Tso
+  -
+    id: "https://spdx.org/licenses/BSD-4-Clause.html"
+    active: true
+    term: "BSD 4-Clause \"Original\" or \"Old\" License"
+    licenseId: BSD-4-Clause
+  -
+    id: "https://spdx.org/licenses/BSD-4-Clause-Shortened.html"
+    active: true
+    term: BSD 4 Clause Shortened
+    licenseId: BSD-4-Clause-Shortened
+  -
+    id: "https://spdx.org/licenses/BSD-4-Clause-UC.html"
+    active: true
+    term: BSD-4-Clause (University of California-Specific)
+    licenseId: BSD-4-Clause-UC
+  -
+    id: "https://spdx.org/licenses/BSD-4.3RENO.html"
+    active: true
+    term: BSD 4.3 RENO License
+    licenseId: BSD-4.3RENO
+  -
+    id: "https://spdx.org/licenses/BSD-4.3TAHOE.html"
+    active: true
+    term: BSD 4.3 TAHOE License
+    licenseId: BSD-4.3TAHOE
+  -
+    id: "https://spdx.org/licenses/BSD-Advertising-Acknowledgement.html"
+    active: true
+    term: BSD Advertising Acknowledgement License
+    licenseId: BSD-Advertising-Acknowledgement
+  -
+    id: "https://spdx.org/licenses/BSD-Attribution-HPND-disclaimer.html"
+    active: true
+    term: BSD with Attribution and HPND disclaimer
+    licenseId: BSD-Attribution-HPND-disclaimer
+  -
+    id: "https://spdx.org/licenses/BSD-Inferno-Nettverk.html"
+    active: true
+    term: BSD-Inferno-Nettverk
+    licenseId: BSD-Inferno-Nettverk
+  -
+    id: "https://spdx.org/licenses/BSD-Mark-Modifications.html"
+    active: true
+    term: BSD Mark Modifications License
+    licenseId: BSD-Mark-Modifications
+  -
+    id: "https://spdx.org/licenses/BSD-Protection.html"
+    active: true
+    term: BSD Protection License
+    licenseId: BSD-Protection
+  -
+    id: "https://spdx.org/licenses/BSD-Source-beginning-file.html"
+    active: true
+    term: BSD Source Code Attribution - beginning of file variant
+    licenseId: BSD-Source-beginning-file
+  -
+    id: "https://spdx.org/licenses/BSD-Source-Code.html"
+    active: true
+    term: BSD Source Code Attribution
+    licenseId: BSD-Source-Code
+  -
+    id: "https://spdx.org/licenses/BSD-Systemics.html"
+    active: true
+    term: Systemics BSD variant license
+    licenseId: BSD-Systemics
+  -
+    id: "https://spdx.org/licenses/BSD-Systemics-W3Works.html"
+    active: true
+    term: Systemics W3Works BSD variant license
+    licenseId: BSD-Systemics-W3Works
+  -
+    id: "https://spdx.org/licenses/BSL-1.0.html"
+    active: true
+    term: Boost Software License 1.0
+    licenseId: BSL-1.0
+  -
+    id: "https://spdx.org/licenses/Buddy.html"
+    active: true
+    term: Buddy License
+    licenseId: Buddy
+  -
+    id: "https://spdx.org/licenses/BUSL-1.1.html"
+    active: true
+    term: Business Source License 1.1
+    licenseId: BUSL-1.1
+  -
+    id: "https://spdx.org/licenses/bzip2-1.0.5.html"
+    active: false
+    term: bzip2 and libbzip2 License v1.0.5
+    licenseId: bzip2-1.0.5
+  -
+    id: "https://spdx.org/licenses/bzip2-1.0.6.html"
+    active: true
+    term: bzip2 and libbzip2 License v1.0.6
+    licenseId: bzip2-1.0.6
+  -
+    id: "https://spdx.org/licenses/C-UDA-1.0.html"
+    active: true
+    term: Computational Use of Data Agreement v1.0
+    licenseId: C-UDA-1.0
+  -
+    id: "https://spdx.org/licenses/CAL-1.0.html"
+    active: true
+    term: Cryptographic Autonomy License 1.0
+    licenseId: CAL-1.0
+  -
+    id: "https://spdx.org/licenses/CAL-1.0-Combined-Work-Exception.html"
+    active: true
+    term: Cryptographic Autonomy License 1.0 (Combined Work Exception)
+    licenseId: CAL-1.0-Combined-Work-Exception
+  -
+    id: "https://spdx.org/licenses/Caldera.html"
+    active: true
+    term: Caldera License
+    licenseId: Caldera
+  -
+    id: "https://spdx.org/licenses/Caldera-no-preamble.html"
+    active: true
+    term: Caldera License (without preamble)
+    licenseId: Caldera-no-preamble
+  -
+    id: "https://spdx.org/licenses/CAPEC-tou.html"
+    active: true
+    term: Common Attack    Pattern Enumeration and Classification License
+    licenseId: CAPEC-tou
+  -
+    id: "https://spdx.org/licenses/Catharon.html"
+    active: true
+    term: Catharon License
+    licenseId: Catharon
+  -
+    id: "https://spdx.org/licenses/CATOSL-1.1.html"
+    active: true
+    term: Computer Associates Trusted Open Source License 1.1
+    licenseId: CATOSL-1.1
+  -
+    id: "https://spdx.org/licenses/CC-BY-1.0.html"
+    active: true
+    term: Creative Commons Attribution 1.0 Generic
+    licenseId: CC-BY-1.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-2.0.html"
+    active: true
+    term: Creative Commons Attribution 2.0 Generic
+    licenseId: CC-BY-2.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-2.5.html"
+    active: true
+    term: Creative Commons Attribution 2.5 Generic
+    licenseId: CC-BY-2.5
+  -
+    id: "https://spdx.org/licenses/CC-BY-2.5-AU.html"
+    active: true
+    term: Creative Commons Attribution 2.5 Australia
+    licenseId: CC-BY-2.5-AU
+  -
+    id: "https://spdx.org/licenses/CC-BY-3.0.html"
+    active: true
+    term: Creative Commons Attribution 3.0 Unported
+    licenseId: CC-BY-3.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-3.0-AT.html"
+    active: true
+    term: Creative Commons Attribution 3.0 Austria
+    licenseId: CC-BY-3.0-AT
+  -
+    id: "https://spdx.org/licenses/CC-BY-3.0-AU.html"
+    active: true
+    term: Creative Commons Attribution 3.0 Australia
+    licenseId: CC-BY-3.0-AU
+  -
+    id: "https://spdx.org/licenses/CC-BY-3.0-DE.html"
+    active: true
+    term: Creative Commons Attribution 3.0 Germany
+    licenseId: CC-BY-3.0-DE
+  -
+    id: "https://spdx.org/licenses/CC-BY-3.0-IGO.html"
+    active: true
+    term: Creative Commons Attribution 3.0 IGO
+    licenseId: CC-BY-3.0-IGO
+  -
+    id: "https://spdx.org/licenses/CC-BY-3.0-NL.html"
+    active: true
+    term: Creative Commons Attribution 3.0 Netherlands
+    licenseId: CC-BY-3.0-NL
+  -
+    id: "https://spdx.org/licenses/CC-BY-3.0-US.html"
+    active: true
+    term: Creative Commons Attribution 3.0 United States
+    licenseId: CC-BY-3.0-US
+  -
+    id: "https://spdx.org/licenses/CC-BY-4.0.html"
+    active: true
+    term: Creative Commons Attribution 4.0 International
+    licenseId: CC-BY-4.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-1.0.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial 1.0 Generic
+    licenseId: CC-BY-NC-1.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-2.0.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial 2.0 Generic
+    licenseId: CC-BY-NC-2.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-2.5.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial 2.5 Generic
+    licenseId: CC-BY-NC-2.5
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-3.0.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial 3.0 Unported
+    licenseId: CC-BY-NC-3.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-3.0-DE.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial 3.0 Germany
+    licenseId: CC-BY-NC-3.0-DE
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial 4.0 International
+    licenseId: CC-BY-NC-4.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-ND-1.0.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial No Derivatives 1.0 Generic
+    licenseId: CC-BY-NC-ND-1.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-ND-2.0.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial No Derivatives 2.0 Generic
+    licenseId: CC-BY-NC-ND-2.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-ND-2.5.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial No Derivatives 2.5 Generic
+    licenseId: CC-BY-NC-ND-2.5
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-ND-3.0.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial No Derivatives 3.0 Unported
+    licenseId: CC-BY-NC-ND-3.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-ND-3.0-DE.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial No Derivatives 3.0 Germany
+    licenseId: CC-BY-NC-ND-3.0-DE
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-ND-3.0-IGO.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial No Derivatives 3.0 IGO
+    licenseId: CC-BY-NC-ND-3.0-IGO
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-ND-4.0.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial No Derivatives 4.0 International
+    licenseId: CC-BY-NC-ND-4.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-SA-1.0.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial Share Alike 1.0 Generic
+    licenseId: CC-BY-NC-SA-1.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-SA-2.0.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial Share Alike 2.0 Generic
+    licenseId: CC-BY-NC-SA-2.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-SA-2.0-DE.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial Share Alike 2.0 Germany
+    licenseId: CC-BY-NC-SA-2.0-DE
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-SA-2.0-FR.html"
+    active: true
+    term: Creative Commons Attribution-NonCommercial-ShareAlike 2.0 France
+    licenseId: CC-BY-NC-SA-2.0-FR
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-SA-2.0-UK.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial Share Alike 2.0 England and Wales
+    licenseId: CC-BY-NC-SA-2.0-UK
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-SA-2.5.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial Share Alike 2.5 Generic
+    licenseId: CC-BY-NC-SA-2.5
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-SA-3.0.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial Share Alike 3.0 Unported
+    licenseId: CC-BY-NC-SA-3.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-SA-3.0-DE.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial Share Alike 3.0 Germany
+    licenseId: CC-BY-NC-SA-3.0-DE
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-SA-3.0-IGO.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial Share Alike 3.0 IGO
+    licenseId: CC-BY-NC-SA-3.0-IGO
+  -
+    id: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    active: true
+    term: Creative Commons Attribution Non Commercial Share Alike 4.0 International
+    licenseId: CC-BY-NC-SA-4.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-ND-1.0.html"
+    active: true
+    term: Creative Commons Attribution No Derivatives 1.0 Generic
+    licenseId: CC-BY-ND-1.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-ND-2.0.html"
+    active: true
+    term: Creative Commons Attribution No Derivatives 2.0 Generic
+    licenseId: CC-BY-ND-2.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-ND-2.5.html"
+    active: true
+    term: Creative Commons Attribution No Derivatives 2.5 Generic
+    licenseId: CC-BY-ND-2.5
+  -
+    id: "https://spdx.org/licenses/CC-BY-ND-3.0.html"
+    active: true
+    term: Creative Commons Attribution No Derivatives 3.0 Unported
+    licenseId: CC-BY-ND-3.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-ND-3.0-DE.html"
+    active: true
+    term: Creative Commons Attribution No Derivatives 3.0 Germany
+    licenseId: CC-BY-ND-3.0-DE
+  -
+    id: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
+    active: true
+    term: Creative Commons Attribution No Derivatives 4.0 International
+    licenseId: CC-BY-ND-4.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-SA-1.0.html"
+    active: true
+    term: Creative Commons Attribution Share Alike 1.0 Generic
+    licenseId: CC-BY-SA-1.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-SA-2.0.html"
+    active: true
+    term: Creative Commons Attribution Share Alike 2.0 Generic
+    licenseId: CC-BY-SA-2.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-SA-2.0-UK.html"
+    active: true
+    term: Creative Commons Attribution Share Alike 2.0 England and Wales
+    licenseId: CC-BY-SA-2.0-UK
+  -
+    id: "https://spdx.org/licenses/CC-BY-SA-2.1-JP.html"
+    active: true
+    term: Creative Commons Attribution Share Alike 2.1 Japan
+    licenseId: CC-BY-SA-2.1-JP
+  -
+    id: "https://spdx.org/licenses/CC-BY-SA-2.5.html"
+    active: true
+    term: Creative Commons Attribution Share Alike 2.5 Generic
+    licenseId: CC-BY-SA-2.5
+  -
+    id: "https://spdx.org/licenses/CC-BY-SA-3.0.html"
+    active: true
+    term: Creative Commons Attribution Share Alike 3.0 Unported
+    licenseId: CC-BY-SA-3.0
+  -
+    id: "https://spdx.org/licenses/CC-BY-SA-3.0-AT.html"
+    active: true
+    term: Creative Commons Attribution Share Alike 3.0 Austria
+    licenseId: CC-BY-SA-3.0-AT
+  -
+    id: "https://spdx.org/licenses/CC-BY-SA-3.0-DE.html"
+    active: true
+    term: Creative Commons Attribution Share Alike 3.0 Germany
+    licenseId: CC-BY-SA-3.0-DE
+  -
+    id: "https://spdx.org/licenses/CC-BY-SA-3.0-IGO.html"
+    active: true
+    term: Creative Commons Attribution-ShareAlike 3.0 IGO
+    licenseId: CC-BY-SA-3.0-IGO
+  -
+    id: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    active: true
+    term: Creative Commons Attribution Share Alike 4.0 International
+    licenseId: CC-BY-SA-4.0
+  -
+    id: "https://spdx.org/licenses/CC-PDDC.html"
+    active: true
+    term: Creative Commons Public Domain Dedication and Certification
+    licenseId: CC-PDDC
+  -
+    id: "https://spdx.org/licenses/CC-PDM-1.0.html"
+    active: true
+    term: Creative    Commons Public Domain Mark 1.0 Universal
+    licenseId: CC-PDM-1.0
+  -
+    id: "https://spdx.org/licenses/CC-SA-1.0.html"
+    active: true
+    term: Creative Commons Share Alike 1.0 Generic
+    licenseId: CC-SA-1.0
+  -
+    id: "https://spdx.org/licenses/CC0-1.0.html"
+    active: true
+    term: Creative Commons Zero v1.0 Universal
+    licenseId: CC0-1.0
+  -
+    id: "https://spdx.org/licenses/CDDL-1.0.html"
+    active: true
+    term: Common Development and Distribution License 1.0
+    licenseId: CDDL-1.0
+  -
+    id: "https://spdx.org/licenses/CDDL-1.1.html"
+    active: true
+    term: Common Development and Distribution License 1.1
+    licenseId: CDDL-1.1
+  -
+    id: "https://spdx.org/licenses/CDL-1.0.html"
+    active: true
+    term: Common Documentation License 1.0
+    licenseId: CDL-1.0
+  -
+    id: "https://spdx.org/licenses/CDLA-Permissive-1.0.html"
+    active: true
+    term: Community Data License Agreement Permissive 1.0
+    licenseId: CDLA-Permissive-1.0
+  -
+    id: "https://spdx.org/licenses/CDLA-Permissive-2.0.html"
+    active: true
+    term: Community Data License Agreement Permissive 2.0
+    licenseId: CDLA-Permissive-2.0
+  -
+    id: "https://spdx.org/licenses/CDLA-Sharing-1.0.html"
+    active: true
+    term: Community Data License Agreement Sharing 1.0
+    licenseId: CDLA-Sharing-1.0
+  -
+    id: "https://spdx.org/licenses/CECILL-1.0.html"
+    active: true
+    term: CeCILL Free Software License Agreement v1.0
+    licenseId: CECILL-1.0
+  -
+    id: "https://spdx.org/licenses/CECILL-1.1.html"
+    active: true
+    term: CeCILL Free Software License Agreement v1.1
+    licenseId: CECILL-1.1
+  -
+    id: "https://spdx.org/licenses/CECILL-2.0.html"
+    active: true
+    term: CeCILL Free Software License Agreement v2.0
+    licenseId: CECILL-2.0
+  -
+    id: "https://spdx.org/licenses/CECILL-2.1.html"
+    active: true
+    term: CeCILL Free Software License Agreement v2.1
+    licenseId: CECILL-2.1
+  -
+    id: "https://spdx.org/licenses/CECILL-B.html"
+    active: true
+    term: CeCILL-B Free Software License Agreement
+    licenseId: CECILL-B
+  -
+    id: "https://spdx.org/licenses/CECILL-C.html"
+    active: true
+    term: CeCILL-C Free Software License Agreement
+    licenseId: CECILL-C
+  -
+    id: "https://spdx.org/licenses/CERN-OHL-1.1.html"
+    active: true
+    term: CERN Open Hardware Licence v1.1
+    licenseId: CERN-OHL-1.1
+  -
+    id: "https://spdx.org/licenses/CERN-OHL-1.2.html"
+    active: true
+    term: CERN Open Hardware Licence v1.2
+    licenseId: CERN-OHL-1.2
+  -
+    id: "https://spdx.org/licenses/CERN-OHL-P-2.0.html"
+    active: true
+    term: CERN Open Hardware Licence Version 2 - Permissive
+    licenseId: CERN-OHL-P-2.0
+  -
+    id: "https://spdx.org/licenses/CERN-OHL-S-2.0.html"
+    active: true
+    term: CERN Open Hardware Licence Version 2 - Strongly Reciprocal
+    licenseId: CERN-OHL-S-2.0
+  -
+    id: "https://spdx.org/licenses/CERN-OHL-W-2.0.html"
+    active: true
+    term: CERN Open Hardware Licence Version 2 - Weakly Reciprocal
+    licenseId: CERN-OHL-W-2.0
+  -
+    id: "https://spdx.org/licenses/CFITSIO.html"
+    active: true
+    term: CFITSIO License
+    licenseId: CFITSIO
+  -
+    id: "https://spdx.org/licenses/check-cvs.html"
+    active: true
+    term: check-cvs License
+    licenseId: check-cvs
+  -
+    id: "https://spdx.org/licenses/checkmk.html"
+    active: true
+    term: Checkmk License
+    licenseId: checkmk
+  -
+    id: "https://spdx.org/licenses/ClArtistic.html"
+    active: true
+    term: Clarified Artistic License
+    licenseId: ClArtistic
+  -
+    id: "https://spdx.org/licenses/Clips.html"
+    active: true
+    term: Clips License
+    licenseId: Clips
+  -
+    id: "https://spdx.org/licenses/CMU-Mach.html"
+    active: true
+    term: CMU Mach License
+    licenseId: CMU-Mach
+  -
+    id: "https://spdx.org/licenses/CMU-Mach-nodoc.html"
+    active: true
+    term: CMU    Mach - no notices-in-documentation variant
+    licenseId: CMU-Mach-nodoc
+  -
+    id: "https://spdx.org/licenses/CNRI-Jython.html"
+    active: true
+    term: CNRI Jython License
+    licenseId: CNRI-Jython
+  -
+    id: "https://spdx.org/licenses/CNRI-Python.html"
+    active: true
+    term: CNRI Python License
+    licenseId: CNRI-Python
+  -
+    id: "https://spdx.org/licenses/CNRI-Python-GPL-Compatible.html"
+    active: true
+    term: CNRI Python Open Source GPL Compatible License Agreement
+    licenseId: CNRI-Python-GPL-Compatible
+  -
+    id: "https://spdx.org/licenses/COIL-1.0.html"
+    active: true
+    term: Copyfree Open Innovation License
+    licenseId: COIL-1.0
+  -
+    id: "https://spdx.org/licenses/Community-Spec-1.0.html"
+    active: true
+    term: Community Specification License 1.0
+    licenseId: Community-Spec-1.0
+  -
+    id: "https://spdx.org/licenses/Condor-1.1.html"
+    active: true
+    term: Condor Public License v1.1
+    licenseId: Condor-1.1
+  -
+    id: "https://spdx.org/licenses/copyleft-next-0.3.0.html"
+    active: true
+    term: copyleft-next 0.3.0
+    licenseId: copyleft-next-0.3.0
+  -
+    id: "https://spdx.org/licenses/copyleft-next-0.3.1.html"
+    active: true
+    term: copyleft-next 0.3.1
+    licenseId: copyleft-next-0.3.1
+  -
+    id: "https://spdx.org/licenses/Cornell-Lossless-JPEG.html"
+    active: true
+    term: Cornell Lossless JPEG License
+    licenseId: Cornell-Lossless-JPEG
+  -
+    id: "https://spdx.org/licenses/CPAL-1.0.html"
+    active: true
+    term: Common Public Attribution License 1.0
+    licenseId: CPAL-1.0
+  -
+    id: "https://spdx.org/licenses/CPL-1.0.html"
+    active: true
+    term: Common Public License 1.0
+    licenseId: CPL-1.0
+  -
+    id: "https://spdx.org/licenses/CPOL-1.02.html"
+    active: true
+    term: Code Project Open License 1.02
+    licenseId: CPOL-1.02
+  -
+    id: "https://spdx.org/licenses/Cronyx.html"
+    active: true
+    term: Cronyx License
+    licenseId: Cronyx
+  -
+    id: "https://spdx.org/licenses/Crossword.html"
+    active: true
+    term: Crossword License
+    licenseId: Crossword
+  -
+    id: "https://spdx.org/licenses/CryptoSwift.html"
+    active: true
+    term: CryptoSwift License
+    licenseId: CryptoSwift
+  -
+    id: "https://spdx.org/licenses/CrystalStacker.html"
+    active: true
+    term: CrystalStacker License
+    licenseId: CrystalStacker
+  -
+    id: "https://spdx.org/licenses/CUA-OPL-1.0.html"
+    active: true
+    term: CUA Office Public License v1.0
+    licenseId: CUA-OPL-1.0
+  -
+    id: "https://spdx.org/licenses/Cube.html"
+    active: true
+    term: Cube License
+    licenseId: Cube
+  -
+    id: "https://spdx.org/licenses/curl.html"
+    active: true
+    term: curl License
+    licenseId: curl
+  -
+    id: "https://spdx.org/licenses/cve-tou.html"
+    active: true
+    term: Common Vulnerability Enumeration ToU License
+    licenseId: cve-tou
+  -
+    id: "https://spdx.org/licenses/D-FSL-1.0.html"
+    active: true
+    term: Deutsche Freie Software Lizenz
+    licenseId: D-FSL-1.0
+  -
+    id: "https://spdx.org/licenses/DEC-3-Clause.html"
+    active: true
+    term: DEC 3-Clause License
+    licenseId: DEC-3-Clause
+  -
+    id: "https://spdx.org/licenses/diffmark.html"
+    active: true
+    term: diffmark license
+    licenseId: diffmark
+  -
+    id: "https://spdx.org/licenses/DL-DE-BY-2.0.html"
+    active: true
+    term: Data licence Germany â€“ attribution â€“ version 2.0
+    licenseId: DL-DE-BY-2.0
+  -
+    id: "https://spdx.org/licenses/DL-DE-ZERO-2.0.html"
+    active: true
+    term: Data licence Germany â€“ zero â€“ version 2.0
+    licenseId: DL-DE-ZERO-2.0
+  -
+    id: "https://spdx.org/licenses/DOC.html"
+    active: true
+    term: DOC License
+    licenseId: DOC
+  -
+    id: "https://spdx.org/licenses/DocBook-DTD.html"
+    active: true
+    term: DocBook DTD License
+    licenseId: DocBook-DTD
+  -
+    id: "https://spdx.org/licenses/DocBook-Schema.html"
+    active: true
+    term: DocBook Schema License
+    licenseId: DocBook-Schema
+  -
+    id: "https://spdx.org/licenses/DocBook-Stylesheet.html"
+    active: true
+    term: DocBook Stylesheet License
+    licenseId: DocBook-Stylesheet
+  -
+    id: "https://spdx.org/licenses/DocBook-XML.html"
+    active: true
+    term: DocBook XML License
+    licenseId: DocBook-XML
+  -
+    id: "https://spdx.org/licenses/Dotseqn.html"
+    active: true
+    term: Dotseqn License
+    licenseId: Dotseqn
+  -
+    id: "https://spdx.org/licenses/DRL-1.0.html"
+    active: true
+    term: Detection Rule License 1.0
+    licenseId: DRL-1.0
+  -
+    id: "https://spdx.org/licenses/DRL-1.1.html"
+    active: true
+    term: Detection Rule License 1.1
+    licenseId: DRL-1.1
+  -
+    id: "https://spdx.org/licenses/DSDP.html"
+    active: true
+    term: DSDP License
+    licenseId: DSDP
+  -
+    id: "https://spdx.org/licenses/dtoa.html"
+    active: true
+    term: David M. Gay dtoa License
+    licenseId: dtoa
+  -
+    id: "https://spdx.org/licenses/dvipdfm.html"
+    active: true
+    term: dvipdfm License
+    licenseId: dvipdfm
+  -
+    id: "https://spdx.org/licenses/ECL-1.0.html"
+    active: true
+    term: Educational Community License v1.0
+    licenseId: ECL-1.0
+  -
+    id: "https://spdx.org/licenses/ECL-2.0.html"
+    active: true
+    term: Educational Community License v2.0
+    licenseId: ECL-2.0
+  -
+    id: "https://spdx.org/licenses/eCos-2.0.html"
+    active: false
+    term: eCos license version 2.0
+    licenseId: eCos-2.0
+  -
+    id: "https://spdx.org/licenses/EFL-1.0.html"
+    active: true
+    term: Eiffel Forum License v1.0
+    licenseId: EFL-1.0
+  -
+    id: "https://spdx.org/licenses/EFL-2.0.html"
+    active: true
+    term: Eiffel Forum License v2.0
+    licenseId: EFL-2.0
+  -
+    id: "https://spdx.org/licenses/eGenix.html"
+    active: true
+    term: eGenix.com Public License 1.1.0
+    licenseId: eGenix
+  -
+    id: "https://spdx.org/licenses/Elastic-2.0.html"
+    active: true
+    term: Elastic License 2.0
+    licenseId: Elastic-2.0
+  -
+    id: "https://spdx.org/licenses/Entessa.html"
+    active: true
+    term: Entessa Public License v1.0
+    licenseId: Entessa
+  -
+    id: "https://spdx.org/licenses/EPICS.html"
+    active: true
+    term: EPICS Open License
+    licenseId: EPICS
+  -
+    id: "https://spdx.org/licenses/EPL-1.0.html"
+    active: true
+    term: Eclipse Public License 1.0
+    licenseId: EPL-1.0
+  -
+    id: "https://spdx.org/licenses/EPL-2.0.html"
+    active: true
+    term: Eclipse Public License 2.0
+    licenseId: EPL-2.0
+  -
+    id: "https://spdx.org/licenses/ErlPL-1.1.html"
+    active: true
+    term: Erlang Public License v1.1
+    licenseId: ErlPL-1.1
+  -
+    id: "https://spdx.org/licenses/ESA-PL-permissive-2.4.html"
+    active: true
+    term: European Space Agency Public License â€“ v2.4 â€“ Permissive (Type 3)
+    licenseId: ESA-PL-permissive-2.4
+  -
+    id: "https://spdx.org/licenses/ESA-PL-strong-copyleft-2.4.html"
+    active: true
+    term: European Space Agency Public License (ESA-PL) - V2.4 - Strong Copyleft (Type 1)
+    licenseId: ESA-PL-strong-copyleft-2.4
+  -
+    id: "https://spdx.org/licenses/ESA-PL-weak-copyleft-2.4.html"
+    active: true
+    term: European Space Agency Public License â€“ v2.4 â€“ Weak Copyleft (Type 2)
+    licenseId: ESA-PL-weak-copyleft-2.4
+  -
+    id: "https://spdx.org/licenses/etalab-2.0.html"
+    active: true
+    term: Etalab Open License 2.0
+    licenseId: etalab-2.0
+  -
+    id: "https://spdx.org/licenses/EUDatagrid.html"
+    active: true
+    term: EU DataGrid Software License
+    licenseId: EUDatagrid
+  -
+    id: "https://spdx.org/licenses/EUPL-1.0.html"
+    active: true
+    term: European Union Public License 1.0
+    licenseId: EUPL-1.0
+  -
+    id: "https://spdx.org/licenses/EUPL-1.1.html"
+    active: true
+    term: European Union Public License 1.1
+    licenseId: EUPL-1.1
+  -
+    id: "https://spdx.org/licenses/EUPL-1.2.html"
+    active: true
+    term: European Union Public License 1.2
+    licenseId: EUPL-1.2
+  -
+    id: "https://spdx.org/licenses/Eurosym.html"
+    active: true
+    term: Eurosym License
+    licenseId: Eurosym
+  -
+    id: "https://spdx.org/licenses/Fair.html"
+    active: true
+    term: Fair License
+    licenseId: Fair
+  -
+    id: "https://spdx.org/licenses/FBM.html"
+    active: true
+    term: Fuzzy Bitmap License
+    licenseId: FBM
+  -
+    id: "https://spdx.org/licenses/FDK-AAC.html"
+    active: true
+    term: Fraunhofer FDK AAC Codec Library
+    licenseId: FDK-AAC
+  -
+    id: "https://spdx.org/licenses/Ferguson-Twofish.html"
+    active: true
+    term: Ferguson Twofish License
+    licenseId: Ferguson-Twofish
+  -
+    id: "https://spdx.org/licenses/Frameworx-1.0.html"
+    active: true
+    term: Frameworx Open License 1.0
+    licenseId: Frameworx-1.0
+  -
+    id: "https://spdx.org/licenses/FreeBSD-DOC.html"
+    active: true
+    term: FreeBSD Documentation License
+    licenseId: FreeBSD-DOC
+  -
+    id: "https://spdx.org/licenses/FreeImage.html"
+    active: true
+    term: FreeImage Public License v1.0
+    licenseId: FreeImage
+  -
+    id: "https://spdx.org/licenses/FSFAP.html"
+    active: true
+    term: FSF All Permissive License
+    licenseId: FSFAP
+  -
+    id: "https://spdx.org/licenses/FSFAP-no-warranty-disclaimer.html"
+    active: true
+    term: FSF All Permissive License (without Warranty)
+    licenseId: FSFAP-no-warranty-disclaimer
+  -
+    id: "https://spdx.org/licenses/FSFUL.html"
+    active: true
+    term: FSF Unlimited License
+    licenseId: FSFUL
+  -
+    id: "https://spdx.org/licenses/FSFULLR.html"
+    active: true
+    term: FSF Unlimited License (with License Retention)
+    licenseId: FSFULLR
+  -
+    id: "https://spdx.org/licenses/FSFULLRSD.html"
+    active: true
+    term: FSF Unlimited License (with License Retention and Short Disclaimer)
+    licenseId: FSFULLRSD
+  -
+    id: "https://spdx.org/licenses/FSFULLRWD.html"
+    active: true
+    term: FSF Unlimited License (With License Retention and Warranty Disclaimer)
+    licenseId: FSFULLRWD
+  -
+    id: "https://spdx.org/licenses/FSL-1.1-ALv2.html"
+    active: true
+    term: "Functional Source License, Version 1.1, ALv2 Future License"
+    licenseId: FSL-1.1-ALv2
+  -
+    id: "https://spdx.org/licenses/FSL-1.1-MIT.html"
+    active: true
+    term: "Functional Source License, Version 1.1, MIT Future License"
+    licenseId: FSL-1.1-MIT
+  -
+    id: "https://spdx.org/licenses/FTL.html"
+    active: true
+    term: Freetype Project License
+    licenseId: FTL
+  -
+    id: "https://spdx.org/licenses/Furuseth.html"
+    active: true
+    term: Furuseth License
+    licenseId: Furuseth
+  -
+    id: "https://spdx.org/licenses/fwlw.html"
+    active: true
+    term: fwlw License
+    licenseId: fwlw
+  -
+    id: "https://spdx.org/licenses/Game-Programming-Gems.html"
+    active: true
+    term: Game Programming Gems License
+    licenseId: Game-Programming-Gems
+  -
+    id: "https://spdx.org/licenses/GCR-docs.html"
+    active: true
+    term: Gnome GCR Documentation License
+    licenseId: GCR-docs
+  -
+    id: "https://spdx.org/licenses/GD.html"
+    active: true
+    term: GD License
+    licenseId: GD
+  -
+    id: "https://spdx.org/licenses/generic-xts.html"
+    active: true
+    term: Generic XTS License
+    licenseId: generic-xts
+  -
+    id: "https://spdx.org/licenses/GFDL-1.1.html"
+    active: false
+    term: GNU Free Documentation License v1.1
+    licenseId: GFDL-1.1
+  -
+    id: "https://spdx.org/licenses/GFDL-1.1-invariants-only.html"
+    active: true
+    term: GNU Free Documentation License v1.1 only - invariants
+    licenseId: GFDL-1.1-invariants-only
+  -
+    id: "https://spdx.org/licenses/GFDL-1.1-invariants-or-later.html"
+    active: true
+    term: GNU Free Documentation License v1.1 or later - invariants
+    licenseId: GFDL-1.1-invariants-or-later
+  -
+    id: "https://spdx.org/licenses/GFDL-1.1-no-invariants-only.html"
+    active: true
+    term: GNU Free Documentation License v1.1 only - no invariants
+    licenseId: GFDL-1.1-no-invariants-only
+  -
+    id: "https://spdx.org/licenses/GFDL-1.1-no-invariants-or-later.html"
+    active: true
+    term: GNU Free Documentation License v1.1 or later - no invariants
+    licenseId: GFDL-1.1-no-invariants-or-later
+  -
+    id: "https://spdx.org/licenses/GFDL-1.1-only.html"
+    active: true
+    term: GNU Free Documentation License v1.1 only
+    licenseId: GFDL-1.1-only
+  -
+    id: "https://spdx.org/licenses/GFDL-1.1-or-later.html"
+    active: true
+    term: GNU Free Documentation License v1.1 or later
+    licenseId: GFDL-1.1-or-later
+  -
+    id: "https://spdx.org/licenses/GFDL-1.2.html"
+    active: false
+    term: GNU Free Documentation License v1.2
+    licenseId: GFDL-1.2
+  -
+    id: "https://spdx.org/licenses/GFDL-1.2-invariants-only.html"
+    active: true
+    term: GNU Free Documentation License v1.2 only - invariants
+    licenseId: GFDL-1.2-invariants-only
+  -
+    id: "https://spdx.org/licenses/GFDL-1.2-invariants-or-later.html"
+    active: true
+    term: GNU Free Documentation License v1.2 or later - invariants
+    licenseId: GFDL-1.2-invariants-or-later
+  -
+    id: "https://spdx.org/licenses/GFDL-1.2-no-invariants-only.html"
+    active: true
+    term: GNU Free Documentation License v1.2 only - no invariants
+    licenseId: GFDL-1.2-no-invariants-only
+  -
+    id: "https://spdx.org/licenses/GFDL-1.2-no-invariants-or-later.html"
+    active: true
+    term: GNU Free Documentation License v1.2 or later - no invariants
+    licenseId: GFDL-1.2-no-invariants-or-later
+  -
+    id: "https://spdx.org/licenses/GFDL-1.2-only.html"
+    active: true
+    term: GNU Free Documentation License v1.2 only
+    licenseId: GFDL-1.2-only
+  -
+    id: "https://spdx.org/licenses/GFDL-1.2-or-later.html"
+    active: true
+    term: GNU Free Documentation License v1.2 or later
+    licenseId: GFDL-1.2-or-later
+  -
+    id: "https://spdx.org/licenses/GFDL-1.3.html"
+    active: false
+    term: GNU Free Documentation License v1.3
+    licenseId: GFDL-1.3
+  -
+    id: "https://spdx.org/licenses/GFDL-1.3-invariants-only.html"
+    active: true
+    term: GNU Free Documentation License v1.3 only - invariants
+    licenseId: GFDL-1.3-invariants-only
+  -
+    id: "https://spdx.org/licenses/GFDL-1.3-invariants-or-later.html"
+    active: true
+    term: GNU Free Documentation License v1.3 or later - invariants
+    licenseId: GFDL-1.3-invariants-or-later
+  -
+    id: "https://spdx.org/licenses/GFDL-1.3-no-invariants-only.html"
+    active: true
+    term: GNU Free Documentation License v1.3 only - no invariants
+    licenseId: GFDL-1.3-no-invariants-only
+  -
+    id: "https://spdx.org/licenses/GFDL-1.3-no-invariants-or-later.html"
+    active: true
+    term: GNU Free Documentation License v1.3 or later - no invariants
+    licenseId: GFDL-1.3-no-invariants-or-later
+  -
+    id: "https://spdx.org/licenses/GFDL-1.3-only.html"
+    active: true
+    term: GNU Free Documentation License v1.3 only
+    licenseId: GFDL-1.3-only
+  -
+    id: "https://spdx.org/licenses/GFDL-1.3-or-later.html"
+    active: true
+    term: GNU Free Documentation License v1.3 or later
+    licenseId: GFDL-1.3-or-later
+  -
+    id: "https://spdx.org/licenses/Giftware.html"
+    active: true
+    term: Giftware License
+    licenseId: Giftware
+  -
+    id: "https://spdx.org/licenses/GL2PS.html"
+    active: true
+    term: GL2PS License
+    licenseId: GL2PS
+  -
+    id: "https://spdx.org/licenses/Glide.html"
+    active: true
+    term: "3dfx Glide License"
+    licenseId: Glide
+  -
+    id: "https://spdx.org/licenses/Glulxe.html"
+    active: true
+    term: Glulxe License
+    licenseId: Glulxe
+  -
+    id: "https://spdx.org/licenses/GLWTPL.html"
+    active: true
+    term: Good Luck With That Public License
+    licenseId: GLWTPL
+  -
+    id: "https://spdx.org/licenses/gnuplot.html"
+    active: true
+    term: gnuplot License
+    licenseId: gnuplot
+  -
+    id: "https://spdx.org/licenses/GPL-1.0.html"
+    active: false
+    term: GNU General Public License v1.0 only
+    licenseId: GPL-1.0
+  -
+    id: "https://spdx.org/licenses/GPL-1.0+.html"
+    active: false
+    term: GNU General Public License v1.0 or later
+    licenseId: GPL-1.0+
+  -
+    id: "https://spdx.org/licenses/GPL-1.0-only.html"
+    active: true
+    term: GNU General Public License v1.0 only
+    licenseId: GPL-1.0-only
+  -
+    id: "https://spdx.org/licenses/GPL-1.0-or-later.html"
+    active: true
+    term: GNU General Public License v1.0 or later
+    licenseId: GPL-1.0-or-later
+  -
+    id: "https://spdx.org/licenses/GPL-2.0.html"
+    active: false
+    term: GNU General Public License v2.0 only
+    licenseId: GPL-2.0
+  -
+    id: "https://spdx.org/licenses/GPL-2.0+.html"
+    active: false
+    term: GNU General Public License v2.0 or later
+    licenseId: GPL-2.0+
+  -
+    id: "https://spdx.org/licenses/GPL-2.0-only.html"
+    active: true
+    term: GNU General Public License v2.0 only
+    licenseId: GPL-2.0-only
+  -
+    id: "https://spdx.org/licenses/GPL-2.0-or-later.html"
+    active: true
+    term: GNU General Public License v2.0 or later
+    licenseId: GPL-2.0-or-later
+  -
+    id: "https://spdx.org/licenses/GPL-2.0-with-autoconf-exception.html"
+    active: false
+    term: GNU General Public License v2.0 w/Autoconf exception
+    licenseId: GPL-2.0-with-autoconf-exception
+  -
+    id: "https://spdx.org/licenses/GPL-2.0-with-bison-exception.html"
+    active: false
+    term: GNU General Public License v2.0 w/Bison exception
+    licenseId: GPL-2.0-with-bison-exception
+  -
+    id: "https://spdx.org/licenses/GPL-2.0-with-classpath-exception.html"
+    active: false
+    term: GNU General Public License v2.0 w/Classpath exception
+    licenseId: GPL-2.0-with-classpath-exception
+  -
+    id: "https://spdx.org/licenses/GPL-2.0-with-font-exception.html"
+    active: false
+    term: GNU General Public License v2.0 w/Font exception
+    licenseId: GPL-2.0-with-font-exception
+  -
+    id: "https://spdx.org/licenses/GPL-2.0-with-GCC-exception.html"
+    active: false
+    term: GNU General Public License v2.0 w/GCC Runtime Library exception
+    licenseId: GPL-2.0-with-GCC-exception
+  -
+    id: "https://spdx.org/licenses/GPL-3.0.html"
+    active: false
+    term: GNU General Public License v3.0 only
+    licenseId: GPL-3.0
+  -
+    id: "https://spdx.org/licenses/GPL-3.0+.html"
+    active: false
+    term: GNU General Public License v3.0 or later
+    licenseId: GPL-3.0+
+  -
+    id: "https://spdx.org/licenses/GPL-3.0-only.html"
+    active: true
+    term: GNU General Public License v3.0 only
+    licenseId: GPL-3.0-only
+  -
+    id: "https://spdx.org/licenses/GPL-3.0-or-later.html"
+    active: true
+    term: GNU General Public License v3.0 or later
+    licenseId: GPL-3.0-or-later
+  -
+    id: "https://spdx.org/licenses/GPL-3.0-with-autoconf-exception.html"
+    active: false
+    term: GNU General Public License v3.0 w/Autoconf exception
+    licenseId: GPL-3.0-with-autoconf-exception
+  -
+    id: "https://spdx.org/licenses/GPL-3.0-with-GCC-exception.html"
+    active: false
+    term: GNU General Public License v3.0 w/GCC Runtime Library exception
+    licenseId: GPL-3.0-with-GCC-exception
+  -
+    id: "https://spdx.org/licenses/Graphics-Gems.html"
+    active: true
+    term: Graphics Gems License
+    licenseId: Graphics-Gems
+  -
+    id: "https://spdx.org/licenses/gSOAP-1.3b.html"
+    active: true
+    term: gSOAP Public License v1.3b
+    licenseId: gSOAP-1.3b
+  -
+    id: "https://spdx.org/licenses/gtkbook.html"
+    active: true
+    term: gtkbook License
+    licenseId: gtkbook
+  -
+    id: "https://spdx.org/licenses/Gutmann.html"
+    active: true
+    term: Gutmann License
+    licenseId: Gutmann
+  -
+    id: "https://spdx.org/licenses/HaskellReport.html"
+    active: true
+    term: Haskell Language Report License
+    licenseId: HaskellReport
+  -
+    id: "https://spdx.org/licenses/HDF5.html"
+    active: true
+    term: HDF5 License
+    licenseId: HDF5
+  -
+    id: "https://spdx.org/licenses/hdparm.html"
+    active: true
+    term: hdparm License
+    licenseId: hdparm
+  -
+    id: "https://spdx.org/licenses/HIDAPI.html"
+    active: true
+    term: HIDAPI License
+    licenseId: HIDAPI
+  -
+    id: "https://spdx.org/licenses/Hippocratic-2.1.html"
+    active: true
+    term: Hippocratic License 2.1
+    licenseId: Hippocratic-2.1
+  -
+    id: "https://spdx.org/licenses/HP-1986.html"
+    active: true
+    term: Hewlett-Packard 1986 License
+    licenseId: HP-1986
+  -
+    id: "https://spdx.org/licenses/HP-1989.html"
+    active: true
+    term: Hewlett-Packard 1989 License
+    licenseId: HP-1989
+  -
+    id: "https://spdx.org/licenses/HPND.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer
+    licenseId: HPND
+  -
+    id: "https://spdx.org/licenses/HPND-DEC.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - DEC variant
+    licenseId: HPND-DEC
+  -
+    id: "https://spdx.org/licenses/HPND-doc.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - documentation variant
+    licenseId: HPND-doc
+  -
+    id: "https://spdx.org/licenses/HPND-doc-sell.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - documentation sell variant
+    licenseId: HPND-doc-sell
+  -
+    id: "https://spdx.org/licenses/HPND-export-US.html"
+    active: true
+    term: HPND with US Government export control warning
+    licenseId: HPND-export-US
+  -
+    id: "https://spdx.org/licenses/HPND-export-US-acknowledgement.html"
+    active: true
+    term: HPND with US Government export control warning and acknowledgment
+    licenseId: HPND-export-US-acknowledgement
+  -
+    id: "https://spdx.org/licenses/HPND-export-US-modify.html"
+    active: true
+    term: HPND with US Government export control warning and modification rqmt
+    licenseId: HPND-export-US-modify
+  -
+    id: "https://spdx.org/licenses/HPND-export2-US.html"
+    active: true
+    term: HPND with US Government export control and 2 disclaimers
+    licenseId: HPND-export2-US
+  -
+    id: "https://spdx.org/licenses/HPND-Fenneberg-Livingston.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - Fenneberg-Livingston variant
+    licenseId: HPND-Fenneberg-Livingston
+  -
+    id: "https://spdx.org/licenses/HPND-INRIA-IMAG.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer    - INRIA-IMAG variant
+    licenseId: HPND-INRIA-IMAG
+  -
+    id: "https://spdx.org/licenses/HPND-Intel.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - Intel variant
+    licenseId: HPND-Intel
+  -
+    id: "https://spdx.org/licenses/HPND-Kevlin-Henney.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - Kevlin Henney variant
+    licenseId: HPND-Kevlin-Henney
+  -
+    id: "https://spdx.org/licenses/HPND-Markus-Kuhn.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - Markus Kuhn variant
+    licenseId: HPND-Markus-Kuhn
+  -
+    id: "https://spdx.org/licenses/HPND-merchantability-variant.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - merchantability variant
+    licenseId: HPND-merchantability-variant
+  -
+    id: "https://spdx.org/licenses/HPND-MIT-disclaimer.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer with MIT disclaimer
+    licenseId: HPND-MIT-disclaimer
+  -
+    id: "https://spdx.org/licenses/HPND-Netrek.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - Netrek variant
+    licenseId: HPND-Netrek
+  -
+    id: "https://spdx.org/licenses/HPND-Pbmplus.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - Pbmplus variant
+    licenseId: HPND-Pbmplus
+  -
+    id: "https://spdx.org/licenses/HPND-sell-MIT-disclaimer-xserver.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - sell xserver variant with MIT disclaimer
+    licenseId: HPND-sell-MIT-disclaimer-xserver
+  -
+    id: "https://spdx.org/licenses/HPND-sell-regexpr.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - sell regexpr variant
+    licenseId: HPND-sell-regexpr
+  -
+    id: "https://spdx.org/licenses/HPND-sell-variant.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - sell variant
+    licenseId: HPND-sell-variant
+  -
+    id: "https://spdx.org/licenses/HPND-sell-variant-critical-systems.html"
+    active: true
+    term: HPND - sell variant with safety critical systems clause
+    licenseId: HPND-sell-variant-critical-systems
+  -
+    id: "https://spdx.org/licenses/HPND-sell-variant-MIT-disclaimer.html"
+    active: true
+    term: HPND sell variant with MIT disclaimer
+    licenseId: HPND-sell-variant-MIT-disclaimer
+  -
+    id: "https://spdx.org/licenses/HPND-sell-variant-MIT-disclaimer-rev.html"
+    active: true
+    term: HPND sell variant with MIT disclaimer - reverse
+    licenseId: HPND-sell-variant-MIT-disclaimer-rev
+  -
+    id: "https://spdx.org/licenses/HPND-SMC.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - SMC variant
+    licenseId: HPND-SMC
+  -
+    id: "https://spdx.org/licenses/HPND-UC.html"
+    active: true
+    term: Historical Permission Notice and Disclaimer - University of California variant
+    licenseId: HPND-UC
+  -
+    id: "https://spdx.org/licenses/HPND-UC-export-US.html"
+    active: true
+    term: "Historical Permission Notice and Disclaimer - University of California, US export warning"
+    licenseId: HPND-UC-export-US
+  -
+    id: "https://spdx.org/licenses/HTMLTIDY.html"
+    active: true
+    term: HTML Tidy License
+    licenseId: HTMLTIDY
+  -
+    id: "https://spdx.org/licenses/hyphen-bulgarian.html"
+    active: true
+    term: hyphen-bulgarian License
+    licenseId: hyphen-bulgarian
+  -
+    id: "https://spdx.org/licenses/IBM-pibs.html"
+    active: true
+    term: IBM PowerPC Initialization and Boot Software
+    licenseId: IBM-pibs
+  -
+    id: "https://spdx.org/licenses/ICU.html"
+    active: true
+    term: ICU License
+    licenseId: ICU
+  -
+    id: "https://spdx.org/licenses/IEC-Code-Components-EULA.html"
+    active: true
+    term: IEC    Code Components End-user licence agreement
+    licenseId: IEC-Code-Components-EULA
+  -
+    id: "https://spdx.org/licenses/IJG.html"
+    active: true
+    term: Independent JPEG Group License
+    licenseId: IJG
+  -
+    id: "https://spdx.org/licenses/IJG-short.html"
+    active: true
+    term: Independent JPEG Group License - short
+    licenseId: IJG-short
+  -
+    id: "https://spdx.org/licenses/ImageMagick.html"
+    active: true
+    term: ImageMagick License
+    licenseId: ImageMagick
+  -
+    id: "https://spdx.org/licenses/iMatix.html"
+    active: true
+    term: iMatix Standard Function Library Agreement
+    licenseId: iMatix
+  -
+    id: "https://spdx.org/licenses/Imlib2.html"
+    active: true
+    term: Imlib2 License
+    licenseId: Imlib2
+  -
+    id: "https://spdx.org/licenses/Info-ZIP.html"
+    active: true
+    term: Info-ZIP License
+    licenseId: Info-ZIP
+  -
+    id: "https://spdx.org/licenses/Inner-Net-2.0.html"
+    active: true
+    term: Inner Net License v2.0
+    licenseId: Inner-Net-2.0
+  -
+    id: "https://spdx.org/licenses/InnoSetup.html"
+    active: true
+    term: Inno Setup License
+    licenseId: InnoSetup
+  -
+    id: "https://spdx.org/licenses/Intel.html"
+    active: true
+    term: Intel Open Source License
+    licenseId: Intel
+  -
+    id: "https://spdx.org/licenses/Intel-ACPI.html"
+    active: true
+    term: Intel ACPI Software License Agreement
+    licenseId: Intel-ACPI
+  -
+    id: "https://spdx.org/licenses/Interbase-1.0.html"
+    active: true
+    term: Interbase Public License v1.0
+    licenseId: Interbase-1.0
+  -
+    id: "https://spdx.org/licenses/IPA.html"
+    active: true
+    term: IPA Font License
+    licenseId: IPA
+  -
+    id: "https://spdx.org/licenses/IPL-1.0.html"
+    active: true
+    term: IBM Public License v1.0
+    licenseId: IPL-1.0
+  -
+    id: "https://spdx.org/licenses/ISC.html"
+    active: true
+    term: ISC License
+    licenseId: ISC
+  -
+    id: "https://spdx.org/licenses/ISC-Veillard.html"
+    active: true
+    term: ISC Veillard variant
+    licenseId: ISC-Veillard
+  -
+    id: "https://spdx.org/licenses/ISO-permission.html"
+    active: true
+    term: ISO permission notice
+    licenseId: ISO-permission
+  -
+    id: "https://spdx.org/licenses/Jam.html"
+    active: true
+    term: Jam License
+    licenseId: Jam
+  -
+    id: "https://spdx.org/licenses/JasPer-2.0.html"
+    active: true
+    term: JasPer License
+    licenseId: JasPer-2.0
+  -
+    id: "https://spdx.org/licenses/jove.html"
+    active: true
+    term: Jove License
+    licenseId: jove
+  -
+    id: "https://spdx.org/licenses/JPL-image.html"
+    active: true
+    term: JPL Image Use Policy
+    licenseId: JPL-image
+  -
+    id: "https://spdx.org/licenses/JPNIC.html"
+    active: true
+    term: Japan Network Information Center License
+    licenseId: JPNIC
+  -
+    id: "https://spdx.org/licenses/JSON.html"
+    active: true
+    term: JSON License
+    licenseId: JSON
+  -
+    id: "https://spdx.org/licenses/Kastrup.html"
+    active: true
+    term: Kastrup License
+    licenseId: Kastrup
+  -
+    id: "https://spdx.org/licenses/Kazlib.html"
+    active: true
+    term: Kazlib License
+    licenseId: Kazlib
+  -
+    id: "https://spdx.org/licenses/Knuth-CTAN.html"
+    active: true
+    term: Knuth CTAN License
+    licenseId: Knuth-CTAN
+  -
+    id: "https://spdx.org/licenses/LAL-1.2.html"
+    active: true
+    term: Licence Art Libre 1.2
+    licenseId: LAL-1.2
+  -
+    id: "https://spdx.org/licenses/LAL-1.3.html"
+    active: true
+    term: Licence Art Libre 1.3
+    licenseId: LAL-1.3
+  -
+    id: "https://spdx.org/licenses/Latex2e.html"
+    active: true
+    term: Latex2e License
+    licenseId: Latex2e
+  -
+    id: "https://spdx.org/licenses/Latex2e-translated-notice.html"
+    active: true
+    term: Latex2e with translated notice permission
+    licenseId: Latex2e-translated-notice
+  -
+    id: "https://spdx.org/licenses/Leptonica.html"
+    active: true
+    term: Leptonica License
+    licenseId: Leptonica
+  -
+    id: "https://spdx.org/licenses/LGPL-2.0.html"
+    active: false
+    term: GNU Library General Public License v2 only
+    licenseId: LGPL-2.0
+  -
+    id: "https://spdx.org/licenses/LGPL-2.0+.html"
+    active: false
+    term: GNU Library General Public License v2 or later
+    licenseId: LGPL-2.0+
+  -
+    id: "https://spdx.org/licenses/LGPL-2.0-only.html"
+    active: true
+    term: GNU Library General Public License v2 only
+    licenseId: LGPL-2.0-only
+  -
+    id: "https://spdx.org/licenses/LGPL-2.0-or-later.html"
+    active: true
+    term: GNU Library General Public License v2 or later
+    licenseId: LGPL-2.0-or-later
+  -
+    id: "https://spdx.org/licenses/LGPL-2.1.html"
+    active: false
+    term: GNU Lesser General Public License v2.1 only
+    licenseId: LGPL-2.1
+  -
+    id: "https://spdx.org/licenses/LGPL-2.1+.html"
+    active: false
+    term: GNU Lesser General Public License v2.1 or later
+    licenseId: LGPL-2.1+
+  -
+    id: "https://spdx.org/licenses/LGPL-2.1-only.html"
+    active: true
+    term: GNU Lesser General Public License v2.1 only
+    licenseId: LGPL-2.1-only
+  -
+    id: "https://spdx.org/licenses/LGPL-2.1-or-later.html"
+    active: true
+    term: GNU Lesser General Public License v2.1 or later
+    licenseId: LGPL-2.1-or-later
+  -
+    id: "https://spdx.org/licenses/LGPL-3.0.html"
+    active: false
+    term: GNU Lesser General Public License v3.0 only
+    licenseId: LGPL-3.0
+  -
+    id: "https://spdx.org/licenses/LGPL-3.0+.html"
+    active: false
+    term: GNU Lesser General Public License v3.0 or later
+    licenseId: LGPL-3.0+
+  -
+    id: "https://spdx.org/licenses/LGPL-3.0-only.html"
+    active: true
+    term: GNU Lesser General Public License v3.0 only
+    licenseId: LGPL-3.0-only
+  -
+    id: "https://spdx.org/licenses/LGPL-3.0-or-later.html"
+    active: true
+    term: GNU Lesser General Public License v3.0 or later
+    licenseId: LGPL-3.0-or-later
+  -
+    id: "https://spdx.org/licenses/LGPLLR.html"
+    active: true
+    term: Lesser General Public License For Linguistic Resources
+    licenseId: LGPLLR
+  -
+    id: "https://spdx.org/licenses/Libpng.html"
+    active: true
+    term: libpng License
+    licenseId: Libpng
+  -
+    id: "https://spdx.org/licenses/libpng-1.6.35.html"
+    active: true
+    term: PNG Reference Library License v1 (for libpng 0.5 through 1.6.35)
+    licenseId: libpng-1.6.35
+  -
+    id: "https://spdx.org/licenses/libpng-2.0.html"
+    active: true
+    term: PNG Reference Library version 2
+    licenseId: libpng-2.0
+  -
+    id: "https://spdx.org/licenses/libselinux-1.0.html"
+    active: true
+    term: libselinux public domain notice
+    licenseId: libselinux-1.0
+  -
+    id: "https://spdx.org/licenses/libtiff.html"
+    active: true
+    term: libtiff License
+    licenseId: libtiff
+  -
+    id: "https://spdx.org/licenses/libutil-David-Nugent.html"
+    active: true
+    term: libutil David Nugent License
+    licenseId: libutil-David-Nugent
+  -
+    id: "https://spdx.org/licenses/LiLiQ-P-1.1.html"
+    active: true
+    term: Licence Libre du QuÃ©bec â€“ Permissive version 1.1
+    licenseId: LiLiQ-P-1.1
+  -
+    id: "https://spdx.org/licenses/LiLiQ-R-1.1.html"
+    active: true
+    term: Licence Libre du QuÃ©bec â€“ RÃ©ciprocitÃ© version 1.1
+    licenseId: LiLiQ-R-1.1
+  -
+    id: "https://spdx.org/licenses/LiLiQ-Rplus-1.1.html"
+    active: true
+    term: Licence Libre du QuÃ©bec â€“ RÃ©ciprocitÃ© forte version 1.1
+    licenseId: LiLiQ-Rplus-1.1
+  -
+    id: "https://spdx.org/licenses/Linux-man-pages-1-para.html"
+    active: true
+    term: Linux man-pages - 1 paragraph
+    licenseId: Linux-man-pages-1-para
+  -
+    id: "https://spdx.org/licenses/Linux-man-pages-copyleft.html"
+    active: true
+    term: Linux man-pages Copyleft
+    licenseId: Linux-man-pages-copyleft
+  -
+    id: "https://spdx.org/licenses/Linux-man-pages-copyleft-2-para.html"
+    active: true
+    term: Linux man-pages Copyleft - 2 paragraphs
+    licenseId: Linux-man-pages-copyleft-2-para
+  -
+    id: "https://spdx.org/licenses/Linux-man-pages-copyleft-var.html"
+    active: true
+    term: Linux man-pages Copyleft Variant
+    licenseId: Linux-man-pages-copyleft-var
+  -
+    id: "https://spdx.org/licenses/Linux-OpenIB.html"
+    active: true
+    term: Linux Kernel Variant of OpenIB.org license
+    licenseId: Linux-OpenIB
+  -
+    id: "https://spdx.org/licenses/LOOP.html"
+    active: true
+    term: Common Lisp LOOP License
+    licenseId: LOOP
+  -
+    id: "https://spdx.org/licenses/LPD-document.html"
+    active: true
+    term: LPD Documentation License
+    licenseId: LPD-document
+  -
+    id: "https://spdx.org/licenses/LPL-1.0.html"
+    active: true
+    term: Lucent Public License Version 1.0
+    licenseId: LPL-1.0
+  -
+    id: "https://spdx.org/licenses/LPL-1.02.html"
+    active: true
+    term: Lucent Public License v1.02
+    licenseId: LPL-1.02
+  -
+    id: "https://spdx.org/licenses/LPPL-1.0.html"
+    active: true
+    term: LaTeX Project Public License v1.0
+    licenseId: LPPL-1.0
+  -
+    id: "https://spdx.org/licenses/LPPL-1.1.html"
+    active: true
+    term: LaTeX Project Public License v1.1
+    licenseId: LPPL-1.1
+  -
+    id: "https://spdx.org/licenses/LPPL-1.2.html"
+    active: true
+    term: LaTeX Project Public License v1.2
+    licenseId: LPPL-1.2
+  -
+    id: "https://spdx.org/licenses/LPPL-1.3a.html"
+    active: true
+    term: LaTeX Project Public License v1.3a
+    licenseId: LPPL-1.3a
+  -
+    id: "https://spdx.org/licenses/LPPL-1.3c.html"
+    active: true
+    term: LaTeX Project Public License v1.3c
+    licenseId: LPPL-1.3c
+  -
+    id: "https://spdx.org/licenses/lsof.html"
+    active: true
+    term: lsof License
+    licenseId: lsof
+  -
+    id: "https://spdx.org/licenses/Lucida-Bitmap-Fonts.html"
+    active: true
+    term: Lucida Bitmap Fonts License
+    licenseId: Lucida-Bitmap-Fonts
+  -
+    id: "https://spdx.org/licenses/LZMA-SDK-9.11-to-9.20.html"
+    active: true
+    term: LZMA SDK License (versions 9.11 to 9.20)
+    licenseId: LZMA-SDK-9.11-to-9.20
+  -
+    id: "https://spdx.org/licenses/LZMA-SDK-9.22.html"
+    active: true
+    term: LZMA SDK License (versions 9.22 and beyond)
+    licenseId: LZMA-SDK-9.22
+  -
+    id: "https://spdx.org/licenses/Mackerras-3-Clause.html"
+    active: true
+    term: Mackerras 3-Clause License
+    licenseId: Mackerras-3-Clause
+  -
+    id: "https://spdx.org/licenses/Mackerras-3-Clause-acknowledgment.html"
+    active: true
+    term: Mackerras 3-Clause - acknowledgment variant
+    licenseId: Mackerras-3-Clause-acknowledgment
+  -
+    id: "https://spdx.org/licenses/magaz.html"
+    active: true
+    term: magaz License
+    licenseId: magaz
+  -
+    id: "https://spdx.org/licenses/mailprio.html"
+    active: true
+    term: mailprio License
+    licenseId: mailprio
+  -
+    id: "https://spdx.org/licenses/MakeIndex.html"
+    active: true
+    term: MakeIndex License
+    licenseId: MakeIndex
+  -
+    id: "https://spdx.org/licenses/man2html.html"
+    active: true
+    term: man2html License
+    licenseId: man2html
+  -
+    id: "https://spdx.org/licenses/Martin-Birgmeier.html"
+    active: true
+    term: Martin Birgmeier License
+    licenseId: Martin-Birgmeier
+  -
+    id: "https://spdx.org/licenses/McPhee-slideshow.html"
+    active: true
+    term: McPhee Slideshow License
+    licenseId: McPhee-slideshow
+  -
+    id: "https://spdx.org/licenses/metamail.html"
+    active: true
+    term: metamail License
+    licenseId: metamail
+  -
+    id: "https://spdx.org/licenses/Minpack.html"
+    active: true
+    term: Minpack License
+    licenseId: Minpack
+  -
+    id: "https://spdx.org/licenses/MIPS.html"
+    active: true
+    term: MIPS License
+    licenseId: MIPS
+  -
+    id: "https://spdx.org/licenses/MirOS.html"
+    active: true
+    term: The MirOS Licence
+    licenseId: MirOS
+  -
+    id: "https://spdx.org/licenses/MIT.html"
+    active: true
+    term: MIT License
+    licenseId: MIT
+  -
+    id: "https://spdx.org/licenses/MIT-0.html"
+    active: true
+    term: MIT No Attribution
+    licenseId: MIT-0
+  -
+    id: "https://spdx.org/licenses/MIT-advertising.html"
+    active: true
+    term: Enlightenment License (e16)
+    licenseId: MIT-advertising
+  -
+    id: "https://spdx.org/licenses/MIT-Click.html"
+    active: true
+    term: MIT Click License
+    licenseId: MIT-Click
+  -
+    id: "https://spdx.org/licenses/MIT-CMU.html"
+    active: true
+    term: CMU License
+    licenseId: MIT-CMU
+  -
+    id: "https://spdx.org/licenses/MIT-enna.html"
+    active: true
+    term: enna License
+    licenseId: MIT-enna
+  -
+    id: "https://spdx.org/licenses/MIT-feh.html"
+    active: true
+    term: feh License
+    licenseId: MIT-feh
+  -
+    id: "https://spdx.org/licenses/MIT-Festival.html"
+    active: true
+    term: MIT Festival Variant
+    licenseId: MIT-Festival
+  -
+    id: "https://spdx.org/licenses/MIT-Khronos-old.html"
+    active: true
+    term: MIT Khronos - old variant
+    licenseId: MIT-Khronos-old
+  -
+    id: "https://spdx.org/licenses/MIT-Modern-Variant.html"
+    active: true
+    term: MIT License Modern Variant
+    licenseId: MIT-Modern-Variant
+  -
+    id: "https://spdx.org/licenses/MIT-open-group.html"
+    active: true
+    term: MIT Open Group variant
+    licenseId: MIT-open-group
+  -
+    id: "https://spdx.org/licenses/MIT-STK.html"
+    active: true
+    term: MIT-STK License
+    licenseId: MIT-STK
+  -
+    id: "https://spdx.org/licenses/MIT-testregex.html"
+    active: true
+    term: MIT testregex Variant
+    licenseId: MIT-testregex
+  -
+    id: "https://spdx.org/licenses/MIT-Wu.html"
+    active: true
+    term: MIT Tom Wu Variant
+    licenseId: MIT-Wu
+  -
+    id: "https://spdx.org/licenses/MITNFA.html"
+    active: true
+    term: MIT +no-false-attribs license
+    licenseId: MITNFA
+  -
+    id: "https://spdx.org/licenses/MMIXware.html"
+    active: true
+    term: MMIXware License
+    licenseId: MMIXware
+  -
+    id: "https://spdx.org/licenses/MMPL-1.0.1.html"
+    active: true
+    term: Minecraft Mod Public License v1.0.1
+    licenseId: MMPL-1.0.1
+  -
+    id: "https://spdx.org/licenses/Motosoto.html"
+    active: true
+    term: Motosoto License
+    licenseId: Motosoto
+  -
+    id: "https://spdx.org/licenses/MPEG-SSG.html"
+    active: true
+    term: MPEG Software Simulation
+    licenseId: MPEG-SSG
+  -
+    id: "https://spdx.org/licenses/mpi-permissive.html"
+    active: true
+    term: mpi Permissive License
+    licenseId: mpi-permissive
+  -
+    id: "https://spdx.org/licenses/mpich2.html"
+    active: true
+    term: mpich2 License
+    licenseId: mpich2
+  -
+    id: "https://spdx.org/licenses/MPL-1.0.html"
+    active: true
+    term: Mozilla Public License 1.0
+    licenseId: MPL-1.0
+  -
+    id: "https://spdx.org/licenses/MPL-1.1.html"
+    active: true
+    term: Mozilla Public License 1.1
+    licenseId: MPL-1.1
+  -
+    id: "https://spdx.org/licenses/MPL-2.0.html"
+    active: true
+    term: Mozilla Public License 2.0
+    licenseId: MPL-2.0
+  -
+    id: "https://spdx.org/licenses/MPL-2.0-no-copyleft-exception.html"
+    active: true
+    term: Mozilla Public License 2.0 (no copyleft exception)
+    licenseId: MPL-2.0-no-copyleft-exception
+  -
+    id: "https://spdx.org/licenses/mplus.html"
+    active: true
+    term: mplus Font License
+    licenseId: mplus
+  -
+    id: "https://spdx.org/licenses/MS-LPL.html"
+    active: true
+    term: Microsoft Limited Public License
+    licenseId: MS-LPL
+  -
+    id: "https://spdx.org/licenses/MS-PL.html"
+    active: true
+    term: Microsoft Public License
+    licenseId: MS-PL
+  -
+    id: "https://spdx.org/licenses/MS-RL.html"
+    active: true
+    term: Microsoft Reciprocal License
+    licenseId: MS-RL
+  -
+    id: "https://spdx.org/licenses/MTLL.html"
+    active: true
+    term: Matrix Template Library License
+    licenseId: MTLL
+  -
+    id: "https://spdx.org/licenses/MulanPSL-1.0.html"
+    active: true
+    term: "Mulan Permissive Software License, Version 1"
+    licenseId: MulanPSL-1.0
+  -
+    id: "https://spdx.org/licenses/MulanPSL-2.0.html"
+    active: true
+    term: "Mulan Permissive Software License, Version 2"
+    licenseId: MulanPSL-2.0
+  -
+    id: "https://spdx.org/licenses/Multics.html"
+    active: true
+    term: Multics License
+    licenseId: Multics
+  -
+    id: "https://spdx.org/licenses/Mup.html"
+    active: true
+    term: Mup License
+    licenseId: Mup
+  -
+    id: "https://spdx.org/licenses/MVT-1.1.html"
+    active: true
+    term: MVT License 1.1
+    licenseId: MVT-1.1
+  -
+    id: "https://spdx.org/licenses/NAIST-2003.html"
+    active: true
+    term: Nara Institute of Science and Technology License (2003)
+    licenseId: NAIST-2003
+  -
+    id: "https://spdx.org/licenses/NASA-1.3.html"
+    active: true
+    term: NASA Open Source Agreement 1.3
+    licenseId: NASA-1.3
+  -
+    id: "https://spdx.org/licenses/Naumen.html"
+    active: true
+    term: Naumen Public License
+    licenseId: Naumen
+  -
+    id: "https://spdx.org/licenses/NBPL-1.0.html"
+    active: true
+    term: Net Boolean Public License v1
+    licenseId: NBPL-1.0
+  -
+    id: "https://spdx.org/licenses/NCBI-PD.html"
+    active: true
+    term: NCBI Public Domain Notice
+    licenseId: NCBI-PD
+  -
+    id: "https://spdx.org/licenses/NCGL-UK-2.0.html"
+    active: true
+    term: Non-Commercial Government Licence
+    licenseId: NCGL-UK-2.0
+  -
+    id: "https://spdx.org/licenses/NCL.html"
+    active: true
+    term: NCL Source Code License
+    licenseId: NCL
+  -
+    id: "https://spdx.org/licenses/NCSA.html"
+    active: true
+    term: University of Illinois/NCSA Open Source License
+    licenseId: NCSA
+  -
+    id: "https://spdx.org/licenses/Net-SNMP.html"
+    active: false
+    term: Net-SNMP License
+    licenseId: Net-SNMP
+  -
+    id: "https://spdx.org/licenses/NetCDF.html"
+    active: true
+    term: NetCDF license
+    licenseId: NetCDF
+  -
+    id: "https://spdx.org/licenses/Newsletr.html"
+    active: true
+    term: Newsletr License
+    licenseId: Newsletr
+  -
+    id: "https://spdx.org/licenses/NGPL.html"
+    active: true
+    term: Nethack General Public License
+    licenseId: NGPL
+  -
+    id: "https://spdx.org/licenses/ngrep.html"
+    active: true
+    term: ngrep License
+    licenseId: ngrep
+  -
+    id: "https://spdx.org/licenses/NICTA-1.0.html"
+    active: true
+    term: "NICTA Public Software License, Version 1.0"
+    licenseId: NICTA-1.0
+  -
+    id: "https://spdx.org/licenses/NIST-PD.html"
+    active: true
+    term: NIST Public Domain Notice
+    licenseId: NIST-PD
+  -
+    id: "https://spdx.org/licenses/NIST-PD-fallback.html"
+    active: true
+    term: NIST Public Domain Notice with license fallback
+    licenseId: NIST-PD-fallback
+  -
+    id: "https://spdx.org/licenses/NIST-PD-TNT.html"
+    active: true
+    term: NIST    Public Domain Notice TNT variant
+    licenseId: NIST-PD-TNT
+  -
+    id: "https://spdx.org/licenses/NIST-Software.html"
+    active: true
+    term: NIST Software License
+    licenseId: NIST-Software
+  -
+    id: "https://spdx.org/licenses/NLOD-1.0.html"
+    active: true
+    term: Norwegian Licence for Open Government Data (NLOD) 1.0
+    licenseId: NLOD-1.0
+  -
+    id: "https://spdx.org/licenses/NLOD-2.0.html"
+    active: true
+    term: Norwegian Licence for Open Government Data (NLOD) 2.0
+    licenseId: NLOD-2.0
+  -
+    id: "https://spdx.org/licenses/NLPL.html"
+    active: true
+    term: No Limit Public License
+    licenseId: NLPL
+  -
+    id: "https://spdx.org/licenses/Nokia.html"
+    active: true
+    term: Nokia Open Source License
+    licenseId: Nokia
+  -
+    id: "https://spdx.org/licenses/NOSL.html"
+    active: true
+    term: Netizen Open Source License
+    licenseId: NOSL
+  -
+    id: "https://spdx.org/licenses/Noweb.html"
+    active: true
+    term: Noweb License
+    licenseId: Noweb
+  -
+    id: "https://spdx.org/licenses/NPL-1.0.html"
+    active: true
+    term: Netscape Public License v1.0
+    licenseId: NPL-1.0
+  -
+    id: "https://spdx.org/licenses/NPL-1.1.html"
+    active: true
+    term: Netscape Public License v1.1
+    licenseId: NPL-1.1
+  -
+    id: "https://spdx.org/licenses/NPOSL-3.0.html"
+    active: true
+    term: Non-Profit Open Software License 3.0
+    licenseId: NPOSL-3.0
+  -
+    id: "https://spdx.org/licenses/NRL.html"
+    active: true
+    term: NRL License
+    licenseId: NRL
+  -
+    id: "https://spdx.org/licenses/NTIA-PD.html"
+    active: true
+    term: NTIA Public Domain Notice
+    licenseId: NTIA-PD
+  -
+    id: "https://spdx.org/licenses/NTP.html"
+    active: true
+    term: NTP License
+    licenseId: NTP
+  -
+    id: "https://spdx.org/licenses/NTP-0.html"
+    active: true
+    term: NTP No Attribution
+    licenseId: NTP-0
+  -
+    id: "https://spdx.org/licenses/Nunit.html"
+    active: false
+    term: Nunit License
+    licenseId: Nunit
+  -
+    id: "https://spdx.org/licenses/O-UDA-1.0.html"
+    active: true
+    term: Open Use of Data Agreement v1.0
+    licenseId: O-UDA-1.0
+  -
+    id: "https://spdx.org/licenses/OAR.html"
+    active: true
+    term: OAR License
+    licenseId: OAR
+  -
+    id: "https://spdx.org/licenses/OCCT-PL.html"
+    active: true
+    term: Open CASCADE Technology Public License
+    licenseId: OCCT-PL
+  -
+    id: "https://spdx.org/licenses/OCLC-2.0.html"
+    active: true
+    term: OCLC Research Public License 2.0
+    licenseId: OCLC-2.0
+  -
+    id: "https://spdx.org/licenses/ODbL-1.0.html"
+    active: true
+    term: Open Data Commons Open Database License v1.0
+    licenseId: ODbL-1.0
+  -
+    id: "https://spdx.org/licenses/ODC-By-1.0.html"
+    active: true
+    term: Open Data Commons Attribution License v1.0
+    licenseId: ODC-By-1.0
+  -
+    id: "https://spdx.org/licenses/OFFIS.html"
+    active: true
+    term: OFFIS License
+    licenseId: OFFIS
+  -
+    id: "https://spdx.org/licenses/OFL-1.0.html"
+    active: true
+    term: SIL Open Font License 1.0
+    licenseId: OFL-1.0
+  -
+    id: "https://spdx.org/licenses/OFL-1.0-no-RFN.html"
+    active: true
+    term: SIL Open Font License 1.0 with no Reserved Font Name
+    licenseId: OFL-1.0-no-RFN
+  -
+    id: "https://spdx.org/licenses/OFL-1.0-RFN.html"
+    active: true
+    term: SIL Open Font License 1.0 with Reserved Font Name
+    licenseId: OFL-1.0-RFN
+  -
+    id: "https://spdx.org/licenses/OFL-1.1.html"
+    active: true
+    term: SIL Open Font License 1.1
+    licenseId: OFL-1.1
+  -
+    id: "https://spdx.org/licenses/OFL-1.1-no-RFN.html"
+    active: true
+    term: SIL Open Font License 1.1 with no Reserved Font Name
+    licenseId: OFL-1.1-no-RFN
+  -
+    id: "https://spdx.org/licenses/OFL-1.1-RFN.html"
+    active: true
+    term: SIL Open Font License 1.1 with Reserved Font Name
+    licenseId: OFL-1.1-RFN
+  -
+    id: "https://spdx.org/licenses/OGC-1.0.html"
+    active: true
+    term: "OGC Software License, Version 1.0"
+    licenseId: OGC-1.0
+  -
+    id: "https://spdx.org/licenses/OGDL-Taiwan-1.0.html"
+    active: true
+    term: "Taiwan Open Government Data License, version 1.0"
+    licenseId: OGDL-Taiwan-1.0
+  -
+    id: "https://spdx.org/licenses/OGL-Canada-2.0.html"
+    active: true
+    term: Open Government Licence - Canada
+    licenseId: OGL-Canada-2.0
+  -
+    id: "https://spdx.org/licenses/OGL-UK-1.0.html"
+    active: true
+    term: Open Government Licence v1.0
+    licenseId: OGL-UK-1.0
+  -
+    id: "https://spdx.org/licenses/OGL-UK-2.0.html"
+    active: true
+    term: Open Government Licence v2.0
+    licenseId: OGL-UK-2.0
+  -
+    id: "https://spdx.org/licenses/OGL-UK-3.0.html"
+    active: true
+    term: Open Government Licence v3.0
+    licenseId: OGL-UK-3.0
+  -
+    id: "https://spdx.org/licenses/OGTSL.html"
+    active: true
+    term: Open Group Test Suite License
+    licenseId: OGTSL
+  -
+    id: "https://spdx.org/licenses/OLDAP-1.1.html"
+    active: true
+    term: Open LDAP Public License v1.1
+    licenseId: OLDAP-1.1
+  -
+    id: "https://spdx.org/licenses/OLDAP-1.2.html"
+    active: true
+    term: Open LDAP Public License v1.2
+    licenseId: OLDAP-1.2
+  -
+    id: "https://spdx.org/licenses/OLDAP-1.3.html"
+    active: true
+    term: Open LDAP Public License v1.3
+    licenseId: OLDAP-1.3
+  -
+    id: "https://spdx.org/licenses/OLDAP-1.4.html"
+    active: true
+    term: Open LDAP Public License v1.4
+    licenseId: OLDAP-1.4
+  -
+    id: "https://spdx.org/licenses/OLDAP-2.0.html"
+    active: true
+    term: Open LDAP Public License v2.0 (or possibly 2.0A and 2.0B)
+    licenseId: OLDAP-2.0
+  -
+    id: "https://spdx.org/licenses/OLDAP-2.0.1.html"
+    active: true
+    term: Open LDAP Public License v2.0.1
+    licenseId: OLDAP-2.0.1
+  -
+    id: "https://spdx.org/licenses/OLDAP-2.1.html"
+    active: true
+    term: Open LDAP Public License v2.1
+    licenseId: OLDAP-2.1
+  -
+    id: "https://spdx.org/licenses/OLDAP-2.2.html"
+    active: true
+    term: Open LDAP Public License v2.2
+    licenseId: OLDAP-2.2
+  -
+    id: "https://spdx.org/licenses/OLDAP-2.2.1.html"
+    active: true
+    term: Open LDAP Public License v2.2.1
+    licenseId: OLDAP-2.2.1
+  -
+    id: "https://spdx.org/licenses/OLDAP-2.2.2.html"
+    active: true
+    term: Open LDAP Public License 2.2.2
+    licenseId: OLDAP-2.2.2
+  -
+    id: "https://spdx.org/licenses/OLDAP-2.3.html"
+    active: true
+    term: Open LDAP Public License v2.3
+    licenseId: OLDAP-2.3
+  -
+    id: "https://spdx.org/licenses/OLDAP-2.4.html"
+    active: true
+    term: Open LDAP Public License v2.4
+    licenseId: OLDAP-2.4
+  -
+    id: "https://spdx.org/licenses/OLDAP-2.5.html"
+    active: true
+    term: Open LDAP Public License v2.5
+    licenseId: OLDAP-2.5
+  -
+    id: "https://spdx.org/licenses/OLDAP-2.6.html"
+    active: true
+    term: Open LDAP Public License v2.6
+    licenseId: OLDAP-2.6
+  -
+    id: "https://spdx.org/licenses/OLDAP-2.7.html"
+    active: true
+    term: Open LDAP Public License v2.7
+    licenseId: OLDAP-2.7
+  -
+    id: "https://spdx.org/licenses/OLDAP-2.8.html"
+    active: true
+    term: Open LDAP Public License v2.8
+    licenseId: OLDAP-2.8
+  -
+    id: "https://spdx.org/licenses/OLFL-1.3.html"
+    active: true
+    term: Open Logistics Foundation License Version 1.3
+    licenseId: OLFL-1.3
+  -
+    id: "https://spdx.org/licenses/OML.html"
+    active: true
+    term: Open Market License
+    licenseId: OML
+  -
+    id: "https://spdx.org/licenses/OpenMDW-1.0.html"
+    active: true
+    term: OpenMDW License Agreement v1.0
+    licenseId: OpenMDW-1.0
+  -
+    id: "https://spdx.org/licenses/OpenPBS-2.3.html"
+    active: true
+    term: OpenPBS v2.3 Software License
+    licenseId: OpenPBS-2.3
+  -
+    id: "https://spdx.org/licenses/OpenSSL.html"
+    active: true
+    term: OpenSSL License
+    licenseId: OpenSSL
+  -
+    id: "https://spdx.org/licenses/OpenSSL-standalone.html"
+    active: true
+    term: OpenSSL License - standalone
+    licenseId: OpenSSL-standalone
+  -
+    id: "https://spdx.org/licenses/OpenVision.html"
+    active: true
+    term: OpenVision License
+    licenseId: OpenVision
+  -
+    id: "https://spdx.org/licenses/OPL-1.0.html"
+    active: true
+    term: Open Public License v1.0
+    licenseId: OPL-1.0
+  -
+    id: "https://spdx.org/licenses/OPL-UK-3.0.html"
+    active: true
+    term: United    Kingdom Open Parliament Licence v3.0
+    licenseId: OPL-UK-3.0
+  -
+    id: "https://spdx.org/licenses/OPUBL-1.0.html"
+    active: true
+    term: Open Publication License v1.0
+    licenseId: OPUBL-1.0
+  -
+    id: "https://spdx.org/licenses/OSC-1.0.html"
+    active: true
+    term: OSC License 1.0
+    licenseId: OSC-1.0
+  -
+    id: "https://spdx.org/licenses/OSET-PL-2.1.html"
+    active: true
+    term: OSET Public License version 2.1
+    licenseId: OSET-PL-2.1
+  -
+    id: "https://spdx.org/licenses/OSL-1.0.html"
+    active: true
+    term: Open Software License 1.0
+    licenseId: OSL-1.0
+  -
+    id: "https://spdx.org/licenses/OSL-1.1.html"
+    active: true
+    term: Open Software License 1.1
+    licenseId: OSL-1.1
+  -
+    id: "https://spdx.org/licenses/OSL-2.0.html"
+    active: true
+    term: Open Software License 2.0
+    licenseId: OSL-2.0
+  -
+    id: "https://spdx.org/licenses/OSL-2.1.html"
+    active: true
+    term: Open Software License 2.1
+    licenseId: OSL-2.1
+  -
+    id: "https://spdx.org/licenses/OSL-3.0.html"
+    active: true
+    term: Open Software License 3.0
+    licenseId: OSL-3.0
+  -
+    id: "https://spdx.org/licenses/OSSP.html"
+    active: true
+    term: OSSP License
+    licenseId: OSSP
+  -
+    id: "https://spdx.org/licenses/PADL.html"
+    active: true
+    term: PADL License
+    licenseId: PADL
+  -
+    id: "https://spdx.org/licenses/ParaType-Free-Font-1.3.html"
+    active: true
+    term: ParaType Free Font Licensing Agreement v1.3
+    licenseId: ParaType-Free-Font-1.3
+  -
+    id: "https://spdx.org/licenses/Parity-6.0.0.html"
+    active: true
+    term: The Parity Public License 6.0.0
+    licenseId: Parity-6.0.0
+  -
+    id: "https://spdx.org/licenses/Parity-7.0.0.html"
+    active: true
+    term: The Parity Public License 7.0.0
+    licenseId: Parity-7.0.0
+  -
+    id: "https://spdx.org/licenses/PDDL-1.0.html"
+    active: true
+    term: "Open Data Commons Public Domain Dedication & License 1.0"
+    licenseId: PDDL-1.0
+  -
+    id: "https://spdx.org/licenses/PHP-3.0.html"
+    active: true
+    term: PHP License v3.0
+    licenseId: PHP-3.0
+  -
+    id: "https://spdx.org/licenses/PHP-3.01.html"
+    active: true
+    term: PHP License v3.01
+    licenseId: PHP-3.01
+  -
+    id: "https://spdx.org/licenses/Pixar.html"
+    active: true
+    term: Pixar License
+    licenseId: Pixar
+  -
+    id: "https://spdx.org/licenses/pkgconf.html"
+    active: true
+    term: pkgconf License
+    licenseId: pkgconf
+  -
+    id: "https://spdx.org/licenses/Plexus.html"
+    active: true
+    term: Plexus Classworlds License
+    licenseId: Plexus
+  -
+    id: "https://spdx.org/licenses/pnmstitch.html"
+    active: true
+    term: pnmstitch License
+    licenseId: pnmstitch
+  -
+    id: "https://spdx.org/licenses/PolyForm-Noncommercial-1.0.0.html"
+    active: true
+    term: PolyForm Noncommercial License 1.0.0
+    licenseId: PolyForm-Noncommercial-1.0.0
+  -
+    id: "https://spdx.org/licenses/PolyForm-Small-Business-1.0.0.html"
+    active: true
+    term: PolyForm Small Business License 1.0.0
+    licenseId: PolyForm-Small-Business-1.0.0
+  -
+    id: "https://spdx.org/licenses/PostgreSQL.html"
+    active: true
+    term: PostgreSQL License
+    licenseId: PostgreSQL
+  -
+    id: "https://spdx.org/licenses/PPL.html"
+    active: true
+    term: Peer Production License
+    licenseId: PPL
+  -
+    id: "https://spdx.org/licenses/PSF-2.0.html"
+    active: true
+    term: Python Software Foundation License 2.0
+    licenseId: PSF-2.0
+  -
+    id: "https://spdx.org/licenses/psfrag.html"
+    active: true
+    term: psfrag License
+    licenseId: psfrag
+  -
+    id: "https://spdx.org/licenses/psutils.html"
+    active: true
+    term: psutils License
+    licenseId: psutils
+  -
+    id: "https://spdx.org/licenses/Python-2.0.html"
+    active: true
+    term: Python License 2.0
+    licenseId: Python-2.0
+  -
+    id: "https://spdx.org/licenses/Python-2.0.1.html"
+    active: true
+    term: Python License 2.0.1
+    licenseId: Python-2.0.1
+  -
+    id: "https://spdx.org/licenses/python-ldap.html"
+    active: true
+    term: Python ldap License
+    licenseId: python-ldap
+  -
+    id: "https://spdx.org/licenses/Qhull.html"
+    active: true
+    term: Qhull License
+    licenseId: Qhull
+  -
+    id: "https://spdx.org/licenses/QPL-1.0.html"
+    active: true
+    term: Q Public License 1.0
+    licenseId: QPL-1.0
+  -
+    id: "https://spdx.org/licenses/QPL-1.0-INRIA-2004.html"
+    active: true
+    term: Q Public License 1.0 - INRIA 2004 variant
+    licenseId: QPL-1.0-INRIA-2004
+  -
+    id: "https://spdx.org/licenses/radvd.html"
+    active: true
+    term: radvd License
+    licenseId: radvd
+  -
+    id: "https://spdx.org/licenses/Rdisc.html"
+    active: true
+    term: Rdisc License
+    licenseId: Rdisc
+  -
+    id: "https://spdx.org/licenses/RHeCos-1.1.html"
+    active: true
+    term: Red Hat eCos Public License v1.1
+    licenseId: RHeCos-1.1
+  -
+    id: "https://spdx.org/licenses/RPL-1.1.html"
+    active: true
+    term: Reciprocal Public License 1.1
+    licenseId: RPL-1.1
+  -
+    id: "https://spdx.org/licenses/RPL-1.5.html"
+    active: true
+    term: Reciprocal Public License 1.5
+    licenseId: RPL-1.5
+  -
+    id: "https://spdx.org/licenses/RPSL-1.0.html"
+    active: true
+    term: RealNetworks Public Source License v1.0
+    licenseId: RPSL-1.0
+  -
+    id: "https://spdx.org/licenses/RSA-MD.html"
+    active: true
+    term: RSA Message-Digest License
+    licenseId: RSA-MD
+  -
+    id: "https://spdx.org/licenses/RSCPL.html"
+    active: true
+    term: Ricoh Source Code Public License
+    licenseId: RSCPL
+  -
+    id: "https://spdx.org/licenses/Ruby.html"
+    active: true
+    term: Ruby License
+    licenseId: Ruby
+  -
+    id: "https://spdx.org/licenses/Ruby-pty.html"
+    active: true
+    term: Ruby pty extension license
+    licenseId: Ruby-pty
+  -
+    id: "https://spdx.org/licenses/SAX-PD.html"
+    active: true
+    term: Sax Public Domain Notice
+    licenseId: SAX-PD
+  -
+    id: "https://spdx.org/licenses/SAX-PD-2.0.html"
+    active: true
+    term: Sax Public Domain Notice 2.0
+    licenseId: SAX-PD-2.0
+  -
+    id: "https://spdx.org/licenses/Saxpath.html"
+    active: true
+    term: Saxpath License
+    licenseId: Saxpath
+  -
+    id: "https://spdx.org/licenses/SCEA.html"
+    active: true
+    term: SCEA Shared Source License
+    licenseId: SCEA
+  -
+    id: "https://spdx.org/licenses/SchemeReport.html"
+    active: true
+    term: Scheme Language Report License
+    licenseId: SchemeReport
+  -
+    id: "https://spdx.org/licenses/Sendmail.html"
+    active: true
+    term: Sendmail License
+    licenseId: Sendmail
+  -
+    id: "https://spdx.org/licenses/Sendmail-8.23.html"
+    active: true
+    term: Sendmail License 8.23
+    licenseId: Sendmail-8.23
+  -
+    id: "https://spdx.org/licenses/Sendmail-Open-Source-1.1.html"
+    active: true
+    term: Sendmail Open Source License v1.1
+    licenseId: Sendmail-Open-Source-1.1
+  -
+    id: "https://spdx.org/licenses/SGI-B-1.0.html"
+    active: true
+    term: SGI Free Software License B v1.0
+    licenseId: SGI-B-1.0
+  -
+    id: "https://spdx.org/licenses/SGI-B-1.1.html"
+    active: true
+    term: SGI Free Software License B v1.1
+    licenseId: SGI-B-1.1
+  -
+    id: "https://spdx.org/licenses/SGI-B-2.0.html"
+    active: true
+    term: SGI Free Software License B v2.0
+    licenseId: SGI-B-2.0
+  -
+    id: "https://spdx.org/licenses/SGI-OpenGL.html"
+    active: true
+    term: SGI OpenGL License
+    licenseId: SGI-OpenGL
+  -
+    id: "https://spdx.org/licenses/SGMLUG-PM.html"
+    active: true
+    term: SGMLUG Parser Materials License
+    licenseId: SGMLUG-PM
+  -
+    id: "https://spdx.org/licenses/SGP4.html"
+    active: true
+    term: SGP4 Permission Notice
+    licenseId: SGP4
+  -
+    id: "https://spdx.org/licenses/SHL-0.5.html"
+    active: true
+    term: Solderpad Hardware License v0.5
+    licenseId: SHL-0.5
+  -
+    id: "https://spdx.org/licenses/SHL-0.51.html"
+    active: true
+    term: "Solderpad Hardware License, Version 0.51"
+    licenseId: SHL-0.51
+  -
+    id: "https://spdx.org/licenses/SimPL-2.0.html"
+    active: true
+    term: Simple Public License 2.0
+    licenseId: SimPL-2.0
+  -
+    id: "https://spdx.org/licenses/SISSL.html"
+    active: true
+    term: Sun Industry Standards Source License v1.1
+    licenseId: SISSL
+  -
+    id: "https://spdx.org/licenses/SISSL-1.2.html"
+    active: true
+    term: Sun Industry Standards Source License v1.2
+    licenseId: SISSL-1.2
+  -
+    id: "https://spdx.org/licenses/SL.html"
+    active: true
+    term: SL License
+    licenseId: SL
+  -
+    id: "https://spdx.org/licenses/Sleepycat.html"
+    active: true
+    term: Sleepycat License
+    licenseId: Sleepycat
+  -
+    id: "https://spdx.org/licenses/SMAIL-GPL.html"
+    active: true
+    term: SMAIL General Public License
+    licenseId: SMAIL-GPL
+  -
+    id: "https://spdx.org/licenses/SMLNJ.html"
+    active: true
+    term: Standard ML of New Jersey License
+    licenseId: SMLNJ
+  -
+    id: "https://spdx.org/licenses/SMPPL.html"
+    active: true
+    term: Secure Messaging Protocol Public License
+    licenseId: SMPPL
+  -
+    id: "https://spdx.org/licenses/SNIA.html"
+    active: true
+    term: SNIA Public License 1.1
+    licenseId: SNIA
+  -
+    id: "https://spdx.org/licenses/snprintf.html"
+    active: true
+    term: snprintf License
+    licenseId: snprintf
+  -
+    id: "https://spdx.org/licenses/SOFA.html"
+    active: true
+    term: SOFA Software License
+    licenseId: SOFA
+  -
+    id: "https://spdx.org/licenses/softSurfer.html"
+    active: true
+    term: softSurfer License
+    licenseId: softSurfer
+  -
+    id: "https://spdx.org/licenses/Soundex.html"
+    active: true
+    term: Soundex License
+    licenseId: Soundex
+  -
+    id: "https://spdx.org/licenses/Spencer-86.html"
+    active: true
+    term: Spencer License 86
+    licenseId: Spencer-86
+  -
+    id: "https://spdx.org/licenses/Spencer-94.html"
+    active: true
+    term: Spencer License 94
+    licenseId: Spencer-94
+  -
+    id: "https://spdx.org/licenses/Spencer-99.html"
+    active: true
+    term: Spencer License 99
+    licenseId: Spencer-99
+  -
+    id: "https://spdx.org/licenses/SPL-1.0.html"
+    active: true
+    term: Sun Public License v1.0
+    licenseId: SPL-1.0
+  -
+    id: "https://spdx.org/licenses/ssh-keyscan.html"
+    active: true
+    term: ssh-keyscan License
+    licenseId: ssh-keyscan
+  -
+    id: "https://spdx.org/licenses/SSH-OpenSSH.html"
+    active: true
+    term: SSH OpenSSH license
+    licenseId: SSH-OpenSSH
+  -
+    id: "https://spdx.org/licenses/SSH-short.html"
+    active: true
+    term: SSH short notice
+    licenseId: SSH-short
+  -
+    id: "https://spdx.org/licenses/SSLeay-standalone.html"
+    active: true
+    term: SSLeay License - standalone
+    licenseId: SSLeay-standalone
+  -
+    id: "https://spdx.org/licenses/SSPL-1.0.html"
+    active: true
+    term: "Server Side Public License, v 1"
+    licenseId: SSPL-1.0
+  -
+    id: "https://spdx.org/licenses/StandardML-NJ.html"
+    active: false
+    term: Standard ML of New Jersey License
+    licenseId: StandardML-NJ
+  -
+    id: "https://spdx.org/licenses/SugarCRM-1.1.3.html"
+    active: true
+    term: SugarCRM Public License v1.1.3
+    licenseId: SugarCRM-1.1.3
+  -
+    id: "https://spdx.org/licenses/SUL-1.0.html"
+    active: true
+    term: Sustainable Use License v1.0
+    licenseId: SUL-1.0
+  -
+    id: "https://spdx.org/licenses/Sun-PPP.html"
+    active: true
+    term: Sun PPP License
+    licenseId: Sun-PPP
+  -
+    id: "https://spdx.org/licenses/Sun-PPP-2000.html"
+    active: true
+    term: Sun PPP License (2000)
+    licenseId: Sun-PPP-2000
+  -
+    id: "https://spdx.org/licenses/SunPro.html"
+    active: true
+    term: SunPro License
+    licenseId: SunPro
+  -
+    id: "https://spdx.org/licenses/SWL.html"
+    active: true
+    term: Scheme Widget Library (SWL) Software License Agreement
+    licenseId: SWL
+  -
+    id: "https://spdx.org/licenses/swrule.html"
+    active: true
+    term: swrule License
+    licenseId: swrule
+  -
+    id: "https://spdx.org/licenses/Symlinks.html"
+    active: true
+    term: Symlinks License
+    licenseId: Symlinks
+  -
+    id: "https://spdx.org/licenses/TAPR-OHL-1.0.html"
+    active: true
+    term: TAPR Open Hardware License v1.0
+    licenseId: TAPR-OHL-1.0
+  -
+    id: "https://spdx.org/licenses/TCL.html"
+    active: true
+    term: TCL/TK License
+    licenseId: TCL
+  -
+    id: "https://spdx.org/licenses/TCP-wrappers.html"
+    active: true
+    term: TCP Wrappers License
+    licenseId: TCP-wrappers
+  -
+    id: "https://spdx.org/licenses/TekHVC.html"
+    active: true
+    term: TekHVC License
+    licenseId: TekHVC
+  -
+    id: "https://spdx.org/licenses/TermReadKey.html"
+    active: true
+    term: TermReadKey License
+    licenseId: TermReadKey
+  -
+    id: "https://spdx.org/licenses/TGPPL-1.0.html"
+    active: true
+    term: Transitive Grace Period Public Licence 1.0
+    licenseId: TGPPL-1.0
+  -
+    id: "https://spdx.org/licenses/ThirdEye.html"
+    active: true
+    term: ThirdEye License
+    licenseId: ThirdEye
+  -
+    id: "https://spdx.org/licenses/threeparttable.html"
+    active: true
+    term: threeparttable License
+    licenseId: threeparttable
+  -
+    id: "https://spdx.org/licenses/TMate.html"
+    active: true
+    term: TMate Open Source License
+    licenseId: TMate
+  -
+    id: "https://spdx.org/licenses/TORQUE-1.1.html"
+    active: true
+    term: TORQUE v2.5+ Software License v1.1
+    licenseId: TORQUE-1.1
+  -
+    id: "https://spdx.org/licenses/TOSL.html"
+    active: true
+    term: Trusster Open Source License
+    licenseId: TOSL
+  -
+    id: "https://spdx.org/licenses/TPDL.html"
+    active: true
+    term: "Time::ParseDate License"
+    licenseId: TPDL
+  -
+    id: "https://spdx.org/licenses/TPL-1.0.html"
+    active: true
+    term: THOR Public License 1.0
+    licenseId: TPL-1.0
+  -
+    id: "https://spdx.org/licenses/TrustedQSL.html"
+    active: true
+    term: TrustedQSL License
+    licenseId: TrustedQSL
+  -
+    id: "https://spdx.org/licenses/TTWL.html"
+    active: true
+    term: Text-Tabs+Wrap License
+    licenseId: TTWL
+  -
+    id: "https://spdx.org/licenses/TTYP0.html"
+    active: true
+    term: TTYP0 License
+    licenseId: TTYP0
+  -
+    id: "https://spdx.org/licenses/TU-Berlin-1.0.html"
+    active: true
+    term: Technische Universitaet Berlin License 1.0
+    licenseId: TU-Berlin-1.0
+  -
+    id: "https://spdx.org/licenses/TU-Berlin-2.0.html"
+    active: true
+    term: Technische Universitaet Berlin License 2.0
+    licenseId: TU-Berlin-2.0
+  -
+    id: "https://spdx.org/licenses/Ubuntu-font-1.0.html"
+    active: true
+    term: Ubuntu Font Licence v1.0
+    licenseId: Ubuntu-font-1.0
+  -
+    id: "https://spdx.org/licenses/UCAR.html"
+    active: true
+    term: UCAR License
+    licenseId: UCAR
+  -
+    id: "https://spdx.org/licenses/UCL-1.0.html"
+    active: true
+    term: Upstream Compatibility License v1.0
+    licenseId: UCL-1.0
+  -
+    id: "https://spdx.org/licenses/ulem.html"
+    active: true
+    term: ulem License
+    licenseId: ulem
+  -
+    id: "https://spdx.org/licenses/UMich-Merit.html"
+    active: true
+    term: Michigan/Merit Networks License
+    licenseId: UMich-Merit
+  -
+    id: "https://spdx.org/licenses/Unicode-3.0.html"
+    active: true
+    term: Unicode License v3
+    licenseId: Unicode-3.0
+  -
+    id: "https://spdx.org/licenses/Unicode-DFS-2015.html"
+    active: true
+    term: Unicode License Agreement - Data Files and Software (2015)
+    licenseId: Unicode-DFS-2015
+  -
+    id: "https://spdx.org/licenses/Unicode-DFS-2016.html"
+    active: true
+    term: Unicode License Agreement - Data Files and Software (2016)
+    licenseId: Unicode-DFS-2016
+  -
+    id: "https://spdx.org/licenses/Unicode-TOU.html"
+    active: true
+    term: Unicode Terms of Use
+    licenseId: Unicode-TOU
+  -
+    id: "https://spdx.org/licenses/UnixCrypt.html"
+    active: true
+    term: UnixCrypt License
+    licenseId: UnixCrypt
+  -
+    id: "https://spdx.org/licenses/Unlicense.html"
+    active: true
+    term: The Unlicense
+    licenseId: Unlicense
+  -
+    id: "https://spdx.org/licenses/Unlicense-libtelnet.html"
+    active: true
+    term: Unlicense - libtelnet variant
+    licenseId: Unlicense-libtelnet
+  -
+    id: "https://spdx.org/licenses/Unlicense-libwhirlpool.html"
+    active: true
+    term: Unlicense - libwhirlpool variant
+    licenseId: Unlicense-libwhirlpool
+  -
+    id: "https://spdx.org/licenses/UnRAR.html"
+    active: true
+    term: UnRAR License
+    licenseId: UnRAR
+  -
+    id: "https://spdx.org/licenses/UPL-1.0.html"
+    active: true
+    term: Universal Permissive License v1.0
+    licenseId: UPL-1.0
+  -
+    id: "https://spdx.org/licenses/URT-RLE.html"
+    active: true
+    term: Utah Raster Toolkit Run Length Encoded License
+    licenseId: URT-RLE
+  -
+    id: "https://spdx.org/licenses/Vim.html"
+    active: true
+    term: Vim License
+    licenseId: Vim
+  -
+    id: "https://spdx.org/licenses/Vixie-Cron.html"
+    active: true
+    term: Vixie Cron License
+    licenseId: Vixie-Cron
+  -
+    id: "https://spdx.org/licenses/VOSTROM.html"
+    active: true
+    term: VOSTROM Public License for Open Source
+    licenseId: VOSTROM
+  -
+    id: "https://spdx.org/licenses/VSL-1.0.html"
+    active: true
+    term: Vovida Software License v1.0
+    licenseId: VSL-1.0
+  -
+    id: "https://spdx.org/licenses/W3C.html"
+    active: true
+    term: W3C Software Notice and License (2002-12-31)
+    licenseId: W3C
+  -
+    id: "https://spdx.org/licenses/W3C-19980720.html"
+    active: true
+    term: W3C Software Notice and License (1998-07-20)
+    licenseId: W3C-19980720
+  -
+    id: "https://spdx.org/licenses/W3C-20150513.html"
+    active: true
+    term: W3C Software Notice and Document License (2015-05-13)
+    licenseId: W3C-20150513
+  -
+    id: "https://spdx.org/licenses/w3m.html"
+    active: true
+    term: w3m License
+    licenseId: w3m
+  -
+    id: "https://spdx.org/licenses/Watcom-1.0.html"
+    active: true
+    term: Sybase Open Watcom Public License 1.0
+    licenseId: Watcom-1.0
+  -
+    id: "https://spdx.org/licenses/Widget-Workshop.html"
+    active: true
+    term: Widget Workshop License
+    licenseId: Widget-Workshop
+  -
+    id: "https://spdx.org/licenses/WordNet.html"
+    active: true
+    term: WordNet License
+    licenseId: WordNet
+  -
+    id: "https://spdx.org/licenses/Wsuipa.html"
+    active: true
+    term: Wsuipa License
+    licenseId: Wsuipa
+  -
+    id: "https://spdx.org/licenses/WTFNMFPL.html"
+    active: true
+    term: "Do What The F*ck You Want To But It's Not My Fault Public License"
+    licenseId: WTFNMFPL
+  -
+    id: "https://spdx.org/licenses/WTFPL.html"
+    active: true
+    term: "Do What The F*ck You Want To Public License"
+    licenseId: WTFPL
+  -
+    id: "https://spdx.org/licenses/wwl.html"
+    active: true
+    term: WWL License
+    licenseId: wwl
+  -
+    id: "https://spdx.org/licenses/wxWindows.html"
+    active: false
+    term: wxWindows Library License
+    licenseId: wxWindows
+  -
+    id: "https://spdx.org/licenses/X11.html"
+    active: true
+    term: X11 License
+    licenseId: X11
+  -
+    id: "https://spdx.org/licenses/X11-distribute-modifications-variant.html"
+    active: true
+    term: X11 License Distribution Modification Variant
+    licenseId: X11-distribute-modifications-variant
+  -
+    id: "https://spdx.org/licenses/X11-no-permit-persons.html"
+    active: true
+    term: X11 no permit persons clause
+    licenseId: X11-no-permit-persons
+  -
+    id: "https://spdx.org/licenses/X11-swapped.html"
+    active: true
+    term: X11 swapped final paragraphs
+    licenseId: X11-swapped
+  -
+    id: "https://spdx.org/licenses/Xdebug-1.03.html"
+    active: true
+    term: Xdebug License v 1.03
+    licenseId: Xdebug-1.03
+  -
+    id: "https://spdx.org/licenses/Xerox.html"
+    active: true
+    term: Xerox License
+    licenseId: Xerox
+  -
+    id: "https://spdx.org/licenses/Xfig.html"
+    active: true
+    term: Xfig License
+    licenseId: Xfig
+  -
+    id: "https://spdx.org/licenses/XFree86-1.1.html"
+    active: true
+    term: XFree86 License 1.1
+    licenseId: XFree86-1.1
+  -
+    id: "https://spdx.org/licenses/xinetd.html"
+    active: true
+    term: xinetd License
+    licenseId: xinetd
+  -
+    id: "https://spdx.org/licenses/xkeyboard-config-Zinoviev.html"
+    active: true
+    term: xkeyboard-config Zinoviev License
+    licenseId: xkeyboard-config-Zinoviev
+  -
+    id: "https://spdx.org/licenses/xlock.html"
+    active: true
+    term: xlock License
+    licenseId: xlock
+  -
+    id: "https://spdx.org/licenses/Xnet.html"
+    active: true
+    term: X.Net License
+    licenseId: Xnet
+  -
+    id: "https://spdx.org/licenses/xpp.html"
+    active: true
+    term: XPP License
+    licenseId: xpp
+  -
+    id: "https://spdx.org/licenses/XSkat.html"
+    active: true
+    term: XSkat License
+    licenseId: XSkat
+  -
+    id: "https://spdx.org/licenses/xzoom.html"
+    active: true
+    term: xzoom License
+    licenseId: xzoom
+  -
+    id: "https://spdx.org/licenses/YPL-1.0.html"
+    active: true
+    term: "Yahoo! Public License v1.0"
+    licenseId: YPL-1.0
+  -
+    id: "https://spdx.org/licenses/YPL-1.1.html"
+    active: true
+    term: "Yahoo! Public License v1.1"
+    licenseId: YPL-1.1
+  -
+    id: "https://spdx.org/licenses/Zed.html"
+    active: true
+    term: Zed License
+    licenseId: Zed
+  -
+    id: "https://spdx.org/licenses/Zeeff.html"
+    active: true
+    term: Zeeff License
+    licenseId: Zeeff
+  -
+    id: "https://spdx.org/licenses/Zend-2.0.html"
+    active: true
+    term: Zend License v2.0
+    licenseId: Zend-2.0
+  -
+    id: "https://spdx.org/licenses/Zimbra-1.3.html"
+    active: true
+    term: Zimbra Public License v1.3
+    licenseId: Zimbra-1.3
+  -
+    id: "https://spdx.org/licenses/Zimbra-1.4.html"
+    active: true
+    term: Zimbra Public License v1.4
+    licenseId: Zimbra-1.4
+  -
+    id: "https://spdx.org/licenses/Zlib.html"
+    active: true
+    term: zlib License
+    licenseId: Zlib
+  -
+    id: "https://spdx.org/licenses/zlib-acknowledgement.html"
+    active: true
+    term: zlib/libpng License with Acknowledgement
+    licenseId: zlib-acknowledgement
+  -
+    id: "https://spdx.org/licenses/ZPL-1.1.html"
+    active: true
+    term: Zope Public License 1.1
+    licenseId: ZPL-1.1
+  -
+    id: "https://spdx.org/licenses/ZPL-2.0.html"
+    active: true
+    term: Zope Public License 2.0
+    licenseId: ZPL-2.0
+  -
+    id: "https://spdx.org/licenses/ZPL-2.1.html"
+    active: true
+    term: Zope Public License 2.1
+    licenseId: ZPL-2.1
+    releaseDate: "2026-05-28T00:00:00Z"
