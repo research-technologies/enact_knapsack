@@ -1,0 +1,235 @@
+// Behaviour for the standalone Enact "research network" people map
+// (app/views/enact/people_map/show.html.erb). The page renders with
+// `layout: false` and pulls this in with its own `javascript_include_tag`.
+// Server data (institutions, contributor nodes, shared-work links) is handed
+// over through a `<script type="application/json">` data island so this file
+// stays a static, cacheable asset. Precompiled in
+// config/initializers/people_map_assets.rb.
+//
+// Knapsack-local custom code (not a Hyrax override). Same interaction
+// vocabulary as the relationship map, with a people-network focus model:
+//   - nodes are people/organisations, sized by how many collaborators they have;
+//   - colour encodes institution; the legend filters institutions on/off;
+//   - hovering spotlights a person and their direct collaborators;
+//   - clicking a person (or arriving via ?focus=<id> from their profile) centres
+//     the map on them and tiers the rest: first-order = direct collaborators
+//     (solid), second-order = people one step further out, in adjacent
+//     communities (lighter, dashed) - the "who's near my world" signal;
+//   - labels thin out when zoomed out; layout switches force/radial/tree; search
+//     jumps to a person.
+(function () {
+  var el = document.getElementById('people-data');
+  var D = JSON.parse(el.textContent);
+  var INST = {}; D.institutions.forEach(function (i) { INST[i.key] = i; });
+
+  // HTML-escape before interpolating into innerHTML or attribute values -
+  // labels/colours derive from user-entered affiliations. Quotes are escaped
+  // too, since escaped values are also placed inside href="..." attributes.
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+
+  var empty = document.getElementById('empty');
+  if (!D.nodes.length) { if (empty) empty.style.display = 'flex'; return; }
+
+  var deg = {}; D.nodes.forEach(function (n) { deg[n.id] = 0; });
+  D.links.forEach(function (l) { deg[l.source]++; deg[l.target]++; });
+  var sizeFor = function (id) { return 26 + (deg[id] || 0) * 3.2; };
+
+  var elements = D.nodes.map(function (n) {
+    return { data: Object.assign({}, n, { sz: sizeFor(n.id), color: (INST[n.inst] || {}).color || n.instColor || '#9aa2ad', deg: deg[n.id] || 0 }) };
+  }).concat(D.links.map(function (l, i) {
+    return { data: { id: 'e' + i, source: l.source, target: l.target, weight: l.weight, works: l.works, w: 1 + l.weight * 1.6 } };
+  }));
+
+  var legend = document.getElementById('legend');
+  var hidden = new Set();
+  D.institutions.forEach(function (it) {
+    var row = document.createElement('div');
+    row.className = 'lrow'; row.dataset.inst = it.key;
+    row.setAttribute('role', 'checkbox'); row.setAttribute('aria-checked', 'true'); row.tabIndex = 0;
+    row.innerHTML = '<span class="lcheck" aria-hidden="true"></span><span class="dot" style="background:' + esc(it.color) + '"></span><span>' + esc(it.label) + '</span>';
+    legend.appendChild(row);
+  });
+
+  var cy = cytoscape({
+    container: document.getElementById('cy'), elements: elements, minZoom: 0.3, maxZoom: 2.4, wheelSensitivity: 0.3,
+    style: [
+      { selector: 'node', style: {
+        'background-color': 'data(color)', 'width': 'data(sz)', 'height': 'data(sz)',
+        'border-color': '#0e1014', 'border-width': 1.5,
+        'label': 'data(label)', 'color': '#cfd5de', 'font-size': 10, 'font-family': 'system-ui,sans-serif',
+        'text-valign': 'bottom', 'text-halign': 'center', 'text-margin-y': 5, 'text-wrap': 'wrap', 'text-max-width': 110,
+        'transition-property': 'opacity', 'transition-duration': '150ms' } },
+      { selector: 'node[agent_type = "organization"]', style: { 'shape': 'round-rectangle', 'width': 52, 'height': 30 } },
+      { selector: 'node.primary', style: { 'border-color': '#ffffff', 'border-width': 3 } },
+      { selector: 'edge', style: { 'line-color': '#5b6270', 'width': 'data(w)', 'curve-style': 'bezier', 'opacity': 0.55,
+        'font-size': 9, 'color': '#c7ccd4', 'text-background-color': '#14161a', 'text-background-opacity': 1, 'text-background-padding': 2,
+        'transition-property': 'opacity', 'transition-duration': '150ms' } },
+      { selector: 'edge.show-label', style: { 'label': 'data(weight)', 'line-color': '#8a93a3', 'opacity': 0.95 } },
+      { selector: 'node.hidelabel', style: { 'text-opacity': 0 } },
+      // second-order (adjacent) tier when the map is focused on one person
+      { selector: 'node.second', style: { 'opacity': 0.5, 'border-color': '#5b6270', 'border-width': 1 } },
+      { selector: 'edge.second', style: { 'opacity': 0.32, 'line-style': 'dashed', 'line-color': '#5b6270' } },
+      { selector: '.faded', style: { 'opacity': 0.07 } },
+      { selector: 'node.faded', style: { 'text-opacity': 0 } }
+    ]
+  });
+
+  var LAYOUTS = {
+    cose: { name: 'cose', animate: false, fit: true, padding: 70, nodeRepulsion: 45000, idealEdgeLength: 150, nodeOverlap: 36, componentSpacing: 170, gravity: 0.28 },
+    concentric: { name: 'concentric', animate: false, fit: true, padding: 60, concentric: function (n) { return n.data('deg'); }, levelWidth: function () { return 2; }, minNodeSpacing: 40 },
+    breadthfirst: { name: 'breadthfirst', animate: false, fit: true, padding: 60, spacingFactor: 1.05 }
+  };
+  var activeLayout = 'cose', pinned = null;
+  function updateZoom() { var z = cy.zoom(); cy.nodes().forEach(function (n) { var keep = z > 0.6 || (n.data('deg') || 0) >= 4; n[keep ? 'removeClass' : 'addClass']('hidelabel'); }); }
+  cy.on('zoom', updateZoom);
+
+  function clearSpot() { cy.elements().removeClass('faded show-label second'); }
+  function spotlight(n) { cy.elements().addClass('faded'); var nb = n.closedNeighborhood(); nb.removeClass('faded'); nb.edges().addClass('show-label'); }
+  cy.on('mouseover', 'node', function (e) { if (!pinned) spotlight(e.target); });
+  cy.on('mouseout', 'node', function () { if (!pinned) clearSpot(); });
+
+  // Focus bar (shown when centred on one person)
+  var fb = document.getElementById('focusbar');
+  function showFocusbar(name, t1, t2) {
+    fb.querySelector('.who').textContent = name;
+    fb.querySelector('.t1n').textContent = t1;
+    fb.querySelector('.t2n').textContent = t2;
+    fb.classList.add('show');
+  }
+  function hideFocusbar() { fb.classList.remove('show'); }
+
+  var DETAIL = document.getElementById('detail');
+
+  // Mobile: the side panel is a collapsible drawer, revealed by #panel-toggle
+  // (only displayed on narrow screens via CSS). openPanelOnMobile() opens it
+  // when the user taps a node/edge, so the details they asked for are shown.
+  var panelToggle = document.getElementById('panel-toggle');
+  var side = document.getElementById('side');
+  function setPanel(open) {
+    if (!side || !panelToggle) { return; }
+    side.classList.toggle('open', open);
+    panelToggle.setAttribute('aria-expanded', String(open));
+    panelToggle.textContent = open ? 'Close' : 'Details';
+  }
+  function openPanelOnMobile() {
+    if (panelToggle && getComputedStyle(panelToggle).display !== 'none') { setPanel(true); }
+  }
+  if (panelToggle) {
+    panelToggle.addEventListener('click', function () { setPanel(!side.classList.contains('open')); });
+  }
+
+  function nameOf(id) { var n = D.nodes.find(function (x) { return x.id === id; }); return n ? n.label : id; }
+  function personHtml(d) {
+    var it = INST[d.inst] || {};
+    var h = '<h4>' + esc(d.label) + '</h4><div class="drow-sub"><span class="dot" style="background:' + (it.color || d.instColor) + '"></span>' + esc(it.label || d.instLabel || '') + (d.agent_type === 'organization' ? ' &middot; organisation' : '') + '</div>';
+    if (d.orcid) {
+      var orcidUrl = /^https?:/.test(d.orcid) ? d.orcid : 'https://orcid.org/' + d.orcid;
+      h += '<div class="row"><b class="orcid">ORCID</b> <a class="orcid-link" href="' + esc(orcidUrl) + '" target="_blank" rel="noopener">' + esc(d.orcid) + '</a></div>';
+    }
+    h += '<div class="row"><b>' + d.works + '</b> work' + (d.works === 1 ? '' : 's') + ' &middot; <b>' + d.deg + '</b> collaborator' + (d.deg === 1 ? '' : 's') + '</div>';
+    if (d.roles && d.roles.length) { h += '<div class="row" style="margin-top:10px">'; d.roles.forEach(function (r) { h += '<span class="badge">' + esc(r) + '</span>'; }); h += '</div>'; }
+    return h;
+  }
+  function badges(coll, limit) {
+    var names = coll.map(function (x) { return x.data('label'); }).slice(0, limit);
+    var h = '<div class="adjacent">' + names.map(function (nm) { return '<span class="badge">' + esc(nm) + '</span>'; }).join('');
+    if (coll.length > names.length) h += ' <span class="muted-more">+' + (coll.length - names.length) + ' more</span>';
+    return h + '</div>';
+  }
+  function showPersonFocus(n, t1, t2) {
+    var d = n.data();
+    var h = personHtml(d);
+    h += '<div class="row" style="margin-top:12px"><b>' + t1.length + '</b> direct collaborator' + (t1.length === 1 ? '' : 's') + ' (first order)</div>';
+    if (t1.length) h += badges(t1, 10);
+    if (t2.length) {
+      h += '<div class="row"><b>' + t2.length + '</b> in adjacent communities (second order)</div>' + badges(t2, 10);
+    }
+    h += '<a class="profilelink" href="' + esc(d.path || '#') + '">&#8599; View full profile</a>';
+    DETAIL.innerHTML = h;
+  }
+  function showEdge(e) {
+    var a = nameOf(e.data('source')), b = nameOf(e.data('target')), works = e.data('works') || [];
+    var h = '<h4 style="font-size:16px">' + esc(a) + ' <span style="color:var(--muted)">+</span> ' + esc(b) + '</h4>';
+    h += '<div class="row"><b>' + works.length + '</b> shared work' + (works.length === 1 ? '' : 's') + '</div><ul class="worklist">';
+    works.forEach(function (w) { h += '<li>' + esc(w) + '</li>'; }); h += '</ul>';
+    DETAIL.innerHTML = h;
+  }
+  function reset() { DETAIL.innerHTML = '<p class="hint">Hover a <b>person</b> to spotlight their collaborators; click to centre the map on them and see who is one step further out. Click a <b>line</b> to see the works two people share.</p>'; }
+
+  // Centre on a person and tier the graph: first-order (direct) solid, second-order
+  // (collaborators of collaborators, in adjacent communities) lighter + dashed.
+  function focusOn(node) {
+    pinned = node;
+    cy.elements().addClass('faded').removeClass('show-label second');
+    var closed = node.closedNeighborhood();          // node + first-order + their edges
+    closed.removeClass('faded'); closed.edges().addClass('show-label');
+    var t1 = node.neighborhood('node');
+    var t2 = t1.neighborhood('node').difference(t1).difference(node);
+    t2.removeClass('faded').addClass('second');
+    t2.connectedEdges().forEach(function (e) {
+      if (!e.source().hasClass('faded') && !e.target().hasClass('faded')) { e.removeClass('faded').addClass('second'); }
+    });
+    cy.nodes().removeClass('primary'); node.addClass('primary');
+    showPersonFocus(node, t1, t2);
+    showFocusbar(node.data('label'), t1.length, t2.length);
+    cy.animate({ fit: { eles: closed.union(t2), padding: 80 } }, { duration: 300 });
+  }
+  function clearFocus() {
+    pinned = null; clearSpot(); cy.nodes().removeClass('primary'); hideFocusbar(); reset();
+    cy.animate({ fit: { eles: cy.elements(), padding: 60 } }, { duration: 300 }); updateZoom();
+  }
+
+  cy.on('tap', 'node', function (e) { focusOn(e.target); openPanelOnMobile(); });
+  cy.on('tap', 'edge', function (e) { showEdge(e.target); openPanelOnMobile(); });
+  cy.on('tap', function (e) { if (e.target === cy) clearFocus(); });
+  fb.querySelector('.reset').addEventListener('click', clearFocus);
+  fb.querySelector('.reset').addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); clearFocus(); } });
+
+  function applyFilter() {
+    cy.nodes().forEach(function (n) { if (hidden.has(n.data('inst'))) { n.style('display', 'none'); } else { n.removeStyle('display'); } });
+    cy.edges().forEach(function (e) {
+      var hide = hidden.has(cy.getElementById(e.data('source')).data('inst')) || hidden.has(cy.getElementById(e.data('target')).data('inst'));
+      if (hide) { e.style('display', 'none'); } else { e.removeStyle('display'); }
+    });
+  }
+  legend.querySelectorAll('.lrow').forEach(function (row) {
+    var toggle = function () {
+      var k = row.dataset.inst;
+      if (hidden.has(k)) { hidden.delete(k); row.classList.remove('off'); } else { hidden.add(k); row.classList.add('off'); }
+      row.setAttribute('aria-checked', String(!hidden.has(k))); applyFilter();
+    };
+    row.addEventListener('click', toggle);
+    row.addEventListener('keydown', function (ev) { if (ev.key === 'Enter' || ev.key === ' ') { ev.preventDefault(); toggle(); } });
+  });
+
+  document.querySelectorAll('#layoutswitch button').forEach(function (b) {
+    b.addEventListener('click', function () {
+      activeLayout = LAYOUTS[b.dataset.layout] ? b.dataset.layout : 'cose';
+      document.querySelectorAll('#layoutswitch button').forEach(function (x) { x.setAttribute('aria-pressed', String(x.dataset.layout === activeLayout)); });
+      clearFocus();
+      cy.layout(LAYOUTS[activeLayout]).run(); cy.fit(cy.elements(), 60); updateZoom();
+    });
+  });
+
+  var search = document.getElementById('search');
+  search.addEventListener('input', function () {
+    var q = search.value.trim().toLowerCase(); if (pinned) return;
+    if (!q) { cy.nodes().removeClass('faded'); updateZoom(); return; }
+    cy.nodes().forEach(function (n) { var hit = (n.data('label') || '').toLowerCase().indexOf(q) !== -1; n[hit ? 'removeClass' : 'addClass']('faded'); if (hit) n.removeClass('hidelabel'); });
+  });
+  search.addEventListener('keydown', function (ev) {
+    if (ev.key !== 'Enter') return; var q = search.value.trim().toLowerCase(); if (!q) return;
+    var m = cy.nodes().filter(function (n) { return (n.data('label') || '').toLowerCase().indexOf(q) !== -1; })[0];
+    if (m) focusOn(m);
+  });
+
+  cy.ready(function () {
+    cy.layout(LAYOUTS.cose).run(); cy.fit(cy.elements(), 60); updateZoom();
+    var focusId = (document.getElementById('cy').dataset.focus || '').trim();
+    if (focusId) { var node = cy.getElementById(focusId); if (node && node.length) focusOn(node); }
+  });
+})();

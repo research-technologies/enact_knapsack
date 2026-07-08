@@ -10,7 +10,10 @@ ENV LD_PRELOAD=/usr/lib/libjemalloc.so.2
 ENV MALLOC_CONF='dirty_decay_ms:1000,narenas:2,background_thread:true'
 
 ENV TESSDATA_PREFIX=/app/samvera/tessdata
-ADD https://github.com/tesseract-ocr/tessdata_best/blob/main/eng.traineddata?raw=true /app/samvera/tessdata/eng_best.traineddata
+# Fetch from raw.githubusercontent.com (CDN-backed) rather than the github.com
+# blob/...?raw=true redirect, which GitHub now rate-limits (HTTP 429) for
+# unauthenticated CI fetches and was failing the build.
+ADD https://raw.githubusercontent.com/tesseract-ocr/tessdata_best/main/eng.traineddata /app/samvera/tessdata/eng_best.traineddata
 
 ############### KNAPSACK SPECIFIC CODE ###################
 # This means bundler inject looks at /app/samvera/.bundler.d for overrides
