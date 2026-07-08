@@ -95,11 +95,11 @@ terms:
     source: LOC
     datacite: Other
     marc: abr
-  - id: accountablePerson
+  - id: accountableperson
     term: accountablePerson
     source: schema.org
     datacite: Other
-  - id: acquiredFrom
+  - id: acquiredfrom
     term: acquiredFrom
     source: schema.org
     datacite: Other
@@ -239,7 +239,7 @@ terms:
     source: LOC
     datacite: Other
     marc: aqt
-  - id: author-of-afterword,-colophon,-etc.
+  - id: author-of-afterword-colophon
     term: Author of afterword, colophon, etc.
     source: LOC
     datacite: Other
@@ -263,11 +263,11 @@ terms:
     source: LOC
     datacite: Other
     marc: ato
-  - id: awayTeam
+  - id: awayteam
     term: awayTeam
     source: schema.org
     datacite: Other
-  - id: bccRecipient
+  - id: bccrecipient
     term: bccRecipient
     source: schema.org
     datacite: Other
@@ -306,7 +306,7 @@ terms:
     source: LOC
     datacite: Other
     marc: bkp
-  - id: bookingAgent
+  - id: bookingagent
     term: bookingAgent
     source: schema.org
     datacite: Other
@@ -347,7 +347,7 @@ terms:
     term: buyer
     source: schema.org
     datacite: Other
-  - id: byArtist
+  - id: byartist
     term: byArtist
     source: schema.org
     datacite: Other
@@ -380,7 +380,7 @@ terms:
     source: LOC
     datacite: Other
     marc: cad
-  - id: ccRecipient
+  - id: ccrecipient
     term: ccRecipient
     source: schema.org
     datacite: Other
@@ -407,7 +407,7 @@ terms:
     source: LOC
     datacite: Other
     marc: cng
-  - id: claimInterpreter
+  - id: claiminterpreter
     term: claimInterpreter
     source: schema.org
     datacite: Other
@@ -517,7 +517,7 @@ terms:
     source: LOC
     datacite: Other
     marc: csp
-  - id: ContactPerson
+  - id: contactperson
     term: ContactPerson
     source: schema.org
     datacite: ContactPerson
@@ -571,7 +571,7 @@ terms:
     source: LOC
     datacite: Other
     marc: cph
-  - id: copyrightHolder
+  - id: copyrightholder
     term: copyrightHolder
     source: schema.org
     datacite: Other
@@ -610,7 +610,7 @@ terms:
     source: LOC
     datacite: Other
     marc: cre
-  - id: creditedTo
+  - id: creditedto
     term: creditedTo
     source: schema.org
     datacite: Other
@@ -638,15 +638,15 @@ terms:
     source: LOC
     datacite: Other
     marc: dtm
-  - id: DataCollector
+  - id: datacollector
     term: DataCollector
     source: datacite
     datacite: DataCollector
-  - id: DataCurator
+  - id: datacurator
     term: DataCurator
     source: datacite
     datacite: DataCurator
-  - id: DataManager
+  - id: datamanager
     term: DataManager
     source: datacite
     datacite: DataManager
@@ -725,7 +725,7 @@ terms:
     source: LOC
     datacite: Other
     marc: dbp
-  - id: Distributor
+  - id: distributor
     term: Distributor
     source: datacite
     datacite: Distributor
@@ -754,7 +754,7 @@ terms:
     source: LOC
     datacite: Other
     marc: dub
-  - id: Editor
+  - id: editor
     term: Editor
     source: datacite
     datacite: Editor
@@ -888,7 +888,7 @@ terms:
     source: LOC
     datacite: Other
     marc: fon
-  - id: fundedItem
+  - id: fundeditem
     term: fundedItem
     source: schema.org
     datacite: Other
@@ -911,11 +911,11 @@ terms:
     term: grantee
     source: schema.org
     datacite: Other
-  - id: hiringOrganization
+  - id: hiringorganization
     term: hiringOrganization
     source: schema.org
     datacite: Other
-  - id: homeTeam
+  - id: hometeam
     term: homeTeam
     source: schema.org
     datacite: Other
@@ -934,7 +934,7 @@ terms:
     source: LOC
     datacite: Other
     marc: his
-  - id: HostingInstitution
+  - id: hostinginstitution
     term: HostingInstitution
     source: datacite
     datacite: HostingInstitution
@@ -1024,11 +1024,11 @@ terms:
     source: LOC
     datacite: Other
     marc: led
-  - id: legislationPassedBy
+  - id: legislationpassedby
     term: legislationPassedBy
     source: schema.org
     datacite: Other
-  - id: legislationResponsible
+  - id: legislationresponsible
     term: legislationResponsible
     source: schema.org
     datacite: Other
@@ -1192,11 +1192,11 @@ terms:
     source: LOC
     datacite: Other
     marc: msd
-  - id: musicBy
+  - id: musicby
     term: musicBy
     source: schema.org
     datacite: Other
-  - id: musicGroupMember
+  - id: musicgroupmember
     term: musicGroupMember
     source: schema.org
     datacite: Other
@@ -1215,7 +1215,7 @@ terms:
     source: LOC
     datacite: Other
     marc: nan
-  - id: offeredBy
+  - id: offeredby
     term: offeredBy
     source: schema.org
     datacite: Other
@@ -1248,7 +1248,7 @@ terms:
     source: LOC
     datacite: Other
     marc: org
-  - id: Other
+  - id: other
     term: Other
     source: datacite
     datacite: Other
@@ -1364,7 +1364,7 @@ terms:
     source: LOC
     datacite: Other
     marc: prc
-  - id: Producer
+  - id: producer
     term: Producer
     source: datacite
     datacite: Producer
@@ -1403,15 +1403,15 @@ terms:
     source: LOC
     datacite: Other
     marc: pdr
-  - id: ProjectLeader
+  - id: projectleader
     term: ProjectLeader
     source: datacite
     datacite: ProjectLeader
-  - id: ProjectManager
+  - id: projectmanager
     term: ProjectManager
     source: datacite
     datacite: ProjectManager
-  - id: ProjectMember
+  - id: projectmember
     term: ProjectMember
     source: datacite
     datacite: ProjectMember
@@ -1430,7 +1430,7 @@ terms:
     source: LOC
     datacite: Other
     marc: pup
-  - id: publishedBy
+  - id: publishedby
     term: publishedBy
     source: schema.org
     datacite: Other
@@ -1464,7 +1464,7 @@ terms:
     source: LOC
     datacite: Other
     marc: rap
-  - id: readBy
+  - id: readby
     term: readBy
     source: schema.org
     datacite: Other
@@ -1487,19 +1487,19 @@ terms:
     source: LOC
     datacite: Other
     marc: red
-  - id: RegistrationAgency
+  - id: registrationagency
     term: RegistrationAgency
     source: datacite
     datacite: RegistrationAgency
-  - id: RegistrationAuthority
+  - id: registrationauthority
     term: RegistrationAuthority
     source: datacite
     datacite: RegistrationAuthority
-  - id: RelatedPerson
+  - id: relatedperson
     term: RelatedPerson
     source: datacite
     datacite: RelatedPerson
-  - id: relatedTo
+  - id: relatedto
     term: relatedTo
     source: schema.org
     datacite: Other
@@ -1533,11 +1533,11 @@ terms:
     source: LOC
     datacite: Other
     marc: rtm
-  - id: Researcher
+  - id: researcher
     term: Researcher
     source: datacite
     datacite: Researcher
-  - id: ResearchGroup
+  - id: researchgroup
     term: ResearchGroup
     source: datacite
     datacite: ResearchGroup
@@ -1571,7 +1571,7 @@ terms:
     source: LOC
     datacite: Other
     marc: rsr
-  - id: reviewedBy
+  - id: reviewedby
     term: reviewedBy
     source: schema.org
     datacite: Other
@@ -1580,7 +1580,7 @@ terms:
     source: LOC
     datacite: Other
     marc: rev
-  - id: RightsHolder
+  - id: rightsholder
     term: RightsHolder
     source: datacite
     datacite: RightsHolder
@@ -1614,7 +1614,7 @@ terms:
     source: LOC
     datacite: Other
     marc: scl
-  - id: sdPublisher
+  - id: sdpublisher
     term: sdPublisher
     source: schema.org
     datacite: Other
@@ -1686,11 +1686,11 @@ terms:
     source: LOC
     datacite: Other
     marc: sfx
-  - id: spokenByCharacter
+  - id: spokenbycharacter
     term: spokenByCharacter
     source: schema.org
     datacite: Other
-  - id: Sponsor
+  - id: sponsor
     term: Sponsor
     source: datacite
     datacite: Sponsor
@@ -1723,7 +1723,7 @@ terms:
     source: LOC
     datacite: Other
     marc: stl
-  - id: Supervisor
+  - id: supervisor
     term: Supervisor
     source: datacite
     datacite: Supervisor
@@ -1777,7 +1777,7 @@ terms:
     source: LOC
     datacite: Other
     marc: ths
-  - id: toRecipient
+  - id: torecipient
     term: toRecipient
     source: schema.org
     datacite: Other
@@ -1801,7 +1801,7 @@ terms:
     source: LOC
     datacite: Other
     marc: tyg
-  - id: underName
+  - id: undername
     term: underName
     source: schema.org
     datacite: Other
@@ -1848,7 +1848,7 @@ terms:
     source: LOC
     datacite: Other
     marc: wdc
-  - id: WorkPackageLeader
+  - id: workpackageleader
     term: WorkPackageLeader
     source: datacite
     datacite: WorkPackageLeader
