@@ -140,8 +140,15 @@
         <% page_link = ->(page) { HykuKnapsack::Engine.routes.url_helpers.enact_contributor_path(@contributor.id, page: page, q: @search.presence, work_type: @work_type) } %>
         <nav aria-label="<%= t('enact.contributors.works.pagination', default: 'Works pages') %>">
           <ul class="pagination justify-content-center">
+            <%# Disabled Prev/Next render a non-focusable <span> rather than a
+                clickable link, so keyboard/screen-reader users can't act on a
+                control that goes nowhere. %>
             <li class="page-item <%= 'disabled' unless @works.prev_page %>">
-              <%= link_to t('enact.contributors.works.prev_page', default: '‹ Prev'), page_link.call(@works.prev_page || 1), class: 'page-link' %>
+              <% if @works.prev_page %>
+                <%= link_to t('enact.contributors.works.prev_page', default: '‹ Prev'), page_link.call(@works.prev_page), class: 'page-link' %>
+              <% else %>
+                <span class="page-link" aria-disabled="true"><%= t('enact.contributors.works.prev_page', default: '‹ Prev') %></span>
+              <% end %>
             </li>
             <% (1..@works.total_pages).each do |page| %>
               <li class="page-item <%= 'active' if page == @works.current_page %>">
@@ -149,7 +156,11 @@
               </li>
             <% end %>
             <li class="page-item <%= 'disabled' unless @works.next_page %>">
-              <%= link_to t('enact.contributors.works.next_page', default: 'Next ›'), page_link.call(@works.next_page || @works.total_pages), class: 'page-link' %>
+              <% if @works.next_page %>
+                <%= link_to t('enact.contributors.works.next_page', default: 'Next ›'), page_link.call(@works.next_page), class: 'page-link' %>
+              <% else %>
+                <span class="page-link" aria-disabled="true"><%= t('enact.contributors.works.next_page', default: 'Next ›') %></span>
+              <% end %>
             </li>
           </ul>
         </nav>

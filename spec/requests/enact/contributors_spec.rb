@@ -136,6 +136,16 @@ RSpec.describe 'Enact contributors pages', type: :request, singletenant: true do
         expect(response.body).to include('Showing 1-10 of 26 works')
       end
 
+      it 'clamps an out-of-range page back to the last page' do
+        # ?page=999 must not fall through to the empty "No works yet" state; it
+        # clamps to the last page (26 works / 10 per page = 3 pages), whose tail
+        # includes the event.
+        get "/contributors/#{ada.id}", params: { page: 999 }
+        expect(response).to have_http_status(:ok)
+        expect(response.body).not_to include('No works yet.')
+        expect(response.body).to include('Unique Zephyr Happening')
+      end
+
       it 'narrows the list by a title substring search' do
         get "/contributors/#{ada.id}", params: { q: 'Zephyr' }
         expect(response.body).to include('Unique Zephyr Happening')

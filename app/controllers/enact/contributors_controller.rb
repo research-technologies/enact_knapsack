@@ -39,9 +39,7 @@ module Enact
       all_works = Enact::ContributorGraph.new(@contributor, ability: current_ability).works
       @has_works = all_works.any?
       @work_type_options = work_type_options(all_works)
-      # paginate_array defaults total_count to the array size, which is exactly
-      # right here (we paginate the whole filtered set, not a pre-sliced page).
-      @works = Kaminari.paginate_array(filtered_works(all_works)).page(params[:page]).per(10)
+      @works = paginated_works(filtered_works(all_works))
       add_show_breadcrumbs
     end
 
@@ -79,9 +77,24 @@ module Enact
     # index's ILIKE behaviour) and work-type filter (exact stable-model match) to
     # the contributor's works.
     def filtered_works(works)
-      works = works.select { |w| w.title.to_s.downcase.include?(@search.downcase) } if @search.present?
+      if @search.present?
+        term = @search.downcase
+        works = works.select { |w| w.title.to_s.downcase.include?(term) }
+      end
       works = works.select { |w| w.model == @work_type } if @work_type
       works
+    end
+
+    # Paginate the works list 10 per page. An out-of-range page (e.g. ?page=999)
+    # is clamped back to the last page, so a valid profile with works never
+    # falls through to the empty state on a bad page param. paginate_array
+    # defaults total_count to the array size, which is exactly right here (we
+    # paginate the whole filtered set, not a pre-sliced page).
+    def paginated_works(list)
+      works = Kaminari.paginate_array(list).page(params[:page]).per(10)
+      return works unless works.out_of_range? && works.total_pages.positive?
+
+      Kaminari.paginate_array(list).page(works.total_pages).per(10)
     end
 
     # Options for the profile's work-type filter, derived from the contributor's
