@@ -89,95 +89,20 @@ terms:
     source: credit
     credit_uri: https://credit.niso.org/contributor-roles/writing-review-editing/
     datacite: Editor
-  - id: ContactPerson
-    term: ContactPerson
-    source: schema.org
-    datacite: ContactPerson
-  - id: DataCollector
-    term: DataCollector
-    source: datacite
-    datacite: DataCollector
-  - id: DataCurator
-    term: DataCurator
-    source: datacite
-    datacite: DataCurator
-  - id: DataManager
-    term: DataManager
-    source: datacite
-    datacite: DataManager
-  - id: Distributor
-    term: Distributor
-    source: datacite
-    datacite: Distributor
-  - id: Editor
-    term: Editor
-    source: datacite
-    datacite: Editor
-  - id: HostingInstitution
-    term: HostingInstitution
-    source: datacite
-    datacite: HostingInstitution
-  - id: Other
-    term: Other
-    source: datacite
-    datacite: Other
-  - id: Producer
-    term: Producer
-    source: datacite
-    datacite: Producer
-  - id: ProjectLeader
-    term: ProjectLeader
-    source: datacite
-    datacite: ProjectLeader
-  - id: ProjectManager
-    term: ProjectManager
-    source: datacite
-    datacite: ProjectManager
-  - id: ProjectMember
-    term: ProjectMember
-    source: datacite
-    datacite: ProjectMember
-  - id: RegistrationAgency
-    term: RegistrationAgency
-    source: datacite
-    datacite: RegistrationAgency
-  - id: RegistrationAuthority
-    term: RegistrationAuthority
-    source: datacite
-    datacite: RegistrationAuthority
-  - id: RelatedPerson
-    term: RelatedPerson
-    source: datacite
-    datacite: RelatedPerson
-  - id: Researcher
-    term: Researcher
-    source: datacite
-    datacite: Researcher
-  - id: ResearchGroup
-    term: ResearchGroup
-    source: datacite
-    datacite: ResearchGroup
-  - id: RightsHolder
-    term: RightsHolder
-    source: datacite
-    datacite: RightsHolder
-  - id: Sponsor
-    term: Sponsor
-    source: datacite
-    datacite: Sponsor
-  - id: Supervisor
-    term: Supervisor
-    source: datacite
-    datacite: Supervisor
-  - id: WorkPackageLeader
-    term: WorkPackageLeader
-    source: datacite
-    datacite: WorkPackageLeader
+  # --- Other sources, alphabetical by term ---
   - id: abridger
     term: Abridger
     source: LOC
     datacite: Other
     marc: abr
+  - id: accountablePerson
+    term: accountablePerson
+    source: schema.org
+    datacite: Other
+  - id: acquiredFrom
+    term: acquiredFrom
+    source: schema.org
+    datacite: Other
   - id: actor
     term: Actor
     source: LOC
@@ -193,6 +118,14 @@ terms:
     source: LOC
     datacite: Other
     marc: rcp
+  - id: agent
+    term: agent
+    source: schema.org
+    datacite: Other
+  - id: alumni
+    term: alumni
+    source: schema.org
+    datacite: Other
   - id: analyst
     term: Analyst
     source: LOC
@@ -268,6 +201,14 @@ terms:
     source: LOC
     datacite: Other
     marc: asn
+  - id: athlete
+    term: athlete
+    source: schema.org
+    datacite: Other
+  - id: attendee
+    term: attendee
+    source: schema.org
+    datacite: Other
   - id: attributed-name
     term: Attributed name
     source: LOC
@@ -288,6 +229,11 @@ terms:
     source: LOC
     datacite: Other
     marc: aup
+  - id: author
+    term: Author
+    source: LOC
+    datacite: Other
+    marc: aut
   - id: author-in-quotations-or-text-abstracts
     term: Author in quotations or text abstracts
     source: LOC
@@ -308,16 +254,23 @@ terms:
     source: LOC
     datacite: Other
     marc: aui
-  - id: author
-    term: Author
-    source: LOC
+  - id: author-of-screenplay
+    term: Author of screenplay
+    source: westminster
     datacite: Other
-    marc: aut
   - id: autographer
     term: Autographer
     source: LOC
     datacite: Other
     marc: ato
+  - id: awayTeam
+    term: awayTeam
+    source: schema.org
+    datacite: Other
+  - id: bccRecipient
+    term: bccRecipient
+    source: schema.org
+    datacite: Other
   - id: bibliographic-antecedent
     term: Bibliographic antecedent
     source: LOC
@@ -353,6 +306,10 @@ terms:
     source: LOC
     datacite: Other
     marc: bkp
+  - id: bookingAgent
+    term: bookingAgent
+    source: schema.org
+    datacite: Other
   - id: bookjacket-designer
     term: Bookjacket designer
     source: LOC
@@ -368,6 +325,10 @@ terms:
     source: LOC
     datacite: Other
     marc: bsl
+  - id: borrower
+    term: borrower
+    source: schema.org
+    datacite: Other
   - id: braille-embosser
     term: Braille embosser
     source: LOC
@@ -378,6 +339,18 @@ terms:
     source: LOC
     datacite: Other
     marc: brd
+  - id: broker
+    term: broker
+    source: schema.org
+    datacite: Other
+  - id: buyer
+    term: buyer
+    source: schema.org
+    datacite: Other
+  - id: byArtist
+    term: byArtist
+    source: schema.org
+    datacite: Other
   - id: calligrapher
     term: Calligrapher
     source: LOC
@@ -388,6 +361,10 @@ terms:
     source: LOC
     datacite: Other
     marc: cop
+  - id: candidate
+    term: candidate
+    source: schema.org
+    datacite: Other
   - id: cartographer
     term: Cartographer
     source: LOC
@@ -403,11 +380,23 @@ terms:
     source: LOC
     datacite: Other
     marc: cad
+  - id: ccRecipient
+    term: ccRecipient
+    source: schema.org
+    datacite: Other
   - id: censor
     term: Censor
     source: LOC
     datacite: Other
     marc: cns
+  - id: character
+    term: character
+    source: schema.org
+    datacite: Other
+  - id: children
+    term: children
+    source: schema.org
+    datacite: Other
   - id: choreographer
     term: Choreographer
     source: LOC
@@ -418,11 +407,23 @@ terms:
     source: LOC
     datacite: Other
     marc: cng
+  - id: claimInterpreter
+    term: claimInterpreter
+    source: schema.org
+    datacite: Other
   - id: client
     term: Client
     source: LOC
     datacite: Other
     marc: cli
+  - id: coach
+    term: coach
+    source: schema.org
+    datacite: Other
+  - id: colleague
+    term: colleague
+    source: schema.org
+    datacite: Other
   - id: collection-registrar
     term: Collection registrar
     source: LOC
@@ -443,16 +444,20 @@ terms:
     source: LOC
     datacite: Other
     marc: clr
-  - id: commentator-for-written-text
-    term: Commentator for written text
-    source: LOC
-    datacite: Other
-    marc: cwt
   - id: commentator
     term: Commentator
     source: LOC
     datacite: Other
     marc: cmm
+  - id: commentator-for-written-text
+    term: Commentator for written text
+    source: LOC
+    datacite: Other
+    marc: cwt
+  - id: competitor
+    term: competitor
+    source: schema.org
+    datacite: Other
   - id: compiler
     term: Compiler
     source: LOC
@@ -493,21 +498,29 @@ terms:
     source: LOC
     datacite: Other
     marc: cnd
+  - id: conference-organizer
+    term: Conference organizer
+    source: westminster
+    datacite: Other
   - id: conservator
     term: Conservator
     source: LOC
     datacite: Other
     marc: con
-  - id: consultant-to-a-project
-    term: Consultant to a project
-    source: LOC
-    datacite: Other
-    marc: csp
   - id: consultant
     term: Consultant
     source: LOC
     datacite: Other
     marc: csl
+  - id: consultant-to-a-project
+    term: Consultant to a project
+    source: LOC
+    datacite: Other
+    marc: csp
+  - id: ContactPerson
+    term: ContactPerson
+    source: schema.org
+    datacite: ContactPerson
   - id: contestant
     term: Contestant
     source: LOC
@@ -558,6 +571,10 @@ terms:
     source: LOC
     datacite: Other
     marc: cph
+  - id: copyrightHolder
+    term: copyrightHolder
+    source: schema.org
+    datacite: Other
   - id: corrector
     term: Corrector
     source: LOC
@@ -593,11 +610,19 @@ terms:
     source: LOC
     datacite: Other
     marc: cre
+  - id: creditedTo
+    term: creditedTo
+    source: schema.org
+    datacite: Other
   - id: curator
     term: Curator
     source: LOC
     datacite: Other
     marc: cur
+  - id: customer
+    term: customer
+    source: schema.org
+    datacite: Other
   - id: dancer
     term: Dancer
     source: LOC
@@ -613,6 +638,18 @@ terms:
     source: LOC
     datacite: Other
     marc: dtm
+  - id: DataCollector
+    term: DataCollector
+    source: datacite
+    datacite: DataCollector
+  - id: DataCurator
+    term: DataCurator
+    source: datacite
+    datacite: DataCurator
+  - id: DataManager
+    term: DataManager
+    source: datacite
+    datacite: DataManager
   - id: dedicatee
     term: Dedicatee
     source: LOC
@@ -688,11 +725,10 @@ terms:
     source: LOC
     datacite: Other
     marc: dbp
-  - id: distributor
+  - id: Distributor
     term: Distributor
-    source: LOC
-    datacite: Other
-    marc: dst
+    source: datacite
+    datacite: Distributor
   - id: dj
     term: DJ
     source: LOC
@@ -718,6 +754,10 @@ terms:
     source: LOC
     datacite: Other
     marc: dub
+  - id: Editor
+    term: Editor
+    source: datacite
+    datacite: Editor
   - id: editor-of-compilation
     term: Editor of compilation
     source: LOC
@@ -728,11 +768,6 @@ terms:
     source: LOC
     datacite: Other
     marc: edm
-  - id: editor
-    term: Editor
-    source: LOC
-    datacite: Other
-    marc: edt
   - id: editorial-director
     term: Editorial director
     source: LOC
@@ -748,11 +783,19 @@ terms:
     source: LOC
     datacite: Other
     marc: elt
+  - id: employee
+    term: employee
+    source: schema.org
+    datacite: Other
   - id: enacting-jurisdiction
     term: Enacting jurisdiction
     source: LOC
     datacite: Other
     marc: enj
+  - id: endorsee
+    term: endorsee
+    source: schema.org
+    datacite: Other
   - id: engineer
     term: Engineer
     source: LOC
@@ -773,6 +816,10 @@ terms:
     source: LOC
     datacite: Other
     marc: evp
+  - id: exhibitor
+    term: Exhibitor
+    source: westminster
+    datacite: Other
   - id: expert
     term: Expert
     source: LOC
@@ -818,6 +865,14 @@ terms:
     source: LOC
     datacite: Other
     marc: fpy
+  - id: followee
+    term: followee
+    source: schema.org
+    datacite: Other
+  - id: follows
+    term: follows
+    source: schema.org
+    datacite: Other
   - id: forger
     term: Forger
     source: LOC
@@ -833,6 +888,10 @@ terms:
     source: LOC
     datacite: Other
     marc: fon
+  - id: fundedItem
+    term: fundedItem
+    source: schema.org
+    datacite: Other
   - id: funder
     term: Funder
     source: LOC
@@ -848,21 +907,37 @@ terms:
     source: LOC
     datacite: Other
     marc: gis
+  - id: grantee
+    term: grantee
+    source: schema.org
+    datacite: Other
+  - id: hiringOrganization
+    term: hiringOrganization
+    source: schema.org
+    datacite: Other
+  - id: homeTeam
+    term: homeTeam
+    source: schema.org
+    datacite: Other
   - id: honoree
     term: Honoree
     source: LOC
     datacite: Other
     marc: hnr
-  - id: host-institution
-    term: Host institution
-    source: LOC
-    datacite: Other
-    marc: his
   - id: host
     term: Host
     source: LOC
     datacite: Other
     marc: hst
+  - id: host-institution
+    term: Host institution
+    source: LOC
+    datacite: Other
+    marc: his
+  - id: HostingInstitution
+    term: HostingInstitution
+    source: datacite
+    datacite: HostingInstitution
   - id: illuminator
     term: Illuminator
     source: LOC
@@ -873,11 +948,19 @@ terms:
     source: LOC
     datacite: Other
     marc: ill
+  - id: inker
+    term: inker
+    source: schema.org
+    datacite: Other
   - id: inscriber
     term: Inscriber
     source: LOC
     datacite: Other
     marc: ins
+  - id: instructor
+    term: instructor
+    source: schema.org
+    datacite: Other
   - id: instrumentalist
     term: Instrumentalist
     source: LOC
@@ -913,16 +996,24 @@ terms:
     source: LOC
     datacite: Other
     marc: jug
-  - id: laboratory-director
-    term: Laboratory director
-    source: LOC
+  - id: knows
+    term: knows
+    source: schema.org
     datacite: Other
-    marc: ldr
   - id: laboratory
     term: Laboratory
     source: LOC
     datacite: Other
     marc: lbr
+  - id: laboratory-director
+    term: Laboratory director
+    source: LOC
+    datacite: Other
+    marc: ldr
+  - id: landlord
+    term: landlord
+    source: schema.org
+    datacite: Other
   - id: landscape-architect
     term: Landscape architect
     source: LOC
@@ -933,11 +1024,23 @@ terms:
     source: LOC
     datacite: Other
     marc: led
+  - id: legislationPassedBy
+    term: legislationPassedBy
+    source: schema.org
+    datacite: Other
+  - id: legislationResponsible
+    term: legislationResponsible
+    source: schema.org
+    datacite: Other
   - id: lender
     term: Lender
     source: LOC
     datacite: Other
     marc: len
+  - id: letterer
+    term: letterer
+    source: schema.org
+    datacite: Other
   - id: libelant
     term: Libelant
     source: LOC
@@ -993,11 +1096,19 @@ terms:
     source: LOC
     datacite: Other
     marc: ltg
+  - id: loser
+    term: loser
+    source: schema.org
+    datacite: Other
   - id: lyricist
     term: Lyricist
     source: LOC
     datacite: Other
     marc: lyr
+  - id: maintainer
+    term: maintainer
+    source: schema.org
+    datacite: Other
   - id: makeup-artist
     term: Makeup artist
     source: LOC
@@ -1028,6 +1139,14 @@ terms:
     source: LOC
     datacite: Other
     marc: med
+  - id: member
+    term: member
+    source: schema.org
+    datacite: Other
+  - id: merchant
+    term: merchant
+    source: schema.org
+    datacite: Other
   - id: metadata-contact
     term: Metadata contact
     source: LOC
@@ -1073,6 +1192,14 @@ terms:
     source: LOC
     datacite: Other
     marc: msd
+  - id: musicBy
+    term: musicBy
+    source: schema.org
+    datacite: Other
+  - id: musicGroupMember
+    term: musicGroupMember
+    source: schema.org
+    datacite: Other
   - id: musician
     term: Musician
     source: LOC
@@ -1088,6 +1215,10 @@ terms:
     source: LOC
     datacite: Other
     marc: nan
+  - id: offeredBy
+    term: offeredBy
+    source: schema.org
+    datacite: Other
   - id: onscreen-participant
     term: Onscreen participant
     source: LOC
@@ -1103,6 +1234,10 @@ terms:
     source: LOC
     datacite: Other
     marc: opn
+  - id: organiser
+    term: organiser
+    source: schema.org
+    datacite: Other
   - id: organizer
     term: Organizer
     source: LOC
@@ -1113,11 +1248,10 @@ terms:
     source: LOC
     datacite: Other
     marc: org
-  - id: other
+  - id: Other
     term: Other
-    source: LOC
+    source: datacite
     datacite: Other
-    marc: oth
   - id: owner
     term: Owner
     source: LOC
@@ -1133,6 +1267,14 @@ terms:
     source: LOC
     datacite: Other
     marc: ppm
+  - id: parent
+    term: parent
+    source: schema.org
+    datacite: Other
+  - id: participant
+    term: participant
+    source: schema.org
+    datacite: Other
   - id: patent-applicant
     term: Patent applicant
     source: LOC
@@ -1148,6 +1290,10 @@ terms:
     source: LOC
     datacite: Other
     marc: pat
+  - id: penciler
+    term: penciler
+    source: schema.org
+    datacite: Other
   - id: performer
     term: Performer
     source: LOC
@@ -1198,16 +1344,16 @@ terms:
     source: LOC
     datacite: Other
     marc: pre
-  - id: printer-of-plates
-    term: Printer of plates
-    source: LOC
-    datacite: Other
-    marc: pop
   - id: printer
     term: Printer
     source: LOC
     datacite: Other
     marc: prt
+  - id: printer-of-plates
+    term: Printer of plates
+    source: LOC
+    datacite: Other
+    marc: pop
   - id: printmaker
     term: Printmaker
     source: LOC
@@ -1218,11 +1364,10 @@ terms:
     source: LOC
     datacite: Other
     marc: prc
-  - id: producer
+  - id: Producer
     term: Producer
-    source: LOC
-    datacite: Other
-    marc: pro
+    source: datacite
+    datacite: Producer
   - id: production-company
     term: Production company
     source: LOC
@@ -1258,6 +1403,18 @@ terms:
     source: LOC
     datacite: Other
     marc: pdr
+  - id: ProjectLeader
+    term: ProjectLeader
+    source: datacite
+    datacite: ProjectLeader
+  - id: ProjectManager
+    term: ProjectManager
+    source: datacite
+    datacite: ProjectManager
+  - id: ProjectMember
+    term: ProjectMember
+    source: datacite
+    datacite: ProjectMember
   - id: proofreader
     term: Proofreader
     source: LOC
@@ -1273,6 +1430,10 @@ terms:
     source: LOC
     datacite: Other
     marc: pup
+  - id: publishedBy
+    term: publishedBy
+    source: schema.org
+    datacite: Other
   - id: publisher
     term: Publisher
     source: LOC
@@ -1303,6 +1464,14 @@ terms:
     source: LOC
     datacite: Other
     marc: rap
+  - id: readBy
+    term: readBy
+    source: schema.org
+    datacite: Other
+  - id: recipient
+    term: recipient
+    source: schema.org
+    datacite: Other
   - id: recording-engineer
     term: Recording engineer
     source: LOC
@@ -1318,6 +1487,22 @@ terms:
     source: LOC
     datacite: Other
     marc: red
+  - id: RegistrationAgency
+    term: RegistrationAgency
+    source: datacite
+    datacite: RegistrationAgency
+  - id: RegistrationAuthority
+    term: RegistrationAuthority
+    source: datacite
+    datacite: RegistrationAuthority
+  - id: RelatedPerson
+    term: RelatedPerson
+    source: datacite
+    datacite: RelatedPerson
+  - id: relatedTo
+    term: relatedTo
+    source: schema.org
+    datacite: Other
   - id: remix-artist
     term: Remix artist
     source: LOC
@@ -1348,11 +1533,14 @@ terms:
     source: LOC
     datacite: Other
     marc: rtm
-  - id: researcher
+  - id: Researcher
     term: Researcher
-    source: LOC
-    datacite: Other
-    marc: res
+    source: datacite
+    datacite: Researcher
+  - id: ResearchGroup
+    term: ResearchGroup
+    source: datacite
+    datacite: ResearchGroup
   - id: respondent
     term: Respondent
     source: LOC
@@ -1383,11 +1571,19 @@ terms:
     source: LOC
     datacite: Other
     marc: rsr
+  - id: reviewedBy
+    term: reviewedBy
+    source: schema.org
+    datacite: Other
   - id: reviewer
     term: Reviewer
     source: LOC
     datacite: Other
     marc: rev
+  - id: RightsHolder
+    term: RightsHolder
+    source: datacite
+    datacite: RightsHolder
   - id: rubricator
     term: Rubricator
     source: LOC
@@ -1418,6 +1614,10 @@ terms:
     source: LOC
     datacite: Other
     marc: scl
+  - id: sdPublisher
+    term: sdPublisher
+    source: schema.org
+    datacite: Other
   - id: second-party
     term: Second party
     source: LOC
@@ -1433,6 +1633,10 @@ terms:
     source: LOC
     datacite: Other
     marc: sll
+  - id: sender
+    term: sender
+    source: schema.org
+    datacite: Other
   - id: set-designer
     term: Set designer
     source: LOC
@@ -1443,6 +1647,10 @@ terms:
     source: LOC
     datacite: Other
     marc: stg
+  - id: sibling
+    term: sibling
+    source: schema.org
+    datacite: Other
   - id: signer
     term: Signer
     source: LOC
@@ -1478,11 +1686,18 @@ terms:
     source: LOC
     datacite: Other
     marc: sfx
-  - id: sponsor
-    term: Sponsor
-    source: LOC
+  - id: spokenByCharacter
+    term: spokenByCharacter
+    source: schema.org
     datacite: Other
-    marc: spn
+  - id: Sponsor
+    term: Sponsor
+    source: datacite
+    datacite: Sponsor
+  - id: spouse
+    term: spouse
+    source: schema.org
+    datacite: Other
   - id: stage-director
     term: Stage director
     source: LOC
@@ -1508,6 +1723,10 @@ terms:
     source: LOC
     datacite: Other
     marc: stl
+  - id: Supervisor
+    term: Supervisor
+    source: datacite
+    datacite: Supervisor
   - id: supporting-host
     term: Supporting host
     source: LOC
@@ -1558,6 +1777,10 @@ terms:
     source: LOC
     datacite: Other
     marc: ths
+  - id: toRecipient
+    term: toRecipient
+    source: schema.org
+    datacite: Other
   - id: transcriber
     term: Transcriber
     source: LOC
@@ -1578,11 +1801,19 @@ terms:
     source: LOC
     datacite: Other
     marc: tyg
+  - id: underName
+    term: underName
+    source: schema.org
+    datacite: Other
   - id: university-place
     term: University place
     source: LOC
     datacite: Other
     marc: uvp
+  - id: vendor
+    term: vendor
+    source: schema.org
+    datacite: Other
   - id: videographer
     term: Videographer
     source: LOC
@@ -1598,6 +1829,10 @@ terms:
     source: LOC
     datacite: Other
     marc: vac
+  - id: winner
+    term: winner
+    source: schema.org
+    datacite: Other
   - id: witness
     term: Witness
     source: LOC
@@ -1613,6 +1848,10 @@ terms:
     source: LOC
     datacite: Other
     marc: wdc
+  - id: WorkPackageLeader
+    term: WorkPackageLeader
+    source: datacite
+    datacite: WorkPackageLeader
   - id: writer-of-accompanying-material
     term: Writer of accompanying material
     source: LOC
@@ -1663,359 +1902,3 @@ terms:
     source: LOC
     datacite: Other
     marc: wts
-  - id: accountablePerson
-    term: accountablePerson
-    source: schema.org
-    datacite: Other
-  - id: acquiredFrom
-    term: acquiredFrom
-    source: schema.org
-    datacite: Other
-  - id: actor
-    term: actor
-    source: schema.org
-    datacite: Other
-  - id: agent
-    term: agent
-    source: schema.org
-    datacite: Other
-  - id: alumni
-    term: alumni
-    source: schema.org
-    datacite: Other
-  - id: artist
-    term: artist
-    source: schema.org
-    datacite: Other
-  - id: athlete
-    term: athlete
-    source: schema.org
-    datacite: Other
-  - id: attendee
-    term: attendee
-    source: schema.org
-    datacite: Other
-  - id: author
-    term: author
-    source: schema.org
-    datacite: Other
-  - id: awayTeam
-    term: awayTeam
-    source: schema.org
-    datacite: Other
-  - id: bccRecipient
-    term: bccRecipient
-    source: schema.org
-    datacite: Other
-  - id: bookingAgent
-    term: bookingAgent
-    source: schema.org
-    datacite: Other
-  - id: borrower
-    term: borrower
-    source: schema.org
-    datacite: Other
-  - id: broker
-    term: broker
-    source: schema.org
-    datacite: Other
-  - id: buyer
-    term: buyer
-    source: schema.org
-    datacite: Other
-  - id: byArtist
-    term: byArtist
-    source: schema.org
-    datacite: Other
-  - id: candidate
-    term: candidate
-    source: schema.org
-    datacite: Other
-  - id: ccRecipient
-    term: ccRecipient
-    source: schema.org
-    datacite: Other
-  - id: character
-    term: character
-    source: schema.org
-    datacite: Other
-  - id: children
-    term: children
-    source: schema.org
-    datacite: Other
-  - id: claimInterpreter
-    term: claimInterpreter
-    source: schema.org
-    datacite: Other
-  - id: coach
-    term: coach
-    source: schema.org
-    datacite: Other
-  - id: colleague
-    term: colleague
-    source: schema.org
-    datacite: Other
-  - id: colorist
-    term: colorist
-    source: schema.org
-    datacite: Other
-  - id: competitor
-    term: competitor
-    source: schema.org
-    datacite: Other
-  - id: composer
-    term: composer
-    source: schema.org
-    datacite: Other
-  - id: contributor
-    term: contributor
-    source: schema.org
-    datacite: Other
-  - id: copyrightHolder
-    term: copyrightHolder
-    source: schema.org
-    datacite: Other
-  - id: creator
-    term: creator
-    source: schema.org
-    datacite: Other
-  - id: creditedTo
-    term: creditedTo
-    source: schema.org
-    datacite: Other
-  - id: customer
-    term: customer
-    source: schema.org
-    datacite: Other
-  - id: director
-    term: director
-    source: schema.org
-    datacite: Other
-  - id: editor
-    term: editor
-    source: schema.org
-    datacite: Other
-  - id: employee
-    term: employee
-    source: schema.org
-    datacite: Other
-  - id: endorsee
-    term: endorsee
-    source: schema.org
-    datacite: Other
-  - id: followee
-    term: followee
-    source: schema.org
-    datacite: Other
-  - id: follows
-    term: follows
-    source: schema.org
-    datacite: Other
-  - id: founder
-    term: founder
-    source: schema.org
-    datacite: Other
-  - id: fundedItem
-    term: fundedItem
-    source: schema.org
-    datacite: Other
-  - id: funder
-    term: funder
-    source: schema.org
-    datacite: Other
-  - id: grantee
-    term: grantee
-    source: schema.org
-    datacite: Other
-  - id: hiringOrganization
-    term: hiringOrganization
-    source: schema.org
-    datacite: Other
-  - id: homeTeam
-    term: homeTeam
-    source: schema.org
-    datacite: Other
-  - id: illustrator
-    term: illustrator
-    source: schema.org
-    datacite: Other
-  - id: inker
-    term: inker
-    source: schema.org
-    datacite: Other
-  - id: instructor
-    term: instructor
-    source: schema.org
-    datacite: Other
-  - id: knows
-    term: knows
-    source: schema.org
-    datacite: Other
-  - id: landlord
-    term: landlord
-    source: schema.org
-    datacite: Other
-  - id: legislationPassedBy
-    term: legislationPassedBy
-    source: schema.org
-    datacite: Other
-  - id: legislationResponsible
-    term: legislationResponsible
-    source: schema.org
-    datacite: Other
-  - id: lender
-    term: lender
-    source: schema.org
-    datacite: Other
-  - id: letterer
-    term: letterer
-    source: schema.org
-    datacite: Other
-  - id: loser
-    term: loser
-    source: schema.org
-    datacite: Other
-  - id: lyricist
-    term: lyricist
-    source: schema.org
-    datacite: Other
-  - id: maintainer
-    term: maintainer
-    source: schema.org
-    datacite: Other
-  - id: member
-    term: member
-    source: schema.org
-    datacite: Other
-  - id: merchant
-    term: merchant
-    source: schema.org
-    datacite: Other
-  - id: musicBy
-    term: musicBy
-    source: schema.org
-    datacite: Other
-  - id: musicGroupMember
-    term: musicGroupMember
-    source: schema.org
-    datacite: Other
-  - id: offeredBy
-    term: offeredBy
-    source: schema.org
-    datacite: Other
-  - id: opponent
-    term: opponent
-    source: schema.org
-    datacite: Other
-  - id: organiser
-    term: organiser
-    source: schema.org
-    datacite: Other
-  - id: parent
-    term: parent
-    source: schema.org
-    datacite: Other
-  - id: participant
-    term: participant
-    source: schema.org
-    datacite: Other
-  - id: penciler
-    term: penciler
-    source: schema.org
-    datacite: Other
-  - id: performer
-    term: performer
-    source: schema.org
-    datacite: Other
-  - id: producer
-    term: producer
-    source: schema.org
-    datacite: Other
-  - id: provider
-    term: provider
-    source: schema.org
-    datacite: Other
-  - id: publishedBy
-    term: publishedBy
-    source: schema.org
-    datacite: Other
-  - id: publisher
-    term: publisher
-    source: schema.org
-    datacite: Other
-  - id: readBy
-    term: readBy
-    source: schema.org
-    datacite: Other
-  - id: recipient
-    term: recipient
-    source: schema.org
-    datacite: Other
-  - id: relatedTo
-    term: relatedTo
-    source: schema.org
-    datacite: Other
-  - id: reviewedBy
-    term: reviewedBy
-    source: schema.org
-    datacite: Other
-  - id: sdPublisher
-    term: sdPublisher
-    source: schema.org
-    datacite: Other
-  - id: seller
-    term: seller
-    source: schema.org
-    datacite: Other
-  - id: sender
-    term: sender
-    source: schema.org
-    datacite: Other
-  - id: sibling
-    term: sibling
-    source: schema.org
-    datacite: Other
-  - id: spokenByCharacter
-    term: spokenByCharacter
-    source: schema.org
-    datacite: Other
-  - id: sponsor
-    term: sponsor
-    source: schema.org
-    datacite: Other
-  - id: spouse
-    term: spouse
-    source: schema.org
-    datacite: Other
-  - id: toRecipient
-    term: toRecipient
-    source: schema.org
-    datacite: Other
-  - id: translator
-    term: translator
-    source: schema.org
-    datacite: Other
-  - id: underName
-    term: underName
-    source: schema.org
-    datacite: Other
-  - id: vendor
-    term: vendor
-    source: schema.org
-    datacite: Other
-  - id: winner
-    term: winner
-    source: schema.org
-    datacite: Other
-  - id: author-of-screenplay
-    term: Author of screenplay
-    source: westminster
-    datacite: Other
-  - id: conference-organizer
-    term: Conference organizer
-    source: westminster
-    datacite: Other
-  - id: exhibitor
-    term: Exhibitor
-    source: westminster
-    datacite: Other
