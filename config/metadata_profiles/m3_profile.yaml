@@ -943,16 +943,10 @@ properties:
       properties:
       - relationships
     required: true
-    values:
-    - sequence
-    - source-of
-    - pair-with
-    - response-to
-    - documents
-    - juxtaposed-with
+    authority: relationship_types
     form:
       cols: 6
-  relationship_note:
+  relationship_type_other:
     type: string
     name: note
     available_on:
@@ -960,7 +954,7 @@ properties:
       - relationships
     required: false
     indexing:
-    - relationships_note_tesim
+    - relationships_type_other_tesim
     form:
       cols: 12
   media_viewer:
