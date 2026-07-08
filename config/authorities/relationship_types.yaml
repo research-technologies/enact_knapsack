@@ -1,0 +1,145 @@
+terms:
+  - id: iscitedby
+    term: Is Cited By
+    source: datacite
+    datacite: IsCitedBy
+  - id: cites
+    term: Cites
+    source: datacite
+    datacite: Cites
+  - id: issupplementto
+    term: Is Supplement To
+    source: datacite
+    datacite: IsSupplementTo
+  - id: issupplementedby
+    term: Is Supplemented By
+    source: datacite
+    datacite: IsSupplementedBy
+  - id: iscontinuedby
+    term: Is Continued By
+    source: datacite
+    datacite: IsContinuedBy
+  - id: continues
+    term: Continues
+    source: datacite
+    datacite: Continues
+  - id: describes
+    term: Describes
+    source: datacite
+    datacite: Describes
+  - id: isdescribedby
+    term: Is Described By
+    source: datacite
+    datacite: IsDescribedBy
+  - id: hasmetadata
+    term: Has Metadata
+    source: datacite
+    datacite: HasMetadata
+  - id: ismetadatafor
+    term: Is Metadata For
+    source: datacite
+    datacite: IsMetadataFor
+  - id: hasversion
+    term: Has Version
+    source: datacite
+    datacite: HasVersion
+  - id: isversionof
+    term: Is Version Of
+    source: datacite
+    datacite: IsVersionOf
+  - id: isnewversionof
+    term: Is New Version Of
+    source: datacite
+    datacite: IsNewVersionOf
+  - id: ispreviousversionof
+    term: Is Previous Version Of
+    source: datacite
+    datacite: IsPreviousVersionOf
+  - id: ispartof
+    term: Is Part Of
+    source: datacite
+    datacite: IsPartOf
+  - id: haspart
+    term: Has Part
+    source: datacite
+    datacite: HasPart
+  - id: ispublishedin
+    term: Is Published In
+    source: datacite
+    datacite: IsPublishedIn
+  - id: isreferencedby
+    term: Is Referenced By
+    source: datacite
+    datacite: IsReferencedBy
+  - id: references
+    term: References
+    source: datacite
+    datacite: References
+  - id: isdocumentedby
+    term: Is Documented By
+    source: datacite
+    datacite: IsDocumentedBy
+  - id: documents
+    term: Documents
+    source: datacite
+    datacite: Documents
+  - id: iscompiledby
+    term: Is Compiled By
+    source: datacite
+    datacite: IsCompiledBy
+  - id: compiles
+    term: Compiles
+    source: datacite
+    datacite: Compiles
+  - id: isvariantformof
+    term: Is Variant Form Of
+    source: datacite
+    datacite: IsVariantFormOf
+  - id: isoriginalformof
+    term: Is Original Form Of
+    source: datacite
+    datacite: IsOriginalFormOf
+  - id: isidenticalto
+    term: Is Identical To
+    source: datacite
+    datacite: IsIdenticalTo
+  - id: isreviewedby
+    term: Is Reviewed By
+    source: datacite
+    datacite: IsReviewedBy
+  - id: reviews
+    term: Reviews
+    source: datacite
+    datacite: Reviews
+  - id: isderivedfrom
+    term: Is Derived From
+    source: datacite
+    datacite: IsDerivedFrom
+  - id: issourceof
+    term: Is Source Of
+    source: datacite
+    datacite: IsSourceOf
+  - id: isrequiredby
+    term: Is Required By
+    source: datacite
+    datacite: IsRequiredBy
+  - id: requires
+    term: Requires
+    source: datacite
+    datacite: Requires
+  - id: obsoletes
+    term: Obsoletes
+    source: datacite
+    datacite: Obsoletes
+  - id: isobsoletedby
+    term: Is Obsoleted By
+    source: datacite
+    datacite: IsObsoletedBy
+  - id: iscollectedby
+    term: Is Collected By
+    source: datacite
+    datacite: IsCollectedBy
+  - id: collects
+    term: Collects
+    source: datacite
+    datacite: Collects
