@@ -101,6 +101,67 @@ RSpec.describe 'Enact contributors pages', type: :request, singletenant: true do
       end
     end
 
+    context 'with many works (pagination + search + type filter)' do
+      # 25 artefacts spill the list past the 10-per-page limit; one uniquely
+      # titled event gives the title search and work-type filter something to
+      # narrow on. The graph normally sorts by title; we stub it directly, so the
+      # returned order is what the view paginates (Artwork 00..24, then the event).
+      let(:works) do
+        artefacts = Array.new(25) do |i|
+          Enact::ContributorGraph::Credit.new(
+            id: "art-#{i}", title: format('Artwork %02d', i),
+            path: "/concern/portfolio_artefacts/art-#{i}",
+            roles: [], type_label: 'Artefact', model: 'PortfolioArtefact'
+          )
+        end
+        event = Enact::ContributorGraph::Credit.new(
+          id: 'evt-1', title: 'Unique Zephyr Happening',
+          path: '/concern/portfolio_events/evt-1',
+          roles: [], type_label: 'Event', model: 'PortfolioEvent'
+        )
+        artefacts + [event]
+      end
+
+      before do
+        allow_any_instance_of(Enact::ContributorGraph).to receive(:works).and_return(works) # rubocop:disable RSpec/AnyInstance
+      end
+
+      it 'paginates the works list at 10 per page' do
+        get "/contributors/#{ada.id}"
+        expect(response).to have_http_status(:ok)
+        expect(response.body).to include("/contributors/#{ada.id}?page=2")
+        expect(response.body).to include('Artwork 00')      # first page
+        expect(response.body).not_to include('Artwork 10')  # spilled to a later page
+        # Count line orients the user: 25 artefacts + 1 event = 26 total.
+        expect(response.body).to include('Showing 1-10 of 26 works')
+      end
+
+      it 'narrows the list by a title substring search' do
+        get "/contributors/#{ada.id}", params: { q: 'Zephyr' }
+        expect(response.body).to include('Unique Zephyr Happening')
+        expect(response.body).not_to include('Artwork 00')
+      end
+
+      it 'narrows the list by work type' do
+        get "/contributors/#{ada.id}", params: { work_type: 'PortfolioEvent' }
+        expect(response.body).to include('Unique Zephyr Happening')
+        expect(response.body).not_to include('Artwork 00')
+      end
+
+      it 'keeps the active filter in the pagination links' do
+        get "/contributors/#{ada.id}", params: { work_type: 'PortfolioArtefact' }
+        expect(response.body).to include('work_type=PortfolioArtefact').and include('page=2')
+      end
+
+      it 'offers a reset link only when a filter is active' do
+        get "/contributors/#{ada.id}"
+        expect(response.body).not_to include('>Reset<')
+
+        get "/contributors/#{ada.id}", params: { q: 'Zephyr' }
+        expect(response.body).to include('>Reset<')
+      end
+    end
+
     context 'with no works' do
       before do
         allow_any_instance_of(Enact::ContributorGraph).to receive(:works).and_return([]) # rubocop:disable RSpec/AnyInstance

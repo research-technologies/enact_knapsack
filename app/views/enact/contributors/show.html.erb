@@ -58,7 +58,47 @@
   </header>
 
   <section class="enact-contributor-works">
+    <%# Title search + work-type filter over the credited-works list, mirroring
+        the browse index. GET so it is bookmarkable and paginates cleanly. Only
+        shown when the contributor has works to search (regardless of the current
+        filter, so a filter that matches nothing can still be reset). %>
+    <% if @has_works %>
+      <%= form_with url: "/contributors/#{@contributor.id}", method: :get, class: 'enact-contributor-works-search mb-4' do %>
+        <div class="form-row align-items-end">
+          <div class="col-md-6 mb-2">
+            <%= label_tag :q, t('enact.contributors.works.search_label', default: 'Search works'), class: 'form-label small text-muted' %>
+            <%= search_field_tag :q, @search,
+                                 placeholder: t('enact.contributors.works.search_placeholder', default: 'Search works by title'),
+                                 class: 'form-control' %>
+          </div>
+          <div class="col-md-3 mb-2">
+            <%= label_tag :work_type, t('enact.contributors.works.type_label', default: 'Type'), class: 'form-label small text-muted' %>
+            <%= select_tag :work_type,
+                           options_for_select(@work_type_options, @work_type),
+                           class: 'form-control' %>
+          </div>
+          <div class="col-md-3 mb-2">
+            <%= submit_tag t('enact.contributors.works.search_submit', default: 'Search'), class: 'btn btn-primary' %>
+            <%# Reset clears every filter by linking to the bare profile. Shown
+                only when a search term or type filter is active. %>
+            <% if @search.present? || @work_type %>
+              <%= link_to t('enact.contributors.works.reset', default: 'Reset'),
+                          "/contributors/#{@contributor.id}", class: 'btn btn-outline-secondary ml-1' %>
+            <% end %>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
     <% if @works.present? %>
+      <%# Range + total so the user knows how many works there are and where they
+          are in the paged set. total_count reflects the active filter. %>
+      <% first = @works.offset_value + 1 %>
+      <p class="text-muted small enact-contributor-works-count">
+        <%= t('enact.contributors.works.count',
+              count: @works.total_count, first:, last: @works.offset_value + @works.size,
+              total: @works.total_count) %>
+      </p>
       <ul class="list-unstyled">
         <% @works.each do |work| %>
           <li class="enact-contributor-work d-flex align-items-start mb-3">
@@ -89,8 +129,39 @@
           </li>
         <% end %>
       </ul>
+
+      <%# Pagination is rendered manually rather than with Kaminari's `paginate`:
+          this route lives in the knapsack's isolated engine, and Kaminari resolves
+          page links by string-keyed controller/action through url_for, which only
+          honors symbol keys — so the engine route never matches. Building links from
+          the engine path helper sidesteps that and keeps the active filters. Same
+          pattern as the browse index. %>
+      <% if @works.total_pages > 1 %>
+        <% page_link = ->(page) { HykuKnapsack::Engine.routes.url_helpers.enact_contributor_path(@contributor.id, page: page, q: @search.presence, work_type: @work_type) } %>
+        <nav aria-label="<%= t('enact.contributors.works.pagination', default: 'Works pages') %>">
+          <ul class="pagination justify-content-center">
+            <li class="page-item <%= 'disabled' unless @works.prev_page %>">
+              <%= link_to t('enact.contributors.works.prev_page', default: '‹ Prev'), page_link.call(@works.prev_page || 1), class: 'page-link' %>
+            </li>
+            <% (1..@works.total_pages).each do |page| %>
+              <li class="page-item <%= 'active' if page == @works.current_page %>">
+                <%= link_to page, page_link.call(page), class: 'page-link' %>
+              </li>
+            <% end %>
+            <li class="page-item <%= 'disabled' unless @works.next_page %>">
+              <%= link_to t('enact.contributors.works.next_page', default: 'Next ›'), page_link.call(@works.next_page || @works.total_pages), class: 'page-link' %>
+            </li>
+          </ul>
+        </nav>
+      <% end %>
     <% else %>
-      <p class="text-muted"><%= t('enact.contributors.works.empty', default: 'No works yet.') %></p>
+      <p class="text-muted">
+        <% if @search.present? || @work_type %>
+          <%= t('enact.contributors.works.no_results', default: 'No works match your search.') %>
+        <% else %>
+          <%= t('enact.contributors.works.empty', default: 'No works yet.') %>
+        <% end %>
+      </p>
     <% end %>
   </section>
 </div>

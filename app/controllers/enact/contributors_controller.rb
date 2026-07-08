@@ -25,10 +25,23 @@ module Enact
       @contributors = scope.order(:display_name).page(params[:page]).per(24)
     end
 
+    # Works crediting this contributor, scoped to what the viewer may see, then
+    # narrowed by an optional title search / work-type filter and paginated -
+    # mirroring the browse index. Filtering is in-memory: ContributorGraph already
+    # sorts by title and resolves per-contributor roles in Ruby, so the full set is
+    # fetched once and the dropdown options are built from it before filtering (so
+    # selecting a type never empties the options).
     def show
       @contributor = Enact::Contributor.find(params[:id])
-      # Works crediting this contributor, scoped to what the viewer may see.
-      @works = Enact::ContributorGraph.new(@contributor, ability: current_ability).works
+      @search = params[:q].to_s.strip
+      @work_type = params[:work_type].to_s.presence
+
+      all_works = Enact::ContributorGraph.new(@contributor, ability: current_ability).works
+      @has_works = all_works.any?
+      @work_type_options = work_type_options(all_works)
+      # paginate_array defaults total_count to the array size, which is exactly
+      # right here (we paginate the whole filtered set, not a pre-sliced page).
+      @works = Kaminari.paginate_array(filtered_works(all_works)).page(params[:page]).per(10)
       add_show_breadcrumbs
     end
 
@@ -60,6 +73,28 @@ module Enact
       # builder computes a path for every element, and our custom (non-RESTful)
       # routes don't resolve from the implicit controller/action.
       add_breadcrumb @contributor.display_name, "/contributors/#{@contributor.id}"
+    end
+
+    # Apply the optional title search (case-insensitive substring, matching the
+    # index's ILIKE behaviour) and work-type filter (exact stable-model match) to
+    # the contributor's works.
+    def filtered_works(works)
+      works = works.select { |w| w.title.to_s.downcase.include?(@search.downcase) } if @search.present?
+      works = works.select { |w| w.model == @work_type } if @work_type
+      works
+    end
+
+    # Options for the profile's work-type filter, derived from the contributor's
+    # own works (not a static enum) so the dropdown only offers types they
+    # actually have. Leading "All" (blank value = no filter), then one entry per
+    # distinct model as [display_label, model_key], ordered by label - the same
+    # [[label, value], ...] shape as #contributor_type_options for the index.
+    def work_type_options(works)
+      all = [[t('enact.contributors.works.type_all', default: 'All'), '']]
+      typed = works.reject { |w| w.model.blank? }
+                   .map { |w| [w.type_label.presence || w.model, w.model] }
+                   .uniq.sort_by(&:first)
+      all + typed
     end
 
     # Strong params: the identity fields an admin may curate. Both multi-valued
