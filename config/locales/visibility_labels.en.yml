@@ -1,0 +1,25 @@
+# ENACT visibility relabeling (notch8/enact_knapsack#84). Display text only -
+# the machine visibility values (open/authenticated/embargo/lease/restricted) are
+# untouched, so Bulkrax and access control are unaffected.
+#
+# - `authenticated` ("Institution") -> "Logged-in users": in this national
+#   multi-tenant service authenticated visibility just means "any signed-in user",
+#   not IP/SSO institutional access. The badge pill is ALSO relabeled by
+#   Hyrax::PermissionBadgeDecorator (it bypasses the .text key below and reads
+#   Institution.name); this locale drives the note line + the Sharing-tab dropdown.
+# - `lease`: expand the note to explain the term (public now, restricted later).
+#
+# NOTE: hyrax.institution_name is intentionally left untouched - it is shared with
+# unrelated UI (e.g. "grant this permission to Institution users"). Deep-merges with
+# config/locales/en.yml (separate file = no duplicate-key clobbering).
+en:
+  hyrax:
+    visibility:
+      authenticated:
+        text: Logged-in users
+        note_html: Only people signed in to ENACT can view or download this.
+      lease:
+        note_html: >-
+          Public now, then access is automatically restricted on a date you set.
+          Use this for material that should only be open for a limited time
+          (the opposite of an embargo).
