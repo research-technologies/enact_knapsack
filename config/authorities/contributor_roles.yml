@@ -89,848 +89,1933 @@ terms:
     source: credit
     credit_uri: https://credit.niso.org/contributor-roles/writing-review-editing/
     datacite: Editor
-  # --- practice-research (MARC relators where they fit) ---
+  - id: ContactPerson
+    term: ContactPerson
+    source: schema.org
+    datacite: ContactPerson
+  - id: DataCollector
+    term: DataCollector
+    source: datacite
+    datacite: DataCollector
+  - id: DataCurator
+    term: DataCurator
+    source: datacite
+    datacite: DataCurator
+  - id: DataManager
+    term: DataManager
+    source: datacite
+    datacite: DataManager
+  - id: Distributor
+    term: Distributor
+    source: datacite
+    datacite: Distributor
+  - id: Editor
+    term: Editor
+    source: datacite
+    datacite: Editor
+  - id: HostingInstitution
+    term: HostingInstitution
+    source: datacite
+    datacite: HostingInstitution
+  - id: Other
+    term: Other
+    source: datacite
+    datacite: Other
+  - id: Producer
+    term: Producer
+    source: datacite
+    datacite: Producer
+  - id: ProjectLeader
+    term: ProjectLeader
+    source: datacite
+    datacite: ProjectLeader
+  - id: ProjectManager
+    term: ProjectManager
+    source: datacite
+    datacite: ProjectManager
+  - id: ProjectMember
+    term: ProjectMember
+    source: datacite
+    datacite: ProjectMember
+  - id: RegistrationAgency
+    term: RegistrationAgency
+    source: datacite
+    datacite: RegistrationAgency
+  - id: RegistrationAuthority
+    term: RegistrationAuthority
+    source: datacite
+    datacite: RegistrationAuthority
+  - id: RelatedPerson
+    term: RelatedPerson
+    source: datacite
+    datacite: RelatedPerson
+  - id: Researcher
+    term: Researcher
+    source: datacite
+    datacite: Researcher
+  - id: ResearchGroup
+    term: ResearchGroup
+    source: datacite
+    datacite: ResearchGroup
+  - id: RightsHolder
+    term: RightsHolder
+    source: datacite
+    datacite: RightsHolder
+  - id: Sponsor
+    term: Sponsor
+    source: datacite
+    datacite: Sponsor
+  - id: Supervisor
+    term: Supervisor
+    source: datacite
+    datacite: Supervisor
+  - id: WorkPackageLeader
+    term: WorkPackageLeader
+    source: datacite
+    datacite: WorkPackageLeader
+  - id: abridger
+    term: Abridger
+    source: LOC
+    datacite: Other
+    marc: abr
+  - id: actor
+    term: Actor
+    source: LOC
+    datacite: Other
+    marc: act
+  - id: adapter
+    term: Adapter
+    source: LOC
+    datacite: Other
+    marc: adp
+  - id: addressee
+    term: Addressee
+    source: LOC
+    datacite: Other
+    marc: rcp
+  - id: analyst
+    term: Analyst
+    source: LOC
+    datacite: Other
+    marc: anl
+  - id: animator
+    term: Animator
+    source: LOC
+    datacite: Other
+    marc: anm
+  - id: annotator
+    term: Annotator
+    source: LOC
+    datacite: Other
+    marc: ann
+  - id: announcer
+    term: Announcer
+    source: LOC
+    datacite: Other
+    marc: anc
+  - id: appellant
+    term: Appellant
+    source: LOC
+    datacite: Other
+    marc: apl
+  - id: appellee
+    term: Appellee
+    source: LOC
+    datacite: Other
+    marc: ape
+  - id: applicant
+    term: Applicant
+    source: LOC
+    datacite: Other
+    marc: app
+  - id: architect
+    term: Architect
+    source: LOC
+    datacite: Other
+    marc: arc
+  - id: arranger
+    term: Arranger
+    source: LOC
+    datacite: Other
+    marc: arr
+  - id: art-copyist
+    term: Art copyist
+    source: LOC
+    datacite: Other
+    marc: acp
+  - id: art-director
+    term: Art director
+    source: LOC
+    datacite: Other
+    marc: adi
+  - id: artist
+    term: Artist
+    source: LOC
+    datacite: Other
+    marc: art
+  - id: artistic-director
+    term: Artistic director
+    source: LOC
+    datacite: Other
+    marc: ard
+  - id: assignee
+    term: Assignee
+    source: LOC
+    datacite: Other
+    marc: asg
+  - id: associated-name
+    term: Associated name
+    source: LOC
+    datacite: Other
+    marc: asn
+  - id: attributed-name
+    term: Attributed name
+    source: LOC
+    datacite: Other
+    marc: att
+  - id: auctioneer
+    term: Auctioneer
+    source: LOC
+    datacite: Other
+    marc: auc
+  - id: audio-engineer
+    term: Audio engineer
+    source: LOC
+    datacite: Other
+    marc: aue
+  - id: audio-producer
+    term: Audio producer
+    source: LOC
+    datacite: Other
+    marc: aup
+  - id: author-in-quotations-or-text-abstracts
+    term: Author in quotations or text abstracts
+    source: LOC
+    datacite: Other
+    marc: aqt
+  - id: author-of-afterword,-colophon,-etc.
+    term: Author of afterword, colophon, etc.
+    source: LOC
+    datacite: Other
+    marc: aft
+  - id: author-of-dialog
+    term: Author of dialog
+    source: LOC
+    datacite: Other
+    marc: aud
+  - id: author-of-introduction,-etc.
+    term: Author of introduction, etc.
+    source: LOC
+    datacite: Other
+    marc: aui
+  - id: author
+    term: Author
+    source: LOC
+    datacite: Other
+    marc: aut
+  - id: autographer
+    term: Autographer
+    source: LOC
+    datacite: Other
+    marc: ato
+  - id: bibliographic-antecedent
+    term: Bibliographic antecedent
+    source: LOC
+    datacite: Other
+    marc: ant
+  - id: binder
+    term: Binder
+    source: LOC
+    datacite: Other
+    marc: bnd
+  - id: binding-designer
+    term: Binding designer
+    source: LOC
+    datacite: Other
+    marc: bdd
+  - id: blurb-writer
+    term: Blurb writer
+    source: LOC
+    datacite: Other
+    marc: blw
+  - id: book-artist
+    term: Book artist
+    source: LOC
+    datacite: Other
+    marc: bka
+  - id: book-designer
+    term: Book designer
+    source: LOC
+    datacite: Other
+    marc: bkd
+  - id: book-producer
+    term: Book producer
+    source: LOC
+    datacite: Other
+    marc: bkp
+  - id: bookjacket-designer
+    term: Bookjacket designer
+    source: LOC
+    datacite: Other
+    marc: bjd
+  - id: bookplate-designer
+    term: Bookplate designer
+    source: LOC
+    datacite: Other
+    marc: bpd
+  - id: bookseller
+    term: Bookseller
+    source: LOC
+    datacite: Other
+    marc: bsl
+  - id: braille-embosser
+    term: Braille embosser
+    source: LOC
+    datacite: Other
+    marc: brl
+  - id: broadcaster
+    term: Broadcaster
+    source: LOC
+    datacite: Other
+    marc: brd
+  - id: calligrapher
+    term: Calligrapher
+    source: LOC
+    datacite: Other
+    marc: cll
+  - id: camera-operator
+    term: Camera operator
+    source: LOC
+    datacite: Other
+    marc: cop
+  - id: cartographer
+    term: Cartographer
+    source: LOC
+    datacite: Other
+    marc: ctg
+  - id: caster
+    term: Caster
+    source: LOC
+    datacite: Other
+    marc: cas
+  - id: casting-director
+    term: Casting director
+    source: LOC
+    datacite: Other
+    marc: cad
+  - id: censor
+    term: Censor
+    source: LOC
+    datacite: Other
+    marc: cns
   - id: choreographer
     term: Choreographer
-    source: practice
+    source: LOC
     datacite: Other
     marc: chr
-  - id: dancer
-    term: Dancer
-    source: practice
+  - id: cinematographer
+    term: Cinematographer
+    source: LOC
     datacite: Other
-    marc: dnc
-  - id: director
-    term: Director
-    source: practice
+    marc: cng
+  - id: client
+    term: Client
+    source: LOC
     datacite: Other
-    marc: drt
-  - id: set-designer
-    term: Set designer
-    source: practice
+    marc: cli
+  - id: collection-registrar
+    term: Collection registrar
+    source: LOC
     datacite: Other
-    marc: std
-  - id: dramaturg
-    term: Dramaturg
-    source: practice
+    marc: cor
+  - id: collector
+    term: Collector
+    source: LOC
     datacite: Other
-  - id: performer
-    term: Performer
-    source: practice
+    marc: col
+  - id: collotyper
+    term: Collotyper
+    source: LOC
     datacite: Other
-    marc: prf
+    marc: clt
+  - id: colorist
+    term: Colorist
+    source: LOC
+    datacite: Other
+    marc: clr
+  - id: commentator-for-written-text
+    term: Commentator for written text
+    source: LOC
+    datacite: Other
+    marc: cwt
+  - id: commentator
+    term: Commentator
+    source: LOC
+    datacite: Other
+    marc: cmm
+  - id: compiler
+    term: Compiler
+    source: LOC
+    datacite: Other
+    marc: com
+  - id: complainant
+    term: Complainant
+    source: LOC
+    datacite: Other
+    marc: cpl
+  - id: complainant-appellant
+    term: Complainant-appellant
+    source: LOC
+    datacite: Other
+    marc: cpt
+  - id: complainant-appellee
+    term: Complainant-appellee
+    source: LOC
+    datacite: Other
+    marc: cpe
   - id: composer
     term: Composer
-    source: practice
+    source: LOC
     datacite: Other
     marc: cmp
+  - id: compositor
+    term: Compositor
+    source: LOC
+    datacite: Other
+    marc: cmt
+  - id: conceptor
+    term: Conceptor
+    source: LOC
+    datacite: Other
+    marc: ccp
+  - id: conductor
+    term: Conductor
+    source: LOC
+    datacite: Other
+    marc: cnd
+  - id: conservator
+    term: Conservator
+    source: LOC
+    datacite: Other
+    marc: con
+  - id: consultant-to-a-project
+    term: Consultant to a project
+    source: LOC
+    datacite: Other
+    marc: csp
+  - id: consultant
+    term: Consultant
+    source: LOC
+    datacite: Other
+    marc: csl
+  - id: contestant
+    term: Contestant
+    source: LOC
+    datacite: Other
+    marc: cos
+  - id: contestant-appellant
+    term: Contestant-appellant
+    source: LOC
+    datacite: Other
+    marc: cot
+  - id: contestant-appellee
+    term: Contestant-appellee
+    source: LOC
+    datacite: Other
+    marc: coe
+  - id: contestee
+    term: Contestee
+    source: LOC
+    datacite: Other
+    marc: cts
+  - id: contestee-appellant
+    term: Contestee-appellant
+    source: LOC
+    datacite: Other
+    marc: ctt
+  - id: contestee-appellee
+    term: Contestee-appellee
+    source: LOC
+    datacite: Other
+    marc: cte
+  - id: contractor
+    term: Contractor
+    source: LOC
+    datacite: Other
+    marc: ctr
+  - id: contributor
+    term: Contributor
+    source: LOC
+    datacite: Other
+    marc: ctb
+  - id: copyright-claimant
+    term: Copyright claimant
+    source: LOC
+    datacite: Other
+    marc: cpc
+  - id: copyright-holder
+    term: Copyright holder
+    source: LOC
+    datacite: Other
+    marc: cph
+  - id: corrector
+    term: Corrector
+    source: LOC
+    datacite: Other
+    marc: crr
+  - id: correspondent
+    term: Correspondent
+    source: LOC
+    datacite: Other
+    marc: crp
+  - id: costume-designer
+    term: Costume designer
+    source: LOC
+    datacite: Other
+    marc: cst
+  - id: court-governed
+    term: Court governed
+    source: LOC
+    datacite: Other
+    marc: cou
+  - id: court-reporter
+    term: Court reporter
+    source: LOC
+    datacite: Other
+    marc: crt
+  - id: cover-designer
+    term: Cover designer
+    source: LOC
+    datacite: Other
+    marc: cov
+  - id: creator
+    term: Creator
+    source: LOC
+    datacite: Other
+    marc: cre
   - id: curator
     term: Curator
-    source: practice
+    source: LOC
     datacite: Other
     marc: cur
-
-
-Abridger
-
-Accountableperson
-
-Acquiredfrom
-
-Actor
-
-Adapter
-
-Addressee
-
-Agent
-
-Alumni
-
-Analyst
-
-Animator
-
-Annotator
-
-Announcer
-
-Appellant
-
-Appellee
-
-Applicant
-
-Architect
-
-Arranger
-
-Art Copyist
-
-Art Director
-
-Artist
-
-Artistic Director
-
-Assignee
-
-Associated Name
-
-Athlete
-
-Attendee
-
-Attributed Name
-
-Auctioneer
-
-Audio Engineer
-
-Audio Producer
-
-Author
-
-Author In Quotations Or Text Abstracts
-
-Author Of Afterword, Colophon, Etc.
-
-Author Of Dialog
-
-Author Of Introduction
-
-Author Of Introduction, Etc.
-
-Author Of Screenplay
-
-Autographer
-
-Awayteam
-
-Bccrecipient
-
-Bibliographic Antecedent
-
-Binder
-
-Binding Designer
-
-Blurb Writer
-
-Book Artist
-
-Book Designer
-
-Book Producer
-
-Bookingagent
-
-Bookjacket Designer
-
-Bookplate Designer
-
-Bookseller
-
-Borrower
-
-Braille Embosser
-
-Broadcaster
-
-Broker
-
-Buyer
-
-Byartist
-
-Calligrapher
-
-Camera Operator
-
-Candidate
-
-Cartographer
-
-Caster
-
-Casting Director
-
-Ccrecipient
-
-Censor
-
-Chair
-
-Character
-
-Children
-
-Choreographer
-
-Cinematographer
-
-Claiminterpreter
-
-Client
-
-Coach
-
-Colleague
-
-Collection Registrar
-
-Collector
-
-Collotyper
-
-Colorist
-
-Commentator
-
-Commentator For Written Text
-
-Competitor
-
-Compiler
-
-Complainant
-
-Complainant-Appellant
-
-Complainant-Appellee
-
-Composer
-
-Compositor
-
-Conceptor
-
-Conceptualization
-
-Conductor
-
-Conference Organizer
-
-Conservator
-
-Consultant
-
-Consultant To A Project
-
-Contactperson
-
-Contestant
-
-Contestant-Appellant
-
-Contestant-Appellee
-
-Contestee
-
-Contestee-Appellant
-
-Contestee-Appellee
-
-Contractor
-
-Contributor
-
-Copyright Claimant
-
-Copyright Holder
-
-Copyrightholder
-
-Corrector
-
-Correspondent
-
-Costume Designer
-
-Court Governed
-
-Court Reporter
-
-Cover Designer
-
-Creator
-
-Creditedto
-
-Curator
-
-Customer
-
-Dancer
-
-Data Contributor
-
-Data Curation
-
-Data Manager
-
-Datacollector
-
-Datacurator
-
-Datamanager
-
-Dedicatee
-
-Dedicator
-
-Defendant
-
-Defendant-Appellant
-
-Defendant-Appellee
-
-Degree Committee Member
-
-Degree Granting Institution
-
-Degree Supervisor
-
-Delineator
-
-Depicted
-
-Depositor
-
-Designer
-
-Director
-
-Dissertant
-
-Distribution Place
-
-Distributor
-
-Dj
-
-Donor
-
-Draftsman
-
-Dubbing Director
-
-Dubious Author
-
-Editor
-
-Editor Of Compilation
-
-Editor Of Moving Image Work
-
-Editorial Director
-
-Electrician
-
-Electrotyper
-
-Employee
-
-Enacting Jurisdiction
-
-Endorsee
-
-Engineer
-
-Engraver
-
-Etcher
-
-Event Place
-
-Exhibitor
-
-Expert
-
-Facsimilist
-
-Field Director
-
-Film Director
-
-Film Distributor
-
-Film Editor
-
-Film Producer
-
-Filmmaker
-
-First Party
-
-Followee
-
-Follows
-
-Forger
-
-Formal Analysis
-
-Former Owner
-
-Founder
-
-Fundeditem
-
-Funder
-
-Funding Acquisition
-
-Game Developer
-
-Geographic Information Specialist
-
-Grantee
-
-Hiringorganization
-
-Hometeam
-
-Honoree
-
-Host
-
-Host Institution
-
-Hostinginstitution
-
-Illuminator
-
-Illustrator
-
-Inker
-
-Inscriber
-
-Instructor
-
-Instrumentalist
-
-Instrumentallist
-
-Interviewee
-
-Interviewer
-
-Inventor
-
-Investigation
-
-Issuing Body
-
-Judge
-
-Jurisdiction Governed
-
-Knows
-
-Laboratory
-
-Laboratory Director
-
-Landlord
-
-Landscape Architect
-
-Lead
-
-Legislationpassedby
-
-Legislationresponsible
-
-Lender
-
-Letterer
-
-Libelant
-
-Libelant-Appellant
-
-Libelant-Appellee
-
-Libelee
-
-Libelee-Appellant
-
-Libelee-Appellee
-
-Librettist
-
-Licensee
-
-Licensor
-
-Lighting Designer
-
-Lithographer
-
-Loser
-
-Lyricist
-
-Maintainer
-
-Makeup Artist
-
-Manufacture Place
-
-Manufacturer
-
-Marbler
-
-Markup Editor
-
-Medium
-
-Member
-
-Merchant
-
-Metadata Contact
-
-Metal-Engraver
-
-Methodology
-
-Minute Taker
-
-Mixing Engineer
-
-Moderator
-
-Monitor
-
-Music Copyist
-
-Music Programmer
-
-Musical Director
-
-Musicby
-
-Musicgroupmember
-
-Musician
-
-Narrator
-
-News Anchor
-
-Offeredby
-
-Onscreen Participant
-
-Onscreen Presenter
-
-Opponent
-
-Organiser
-
-Organizer
-
-Originator
-
-Other
-
-Owner
-
-Panelist
-
-Papermaker
-
-Parent
-
-Participant
-
-Patent Applicant
-
-Patent Holder
-
-Patron
-
-Penciler
-
-Performer
-
-Permitting Agency
-
-Photographer
-
-Place Of Address
-
-Plaintiff
-
-Plaintiff-Appellant
-
-Plaintiff-Appellee
-
-Platemaker
-
-Praeses
-
-Presenter
-
-Printer
-
-Printer Of Plates
-
-Printmaker
-
-Process Contact
-
-Producer
-
-Production Company
-
-Production Designer
-
-Production Manager
-
-Production Personnel
-
-Production Place
-
-Programmer
-
-Project Administration
-
-Project Director
-
-Projectleader
-
-Projectmanager
-
-Projectmember
-
-Proofreader
-
-Provider
-
-Publication Place
-
-Publishedby
-
-Publisher
-
-Publishing Director
-
-Puppeteer
-
-Radio Director
-
-Radio Producer
-
-Rapporteur
-
-Readby
-
-Reader
-
-Recipient
-
-Recording Engineer
-
-Recordist
-
-Redaktor
-
-Registrationagency
-
-Registrationauthority
-
-Relatedperson
-
-Relatedto
-
-Remix Artist
-
-Renderer
-
-Reporter
-
-Repository
-
-Research Team Head
-
-Research Team Member
-
-Researcher
-
-Researchgroup
-
-Resources
-
-Respondent
-
-Respondent-Appellant
-
-Respondent-Appellee
-
-Responsible Party
-
-Restager
-
-Restorationist
-
-Review-Assistant
-
-Reviewedby
-
-Reviewer
-
-Reviewer-External
-
-Rightsholder
-
-Rubricator
-
-Scenarist
-
-Scientific Advisor
-
-Screenwriter
-
-Scribe
-
-Sculptor
-
-Sdpublisher
-
-Second Party
-
-Secretary
-
-Seller
-
-Sender
-
-Set Designer
-
-Setting
-
-Sibling
-
-Signer
-
-Singer
-
-Software
-
-Software Developer
-
-Sound Designer
-
-Sound Engineer
-
-Speaker
-
-Special Effects Provider
-
-Spokenbycharacter
-
-Sponsor
-
-Spouse
-
-Stage Director
-
-Stage Manager
-
-Standards Body
-
-Stats-Reviewer
-
-Stereotyper
-
-Storyteller
-
-Supervision
-
-Supervisor
-
-Supporting Host
-
-Surveyor
-
-Teacher
-
-Technical Director
-
-Television Director
-
-Television Guest
-
-Television Host
-
-Television Producer
-
-Television Writer
-
-Thesis Advisor
-
-Torecipient
-
-Transcriber
-
-Translator
-
-Type Designer
-
-Typographer
-
-Undername
-
-University Place
-
-Validation
-
-Vendor
-
-Videographer
-
-Visual Effects Provider
-
-Visualization
-
-Vocalist
-
-Voice Actor
-
-Winner
-
-Witness
-
-Wood Engraver
-
-Woodcutter
-
-Workpackageleader
-
-Writer Of Accompanying Material
-
-Writer Of Added Commentary
-
-Writer Of Added Lyrics
-
-Writer Of Added Text
-
-Writer Of Film Story
-
-Writer Of Intertitles
-
-Writer Of Introduction
-
-Writer Of Preface
-
-Writer Of Supplementary Textual Content
-
-Writer Of Television Story
-
-Writing – Original Draft
-
-Writing – Review & Editing
+  - id: dancer
+    term: Dancer
+    source: LOC
+    datacite: Other
+    marc: dnc
+  - id: data-contributor
+    term: Data contributor
+    source: LOC
+    datacite: Other
+    marc: dtc
+  - id: data-manager
+    term: Data manager
+    source: LOC
+    datacite: Other
+    marc: dtm
+  - id: dedicatee
+    term: Dedicatee
+    source: LOC
+    datacite: Other
+    marc: dte
+  - id: dedicator
+    term: Dedicator
+    source: LOC
+    datacite: Other
+    marc: dto
+  - id: defendant
+    term: Defendant
+    source: LOC
+    datacite: Other
+    marc: dfd
+  - id: defendant-appellant
+    term: Defendant-appellant
+    source: LOC
+    datacite: Other
+    marc: dft
+  - id: defendant-appellee
+    term: Defendant-appellee
+    source: LOC
+    datacite: Other
+    marc: dfe
+  - id: degree-committee-member
+    term: Degree committee member
+    source: LOC
+    datacite: Other
+    marc: dgc
+  - id: degree-granting-institution
+    term: Degree granting institution
+    source: LOC
+    datacite: Other
+    marc: dgg
+  - id: degree-supervisor
+    term: Degree supervisor
+    source: LOC
+    datacite: Other
+    marc: dgs
+  - id: delineator
+    term: Delineator
+    source: LOC
+    datacite: Other
+    marc: dln
+  - id: depicted
+    term: Depicted
+    source: LOC
+    datacite: Other
+    marc: dpc
+  - id: depositor
+    term: Depositor
+    source: LOC
+    datacite: Other
+    marc: dpt
+  - id: designer
+    term: Designer
+    source: LOC
+    datacite: Other
+    marc: dsr
+  - id: director
+    term: Director
+    source: LOC
+    datacite: Other
+    marc: drt
+  - id: dissertant
+    term: Dissertant
+    source: LOC
+    datacite: Other
+    marc: dis
+  - id: distribution-place
+    term: Distribution place
+    source: LOC
+    datacite: Other
+    marc: dbp
+  - id: distributor
+    term: Distributor
+    source: LOC
+    datacite: Other
+    marc: dst
+  - id: dj
+    term: DJ
+    source: LOC
+    datacite: Other
+    marc: djo
+  - id: donor
+    term: Donor
+    source: LOC
+    datacite: Other
+    marc: dnr
+  - id: draftsman
+    term: Draftsman
+    source: LOC
+    datacite: Other
+    marc: drm
+  - id: dubbing-director
+    term: Dubbing director
+    source: LOC
+    datacite: Other
+    marc: dbd
+  - id: dubious-author
+    term: Dubious author
+    source: LOC
+    datacite: Other
+    marc: dub
+  - id: editor-of-compilation
+    term: Editor of compilation
+    source: LOC
+    datacite: Other
+    marc: edc
+  - id: editor-of-moving-image-work
+    term: Editor of moving image work
+    source: LOC
+    datacite: Other
+    marc: edm
+  - id: editor
+    term: Editor
+    source: LOC
+    datacite: Other
+    marc: edt
+  - id: editorial-director
+    term: Editorial director
+    source: LOC
+    datacite: Other
+    marc: edd
+  - id: electrician
+    term: Electrician
+    source: LOC
+    datacite: Other
+    marc: elg
+  - id: electrotyper
+    term: Electrotyper
+    source: LOC
+    datacite: Other
+    marc: elt
+  - id: enacting-jurisdiction
+    term: Enacting jurisdiction
+    source: LOC
+    datacite: Other
+    marc: enj
+  - id: engineer
+    term: Engineer
+    source: LOC
+    datacite: Other
+    marc: eng
+  - id: engraver
+    term: Engraver
+    source: LOC
+    datacite: Other
+    marc: egr
+  - id: etcher
+    term: Etcher
+    source: LOC
+    datacite: Other
+    marc: etr
+  - id: event-place
+    term: Event place
+    source: LOC
+    datacite: Other
+    marc: evp
+  - id: expert
+    term: Expert
+    source: LOC
+    datacite: Other
+    marc: exp
+  - id: facsimilist
+    term: Facsimilist
+    source: LOC
+    datacite: Other
+    marc: fac
+  - id: field-director
+    term: Field director
+    source: LOC
+    datacite: Other
+    marc: fld
+  - id: film-director
+    term: Film director
+    source: LOC
+    datacite: Other
+    marc: fmd
+  - id: film-distributor
+    term: Film distributor
+    source: LOC
+    datacite: Other
+    marc: fds
+  - id: film-editor
+    term: Film editor
+    source: LOC
+    datacite: Other
+    marc: flm
+  - id: film-producer
+    term: Film producer
+    source: LOC
+    datacite: Other
+    marc: fmp
+  - id: filmmaker
+    term: Filmmaker
+    source: LOC
+    datacite: Other
+    marc: fmk
+  - id: first-party
+    term: First party
+    source: LOC
+    datacite: Other
+    marc: fpy
+  - id: forger
+    term: Forger
+    source: LOC
+    datacite: Other
+    marc: frg
+  - id: former-owner
+    term: Former owner
+    source: LOC
+    datacite: Other
+    marc: fmo
+  - id: founder
+    term: Founder
+    source: LOC
+    datacite: Other
+    marc: fon
+  - id: funder
+    term: Funder
+    source: LOC
+    datacite: Other
+    marc: fnd
+  - id: game-developer
+    term: Game developer
+    source: LOC
+    datacite: Other
+    marc: gdv
+  - id: geographic-information-specialist
+    term: Geographic information specialist
+    source: LOC
+    datacite: Other
+    marc: gis
+  - id: honoree
+    term: Honoree
+    source: LOC
+    datacite: Other
+    marc: hnr
+  - id: host-institution
+    term: Host institution
+    source: LOC
+    datacite: Other
+    marc: his
+  - id: host
+    term: Host
+    source: LOC
+    datacite: Other
+    marc: hst
+  - id: illuminator
+    term: Illuminator
+    source: LOC
+    datacite: Other
+    marc: ilu
+  - id: illustrator
+    term: Illustrator
+    source: LOC
+    datacite: Other
+    marc: ill
+  - id: inscriber
+    term: Inscriber
+    source: LOC
+    datacite: Other
+    marc: ins
+  - id: instrumentalist
+    term: Instrumentalist
+    source: LOC
+    datacite: Other
+    marc: itr
+  - id: interviewee
+    term: Interviewee
+    source: LOC
+    datacite: Other
+    marc: ive
+  - id: interviewer
+    term: Interviewer
+    source: LOC
+    datacite: Other
+    marc: ivr
+  - id: inventor
+    term: Inventor
+    source: LOC
+    datacite: Other
+    marc: inv
+  - id: issuing-body
+    term: Issuing body
+    source: LOC
+    datacite: Other
+    marc: isb
+  - id: judge
+    term: Judge
+    source: LOC
+    datacite: Other
+    marc: jud
+  - id: jurisdiction-governed
+    term: Jurisdiction governed
+    source: LOC
+    datacite: Other
+    marc: jug
+  - id: laboratory-director
+    term: Laboratory director
+    source: LOC
+    datacite: Other
+    marc: ldr
+  - id: laboratory
+    term: Laboratory
+    source: LOC
+    datacite: Other
+    marc: lbr
+  - id: landscape-architect
+    term: Landscape architect
+    source: LOC
+    datacite: Other
+    marc: lsa
+  - id: lead
+    term: Lead
+    source: LOC
+    datacite: Other
+    marc: led
+  - id: lender
+    term: Lender
+    source: LOC
+    datacite: Other
+    marc: len
+  - id: libelant
+    term: Libelant
+    source: LOC
+    datacite: Other
+    marc: lil
+  - id: libelant-appellant
+    term: Libelant-appellant
+    source: LOC
+    datacite: Other
+    marc: lit
+  - id: libelant-appellee
+    term: Libelant-appellee
+    source: LOC
+    datacite: Other
+    marc: lie
+  - id: libelee
+    term: Libelee
+    source: LOC
+    datacite: Other
+    marc: lel
+  - id: libelee-appellant
+    term: Libelee-appellant
+    source: LOC
+    datacite: Other
+    marc: let
+  - id: libelee-appellee
+    term: Libelee-appellee
+    source: LOC
+    datacite: Other
+    marc: lee
+  - id: librettist
+    term: Librettist
+    source: LOC
+    datacite: Other
+    marc: lbt
+  - id: licensee
+    term: Licensee
+    source: LOC
+    datacite: Other
+    marc: lse
+  - id: licensor
+    term: Licensor
+    source: LOC
+    datacite: Other
+    marc: lso
+  - id: lighting-designer
+    term: Lighting designer
+    source: LOC
+    datacite: Other
+    marc: lgd
+  - id: lithographer
+    term: Lithographer
+    source: LOC
+    datacite: Other
+    marc: ltg
+  - id: lyricist
+    term: Lyricist
+    source: LOC
+    datacite: Other
+    marc: lyr
+  - id: makeup-artist
+    term: Makeup artist
+    source: LOC
+    datacite: Other
+    marc: mka
+  - id: manufacture-place
+    term: Manufacture place
+    source: LOC
+    datacite: Other
+    marc: mfp
+  - id: manufacturer
+    term: Manufacturer
+    source: LOC
+    datacite: Other
+    marc: mfr
+  - id: marbler
+    term: Marbler
+    source: LOC
+    datacite: Other
+    marc: mrb
+  - id: markup-editor
+    term: Markup editor
+    source: LOC
+    datacite: Other
+    marc: mrk
+  - id: medium
+    term: Medium
+    source: LOC
+    datacite: Other
+    marc: med
+  - id: metadata-contact
+    term: Metadata contact
+    source: LOC
+    datacite: Other
+    marc: mdc
+  - id: metal-engraver
+    term: Metal-engraver
+    source: LOC
+    datacite: Other
+    marc: mte
+  - id: minute-taker
+    term: Minute taker
+    source: LOC
+    datacite: Other
+    marc: mtk
+  - id: mixing-engineer
+    term: Mixing engineer
+    source: LOC
+    datacite: Other
+    marc: mxe
+  - id: moderator
+    term: Moderator
+    source: LOC
+    datacite: Other
+    marc: mod
+  - id: monitor
+    term: Monitor
+    source: LOC
+    datacite: Other
+    marc: mon
+  - id: music-copyist
+    term: Music copyist
+    source: LOC
+    datacite: Other
+    marc: mcp
+  - id: music-programmer
+    term: Music programmer
+    source: LOC
+    datacite: Other
+    marc: mup
+  - id: musical-director
+    term: Musical director
+    source: LOC
+    datacite: Other
+    marc: msd
+  - id: musician
+    term: Musician
+    source: LOC
+    datacite: Other
+    marc: mus
+  - id: narrator
+    term: Narrator
+    source: LOC
+    datacite: Other
+    marc: nrt
+  - id: news-anchor
+    term: News anchor
+    source: LOC
+    datacite: Other
+    marc: nan
+  - id: onscreen-participant
+    term: Onscreen participant
+    source: LOC
+    datacite: Other
+    marc: onp
+  - id: onscreen-presenter
+    term: Onscreen presenter
+    source: LOC
+    datacite: Other
+    marc: osp
+  - id: opponent
+    term: Opponent
+    source: LOC
+    datacite: Other
+    marc: opn
+  - id: organizer
+    term: Organizer
+    source: LOC
+    datacite: Other
+    marc: orm
+  - id: originator
+    term: Originator
+    source: LOC
+    datacite: Other
+    marc: org
+  - id: other
+    term: Other
+    source: LOC
+    datacite: Other
+    marc: oth
+  - id: owner
+    term: Owner
+    source: LOC
+    datacite: Other
+    marc: own
+  - id: panelist
+    term: Panelist
+    source: LOC
+    datacite: Other
+    marc: pan
+  - id: papermaker
+    term: Papermaker
+    source: LOC
+    datacite: Other
+    marc: ppm
+  - id: patent-applicant
+    term: Patent applicant
+    source: LOC
+    datacite: Other
+    marc: pta
+  - id: patent-holder
+    term: Patent holder
+    source: LOC
+    datacite: Other
+    marc: pth
+  - id: patron
+    term: Patron
+    source: LOC
+    datacite: Other
+    marc: pat
+  - id: performer
+    term: Performer
+    source: LOC
+    datacite: Other
+    marc: prf
+  - id: permitting-agency
+    term: Permitting agency
+    source: LOC
+    datacite: Other
+    marc: pma
+  - id: photographer
+    term: Photographer
+    source: LOC
+    datacite: Other
+    marc: pht
+  - id: place-of-address
+    term: Place of address
+    source: LOC
+    datacite: Other
+    marc: pad
+  - id: plaintiff
+    term: Plaintiff
+    source: LOC
+    datacite: Other
+    marc: ptf
+  - id: plaintiff-appellant
+    term: Plaintiff-appellant
+    source: LOC
+    datacite: Other
+    marc: ptt
+  - id: plaintiff-appellee
+    term: Plaintiff-appellee
+    source: LOC
+    datacite: Other
+    marc: pte
+  - id: platemaker
+    term: Platemaker
+    source: LOC
+    datacite: Other
+    marc: plt
+  - id: praeses
+    term: Praeses
+    source: LOC
+    datacite: Other
+    marc: pra
+  - id: presenter
+    term: Presenter
+    source: LOC
+    datacite: Other
+    marc: pre
+  - id: printer-of-plates
+    term: Printer of plates
+    source: LOC
+    datacite: Other
+    marc: pop
+  - id: printer
+    term: Printer
+    source: LOC
+    datacite: Other
+    marc: prt
+  - id: printmaker
+    term: Printmaker
+    source: LOC
+    datacite: Other
+    marc: prm
+  - id: process-contact
+    term: Process contact
+    source: LOC
+    datacite: Other
+    marc: prc
+  - id: producer
+    term: Producer
+    source: LOC
+    datacite: Other
+    marc: pro
+  - id: production-company
+    term: Production company
+    source: LOC
+    datacite: Other
+    marc: prn
+  - id: production-designer
+    term: Production designer
+    source: LOC
+    datacite: Other
+    marc: prs
+  - id: production-manager
+    term: Production manager
+    source: LOC
+    datacite: Other
+    marc: pmn
+  - id: production-personnel
+    term: Production personnel
+    source: LOC
+    datacite: Other
+    marc: prd
+  - id: production-place
+    term: Production place
+    source: LOC
+    datacite: Other
+    marc: prp
+  - id: programmer
+    term: Programmer
+    source: LOC
+    datacite: Other
+    marc: prg
+  - id: project-director
+    term: Project director
+    source: LOC
+    datacite: Other
+    marc: pdr
+  - id: proofreader
+    term: Proofreader
+    source: LOC
+    datacite: Other
+    marc: pfr
+  - id: provider
+    term: Provider
+    source: LOC
+    datacite: Other
+    marc: prv
+  - id: publication-place
+    term: Publication place
+    source: LOC
+    datacite: Other
+    marc: pup
+  - id: publisher
+    term: Publisher
+    source: LOC
+    datacite: Other
+    marc: pbl
+  - id: publishing-director
+    term: Publishing director
+    source: LOC
+    datacite: Other
+    marc: pbd
+  - id: puppeteer
+    term: Puppeteer
+    source: LOC
+    datacite: Other
+    marc: ppt
+  - id: radio-director
+    term: Radio director
+    source: LOC
+    datacite: Other
+    marc: rdd
+  - id: radio-producer
+    term: Radio producer
+    source: LOC
+    datacite: Other
+    marc: rpc
+  - id: rapporteur
+    term: Rapporteur
+    source: LOC
+    datacite: Other
+    marc: rap
+  - id: recording-engineer
+    term: Recording engineer
+    source: LOC
+    datacite: Other
+    marc: rce
+  - id: recordist
+    term: Recordist
+    source: LOC
+    datacite: Other
+    marc: rcd
+  - id: redaktor
+    term: Redaktor
+    source: LOC
+    datacite: Other
+    marc: red
+  - id: remix-artist
+    term: Remix artist
+    source: LOC
+    datacite: Other
+    marc: rxa
+  - id: renderer
+    term: Renderer
+    source: LOC
+    datacite: Other
+    marc: ren
+  - id: reporter
+    term: Reporter
+    source: LOC
+    datacite: Other
+    marc: rpt
+  - id: repository
+    term: Repository
+    source: LOC
+    datacite: Other
+    marc: rps
+  - id: research-team-head
+    term: Research team head
+    source: LOC
+    datacite: Other
+    marc: rth
+  - id: research-team-member
+    term: Research team member
+    source: LOC
+    datacite: Other
+    marc: rtm
+  - id: researcher
+    term: Researcher
+    source: LOC
+    datacite: Other
+    marc: res
+  - id: respondent
+    term: Respondent
+    source: LOC
+    datacite: Other
+    marc: rsp
+  - id: respondent-appellant
+    term: Respondent-appellant
+    source: LOC
+    datacite: Other
+    marc: rst
+  - id: respondent-appellee
+    term: Respondent-appellee
+    source: LOC
+    datacite: Other
+    marc: rse
+  - id: responsible-party
+    term: Responsible party
+    source: LOC
+    datacite: Other
+    marc: rpy
+  - id: restager
+    term: Restager
+    source: LOC
+    datacite: Other
+    marc: rsg
+  - id: restorationist
+    term: Restorationist
+    source: LOC
+    datacite: Other
+    marc: rsr
+  - id: reviewer
+    term: Reviewer
+    source: LOC
+    datacite: Other
+    marc: rev
+  - id: rubricator
+    term: Rubricator
+    source: LOC
+    datacite: Other
+    marc: rbr
+  - id: scenarist
+    term: Scenarist
+    source: LOC
+    datacite: Other
+    marc: sce
+  - id: scientific-advisor
+    term: Scientific advisor
+    source: LOC
+    datacite: Other
+    marc: sad
+  - id: screenwriter
+    term: Screenwriter
+    source: LOC
+    datacite: Other
+    marc: aus
+  - id: scribe
+    term: Scribe
+    source: LOC
+    datacite: Other
+    marc: scr
+  - id: sculptor
+    term: Sculptor
+    source: LOC
+    datacite: Other
+    marc: scl
+  - id: second-party
+    term: Second party
+    source: LOC
+    datacite: Other
+    marc: spy
+  - id: secretary
+    term: Secretary
+    source: LOC
+    datacite: Other
+    marc: sec
+  - id: seller
+    term: Seller
+    source: LOC
+    datacite: Other
+    marc: sll
+  - id: set-designer
+    term: Set designer
+    source: LOC
+    datacite: Other
+    marc: std
+  - id: setting
+    term: Setting
+    source: LOC
+    datacite: Other
+    marc: stg
+  - id: signer
+    term: Signer
+    source: LOC
+    datacite: Other
+    marc: sgn
+  - id: singer
+    term: Singer
+    source: LOC
+    datacite: Other
+    marc: sng
+  - id: software-developer
+    term: Software developer
+    source: LOC
+    datacite: Other
+    marc: swd
+  - id: sound-designer
+    term: Sound designer
+    source: LOC
+    datacite: Other
+    marc: sds
+  - id: sound-engineer
+    term: Sound engineer
+    source: LOC
+    datacite: Other
+    marc: sde
+  - id: speaker
+    term: Speaker
+    source: LOC
+    datacite: Other
+    marc: spk
+  - id: special-effects-provider
+    term: Special effects provider
+    source: LOC
+    datacite: Other
+    marc: sfx
+  - id: sponsor
+    term: Sponsor
+    source: LOC
+    datacite: Other
+    marc: spn
+  - id: stage-director
+    term: Stage director
+    source: LOC
+    datacite: Other
+    marc: sgd
+  - id: stage-manager
+    term: Stage manager
+    source: LOC
+    datacite: Other
+    marc: stm
+  - id: standards-body
+    term: Standards body
+    source: LOC
+    datacite: Other
+    marc: stn
+  - id: stereotyper
+    term: Stereotyper
+    source: LOC
+    datacite: Other
+    marc: str
+  - id: storyteller
+    term: Storyteller
+    source: LOC
+    datacite: Other
+    marc: stl
+  - id: supporting-host
+    term: Supporting host
+    source: LOC
+    datacite: Other
+    marc: sht
+  - id: surveyor
+    term: Surveyor
+    source: LOC
+    datacite: Other
+    marc: srv
+  - id: teacher
+    term: Teacher
+    source: LOC
+    datacite: Other
+    marc: tch
+  - id: technical-director
+    term: Technical director
+    source: LOC
+    datacite: Other
+    marc: tcd
+  - id: television-director
+    term: Television director
+    source: LOC
+    datacite: Other
+    marc: tld
+  - id: television-guest
+    term: Television guest
+    source: LOC
+    datacite: Other
+    marc: tlg
+  - id: television-host
+    term: Television host
+    source: LOC
+    datacite: Other
+    marc: tlh
+  - id: television-producer
+    term: Television producer
+    source: LOC
+    datacite: Other
+    marc: tlp
+  - id: television-writer
+    term: Television writer
+    source: LOC
+    datacite: Other
+    marc: tau
+  - id: thesis-advisor
+    term: Thesis advisor
+    source: LOC
+    datacite: Other
+    marc: ths
+  - id: transcriber
+    term: Transcriber
+    source: LOC
+    datacite: Other
+    marc: trc
+  - id: translator
+    term: Translator
+    source: LOC
+    datacite: Other
+    marc: trl
+  - id: type-designer
+    term: Type designer
+    source: LOC
+    datacite: Other
+    marc: tyd
+  - id: typographer
+    term: Typographer
+    source: LOC
+    datacite: Other
+    marc: tyg
+  - id: university-place
+    term: University place
+    source: LOC
+    datacite: Other
+    marc: uvp
+  - id: videographer
+    term: Videographer
+    source: LOC
+    datacite: Other
+    marc: vdg
+  - id: visual-effects-provider
+    term: Visual effects provider
+    source: LOC
+    datacite: Other
+    marc: vfx
+  - id: voice-actor
+    term: Voice actor
+    source: LOC
+    datacite: Other
+    marc: vac
+  - id: witness
+    term: Witness
+    source: LOC
+    datacite: Other
+    marc: wit
+  - id: wood-engraver
+    term: Wood engraver
+    source: LOC
+    datacite: Other
+    marc: wde
+  - id: woodcutter
+    term: Woodcutter
+    source: LOC
+    datacite: Other
+    marc: wdc
+  - id: writer-of-accompanying-material
+    term: Writer of accompanying material
+    source: LOC
+    datacite: Other
+    marc: wam
+  - id: writer-of-added-commentary
+    term: Writer of added commentary
+    source: LOC
+    datacite: Other
+    marc: wac
+  - id: writer-of-added-lyrics
+    term: Writer of added lyrics
+    source: LOC
+    datacite: Other
+    marc: wal
+  - id: writer-of-added-text
+    term: Writer of added text
+    source: LOC
+    datacite: Other
+    marc: wat
+  - id: writer-of-film-story
+    term: Writer of film story
+    source: LOC
+    datacite: Other
+    marc: wfs
+  - id: writer-of-intertitles
+    term: Writer of intertitles
+    source: LOC
+    datacite: Other
+    marc: wft
+  - id: writer-of-introduction
+    term: Writer of introduction
+    source: LOC
+    datacite: Other
+    marc: win
+  - id: writer-of-preface
+    term: Writer of preface
+    source: LOC
+    datacite: Other
+    marc: wpr
+  - id: writer-of-supplementary-textual-content
+    term: Writer of supplementary textual content
+    source: LOC
+    datacite: Other
+    marc: wst
+  - id: writer-of-television-story
+    term: Writer of television story
+    source: LOC
+    datacite: Other
+    marc: wts
+  - id: accountablePerson
+    term: accountablePerson
+    source: schema.org
+    datacite: Other
+  - id: acquiredFrom
+    term: acquiredFrom
+    source: schema.org
+    datacite: Other
+  - id: actor
+    term: actor
+    source: schema.org
+    datacite: Other
+  - id: agent
+    term: agent
+    source: schema.org
+    datacite: Other
+  - id: alumni
+    term: alumni
+    source: schema.org
+    datacite: Other
+  - id: artist
+    term: artist
+    source: schema.org
+    datacite: Other
+  - id: athlete
+    term: athlete
+    source: schema.org
+    datacite: Other
+  - id: attendee
+    term: attendee
+    source: schema.org
+    datacite: Other
+  - id: author
+    term: author
+    source: schema.org
+    datacite: Other
+  - id: awayTeam
+    term: awayTeam
+    source: schema.org
+    datacite: Other
+  - id: bccRecipient
+    term: bccRecipient
+    source: schema.org
+    datacite: Other
+  - id: bookingAgent
+    term: bookingAgent
+    source: schema.org
+    datacite: Other
+  - id: borrower
+    term: borrower
+    source: schema.org
+    datacite: Other
+  - id: broker
+    term: broker
+    source: schema.org
+    datacite: Other
+  - id: buyer
+    term: buyer
+    source: schema.org
+    datacite: Other
+  - id: byArtist
+    term: byArtist
+    source: schema.org
+    datacite: Other
+  - id: candidate
+    term: candidate
+    source: schema.org
+    datacite: Other
+  - id: ccRecipient
+    term: ccRecipient
+    source: schema.org
+    datacite: Other
+  - id: character
+    term: character
+    source: schema.org
+    datacite: Other
+  - id: children
+    term: children
+    source: schema.org
+    datacite: Other
+  - id: claimInterpreter
+    term: claimInterpreter
+    source: schema.org
+    datacite: Other
+  - id: coach
+    term: coach
+    source: schema.org
+    datacite: Other
+  - id: colleague
+    term: colleague
+    source: schema.org
+    datacite: Other
+  - id: colorist
+    term: colorist
+    source: schema.org
+    datacite: Other
+  - id: competitor
+    term: competitor
+    source: schema.org
+    datacite: Other
+  - id: composer
+    term: composer
+    source: schema.org
+    datacite: Other
+  - id: contributor
+    term: contributor
+    source: schema.org
+    datacite: Other
+  - id: copyrightHolder
+    term: copyrightHolder
+    source: schema.org
+    datacite: Other
+  - id: creator
+    term: creator
+    source: schema.org
+    datacite: Other
+  - id: creditedTo
+    term: creditedTo
+    source: schema.org
+    datacite: Other
+  - id: customer
+    term: customer
+    source: schema.org
+    datacite: Other
+  - id: director
+    term: director
+    source: schema.org
+    datacite: Other
+  - id: editor
+    term: editor
+    source: schema.org
+    datacite: Other
+  - id: employee
+    term: employee
+    source: schema.org
+    datacite: Other
+  - id: endorsee
+    term: endorsee
+    source: schema.org
+    datacite: Other
+  - id: followee
+    term: followee
+    source: schema.org
+    datacite: Other
+  - id: follows
+    term: follows
+    source: schema.org
+    datacite: Other
+  - id: founder
+    term: founder
+    source: schema.org
+    datacite: Other
+  - id: fundedItem
+    term: fundedItem
+    source: schema.org
+    datacite: Other
+  - id: funder
+    term: funder
+    source: schema.org
+    datacite: Other
+  - id: grantee
+    term: grantee
+    source: schema.org
+    datacite: Other
+  - id: hiringOrganization
+    term: hiringOrganization
+    source: schema.org
+    datacite: Other
+  - id: homeTeam
+    term: homeTeam
+    source: schema.org
+    datacite: Other
+  - id: illustrator
+    term: illustrator
+    source: schema.org
+    datacite: Other
+  - id: inker
+    term: inker
+    source: schema.org
+    datacite: Other
+  - id: instructor
+    term: instructor
+    source: schema.org
+    datacite: Other
+  - id: knows
+    term: knows
+    source: schema.org
+    datacite: Other
+  - id: landlord
+    term: landlord
+    source: schema.org
+    datacite: Other
+  - id: legislationPassedBy
+    term: legislationPassedBy
+    source: schema.org
+    datacite: Other
+  - id: legislationResponsible
+    term: legislationResponsible
+    source: schema.org
+    datacite: Other
+  - id: lender
+    term: lender
+    source: schema.org
+    datacite: Other
+  - id: letterer
+    term: letterer
+    source: schema.org
+    datacite: Other
+  - id: loser
+    term: loser
+    source: schema.org
+    datacite: Other
+  - id: lyricist
+    term: lyricist
+    source: schema.org
+    datacite: Other
+  - id: maintainer
+    term: maintainer
+    source: schema.org
+    datacite: Other
+  - id: member
+    term: member
+    source: schema.org
+    datacite: Other
+  - id: merchant
+    term: merchant
+    source: schema.org
+    datacite: Other
+  - id: musicBy
+    term: musicBy
+    source: schema.org
+    datacite: Other
+  - id: musicGroupMember
+    term: musicGroupMember
+    source: schema.org
+    datacite: Other
+  - id: offeredBy
+    term: offeredBy
+    source: schema.org
+    datacite: Other
+  - id: opponent
+    term: opponent
+    source: schema.org
+    datacite: Other
+  - id: organiser
+    term: organiser
+    source: schema.org
+    datacite: Other
+  - id: parent
+    term: parent
+    source: schema.org
+    datacite: Other
+  - id: participant
+    term: participant
+    source: schema.org
+    datacite: Other
+  - id: penciler
+    term: penciler
+    source: schema.org
+    datacite: Other
+  - id: performer
+    term: performer
+    source: schema.org
+    datacite: Other
+  - id: producer
+    term: producer
+    source: schema.org
+    datacite: Other
+  - id: provider
+    term: provider
+    source: schema.org
+    datacite: Other
+  - id: publishedBy
+    term: publishedBy
+    source: schema.org
+    datacite: Other
+  - id: publisher
+    term: publisher
+    source: schema.org
+    datacite: Other
+  - id: readBy
+    term: readBy
+    source: schema.org
+    datacite: Other
+  - id: recipient
+    term: recipient
+    source: schema.org
+    datacite: Other
+  - id: relatedTo
+    term: relatedTo
+    source: schema.org
+    datacite: Other
+  - id: reviewedBy
+    term: reviewedBy
+    source: schema.org
+    datacite: Other
+  - id: sdPublisher
+    term: sdPublisher
+    source: schema.org
+    datacite: Other
+  - id: seller
+    term: seller
+    source: schema.org
+    datacite: Other
+  - id: sender
+    term: sender
+    source: schema.org
+    datacite: Other
+  - id: sibling
+    term: sibling
+    source: schema.org
+    datacite: Other
+  - id: spokenByCharacter
+    term: spokenByCharacter
+    source: schema.org
+    datacite: Other
+  - id: sponsor
+    term: sponsor
+    source: schema.org
+    datacite: Other
+  - id: spouse
+    term: spouse
+    source: schema.org
+    datacite: Other
+  - id: toRecipient
+    term: toRecipient
+    source: schema.org
+    datacite: Other
+  - id: translator
+    term: translator
+    source: schema.org
+    datacite: Other
+  - id: underName
+    term: underName
+    source: schema.org
+    datacite: Other
+  - id: vendor
+    term: vendor
+    source: schema.org
+    datacite: Other
+  - id: winner
+    term: winner
+    source: schema.org
+    datacite: Other
+  - id: author-of-screenplay
+    term: Author of screenplay
+    source: westminster
+    datacite: Other
+  - id: conference-organizer
+    term: Conference organizer
+    source: westminster
+    datacite: Other
+  - id: exhibitor
+    term: Exhibitor
+    source: westminster
+    datacite: Other
