@@ -122,9 +122,12 @@ module Enact
     end
 
     # Undirected co-credit edges. For each work, every pair of its (loaded)
-    # contributors shares an edge; the weight counts shared works and `works`
-    # lists their titles. Pairs are keyed order-independently so A-B and B-A
-    # accumulate together.
+    # contributors shares an edge; the weight counts shared works. `works` lists
+    # each shared work as { title:, source_roles:, target_roles: } - the roles
+    # each endpoint played on that work - so the edge panel can show not just
+    # that two people share a work but how each of them contributed to it. Pairs
+    # are keyed order-independently (sorted) so A-B and B-A accumulate together;
+    # source_roles/target_roles track the sorted key ends to match source/target.
     def build_links(credits)
       edges = {}
       credits.each_value do |c|
@@ -133,7 +136,11 @@ module Enact
           key = [a, b].sort
           edge = (edges[key] ||= { source: key[0], target: key[1], weight: 0, works: [] })
           edge[:weight] += 1
-          edge[:works] << c[:title] if c[:title].present?
+          next if c[:title].blank?
+
+          edge[:works] << { title: c[:title],
+                            source_roles: Array(c[:roles][key[0]]).sort,
+                            target_roles: Array(c[:roles][key[1]]).sort }
         end
       end
       edges.values
