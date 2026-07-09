@@ -878,15 +878,19 @@ properties:
     view:
       render_as: compound
       html_dl: true
-  date_value:
-    type: string
-    name: value
+  date_start:
+    type: datepicker
+    name: start_date
     available_on:
       properties:
       - dates
     required: true
-    form:
-      cols: 4
+  date_end:
+    type: datepicker
+    name: end_date
+    available_on:
+      properties:
+      - dates
   date_type:
     type: controlled
     name: type
@@ -905,16 +909,12 @@ properties:
     - Valid
     - Withdrawn
     - Other
-    form:
-      cols: 4
   date_information:
     type: string
     name: information
     available_on:
       properties:
       - dates
-    form:
-      cols: 4
   contributors:
     available_on:
       class:
