@@ -66,7 +66,11 @@ h1{ font-family:var(--display); font-size:16px; font-weight:700; letter-spacing:
 .orcid-link{ color:#a6ce39; font-weight:600; text-decoration:none; }
 .orcid-link:hover{ text-decoration:underline; }
 .worklist{ margin:8px 0 0; padding:0; list-style:none; }
-.worklist li{ font-size:13px; padding:5px 0; border-top:1px solid var(--line); color:var(--text); }
+.worklist li{ font-size:13px; padding:6px 0; border-top:1px solid var(--line); color:var(--text); }
+.worktitle{ font-weight:600; }
+/* "who did what" on a shared work: name + a badge per role that person played */
+.workrole{ display:flex; align-items:baseline; gap:6px; flex-wrap:wrap; margin-top:2px; }
+.workrole .rolewho{ font-family:var(--mono); font-size:10.5px; color:var(--muted); flex:none; }
 .adjacent{ margin-top:6px; } .muted-more{ color:var(--faint); font-size:11px; }
 .profilelink{ display:inline-block; margin-top:12px; font-size:13px; font-weight:600; color:var(--accent); text-decoration:none; }
 .profilelink:hover{ text-decoration:underline; }

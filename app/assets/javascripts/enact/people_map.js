@@ -151,14 +151,30 @@
     h += '<a class="profilelink" href="' + esc(d.path || '#') + '">&#8599; View full profile</a>';
     DETAIL.innerHTML = h;
   }
+  // One "who did what" line: a person's name + a badge per role they played on
+  // this shared work. Nothing rendered when we have no role for them on it.
+  function roleRow(name, roles) {
+    if (!roles || !roles.length) { return ''; }
+    var chips = roles.map(function (r) { return '<span class="badge">' + esc(r) + '</span>'; }).join('');
+    return '<div class="workrole"><span class="rolewho">' + esc(name) + '</span>' + chips + '</div>';
+  }
   function showEdge(e) {
     var a = nameOf(e.data('source')), b = nameOf(e.data('target')), works = e.data('works') || [];
     var h = '<h4 style="font-size:16px">' + esc(a) + ' <span style="color:var(--muted)">+</span> ' + esc(b) + '</h4>';
     h += '<div class="row"><b>' + works.length + '</b> shared work' + (works.length === 1 ? '' : 's') + '</div><ul class="worklist">';
-    works.forEach(function (w) { h += '<li>' + esc(w) + '</li>'; }); h += '</ul>';
+    // Each work is { title, source_roles, target_roles } (source/target roles
+    // track the edge's source/target = a/b). Tolerate a bare-string title for
+    // forward/backward compatibility with any producer that omits roles.
+    works.forEach(function (w) {
+      var title = (typeof w === 'string') ? w : (w.title || '');
+      h += '<li><div class="worktitle">' + esc(title) + '</div>';
+      if (typeof w !== 'string') { h += roleRow(a, w.source_roles) + roleRow(b, w.target_roles); }
+      h += '</li>';
+    });
+    h += '</ul>';
     DETAIL.innerHTML = h;
   }
-  function reset() { DETAIL.innerHTML = '<p class="hint">Hover a <b>person</b> to spotlight their collaborators; click to centre the map on them and see who is one step further out. Click a <b>line</b> to see the works two people share.</p>'; }
+  function reset() { DETAIL.innerHTML = '<p class="hint">Hover a <b>person</b> to spotlight their collaborators; click to centre the map on them and see who is one step further out. Click a <b>line</b> to see the works two people share and how each of them contributed.</p>'; }
 
   // Centre on a person and tier the graph: first-order (direct) solid, second-order
   // (collaborators of collaborators, in adjacent communities) lighter + dashed.
