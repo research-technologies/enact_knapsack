@@ -66,9 +66,23 @@ RSpec.describe Enact::PeopleGraph do
 
       ab = result.links.find { |l| [l[:source], l[:target]].sort == %w[1 2] }
       expect(ab[:weight]).to eq(2)
-      expect(ab[:works]).to contain_exactly('Work One', 'Work Two')
+      expect(ab[:works].map { |w| w[:title] }).to contain_exactly('Work One', 'Work Two')
       # 1-2 (twice), 1-3, 2-3 -> three distinct undirected edges
       expect(result.links.length).to eq(3)
+    end
+
+    it 'records, per shared work, the roles each endpoint played on it' do
+      docs = [work_doc(id: 'w1', title: 'Work One',
+                       entries: [{ 'contributor' => '1', 'role' => 'conceptualization', 'role_other' => 'Artist' },
+                                 { 'contributor' => '2', 'role' => 'software' }])]
+      result = run(docs, [ana, ben])
+
+      ab = result.links.find { |l| [l[:source], l[:target]].sort == %w[1 2] }
+      work = ab[:works].first
+      expect(work[:title]).to eq('Work One')
+      # source_roles/target_roles track the sorted key ends (source '1', target '2').
+      expect(work[:source_roles]).to eq(['Artist', 'Conceptualization'])
+      expect(work[:target_roles]).to eq(['Software'])
     end
 
     it 'skips free-text-only credits (no linked contributor becomes a node)' do
