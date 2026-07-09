@@ -138,9 +138,11 @@ module Enact
           edge[:weight] += 1
           next if c[:title].blank?
 
+          # fetch, not [], so a role-less contributor does not get an empty Set
+          # written into c[:roles] by its default proc just to render the edge.
           edge[:works] << { title: c[:title],
-                            source_roles: Array(c[:roles][key[0]]).sort,
-                            target_roles: Array(c[:roles][key[1]]).sort }
+                            source_roles: Array(c[:roles].fetch(key[0], nil)).sort,
+                            target_roles: Array(c[:roles].fetch(key[1], nil)).sort }
         end
       end
       edges.values
