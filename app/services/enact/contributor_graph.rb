@@ -15,8 +15,11 @@ module Enact
   # this contributor's roles on it collected (a person can hold several CRediT
   # roles on the same work).
   class ContributorGraph
-    # A work this contributor is credited on.
-    Credit = Struct.new(:id, :title, :path, :roles, :role_other, :thumbnail, :type_label, keyword_init: true)
+    # A work this contributor is credited on. `type_label` is the localized,
+    # display-facing work-type ("Artefact"); `model` is the stable, locale-
+    # independent model name ("PortfolioArtefact") the profile's work-type filter
+    # matches on.
+    Credit = Struct.new(:id, :title, :path, :roles, :role_other, :thumbnail, :type_label, :model, keyword_init: true)
 
     # @param contributor [Enact::Contributor, #id]
     # @param ability [Ability] the viewer's abilities; the reverse lookup is
@@ -40,14 +43,16 @@ module Enact
     private
 
     # Works whose `contributors` compound names this contributor, scoped to the
-    # viewer's ability. The `rows` cap is a stop-gap: the profile renders an
-    # unpaginated list, so it is impractical well before 1000 works anyway.
-    # Pagination + search is tracked in issue #54.
+    # viewer's ability. Fetches the full set (no silent cap): #count first, then
+    # request exactly that many rows. The caller paginates in memory
+    # (Kaminari.paginate_array on the profile), so all docs are needed up front
+    # to sort by title and build the work-type filter options. Removing the old
+    # 1_000-row cap closes issue #54's silent-drop bug.
     def accessible_docs_crediting(id)
-      Hyrax::SolrQueryService.new
-                             .with_field_pairs(field_pairs: { 'contributors_contributor_ssim' => id })
-                             .accessible_by(ability: @ability)
-                             .solr_documents(rows: 1_000)
+      service = Hyrax::SolrQueryService.new
+                                       .with_field_pairs(field_pairs: { 'contributors_contributor_ssim' => id })
+                                       .accessible_by(ability: @ability)
+      service.solr_documents(rows: service.count)
     end
 
     # Build a Credit from a work doc, collecting both the controlled roles and
@@ -68,7 +73,10 @@ module Enact
         thumbnail: (doc.thumbnail_path if doc.respond_to?(:thumbnail_path)),
         # The localized work-type label (e.g. "Artefact"), from the indexed
         # human_readable_type_tesim via SolrDocument#human_readable_type.
-        type_label: (doc.human_readable_type if doc.respond_to?(:human_readable_type))
+        type_label: (doc.human_readable_type if doc.respond_to?(:human_readable_type)),
+        # The stable model name (e.g. "PortfolioArtefact") from has_model_ssim,
+        # for the profile's locale-independent work-type filter.
+        model: Array(doc['has_model_ssim']).first
       )
     end
 
