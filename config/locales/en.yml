@@ -167,3 +167,16 @@ en:
       works:
         empty: No works yet.
         untitled: Untitled
+        no_results: No works match your search.
+        count:
+          one: "Showing %{first}-%{last} of 1 work"
+          other: "Showing %{first}-%{last} of %{total} works"
+        search_label: Search works
+        search_placeholder: Search works by title
+        search_submit: Search
+        reset: Reset
+        type_label: Type
+        type_all: All
+        pagination: Works pages
+        prev_page: "‹ Prev"
+        next_page: "Next ›"

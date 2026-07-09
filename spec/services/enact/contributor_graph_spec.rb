@@ -20,6 +20,9 @@ RSpec.describe Enact::ContributorGraph do
     allow(Hyrax::SolrQueryService).to receive(:new).and_return(service)
     allow(service).to receive(:with_field_pairs).and_return(service)
     allow(service).to receive(:accessible_by).and_return(service)
+    # The graph fetches the full set with no cap: #count first, then request
+    # exactly that many rows (see #accessible_docs_crediting).
+    allow(service).to receive(:count).and_return(docs.size)
     allow(service).to receive(:solr_documents).and_return(docs)
     service
   end
@@ -44,6 +47,23 @@ RSpec.describe Enact::ContributorGraph do
       expect(service).to have_received(:with_field_pairs)
         .with(field_pairs: { 'contributors_contributor_ssim' => '42' })
       expect(service).to have_received(:accessible_by).with(ability:)
+    end
+
+    it 'fetches the full set (rows = count) rather than a fixed cap' do
+      docs = Array.new(3) { |i| work_doc(id: "work-#{i}", title: "Work #{i}", entries: []) }
+      service = stub_query_service(docs)
+      graph.works
+      # rows is driven by #count, so nothing is silently dropped (issue #54).
+      expect(service).to have_received(:solr_documents).with(rows: 3)
+    end
+
+    it 'carries the stable model name from has_model_ssim for the work-type filter' do
+      docs = [work_doc(id: 'work-1', title: 'First Work',
+                       entries: [{ 'contributor' => '42', 'role' => 'methodology' }])]
+      stub_query_service(docs)
+
+      # work_doc indexes has_model_ssim => ['Portfolio'].
+      expect(graph.works.first.model).to eq('Portfolio')
     end
 
     it 'returns one entry per work with that contributor, roles joined' do
