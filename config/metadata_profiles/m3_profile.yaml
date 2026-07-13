@@ -182,6 +182,22 @@ properties:
     - label_tesim
     property_uri: http://www.w3.org/2000/01/rdf-schema#label
     range: http://www.w3.org/2001/XMLSchema#string
+  alt_text:
+    available_on:
+      class:
+      - Hyrax::FileSet
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: Alternative text
+    index_documentation: Accessibility alt text for the file's image rendering.
+    indexing:
+    - alt_text_tesim
+    - alt_text_ssi
+    property_uri: https://hykucommons.org/terms/alt_text
+    range: http://www.w3.org/2001/XMLSchema#string
   note:
     available_on:
       class:
@@ -705,6 +721,26 @@ properties:
       properties:
       - dates
     required: true
+    form:
+      cols: 4
+  date_type:
+    type: controlled
+    name: type
+    available_on:
+      properties:
+      - dates
+    values:
+    - Accepted
+    - Available
+    - Copyrighted
+    - Collected
+    - Created
+    - Issued
+    - Submitted
+    - Updated
+    - Valid
+    - Withdrawn
+    - Other
     form:
       cols: 4
   date_information:
