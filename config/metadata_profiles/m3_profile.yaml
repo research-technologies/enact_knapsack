@@ -60,6 +60,23 @@ properties:
       multiple: false
     property_uri: https://hykucommons.org/terms/bulkrax_identifier
     range: http://www.w3.org/2001/XMLSchema#string
+  transcript_ids:
+    available_on:
+      class:
+      - Hyrax::FileSet
+    cardinality:
+      minimum: 0
+    data_type: array
+    display_label:
+      default: Transcripts
+    indexing:
+    - transcript_ids_ssim
+    form:
+      required: false
+      primary: false
+      multiple: true
+    property_uri: http://vocabulary.samvera.org/ns#transcriptIds
+    range: http://www.w3.org/2001/XMLSchema#string
   title:
     available_on:
       class:
