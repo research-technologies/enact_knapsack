@@ -2,19 +2,15 @@
 
 require 'rails_helper'
 
-# The knapsack hides the "User Collections" dashboard sidebar link from
-# non-admins so depositors do not mistake a user collection for the Portfolio
-# work type. See research-technologies/enact_knapsack#94.
+# Hides the User Collections sidebar link from non-admins (#94).
 RSpec.describe 'hyrax/dashboard/sidebar/_repository_content', type: :view do
   let(:menu) { instance_double(Hyku::MenuPresenter) }
 
   before do
-    # Isolate the partial under test from the metadata/menu sub-partials, which
-    # reach for current_ability and controller-level sidebar config.
+    # Stub the sub-partials, which reach for current_ability / controller config.
     stub_template 'hyrax/dashboard/sidebar/_metadata.html.erb' => ''
     stub_template 'hyrax/dashboard/sidebar/_menu_partials.html.erb' => ''
-    # nav_link normally builds an <a>; render the block so we can assert on the
-    # link labels that survive the admin gate.
+    # nav_link builds an <a>; render the block so we can assert on the labels.
     allow(menu).to receive(:nav_link) do |*_args, **_kwargs, &block|
       view.content_tag(:a, view.capture(&block), class: 'nav-link')
     end

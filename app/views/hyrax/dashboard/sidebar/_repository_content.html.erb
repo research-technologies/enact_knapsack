@@ -1,7 +1,7 @@
 <%# OVERRIDE Hyrax 5.2.0 (samvera/hyrax main @ 568ec626) %>
-<%# Hide the "User Collections" sidebar link from non-admins so depositors do %>
-<%# not mistake a user collection for the Portfolio work type as the parent of %>
-<%# their works. See research-technologies/enact_knapsack#94. %>
+<%# Hide the User Collections link from non-admins (#94). Safe because creation %>
+<%# is disabled for everyone (see CollectionAbilityDecorator); admins keep it to %>
+<%# manage existing collections. %>
   <li class="h5 nav-item"><%= t('hyrax.admin.sidebar.repository_objects') %></li>
 
   <% if can? :read, :admin_dashboard %>
