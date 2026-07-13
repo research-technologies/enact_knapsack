@@ -957,6 +957,22 @@ properties:
     - relationships_type_other_tesim
     form:
       cols: 12
+  relationship_position:
+    type: string
+    name: position
+    available_on:
+      properties:
+      - relationships
+    required: false
+  relationship_note:
+    type: string
+    name: note
+    available_on:
+      properties:
+      - relationships
+    required: false
+    indexing:
+    - relationships_note_tesim
   media_viewer:
     available_on:
       class:
