@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="<%= I18n.locale %>">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<%# Standalone (layout:false) document that boots Cytoscape against its own
+    head-loaded assets. Turbolinks/Turbo partial visits swap it into the current
+    page and leave the graph half-initialised (blank until a hard refresh), so
+    force a full page load whenever anything navigates here. This is why the
+    entry links don't each need data-turbolinks=false. %>
+<meta name="turbolinks-visit-control" content="reload">
+<meta name="turbo-visit-control" content="reload">
+<title>Research network &mdash; Enact</title>
+<%# Standalone people map: contributors linked where they share credit on a
+    work, coloured by institution. Companion to the relationship map and built
+    the same way - Cytoscape.js is vendored at app/assets/javascripts/cytoscape.js;
+    page CSS/JS live in app/assets/{stylesheets,javascripts}/enact/people_map.*.
+    Renders with `layout: false`, so it pulls its own assets here; server data
+    (the contributor network from Enact::PeopleGraph, or the illustrative
+    fallback) is handed to the JS through the JSON data island below.
+    Precompiled in config/initializers/people_map_assets.rb. %>
+<%= stylesheet_link_tag 'enact/people_map', media: 'all' %>
+<%= javascript_include_tag 'cytoscape' %>
+</head>
+<body>
+<div id="app">
+  <div id="graphwrap">
+    <div id="toolbar">
+      <input id="search" type="search" placeholder="Search people&hellip;" aria-label="Search people" autocomplete="off" />
+      <span id="layoutswitch" role="group" aria-label="Layout">
+        <span class="lbl">Layout</span>
+        <button type="button" data-layout="cose" aria-pressed="true">Force</button>
+        <button type="button" data-layout="concentric" aria-pressed="false">Radial</button>
+        <button type="button" data-layout="breadthfirst" aria-pressed="false">Tree</button>
+      </span>
+    </div>
+    <%# Mobile only (CSS): floats above the graph and toggles the side panel,
+        which becomes a right-hand drawer on narrow screens. %>
+    <button type="button" id="panel-toggle" aria-controls="side" aria-expanded="false">Details</button>
+    <div id="cy" data-focus="<%= @focus %>"></div>
+    <div id="empty">No contributor network is visible to you yet.</div>
+    <div id="focusbar">
+      <span class="who-wrap">Around <b class="who"></b></span>
+      <span class="fkey"><i class="keyline"></i><b class="t1n">0</b> direct</span>
+      <span class="fkey" title="Linked through one of their collaborators, not directly"><i class="keyline dash"></i><b class="t2n">0</b> one step further</span>
+      <a class="reset" role="button" tabindex="0">show everyone &times;</a>
+    </div>
+  </div>
+  <div id="side">
+    <h1>Research network</h1>
+    <div class="sub">Enact &middot; contributors, linked where they share credit on a work</div>
+    <% if @illustrative %>
+      <div class="illus" role="note">Showing sample data &ndash; this repository has no linked contributors yet.</div>
+    <% end %>
+    <div id="detail"><p class="hint">Hover a <b>person</b> to spotlight their collaborators; click to pin their details.
+      Click a <b>line</b> to see the works two people share and how each of them contributed. Drag to rearrange; scroll to zoom.</p></div>
+    <div class="legend">
+      <h2>Institution</h2>
+      <p class="legend-hint">Click a name to show or hide it</p>
+      <div id="legend"></div>
+    </div>
+    <div class="legend linekey">
+      <h2>Lines</h2>
+      <p class="legend-hint">A line joins two people who share a work. The number on it is how many works they share, and a thicker line means more.</p>
+      <p class="legend-hint mt">When you focus on a person:</p>
+      <div class="lk-row"><i class="keyline"></i> Solid &ndash; their direct collaborators</div>
+      <div class="lk-row"><i class="keyline dash"></i> Dashed &ndash; one step further, via a shared collaborator</div>
+    </div>
+  </div>
+</div>
+
+<%# Server data for app/assets/javascripts/enact/people_map.js. Kept in a JSON
+    data island so the JS stays a static, cacheable asset. %>
+<%# json_escape neutralises `<`/`>`/`&` (e.g. a `</script>` inside a contributor
+    name or affiliation) so the JSON can't break out of the script tag. %>
+<script type="application/json" id="people-data">
+  <%= raw json_escape(@graph.to_json) %>
+</script>
+<%= javascript_include_tag 'enact/people_map' %>
+</body>
+</html>

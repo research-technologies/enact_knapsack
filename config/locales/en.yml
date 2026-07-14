@@ -117,6 +117,12 @@ en:
         referenced-by: Is referenced by
         documented-by: Is documented by
         juxtaposed-with: Is juxtaposed with
+    people_map:
+      # Button on a contributor profile opening the research-network map centred
+      # on that person (first-order + second-order collaborators).
+      profile_link: Research network
+      # Link on the contributors browse index opening the whole network.
+      index_link: View as network
     homepage:
       featured_researcher:
         # Button on the home page Featured Researcher tab linking to the
@@ -161,3 +167,16 @@ en:
       works:
         empty: No works yet.
         untitled: Untitled
+        no_results: No works match your search.
+        count:
+          one: "Showing %{first}-%{last} of 1 work"
+          other: "Showing %{first}-%{last} of %{total} works"
+        search_label: Search works
+        search_placeholder: Search works by title
+        search_submit: Search
+        reset: Reset
+        type_label: Type
+        type_all: All
+        pagination: Works pages
+        prev_page: "‹ Prev"
+        next_page: "Next ›"

@@ -55,6 +55,23 @@ properties:
       multiple: false
     property_uri: https://hykucommons.org/terms/bulkrax_identifier
     range: http://www.w3.org/2001/XMLSchema#string
+  transcript_ids:
+    available_on:
+      class:
+      - Hyrax::FileSet
+    cardinality:
+      minimum: 0
+    data_type: array
+    display_label:
+      default: Transcripts
+    indexing:
+    - transcript_ids_ssim
+    form:
+      required: false
+      primary: false
+      multiple: true
+    property_uri: http://vocabulary.samvera.org/ns#transcriptIds
+    range: http://www.w3.org/2001/XMLSchema#string
   title:
     available_on:
       class:
@@ -714,15 +731,19 @@ properties:
     view:
       render_as: compound
       html_dl: true
-  date_value:
-    type: string
-    name: value
+  date_start:
+    type: datepicker
+    name: start_date
     available_on:
       properties:
       - dates
     required: true
-    form:
-      cols: 4
+  date_end:
+    type: datepicker
+    name: end_date
+    available_on:
+      properties:
+      - dates
   date_type:
     type: controlled
     name: type
@@ -741,16 +762,12 @@ properties:
     - Valid
     - Withdrawn
     - Other
-    form:
-      cols: 4
   date_information:
     type: string
     name: information
     available_on:
       properties:
       - dates
-    form:
-      cols: 4
   contributors:
     available_on:
       class:

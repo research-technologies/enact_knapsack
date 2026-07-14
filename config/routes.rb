@@ -8,6 +8,12 @@ HykuKnapsack::Engine.routes.draw do
   # #32's Enact:: conventions), not HykuKnapsack::Enact::.
   get '/relationship-map', to: '/enact/relationship_map#show', as: :relationship_map
 
+  # Enact "research network" people map: contributors as nodes, linked where they
+  # share credit on a work, coloured by institution. Companion to the work
+  # relationship map above; the leading slash escapes the isolated engine
+  # namespace -> top-level Enact::PeopleMapController.
+  get '/people-map', to: '/enact/people_map#show', as: :people_map
+
   # Enact contributor profiles (person/organization). Index lists all
   # contributors (linked from the home page's Featured Researcher tab); show is
   # an individual profile. Leading slash escapes the isolated engine namespace
