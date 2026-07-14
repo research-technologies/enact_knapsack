@@ -117,5 +117,5 @@ terms:
     label: Text
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#workflow
     label: Workflow
-   - id: https://vocabularies.coar-repositories.org/resource_types/c_8042/
-    label: Working paper 
+  - id: https://vocabularies.coar-repositories.org/resource_types/c_8042/
+    label: Working paper
