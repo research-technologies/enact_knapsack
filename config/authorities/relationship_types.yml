@@ -1,0 +1,240 @@
+# DataCite relationType vocabulary for the `relationships` compound, read via
+# Enact::RelationshipTypesService. Non-QA keys: `inverse:` (how the edge reads
+# from the target's side; a symmetric term points at itself) and optional
+# `color:` (map edge colour; uncoloured terms share a neutral fallback).
+terms:
+  - id: iscitedby
+    term: Is Cited By
+    source: datacite
+    datacite: IsCitedBy
+    inverse: cites
+    color: '#c9544b'
+  - id: cites
+    term: Cites
+    source: datacite
+    datacite: Cites
+    inverse: iscitedby
+    color: '#c9544b'
+  - id: issupplementto
+    term: Is Supplement To
+    source: datacite
+    datacite: IsSupplementTo
+    inverse: issupplementedby
+  - id: issupplementedby
+    term: Is Supplemented By
+    source: datacite
+    datacite: IsSupplementedBy
+    inverse: issupplementto
+  - id: iscontinuedby
+    term: Is Continued By
+    source: datacite
+    datacite: IsContinuedBy
+    inverse: continues
+    color: '#5b9bd5'
+  - id: continues
+    term: Continues
+    source: datacite
+    datacite: Continues
+    inverse: iscontinuedby
+    color: '#5b9bd5'
+  - id: describes
+    term: Describes
+    source: datacite
+    datacite: Describes
+    inverse: isdescribedby
+  - id: isdescribedby
+    term: Is Described By
+    source: datacite
+    datacite: IsDescribedBy
+    inverse: describes
+  - id: hasmetadata
+    term: Has Metadata
+    source: datacite
+    datacite: HasMetadata
+    inverse: ismetadatafor
+  - id: ismetadatafor
+    term: Is Metadata For
+    source: datacite
+    datacite: IsMetadataFor
+    inverse: hasmetadata
+  - id: hasversion
+    term: Has Version
+    source: datacite
+    datacite: HasVersion
+    inverse: isversionof
+  - id: isversionof
+    term: Is Version Of
+    source: datacite
+    datacite: IsVersionOf
+    inverse: hasversion
+  - id: isnewversionof
+    term: Is New Version Of
+    source: datacite
+    datacite: IsNewVersionOf
+    inverse: ispreviousversionof
+  - id: ispreviousversionof
+    term: Is Previous Version Of
+    source: datacite
+    datacite: IsPreviousVersionOf
+    inverse: isnewversionof
+  - id: ispartof
+    term: Is Part Of
+    source: datacite
+    datacite: IsPartOf
+    inverse: haspart
+    color: '#c2a83e'
+  - id: haspart
+    term: Has Part
+    source: datacite
+    datacite: HasPart
+    inverse: ispartof
+    color: '#c2a83e'
+  - id: ispublishedin
+    term: Is Published In
+    source: datacite
+    datacite: IsPublishedIn
+  - id: isreferencedby
+    term: Is Referenced By
+    source: datacite
+    datacite: IsReferencedBy
+    inverse: references
+  - id: references
+    term: References
+    source: datacite
+    datacite: References
+    inverse: isreferencedby
+  - id: isdocumentedby
+    term: Is Documented By
+    source: datacite
+    datacite: IsDocumentedBy
+    inverse: documents
+    color: '#4aa3a3'
+  - id: documents
+    term: Documents
+    source: datacite
+    datacite: Documents
+    inverse: isdocumentedby
+    color: '#4aa3a3'
+  - id: iscompiledby
+    term: Is Compiled By
+    source: datacite
+    datacite: IsCompiledBy
+    inverse: compiles
+  - id: compiles
+    term: Compiles
+    source: datacite
+    datacite: Compiles
+    inverse: iscompiledby
+  - id: isvariantformof
+    term: Is Variant Form Of
+    source: datacite
+    datacite: IsVariantFormOf
+    inverse: isoriginalformof
+    color: '#b05ec0'
+  - id: isoriginalformof
+    term: Is Original Form Of
+    source: datacite
+    datacite: IsOriginalFormOf
+    inverse: isvariantformof
+    color: '#b05ec0'
+  - id: isidenticalto
+    term: Is Identical To
+    source: datacite
+    datacite: IsIdenticalTo
+    inverse: isidenticalto
+  - id: isreviewedby
+    term: Is Reviewed By
+    source: datacite
+    datacite: IsReviewedBy
+    inverse: reviews
+  - id: reviews
+    term: Reviews
+    source: datacite
+    datacite: Reviews
+    inverse: isreviewedby
+  - id: isderivedfrom
+    term: Is Derived From
+    source: datacite
+    datacite: IsDerivedFrom
+    inverse: issourceof
+    color: '#c0823c'
+  - id: issourceof
+    term: Is Source Of
+    source: datacite
+    datacite: IsSourceOf
+    inverse: isderivedfrom
+    color: '#c0823c'
+  - id: isrequiredby
+    term: Is Required By
+    source: datacite
+    datacite: IsRequiredBy
+    inverse: requires
+  - id: requires
+    term: Requires
+    source: datacite
+    datacite: Requires
+    inverse: isrequiredby
+  - id: obsoletes
+    term: Obsoletes
+    source: datacite
+    datacite: Obsoletes
+    inverse: isobsoletedby
+  - id: isobsoletedby
+    term: Is Obsoleted By
+    source: datacite
+    datacite: IsObsoletedBy
+    inverse: obsoletes
+  - id: iscollectedby
+    term: Is Collected By
+    source: datacite
+    datacite: IsCollectedBy
+    inverse: collects
+  - id: collects
+    term: Collects
+    source: datacite
+    datacite: Collects
+    inverse: iscollectedby
+  # Legacy pre-DataCite vocabulary: hidden from the deposit dropdown but still
+  # resolvable, so edges stored before the switch keep working. (Legacy
+  # `documents` shares its id with the DataCite term above.) Remove once no
+  # tenant data uses them.
+  - id: sequence
+    term: Sequence
+    inverse: sequence-of
+    color: '#5b9bd5'
+    active: false
+  - id: sequence-of
+    term: Sequence Of
+    inverse: sequence
+    color: '#5b9bd5'
+    active: false
+  - id: source-of
+    term: Source Of
+    inverse: derived-from
+    color: '#c0823c'
+    active: false
+  - id: derived-from
+    term: Derived From
+    inverse: source-of
+    color: '#c0823c'
+    active: false
+  - id: pair-with
+    term: Pair With
+    inverse: pair-with
+    color: '#b05ec0'
+    active: false
+  - id: response-to
+    term: Response To
+    inverse: referenced-by
+    color: '#c9544b'
+    active: false
+  - id: referenced-by
+    term: Referenced By
+    inverse: response-to
+    color: '#c9544b'
+    active: false
+  - id: juxtaposed-with
+    term: Juxtaposed With
+    inverse: juxtaposed-with
+    color: '#c2a83e'
+    active: false

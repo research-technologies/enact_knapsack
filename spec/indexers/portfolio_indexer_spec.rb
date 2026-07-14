@@ -21,18 +21,12 @@ RSpec.describe PortfolioIndexer do
     let(:contributor) do
       { 'contributor' => '42', 'role' => 'conceptualization', 'role_other' => 'Sound design' }
     end
-    let(:license) { { 'rights_label' => 'CC BY 4.0' } }
     let(:funder) { { 'funder_name' => 'AHRC' } }
-    let(:unit) { { 'name' => 'School of Music' } }
-    let(:identifier) { { 'value' => 'doi:10.1234/foo', 'type' => 'doi' } }
     let(:resource) do
       Hyrax.persister.save(resource: Portfolio.new(
         title: ['Indexed portfolio'],
         contributors: [contributor],
-        licenses: [license],
-        funding_references: [funder],
-        organisational_units: [unit],
-        identifiers: [identifier]
+        funding_references: [funder]
       ))
     end
 
@@ -42,10 +36,7 @@ RSpec.describe PortfolioIndexer do
       # the free-text role_other indexes full-text.
       expect(doc['contributors_contributor_ssim']).to include('42')
       expect(doc['contributors_role_other_tesim']).to include(a_string_including('Sound design'))
-      expect(doc['licenses_rights_label_tesim']).to include('CC BY 4.0')
       expect(doc['funding_references_funder_name_tesim']).to include('AHRC')
-      expect(doc['organisational_units_name_tesim']).to include('School of Music')
-      expect(doc['identifiers_value_tesim']).to include(a_string_including('doi:10.1234/foo'))
     end
   end
 end

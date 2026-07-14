@@ -1,7 +1,7 @@
 ---
 m3_version: 1.0.beta2
 profile:
-  date_modified: '2026-06-25'
+  date_modified: '2026-07-07'
   responsibility: https://notch8.com
   responsibility_statement: Notch8 / Enact PR Voices Discovery
   type: Enact PR Voices Profile
@@ -31,11 +31,6 @@ mappings:
     name: Simple DC OAI PMH
 properties:
   bulkrax_identifier:
-    # Round-trips Bulkrax's `source_identifier` so imported works can be
-    # re-found and have relationships re-resolved. In flexible mode the model's
-    # `include Hyrax::Schema(:bulkrax_metadata)` is ignored, so the property has
-    # to live in this profile or Bulkrax raises RecordInvalid on every row
-    # (the work saves, but the post-save find-by-source_identifier returns nil).
     available_on:
       class:
       - Hyrax::FileSet
@@ -205,9 +200,6 @@ properties:
     property_uri: http://www.w3.org/2000/01/rdf-schema#label
     range: http://www.w3.org/2001/XMLSchema#string
   alt_text:
-    # Accessibility alternative text for the file's rendered image. Not part of
-    # the PR Voices schema; sourced from WAI alt-text guidance. Indexed so the
-    # SolrDocument can surface it to the image view override (`alt=` attribute).
     available_on:
       class:
       - Hyrax::FileSet
@@ -221,16 +213,9 @@ properties:
     indexing:
     - alt_text_tesim
     - alt_text_ssi
-    form:
-      primary: true
-      multiple: false
     property_uri: https://hykucommons.org/terms/alt_text
     range: http://www.w3.org/2001/XMLSchema#string
-    view:
-      html_dl: true
   note:
-    # Free-text note about the file. Secondary (form.primary: false), so it
-    # renders under "Additional fields" on the edit form rather than up top.
     available_on:
       class:
       - Hyrax::FileSet
@@ -250,117 +235,6 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     view:
       html_dl: true
-  rights:
-    # File-level rights as a compound (per client review): the controlled
-    # rightsstatements.org statement paired with the rights holder. Credit/
-    # attribution is inferred from the holder at display time, so there is no
-    # separate `credit` field. Repeatable so a file can carry layered claims.
-    available_on:
-      class:
-      - Hyrax::FileSet
-    cardinality:
-      minimum: 0
-    data_type: array
-    type: hash
-    display_label:
-      default: Rights
-    form:
-      primary: true
-    property_uri: http://purl.org/dc/terms/rights
-    range: https://prvoices.org/types#hash
-    view:
-      render_as: compound
-      html_dl: true
-      display: card
-  rights_statement_term:
-    # Controlled rights statement via the shared `rights_statements` QA authority
-    # (rightsstatements.org) - same vocab as the Portfolio rights_statement field,
-    # here as a compound sub-property so it pairs with the holder.
-    type: controlled
-    name: statement
-    available_on:
-      properties:
-      - rights
-    authority: rights_statements
-    form:
-      cols: 6
-  rights_holder:
-    # The rights holder (person or organisation, e.g. "PRS for Music"). Credit/
-    # attribution is derived from this at display time.
-    type: string
-    name: holder
-    available_on:
-      properties:
-      - rights
-    form:
-      cols: 6
-  provenance:
-    # PR Voices File provenance block (schema wiki: Files). Repeatable compound;
-    # provenanceScheme is C2PA per the schema example.
-    available_on:
-      class:
-      - Hyrax::FileSet
-    cardinality:
-      minimum: 0
-    data_type: array
-    type: hash
-    display_label:
-      default: Provenance
-    form:
-      primary: false
-    property_uri: https://prvoices.org/terms/provenance
-    range: https://prvoices.org/types#hash
-    groups:
-      scheme:
-        label: Scheme
-    view:
-      render_as: compound
-      html_dl: true
-  provenance_scheme:
-    type: controlled
-    name: provenanceScheme
-    available_on:
-      properties:
-      - provenance
-    group: scheme
-    values:
-    - C2PA
-    form:
-      cols: 6
-  provenance_scheme_uri:
-    type: string
-    name: schemeURI
-    available_on:
-      properties:
-      - provenance
-    group: scheme
-    form:
-      cols: 6
-  provenance_embedded:
-    type: controlled
-    name: provenanceEmbedded
-    available_on:
-      properties:
-      - provenance
-    group: scheme
-    values:
-    - "true"
-    - "false"
-    form:
-      cols: 6
-  provenance_embed_format:
-    type: controlled
-    name: embedFormat
-    available_on:
-      properties:
-      - provenance
-    group: scheme
-    values:
-    - Exif
-    - XMP
-    - IPTC
-    form:
-      cols: 6
   description:
     available_on:
       class:
@@ -369,6 +243,7 @@ properties:
       - PortfolioEvent
       - PortfolioLiterature
       - PortfolioItemCollection
+      - Hyrax::FileSet
     cardinality:
       minimum: 0
       maximum: 1
@@ -387,6 +262,10 @@ properties:
     available_on:
       class:
       - Portfolio
+      - PortfolioArtefact
+      - PortfolioEvent
+      - PortfolioLiterature
+      - PortfolioItemCollection
     cardinality:
       minimum: 0
       maximum: 1
@@ -401,10 +280,10 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     form:
       primary: true
-      input_type: rich_text       # -> TinyMCE WYSIWYG editor (from Hyrax)
+      input_type: rich_text
     view:
-      render_as: html             # -> sanitized HTML on the show page
-      position: featured          # -> top of show page (Tier 2; needs Hyku branch)
+      render_as: html
+      position: featured
       html_dl: true
   date_created:
     available_on:
@@ -565,36 +444,51 @@ properties:
     view:
       render_as: faceted
       html_dl: true
-  rights_statement:
+  rights:
     available_on:
       class:
-        - Portfolio
+      - Hyrax::FileSet
+      - Portfolio
+      - PortfolioArtefact
+      - PortfolioEvent
+      - PortfolioLiterature
+      - PortfolioItemCollection
     cardinality:
-      minimum: 1
-      maximum: 1
+      minimum: 0
     data_type: array
-    controlled_values:
-      format: http://www.w3.org/2001/XMLSchema#string
-      sources:
-        - rights_statements
+    type: hash
     display_label:
-      default: blacklight.search.fields.index.rights_statement_tesim
-    index_documentation: displayable, searchable
-    indexing:
-      - rights_statement_sim
-      - rights_statement_tesim
+      default: Rights and License
     form:
       primary: true
-      required: true
+    property_uri: http://purl.org/dc/terms/rights
+    range: https://prvoices.org/types#hash
+    view:
+      render_as: compound
+      html_dl: true
+      display: card
+  rights_statement:
+    type: controlled
+    name: statement
+    available_on:
+      properties:
+      - rights
+    authority: rights_statements
+    form:
+      cols: 6
     mappings:
       simple_dc_pmh: dc:rights
-    property_uri: http://www.europeana.eu/schemas/edm/rights
-    range: http://www.w3.org/2001/XMLSchema#string
-    sample_values:
-      - http://rightsstatements.org/vocab/InC/1.0/
-    view:
-      html_dl: true
-      render_as: rights_statement
+  license:
+    type: controlled
+    name: license
+    available_on:
+      properties:
+      - rights
+    authority: licenses
+    form:
+      cols: 6
+    mappings:
+      simple_dc_pmh: dc:license
   ref_unit_of_assessment:
     available_on:
       class:
@@ -754,11 +648,6 @@ properties:
     range: http://www.w3.org/2001/XMLSchema#string
     view:
       html_dl: true
-  # Hyku machinery fields (not Enact metadata): HykuListener sets
-  # show_pdf_viewer/show_pdf_download_button on the parent work when a PDF
-  # file is attached (hyrax_listener.rb), so every work type must carry them
-  # or characterization jobs crash with NoMethodError. Hidden from the form,
-  # mirrored from Hyku's own m3 profile.
   show_pdf_viewer:
     available_on:
       class:
@@ -774,7 +663,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#bool
       sources:
-      - "null"
+      - 'null'
     display_label:
       default: Show PDF Viewer
     indexing:
@@ -787,8 +676,8 @@ properties:
     property_uri: http://id.loc.gov/vocabulary/identifiers/show_pdf_viewer
     range: http://www.w3.org/2001/XMLSchema#bool
     sample_values:
-    - "0"
-    - "1"
+    - '0'
+    - '1'
   show_pdf_download_button:
     available_on:
       class:
@@ -804,7 +693,7 @@ properties:
     controlled_values:
       format: http://www.w3.org/2001/XMLSchema#bool
       sources:
-      - "null"
+      - 'null'
     display_label:
       default: Show PDF Download Button
     indexing:
@@ -817,61 +706,8 @@ properties:
     property_uri: http://id.loc.gov/vocabulary/identifiers/show_pdf_download_button
     range: http://www.w3.org/2001/XMLSchema#bool
     sample_values:
-    - "0"
-    - "1"
-  titles:
-    available_on:
-      class:
-      - Portfolio
-      - PortfolioArtefact
-      - PortfolioEvent
-      - PortfolioLiterature
-      - PortfolioItemCollection
-    cardinality:
-      minimum: 0
-    data_type: array
-    type: hash
-    display_label:
-      default: Titles
-    form:
-      primary: false
-    mappings:
-      simple_dc_pmh: dc:title
-    property_uri: http://purl.org/dc/terms/title
-    range: https://prvoices.org/types#hash
-    view:
-      render_as: compound
-      html_dl: true
-  title_value:
-    type: string
-    name: value
-    available_on:
-      properties:
-      - titles
-    required: true
-    form:
-      cols: 6
-  title_type:
-    type: controlled
-    name: type
-    available_on:
-      properties:
-      - titles
-    values:
-    - AlternativeTitle
-    - Subtitle
-    - TranslatedTitle
-    - Other
-    form:
-      cols: 6
-  title_lang:
-    type: string
-    name: lang
-    available_on:
-      properties:
-      - titles
-    form:
-      cols: 6
+    - '0'
+    - '1'
   dates:
     available_on:
       class:
@@ -960,16 +796,9 @@ properties:
   contributor_ref:
     type: linked_record
     name: contributor
-    # Names the registered linked-record source (Hyrax::CompoundLinkedRecordResolver
-    # + the generic linked_record QA authority at
-    # /authorities/search/linked_record/contributors).
     authority: contributors
-    # Which field of the resolved contributor supplies the show-page link text.
     view:
       label_field: display_name
-    # Profile-driven lookup-OR-create: when a search finds no match, the picker
-    # offers "Add new" and shows this form. Field input types are declared here
-    # so the generic add-form renders without model knowledge.
     creatable: true
     create_fields:
     - name: display_name
@@ -982,15 +811,9 @@ properties:
       values:
       - person
       - organization
-    # Affiliations — a repeatable plain-string field; the create form renders
-    # add/remove rows and posts back an array of strings into the model's
-    # multi-valued `affiliations`.
     - name: affiliations
       as: string
       repeatable: true
-    # Name identifiers (ISNI/VIAF/ROR/…) — a repeatable group of {value, scheme}
-    # pairs, distinct from the dedicated ORCID field above. Posts back an array
-    # of hashes into the model's `name_identifiers`.
     - name: name_identifiers
       as: group
       repeatable: true
@@ -1017,14 +840,6 @@ properties:
       properties:
       - contributors
     required: false
-    # Controlled role vocabulary backed by the `contributor_roles` local QA
-    # authority (config/authorities/contributor_roles.yml) — the 14 NISO CRediT
-    # terms plus practice-research roles. The STORED value is the authority `id`
-    # code (e.g. "data-curation"), never the label, exactly as `relationship_type`
-    # stores "source-of". The same authority is the single source of truth for
-    # Enact::ContributorRolesService (labels + the CRediT URI / DataCite
-    # contributorType / MARC relator interop mapping a future minter reads), so the deposit
-    # vocabulary and the interop lookups cannot drift.
     authority: contributor_roles
     form:
       cols: 6
@@ -1035,55 +850,10 @@ properties:
       properties:
       - contributors
     required: false
-    # Free-text fallback (Principle 4: never block deposit, no data lost). When a
-    # contributor's role is not in the controlled list, it is captured here
-    # verbatim; a curator later promotes a recurring term into the controlled
-    # vocabulary + Enact::ContributorRolesService. Full-text searchable only — a facet
-    # over free prose adds nothing, so override the derived (_sim + _tesim) pair.
     indexing:
     - contributors_role_other_tesim
     form:
       cols: 12
-  identifiers:
-    available_on:
-      class:
-      - Portfolio
-      - PortfolioArtefact
-      - PortfolioEvent
-      - PortfolioLiterature
-      - PortfolioItemCollection
-    cardinality:
-      minimum: 0
-    data_type: array
-    type: hash
-    display_label:
-      default: Identifiers
-    form:
-      primary: false
-    mappings:
-      simple_dc_pmh: dc:identifier
-    property_uri: http://purl.org/dc/terms/identifier
-    range: https://prvoices.org/types#hash
-    view:
-      render_as: compound
-      html_dl: true
-  identifier_value:
-    type: string
-    name: value
-    available_on:
-      properties:
-      - identifiers
-    required: true
-    form:
-      cols: 6
-  identifier_type:
-    type: string
-    name: type
-    available_on:
-      properties:
-      - identifiers
-    form:
-      cols: 6
   funding_references:
     available_on:
       class:
@@ -1129,30 +899,6 @@ properties:
     group: funder
     form:
       cols: 6
-  funder_identifier_type:
-    type: controlled
-    name: funder_identifier_type
-    available_on:
-      properties:
-      - funding_references
-    group: funder
-    values:
-    - Crossref Funder ID
-    - GRID
-    - ISNI
-    - ROR
-    - Other
-    form:
-      cols: 6
-  funder_scheme_uri:
-    type: string
-    name: scheme_uri
-    available_on:
-      properties:
-      - funding_references
-    group: funder
-    form:
-      cols: 6
   funder_award_number:
     type: string
     name: award_number
@@ -1178,154 +924,6 @@ properties:
       properties:
       - funding_references
     group: award
-    form:
-      cols: 4
-  organisational_units:
-    available_on:
-      class:
-      - Portfolio
-      - PortfolioArtefact
-      - PortfolioEvent
-      - PortfolioLiterature
-      - PortfolioItemCollection
-    cardinality:
-      minimum: 0
-    data_type: array
-    type: hash
-    display_label:
-      default: Organisational units
-    form:
-      primary: false
-    property_uri: https://prvoices.org/terms/organisationalUnit
-    range: https://prvoices.org/types#hash
-    view:
-      render_as: compound
-      html_dl: true
-  organisational_unit_name:
-    type: string
-    name: name
-    available_on:
-      properties:
-      - organisational_units
-    required: true
-    form:
-      cols: 4
-  organisational_unit_pid:
-    type: string
-    name: pid
-    available_on:
-      properties:
-      - organisational_units
-    form:
-      cols: 4
-  organisational_unit_type:
-    type: controlled
-    name: unit_type
-    available_on:
-      properties:
-      - organisational_units
-    values:
-    - University
-    - Faculty
-    - School
-    - Department
-    - Group
-    - Centre
-    form:
-      cols: 4
-  licenses:
-    available_on:
-      class:
-      - Portfolio
-      - PortfolioArtefact
-      - PortfolioEvent
-      - PortfolioLiterature
-      - PortfolioItemCollection
-    cardinality:
-      minimum: 0
-    data_type: array
-    type: hash
-    display_label:
-      default: Licenses
-    form:
-      primary: false
-    mappings:
-      simple_dc_pmh: dc:rights
-    property_uri: http://purl.org/dc/terms/license
-    range: https://prvoices.org/types#hash
-    groups:
-      statement:
-        label: Statement
-      identifier:
-        label: Identifier
-      language:
-        label: Language
-    view:
-      render_as: compound
-      html_dl: true
-  license_rights_label:
-    type: string
-    name: rights_label
-    available_on:
-      properties:
-      - licenses
-    group: statement
-    form:
-      cols: 6
-  license_rights_uri:
-    type: string
-    name: rights_uri
-    available_on:
-      properties:
-      - licenses
-    group: statement
-    form:
-      cols: 6
-  license_holder:
-    type: string
-    name: holder
-    available_on:
-      properties:
-      - licenses
-    group: statement
-    form:
-      cols: 6
-  license_rights_identifier:
-    type: string
-    name: rights_identifier
-    available_on:
-      properties:
-      - licenses
-    group: identifier
-    form:
-      cols: 4
-  license_rights_identifier_scheme:
-    type: controlled
-    name: rights_identifier_scheme
-    available_on:
-      properties:
-      - licenses
-    group: identifier
-    values:
-    - SPDX
-    form:
-      cols: 4
-  license_scheme_uri:
-    type: string
-    name: scheme_uri
-    available_on:
-      properties:
-      - licenses
-    group: identifier
-    form:
-      cols: 4
-  license_lang:
-    type: string
-    name: lang
-    available_on:
-      properties:
-      - licenses
-    group: language
     form:
       cols: 4
   geo_locations:
@@ -1360,60 +958,6 @@ properties:
     group: point
     form:
       cols: 4
-  geo_point_latitude:
-    type: string
-    name: point_latitude
-    available_on:
-      properties:
-      - geo_locations
-    group: point
-    form:
-      cols: 4
-  geo_point_longitude:
-    type: string
-    name: point_longitude
-    available_on:
-      properties:
-      - geo_locations
-    group: point
-    form:
-      cols: 4
-  geo_west_bound:
-    type: string
-    name: west_bound
-    available_on:
-      properties:
-      - geo_locations
-    group: box
-    form:
-      cols: 3
-  geo_east_bound:
-    type: string
-    name: east_bound
-    available_on:
-      properties:
-      - geo_locations
-    group: box
-    form:
-      cols: 3
-  geo_south_bound:
-    type: string
-    name: south_bound
-    available_on:
-      properties:
-      - geo_locations
-    group: box
-    form:
-      cols: 3
-  geo_north_bound:
-    type: string
-    name: north_bound
-    available_on:
-      properties:
-      - geo_locations
-    group: box
-    form:
-      cols: 3
   relationships:
     available_on:
       class:
@@ -1452,18 +996,20 @@ properties:
       properties:
       - relationships
     required: true
-    # Controlled vocabulary aligned with DataCite relationType (Object Handling
-    # Spec v0.2 Sec 3.5). Stored value maps to a DataCite term so DataCite/RAiD/
-    # OpenAire can follow the edge; human labels live in the locale files.
-    values:
-    - sequence
-    - source-of
-    - pair-with
-    - response-to
-    - documents
-    - juxtaposed-with
+    authority: relationship_types
     form:
       cols: 6
+  relationship_type_other:
+    type: string
+    name: type_other
+    available_on:
+      properties:
+      - relationships
+    required: false
+    indexing:
+    - relationships_type_other_tesim
+    form:
+      cols: 12
   relationship_position:
     type: string
     name: position
@@ -1471,8 +1017,6 @@ properties:
       properties:
       - relationships
     required: false
-    form:
-      cols: 6
   relationship_note:
     type: string
     name: note
@@ -1480,12 +1024,8 @@ properties:
       properties:
       - relationships
     required: false
-    # Free-text curatorial note: full-text searchable, but a facet over prose
-    # adds nothing, so override the derived (_sim + _tesim) pair.
     indexing:
     - relationships_note_tesim
-    form:
-      cols: 12
   media_viewer:
     available_on:
       class:

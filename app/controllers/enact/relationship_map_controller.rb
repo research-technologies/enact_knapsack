@@ -14,19 +14,6 @@ module Enact
   # co-design). The view renders with `layout: false`.
   class RelationshipMapController < ApplicationController
     include ::Enact::RequiresRelationshipsCompound
-    # Presentation-only metadata for the six controlled relation terms
-    # (m3 profile `relationship_type`). Human labels come from the locale files
-    # (`enact.relationships.types.*`); colour + DataCite mapping live here
-    # because they are pure view concerns.
-    REL_COLOR = {
-      'sequence' => '#5b9bd5', 'source-of' => '#c0823c', 'pair-with' => '#b05ec0',
-      'response-to' => '#c9544b', 'documents' => '#4aa3a3', 'juxtaposed-with' => '#c2a83e'
-    }.freeze
-    REL_DATACITE = {
-      'sequence' => 'IsContinuedBy / Continues', 'source-of' => 'IsSourceOf / IsDerivedFrom',
-      'pair-with' => 'IsVariantFormOf', 'response-to' => 'References / IsReferencedBy',
-      'documents' => 'Documents / IsDocumentedBy', 'juxtaposed-with' => 'IsRelatedMaterial'
-    }.freeze
 
     # Cap on works pulled into a single map. A project's corpus is small; this
     # is a backstop, surfaced in the response rather than silently truncating.
@@ -44,7 +31,7 @@ module Enact
       docs = scoped_documents
       links = kept_links(docs)
       @graph = { nodes: graph_nodes(docs, links), links: }
-      @rel_types = rel_types
+      @rel_types = rel_types(links)
       @focus = params[:focus].to_s
       @truncated = docs.length >= MAX_WORKS
       render layout: false
@@ -158,15 +145,16 @@ module Enact
     end
 
     # term => { label, inverse, color, dc } for the legend and edge labels.
-    # `inverse` reads the edge from the target's point of view (same locale
-    # entries the relationships card uses for inbound edges).
-    def rel_types
-      REL_COLOR.keys.index_with do |term|
-        inverse_term = ::Enact::RelationshipGraph::INVERSE_OF.fetch(term, term)
-        { label: t("enact.relationships.types.#{term}", default: term.tr('-', ' ')),
-          inverse: t("enact.relationships.inverse_types.#{inverse_term}", default: inverse_term.tr('-', ' ')),
-          color: REL_COLOR[term],
-          dc: REL_DATACITE[term] }
+    # Covers only the types present in the graph - the whole vocabulary would
+    # swamp the legend. Locale keys override the authority labels when present.
+    def rel_types(links)
+      links.map { |l| l[:rel] }.uniq.index_with do |term|
+        inverse_term = ::Enact::RelationshipTypesService.inverse(term)
+        { label: t("enact.relationships.types.#{term}", default: ::Enact::RelationshipTypesService.label(term)),
+          inverse: t("enact.relationships.inverse_types.#{inverse_term}",
+                     default: ::Enact::RelationshipTypesService.label(inverse_term)),
+          color: ::Enact::RelationshipTypesService.color(term),
+          dc: ::Enact::RelationshipTypesService.datacite(term) }
       end
     end
   end

@@ -1,21 +1,142 @@
 terms:
-  - id: composition
-    label: Composition
-  - id: recording
-    label: Recording
-  - id: performance
-    label: Performance (artefact of)
-  - id: design
-    label: Design
-  - id: installation
-    label: Installation
-  - id: script
-    label: Script
-  - id: score
-    label: Score
-  - id: documentation
-    label: Documentation
-  - id: software
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#physicalobject
+    label: Physical Object
+  - id: https://schema.org/Sculpture
+    label: Physical Object - Sculpture
+  - id: http://vocab.getty.edu/page/aat/300047896
+    label: Physical Object - Installation
+  - id: http://vocab.getty.edu/page/aat/300151343
+    label: Physical Object - Ceramics
+  - id: http://vocab.getty.edu/page/aat/300209286
+    label: Physical Object - Jewellery
+  - id: http://vocab.getty.edu/page/aat/300015336
+    label: Physical Object - Metalwork
+  - id: http://vocab.getty.edu/page/aat/300263552
+    label: Physical Object - Building
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#instrument
+    label: Physical Object - Instrument
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#audiovisual
+    label: Audiovisual
+  - id: https://vocabularies.coar-repositories.org/resource_types/c_c513/
+    label: Visual Media
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#image
+    label: Image
+  - id: https://vocabularies.coar-repositories.org/resource_types/c_ecc8/
+    label: Visual Media - StillImage
+  - id: https://schema.org/Drawing
+    label: Visual Media - StillImage - Drawing
+  - id: https://schema.org/Painting
+    label: Visual Media - StillImage - Painting
+  - id: https://schema.org/Photograph
+    label: Visual Media - StillImage - Photograph
+  - id: https://schema.org/VisualArtwork
+    label: Visual Media - StillImage - Artwork
+  - id: http://vocab.getty.edu/page/aat/300015578
+    label: Visual Media - StillImage - Illustration
+  - id: http://vocab.getty.edu/page/aat/300386810
+    label: Visual Media - StillImage - DigitalVisualMedia
+  - id: https://vocabularies.coar-repositories.org/resource_types/c_8a7e/
+    label: Visual Media - MovingImage
+  - id: https://github.com/research-technologies/prvoices_schema/wiki/DigitalTime-basedMedia
+    label: Visual Media - MovingImage - DigitalTime-basedMedia
+  - id: http://vocab.getty.edu/page/aat/300411663
+    label: Visual Media - MovingImage - Animation
+  - id: https://vocabularies.coar-repositories.org/resource_types/c_12ce/
+    label: Visual Media - MovingImage - Film
+  - id: http://vocab.getty.edu/page/aat/300375156
+    label: Visual Media - MovingImage - Documentary
+  - id: https://github.com/research-technologies/prvoices_schema/wiki/Audio-visualPresentation
+    label: Visual Media - MovingImage - Audio-visualPresentation
+  - id: https://schema.org/TVEpisode
+    label: Visual Media - MovingImage - TVEpisode
+  - id: https://schema.org/TVClip
+    label: Visual Media - MovingImage - TVClip
+  - id: https://vocabularies.coar-repositories.org/resource_types/c_12cc/
+    label: CartographicMaterial
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#sound
+    label: Sound
+  - id: https://schema.org/MusicComposition
+    label: Sound - MusicComposition
+  - id: https://schema.org/MusicRecording
+    label: Sound - MusicRecording
+  - id: http://vocab.getty.edu/page/aat/300028633
+    label: Sound - SpokenWord
+  - id: https://schema.org/RadioEpisode
+    label: Sound - SpokenWord - RadioPlay
+  - id: https://schema.org/RadioClip
+    label: Sound - SpokenWord - RadioClip
+  - id: http://vocab.getty.edu/page/aat/300417619
+    label: Sound - SpokenWord - PoetryRecording
+  - id: https://schema.org/Audiobook
+    label: Sound - SpokenWord - AudioBook
+  - id: https://schema.org/PodcastEpisode
+    label: Sound - SpokenWord - Podcast
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#interactiveresource
+    label: InteractiveResource
+  - id: https://schema.org/VideoGame
+    label: InteractiveResource - VideoGame
+  - id: https://vocabularies.coar-repositories.org/resource_types/c_7ad9/
+    label: InteractiveResource - Website
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#computationalnotebook
+    label: ComputationalNotebook
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#model
+    label: Model
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#service
+    label: Service
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#software
     label: Software
-  - id: choreography
-    label: Choreography
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#standard
+    label: Standard
+  - id: https://vocabularies.coar-repositories.org/resource_types/542X-3S04/
+    label: Design
+  - id: https://vocabularies.coar-repositories.org/resource_types/JBNF-DYAD/
+    label: Design - IndustrialDesign
+  - id: https://vocabularies.coar-repositories.org/resource_types/BW7T-YM2G/
+    label: Design - LayoutDesign
+  - id: http://vocab.getty.edu/page/aat/300138708
+    label: Design - FashionDesign
+  - id: http://vocab.getty.edu/page/aat/300435243
+    label: Design - TextileDesign
+  - id: http://vocab.getty.edu/page/aat/300054181
+    label: Design - GraphicDesign
+  - id: http://vocab.getty.edu/page/aat/300054184
+    label: Design - InteriorDesign
+  - id: http://vocab.getty.edu/page/aat/300034787
+    label: Design - ArchitecturalDesign
+  - id: http://vocab.getty.edu/page/aat/300047910
+    label: Design - MultimediaDesign
+  - id: https://github.com/research-technologies/prvoices_schema/wiki/SoundDesign
+    label: Design - SoundDesign
+  - id: https://github.com/research-technologies/prvoices_schema/wiki/ExhibitionDesign
+    label: Design - ExhibitionDesign
+  - id: http://vocab.getty.edu/page/aat/300054190
+    label: Design - TheatreDesign
+  - id: https://vocabularies.coar-repositories.org/resource_types/ACF7-8YT9/
+    label: Dataset - AggregatedData
+  - id: https://vocabularies.coar-repositories.org/resource_types/c_cb28/
+    label: Dataset - ClinicalTrialData
+  - id: https://vocabularies.coar-repositories.org/resource_types/FXF3-D3G7/
+    label: Dataset - CompiledData
+  - id: https://vocabularies.coar-repositories.org/resource_types/AM6W-6QAW/
+    label: Dataset - EncodedData
+  - id: https://vocabularies.coar-repositories.org/resource_types/63NG-B465/
+    label: Dataset - ExperimentalData
+  - id: https://vocabularies.coar-repositories.org/resource_types/A8F1-NPV9/
+    label: Dataset - GenomicData
+  - id: https://vocabularies.coar-repositories.org/resource_types/2H0M-X761/
+    label: Dataset - GeospatialData
+  - id: https://vocabularies.coar-repositories.org/resource_types/H41Y-FW7B/
+    label: Dataset - LaboratoryNotebook
+  - id: https://vocabularies.coar-repositories.org/resource_types/DD58-GFSX/
+    label: Dataset - MeasurementTestData
+  - id: https://vocabularies.coar-repositories.org/resource_types/FF4C-28RK/
+    label: Dataset - ObservationalData
+  - id: https://vocabularies.coar-repositories.org/resource_types/CQMR-7K63/
+    label: Dataset - RecordedData
+  - id: https://vocabularies.coar-repositories.org/resource_types/W2XT-7017/
+    label: Dataset - SimulationData
+  - id: https://vocabularies.coar-repositories.org/resource_types/NHD0-W6SY/
+    label: Dataset - SurveyData
+  - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#other
+    label: Other
+
