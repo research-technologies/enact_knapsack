@@ -16,10 +16,11 @@ RSpec.describe Hyrax::MediaViewerService do
   end
 
   describe 'authority options' do
-    it 'offers the three viewers as [label, id] pairs from the knapsack authority' do
+    it 'offers the four viewers as [label, id] pairs from the knapsack authority' do
       expect(described_class.select_all_options).to contain_exactly(
         ['Universal Viewer', 'universal_viewer'],
         ['Clover IIIF', 'clover'],
+        ['Ramp (AV)', 'ramp'],
         ['PDF.js', 'pdf_js']
       )
     end

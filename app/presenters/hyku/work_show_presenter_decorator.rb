@@ -6,12 +6,12 @@ module Hyku
   module WorkShowPresenterDecorator
     def iiif_viewer
       viewer = chosen_viewer
-      %i[universal_viewer clover].include?(viewer) ? viewer : super
+      %i[universal_viewer clover ramp].include?(viewer) ? viewer : super
     end
 
     def iiif_viewer?
       return false if chosen_viewer == :pdf_js
-      return super unless %i[universal_viewer clover].include?(chosen_viewer)
+      return super unless %i[universal_viewer clover ramp].include?(chosen_viewer)
 
       representative_id.present? && representative_presenter.present?
     end
