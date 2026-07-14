@@ -20,18 +20,6 @@ module Enact
   # map still graphs work-to-work edges only; external targets are not in its
   # node set, so the map controller filters them out.)
   class RelationshipGraph
-    # The DataCite-aligned controlled terms (m3 profile `relationship_type`) and
-    # their inverse, used to label an inbound edge from the target's point of
-    # view. Symmetric relations map to themselves.
-    INVERSE_OF = {
-      'sequence' => 'sequence-of',
-      'source-of' => 'derived-from',
-      'response-to' => 'referenced-by',
-      'documents' => 'documented-by',
-      'pair-with' => 'pair-with',
-      'juxtaposed-with' => 'juxtaposed-with'
-    }.freeze
-
     Edge = Struct.new(:target_id, :title, :path, :relation_type, :note, :position, :external, keyword_init: true)
 
     # @param document [SolrDocument, #relationships] the work whose edges we render
@@ -60,10 +48,8 @@ module Enact
         relationship_entries(source).filter_map do |entry|
           next unless entry['item'].to_s == id.to_s
 
-          stored = entry['type']
-          # Label the inbound edge with the inverse term; fall back to the
-          # stored term when no inverse is mapped (e.g. legacy vocabulary).
-          build_edge(source.id, INVERSE_OF.fetch(stored, stored), entry, target_id: source.id)
+          build_edge(source.id, Enact::RelationshipTypesService.inverse(entry['type']), entry,
+                     target_id: source.id)
         end
       end
       sort_edges(edges)

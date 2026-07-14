@@ -85,7 +85,7 @@
       row.dataset.rel = k;
       row.innerHTML = `<span class="rel-toggle" aria-hidden="true"></span>`
         + `<span class="swatch" style="border-color:${REL[k].color}"></span>`
-        + `<span>${REL[k].label} <span class="datacite">${REL[k].dc}</span></span>`;
+        + `<span>${REL[k].label} <span class="datacite">${REL[k].dc || ''}</span></span>`;
       legendEl.appendChild(row);
     });
 
@@ -248,7 +248,8 @@
         html += `<div class="meta" style="margin:8px 0;font-size:14px"><b>${edge.source().data('label')}</b> `
               + `<span class="rel-name" style="color:${relColor(edge)}">${relLabelOf(r)}</span> <b>${edge.target().data('label')}</b></div>`;
         html += `<span class="pill">relationship</span>`;
-        html += `<div class="datacite" style="margin-top:6px">relation_type: ${r} &middot; DataCite ${(REL[r] || {}).dc || ''}</div>`;
+        const dc = (REL[r] || {}).dc;
+        html += `<div class="datacite" style="margin-top:6px">relation_type: ${r}${dc ? ` &middot; DataCite ${dc}` : ''}</div>`;
         if (edge.data('note')) html += `<div class="narr">${edge.data('note')}</div><div class="datacite" style="margin-top:4px">note &mdash; the curatorial "why"</div>`;
         html += `<p style="margin-top:14px"><a class="reset">&larr; back</a></p>`;
         detail.innerHTML = html;

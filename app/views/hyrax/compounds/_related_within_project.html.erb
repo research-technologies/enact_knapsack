@@ -18,7 +18,7 @@
       <% outbound.each do |edge| %>
         <li>
           <span class="enact-relationship-type">
-            <%= t("enact.relationships.types.#{edge.relation_type}", default: edge.relation_type.to_s.humanize) %>
+            <%= t("enact.relationships.types.#{edge.relation_type}", default: Enact::RelationshipTypesService.label(edge.relation_type)) %>
           </span>
           <% if edge.external %>
             <%= link_to(edge.title, edge.path, target: '_blank', rel: 'noopener noreferrer') %>
@@ -39,7 +39,7 @@
       <% inbound.each do |edge| %>
         <li>
           <span class="enact-relationship-type">
-            <%= t("enact.relationships.inverse_types.#{edge.relation_type}", default: edge.relation_type.to_s.humanize) %>
+            <%= t("enact.relationships.inverse_types.#{edge.relation_type}", default: Enact::RelationshipTypesService.label(edge.relation_type)) %>
           </span>
           <% if edge.external %>
             <%= link_to(edge.title, edge.path, target: '_blank', rel: 'noopener noreferrer') %>

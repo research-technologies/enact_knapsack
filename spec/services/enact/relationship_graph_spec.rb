@@ -34,12 +34,12 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
 
   describe '#outbound' do
     it 'returns the source\'s own edges, resolved to internal targets' do
-      doc = relate(from: source, to: target, type: 'source-of', note: 'why')
+      doc = relate(from: source, to: target, type: 'isderivedfrom', note: 'why')
       edge = described_class.new(doc).outbound.first
 
       expect(edge.target_id).to eq(target.id.to_s)
       expect(edge.title).to eq('Target work')
-      expect(edge.relation_type).to eq('source-of')
+      expect(edge.relation_type).to eq('isderivedfrom')
       expect(edge.note).to eq('why')
       expect(edge.path).to be_present
     end
@@ -47,8 +47,8 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
     it 'orders sequenced edges by position' do
       other = index(Hyrax.persister.save(resource: Portfolio.new(title: ['Second target'])))
       entries = [
-        { 'item' => other.id.to_s, 'type' => 'sequence', 'position' => '2' },
-        { 'item' => target.id.to_s, 'type' => 'sequence', 'position' => '1' }
+        { 'item' => other.id.to_s, 'type' => 'continues', 'position' => '2' },
+        { 'item' => target.id.to_s, 'type' => 'continues', 'position' => '1' }
       ]
       updated = Hyrax.persister.save(resource: Hyrax.query_service.find_by(id: source.id).tap { |r| r.relationships = entries })
       index(updated)
@@ -83,14 +83,21 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
 
   describe '#inbound' do
     it 'finds works pointing at this one and labels them with the inverse term' do
-      relate(from: source, to: target, type: 'source-of')
+      relate(from: source, to: target, type: 'cites')
 
       inbound = described_class.new(solr_doc_for(target.id)).inbound
       edge = inbound.first
 
       expect(edge.target_id).to eq(source.id.to_s)
       expect(edge.title).to eq('Source work')
-      # source-of stored on the source reads as derived-from on the target
+      # cites stored on the source reads as iscitedby on the target
+      expect(edge.relation_type).to eq('iscitedby')
+    end
+
+    it 'still inverts edges stored under the legacy vocabulary' do
+      relate(from: source, to: target, type: 'source-of')
+
+      edge = described_class.new(solr_doc_for(target.id)).inbound.first
       expect(edge.relation_type).to eq('derived-from')
     end
 
