@@ -1001,7 +1001,7 @@ properties:
       cols: 6
   relationship_type_other:
     type: string
-    name: note
+    name: type_other
     available_on:
       properties:
       - relationships
