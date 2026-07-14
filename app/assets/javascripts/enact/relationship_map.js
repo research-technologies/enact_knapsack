@@ -23,6 +23,24 @@
     if (!dataEl) { return; }
     var payload = JSON.parse(dataEl.textContent);
 
+    // Mobile: the side panel is a collapsible drawer, revealed by #panel-toggle
+    // (only displayed on narrow screens via CSS). openPanelOnMobile() opens it
+    // when the user taps a node/edge so the details they asked for are shown.
+    var panelToggle = document.getElementById('panel-toggle');
+    var sidePanel = document.getElementById('side');
+    function setPanel(open) {
+      if (!panelToggle || !sidePanel) { return; }
+      sidePanel.classList.toggle('open', open);
+      panelToggle.setAttribute('aria-expanded', String(open));
+      panelToggle.textContent = open ? 'Close' : 'Details';
+    }
+    function openPanelOnMobile() {
+      if (panelToggle && getComputedStyle(panelToggle).display !== 'none') { setPanel(true); }
+    }
+    if (panelToggle) {
+      panelToggle.addEventListener('click', function () { setPanel(!sidePanel.classList.contains('open')); });
+    }
+
     const REL = payload.rel_types || {};
     const relColor = e => (REL[e.data('rel')] || { color: '#888' }).color;
     const relLabelOf = r => (REL[r] || { label: r }).label;
@@ -67,7 +85,7 @@
       row.dataset.rel = k;
       row.innerHTML = `<span class="rel-toggle" aria-hidden="true"></span>`
         + `<span class="swatch" style="border-color:${REL[k].color}"></span>`
-        + `<span>${REL[k].label} <span class="datacite">${REL[k].dc}</span></span>`;
+        + `<span>${REL[k].label} <span class="datacite">${REL[k].dc || ''}</span></span>`;
       legendEl.appendChild(row);
     });
 
@@ -230,7 +248,8 @@
         html += `<div class="meta" style="margin:8px 0;font-size:14px"><b>${edge.source().data('label')}</b> `
               + `<span class="rel-name" style="color:${relColor(edge)}">${relLabelOf(r)}</span> <b>${edge.target().data('label')}</b></div>`;
         html += `<span class="pill">relationship</span>`;
-        html += `<div class="datacite" style="margin-top:6px">relation_type: ${r} &middot; DataCite ${(REL[r] || {}).dc || ''}</div>`;
+        const dc = (REL[r] || {}).dc;
+        html += `<div class="datacite" style="margin-top:6px">relation_type: ${r}${dc ? ` &middot; DataCite ${dc}` : ''}</div>`;
         if (edge.data('note')) html += `<div class="narr">${edge.data('note')}</div><div class="datacite" style="margin-top:4px">note &mdash; the curatorial "why"</div>`;
         html += `<p style="margin-top:14px"><a class="reset">&larr; back</a></p>`;
         detail.innerHTML = html;
@@ -241,8 +260,8 @@
           Click a <b>line</b> for the relationship and its curatorial note.</p>`;
       }
 
-      cy.on('tap', 'node', e => { pinned = e.target; clearSpotlight(); showNode(e.target); focusNode(e.target); });
-      cy.on('tap', 'edge', e => showLink(e.target));
+      cy.on('tap', 'node', e => { pinned = e.target; clearSpotlight(); showNode(e.target); focusNode(e.target); openPanelOnMobile(); });
+      cy.on('tap', 'edge', e => { showLink(e.target); openPanelOnMobile(); });
       cy.on('tap', e => { if (e.target === cy) { resetPanel(); clearFocus(); } });
 
       // ---- relationship-type filter (clickable legend) -----------------------

@@ -1,8 +1,10 @@
 # Relationship Map - Demo notes (for Rory)
 
 Interactive view of the typed, curated relationships between works (the
-"patch cables", Object Handling Spec v0.2 Sec 3.5). Six DataCite-aligned
-relationship types; every edge carries a curatorial *note* (the "why"). Built
+"patch cables", Object Handling Spec v0.2 Sec 3.5). Relationship types come
+from the DataCite relationType vocabulary
+(config/authorities/relationship_types.yml); every edge carries a curatorial
+*note* (the "why"). Built
 on the real `relationships` metadata on staging, not mock data.
 
 **The story (Bruce McLean / Dalry Primary School commission):** a public

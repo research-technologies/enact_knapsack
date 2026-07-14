@@ -15,11 +15,19 @@ This doc is how to turn it on.
 
 `Enact::RelationshipMapController` includes `Enact::RequiresRelationshipsCompound`
 and runs `before_action :require_relationships_compound`. That check (via
-`relationships_compound_configured?`) tests, on each request, whether any
-registered curation concern type declares a `relationships` attribute. This
-class-level attribute check works in both flexible (`HYRAX_FLEXIBLE=true`) and
-classic metadata modes and needs no query. If no work type has it, the
-controller renders a 404.
+`relationships_compound_configured?`) tests, on each request, whether the
+tenant's metadata declares a `relationships` compound:
+
+- **Flexible mode (`HYRAX_FLEXIBLE=true`)** - the compound lives in the active
+  M3 profile's `properties`, not in the work classes, so the gate reads the
+  current `Hyrax::FlexibleSchema` profile and looks for a `relationships`
+  property. (Class-level `attribute_names` only carries the base Valkyrie
+  attributes in flexible mode, so checking it alone gives a false negative -
+  which is why an early version of this gate wrongly 404'd on flexible tenants.)
+- **Classic mode** - falls back to whether any registered curation concern type
+  declares a `relationships` attribute at the class level.
+
+If neither is true, the controller renders a 404.
 
 ## Steps to enable
 
@@ -44,12 +52,13 @@ controller renders a 404.
    `config/metadata/compound_metadata.yaml` so both modes expose it (Hyrax ships
    a sample compound schema you override).
 
-2. **Define the relation-type vocabulary.** The six DataCite-aligned terms, their
-   colours, and DataCite mappings live in `Enact::RelationshipMapController`
-   (`REL_COLOR`, `REL_DATACITE`) with human labels in
-   `config/locales/en.yml` under `enact.relationships.*`. Terms:
-   `sequence`, `source-of`, `pair-with`, `response-to`, `documents`,
-   `juxtaposed-with`. Adjust the list/labels/colours for your vocabulary.
+2. **Define the relation-type vocabulary.** The DataCite relationType terms,
+   their labels, inverses, and optional map colours all live in
+   `config/authorities/relationship_types.yml`, read through
+   `Enact::RelationshipTypesService`. Adding a type is a YAML edit: give it an
+   `inverse:` (itself when symmetric) and optionally a `color:`; uncoloured
+   terms share a neutral fallback. Locale keys under `enact.relationships.*`
+   override labels when present.
 
 3. **Reindex** so the derived Solr fields populate
    (`relationships_item_ssim`, `relationships_type_sim`, `relationships_json_ss`).

@@ -34,7 +34,8 @@ RSpec.describe Portfolio do
         'name_identifier' => '0000-0001-2345-6789' }
     end
     let(:rights) do
-      { 'rights_statement' => 'http://rightsstatements.org/vocab/InC-NC/1.0/', 'license' => 'https://creativecommons.org/licenses/by/4.0/' }
+      { 'statement' => 'http://rightsstatements.org/vocab/InC-NC/1.0/',
+        'license' => 'https://creativecommons.org/licenses/by/4.0/' }
     end
 
     it 'persists and reloads compound hash entries' do
@@ -47,6 +48,7 @@ RSpec.describe Portfolio do
 
       expect(reloaded.contributors.map { |c| c['given_name'] }).to contain_exactly('Avery')
       expect(reloaded.contributors.first['role_label']).to eq('composer')
+      expect(reloaded.rights.first['statement']).to eq('http://rightsstatements.org/vocab/InC-NC/1.0/')
       expect(reloaded.rights.first['license']).to eq('https://creativecommons.org/licenses/by/4.0/')
     end
   end

@@ -30,7 +30,8 @@ title_mappings = {
 
 # dates - typed dates
 date_mappings = {
-  'date_value' => { from: ['date_value'], object: 'dates', nested_attributes: true, name: 'value' },
+  'date_start' => { from: ['date_start'], object: 'dates', nested_attributes: true, name: 'start_date' },
+  'date_end' => { from: ['date_end'], object: 'dates', nested_attributes: true, name: 'end_date' },
   'date_type' => { from: ['date_type'], object: 'dates', nested_attributes: true, name: 'type' },
   'date_information' => { from: ['date_information'], object: 'dates', nested_attributes: true, name: 'information' }
 }

@@ -101,13 +101,15 @@ en:
       none: No related works within this project.
       # Label for the button that opens the interactive relationship map.
       map_button: Relationship map
-      # Outbound relationship labels, keyed by the stored DataCite-aligned term.
+      # Optional overrides for relationship type labels; the default label is
+      # the term from config/authorities/relationship_types.yml. These cover
+      # the legacy pre-DataCite vocabulary so edges stored under it keep their
+      # original prose labels.
       types:
         sequence: Leads to
         source-of: Is the source for
         pair-with: Pairs with
         response-to: Is a response to
-        documents: Documents
         juxtaposed-with: Is juxtaposed with
       # Inbound labels: how the relationship reads from the target's point of view.
       inverse_types:
@@ -115,8 +117,13 @@ en:
         derived-from: Is derived from
         pair-with: Pairs with
         referenced-by: Is referenced by
-        documented-by: Is documented by
         juxtaposed-with: Is juxtaposed with
+    people_map:
+      # Button on a contributor profile opening the research-network map centred
+      # on that person (first-order + second-order collaborators).
+      profile_link: Research network
+      # Link on the contributors browse index opening the whole network.
+      index_link: View as network
     homepage:
       featured_researcher:
         # Button on the home page Featured Researcher tab linking to the
@@ -161,3 +168,16 @@ en:
       works:
         empty: No works yet.
         untitled: Untitled
+        no_results: No works match your search.
+        count:
+          one: "Showing %{first}-%{last} of 1 work"
+          other: "Showing %{first}-%{last} of %{total} works"
+        search_label: Search works
+        search_placeholder: Search works by title
+        search_submit: Search
+        reset: Reset
+        type_label: Type
+        type_all: All
+        pagination: Works pages
+        prev_page: "‹ Prev"
+        next_page: "Next ›"

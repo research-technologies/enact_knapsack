@@ -1,72 +1,72 @@
 terms:
   - id: https://vocabularies.coar-repositories.org/resource_types/c_1162/
-    label: Annotation 
+    label: Annotation
   - id: https://vocabularies.coar-repositories.org/resource_types/c_86bc/
-    label: Bibliography 
+    label: Bibliography
   - id: https://vocabularies.coar-repositories.org/resource_types/c_6947/
-    label: Blog post 
+    label: Blog post
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#book
     label: Book
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#bookchapter
     label: BookChapter
   - id: https://vocabularies.coar-repositories.org/resource_types/c_3248/
-    label: Book part 
+    label: Book part
   - id: https://vocabularies.coar-repositories.org/resource_types/c_ba08/
-    label: Book review 
+    label: Book review
   - id: https://vocabularies.coar-repositories.org/resource_types/c_7877/
-    label: Clinical study 
+    label: Clinical study
   - id: https://vocabularies.coar-repositories.org/resource_types/D97F-VB57/
-    label: Commentary 
+    label: Commentary
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#conferencepaper
     label: Conference Paper
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#conferenceproceeding
     label: Conference Proceeding
   - id: https://vocabularies.coar-repositories.org/resource_types/c_c94f/
-    label: Conference output 
+    label: Conference output
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18cp/
-    label: Conference paper not in proceedings 
+    label: Conference paper not in proceedings
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18co/
-    label: Conference poster not in proceedings 
+    label: Conference poster not in proceedings
   - id: https://vocabularies.coar-repositories.org/resource_types/R60J-J5BD/
-    label: Conference presentation 
+    label: Conference presentation
   - id: https://vocabularies.coar-repositories.org/resource_types/c_6670/
-    label: Conference poster 
+    label: Conference poster
   - id: https://vocabularies.coar-repositories.org/resource_types/c_7acd/
-    label: Corrigendum 
+    label: Corrigendum
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#datapaper
     label: Data Paper
   - id: https://vocabularies.coar-repositories.org/resource_types/c_ab20/
-    label: Data management plan 
+    label: Data management plan
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#dissertation
     label: Dissertation
   - id: https://vocabularies.coar-repositories.org/resource_types/c_b239/
-    label: Editorial 
+    label: Editorial
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#journal
     label: Journal
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#journalarticle
     label: Journal Article
   - id: https://vocabularies.coar-repositories.org/resource_types/c_545b/
-    label: Letter to the editor 
+    label: Letter to the editor
   - id: https://vocabularies.coar-repositories.org/resource_types/c_8544/
-    label: Lecture 
+    label: Lecture
   - id: https://vocabularies.coar-repositories.org/resource_types/c_0857/
-    label: Letter 
+    label: Letter
   - id: https://vocabularies.coar-repositories.org/resource_types/c_2cd9/
-    label: Magazine 
+    label: Magazine
   - id: https://vocabularies.coar-repositories.org/resource_types/c_0040/
-    label: Manuscript 
+    label: Manuscript
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18wz/
-    label: Memorandum 
+    label: Memorandum
   - id: http://vocab.getty.edu/page/aat/300054676
     label: Methodology
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18cw/
-    label: Musical notation 
+    label: Musical notation
   - id: https://vocabularies.coar-repositories.org/resource_types/c_2fe3/
-    label: Newspaper 
+    label: Newspaper
   - id: https://vocabularies.coar-repositories.org/resource_types/c_998f/
-    label: Newspaper article 
+    label: Newspaper article
   - id: https://vocabularies.coar-repositories.org/resource_types/QX5C-AR31/
-    label: Other periodical 
+    label: Other periodical
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#outputmanagementplan
     label: Output Management Plan
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#peerreview
@@ -74,48 +74,48 @@ terms:
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#preprint
     label: Pre-Print
   - id: https://vocabularies.coar-repositories.org/resource_types/c_186u/
-    label: Policy report 
+    label: Policy report
   - id: http://vocab.getty.edu/page/aat/300027240
     label: Programme
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18op/
-    label: Project deliverable 
+    label: Project deliverable
   - id: https://vocabularies.coar-repositories.org/resource_types/YZ1N-ZFT9/
-    label: Research protocol 
+    label: Research protocol
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18ws/
-    label: Research report 
+    label: Research report
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18gh/
-    label: Technical report 
+    label: Technical report
   - id: https://vocabularies.coar-repositories.org/resource_types/c_71bd/
-    label: Technical documentation 
+    label: Technical documentation
   - id: https://vocabularies.coar-repositories.org/resource_types/c_46ec/
-    label: Thesis 
+    label: Thesis
   - id: https://vocabularies.coar-repositories.org/resource_types/c_7a1f/
-    label: Bachelor thesis 
+    label: Bachelor thesis
   - id: https://vocabularies.coar-repositories.org/resource_types/c_db06/
-    label: Doctoral thesis 
+    label: Doctoral thesis
   - id: https://vocabularies.coar-repositories.org/resource_types/c_bdcc/
-    label: Master thesis 
+    label: Master thesis
   - id: https://vocabularies.coar-repositories.org/resource_types/H6QP-SC1X/
-    label: Trademark 
+    label: Trademark
   - id: https://vocabularies.coar-repositories.org/resource_types/6NC7-GK9S/
-    label: Transcription 
+    label: Transcription
   - id: https://vocabularies.coar-repositories.org/resource_types/c_baaf/
-    label: Research proposal 
+    label: Research proposal
   - id: https://vocabularies.coar-repositories.org/resource_types/c_efa0/
-    label: Review 
+    label: Review
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#report
     label: Report
   - id: https://vocabularies.coar-repositories.org/resource_types/c_2df8fbb1/
-    label: Research article 
+    label: Research article
   - id: https://vocabularies.coar-repositories.org/resource_types/c_dcae04bc/
-    label: Review article 
+    label: Review article
   - id: https://vocabularies.coar-repositories.org/resource_types/c_7bab/
-    label: Software paper 
+    label: Software paper
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#studyregistration
     label: Study Registration
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#text
     label: Text
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#workflow
     label: Workflow
-   - id: https://vocabularies.coar-repositories.org/resource_types/c_8042/
-    label: Working paper 
+  - id: https://vocabularies.coar-repositories.org/resource_types/c_8042/
+    label: Working paper

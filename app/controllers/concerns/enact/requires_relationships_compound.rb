@@ -3,8 +3,9 @@
 module Enact
   # Opt-in gate for the relationship map: only serve it when the tenant's
   # metadata profile declares the `relationships` compound (see
-  # docs/relationship-map-setup.md). Kept generic (any registered work type
-  # exposing the attribute) so the feature is portable beyond Enact.
+  # docs/relationship-map-setup.md). Kept generic (any registered work type /
+  # the active profile exposing the attribute) so the feature is portable
+  # beyond Enact.
   module RequiresRelationshipsCompound
     extend ActiveSupport::Concern
 
@@ -16,15 +17,45 @@ module Enact
       render plain: 'Relationship map is not enabled for this repository.', status: :not_found
     end
 
-    # Class-level attribute introspection, so it holds in both flexible and
-    # classic metadata modes and needs no query.
+    # The map is enabled when the tenant's metadata declares the `relationships`
+    # compound. In flexible mode (HYRAX_FLEXIBLE=true) the compound lives in the
+    # active M3 profile's `properties`, NOT in the class-level `attribute_names`
+    # (those only carry the base Valkyrie attributes), so check the flexible
+    # profile first; fall back to the class attributes for classic metadata mode.
     def relationships_compound_configured?
+      flexible_profile_declares_relationships? || work_type_declares_relationships?
+    rescue StandardError
+      false
+    end
+
+    # Flexible mode: read the current M3 profile and look for the `relationships`
+    # property. Returns false in classic mode (handled by the class-attribute path).
+    def flexible_profile_declares_relationships?
+      return false unless ::Hyrax.config.respond_to?(:flexible?) && ::Hyrax.config.flexible?
+
+      profile = current_flexible_profile
+      properties = profile.is_a?(Hash) ? (profile['properties'] || profile['attributes']) : nil
+      properties.is_a?(Hash) && properties.key?('relationships')
+    end
+
+    # The *active* M3 profile. Hyrax tracks it via `current_schema_id`; fall back
+    # to the most recent schema if that accessor is unavailable or unset, so we
+    # never key the gate off a stale/non-active schema when several exist.
+    def current_flexible_profile
+      schema = nil
+      if ::Hyrax::FlexibleSchema.respond_to?(:current_schema_id) && (id = ::Hyrax::FlexibleSchema.current_schema_id)
+        schema = ::Hyrax::FlexibleSchema.find_by(id:)
+      end
+      (schema || ::Hyrax::FlexibleSchema.order(:created_at).last)&.profile
+    end
+
+    # Classic mode: any registered work type declaring a `relationships`
+    # attribute at the class level. No query, holds without flexible metadata.
+    def work_type_declares_relationships?
       ::Hyrax.config.registered_curation_concern_types.any? do |type|
         klass = type.safe_constantize
         klass.respond_to?(:attribute_names) && klass.attribute_names.map(&:to_sym).include?(:relationships)
       end
-    rescue StandardError
-      false
     end
   end
 end

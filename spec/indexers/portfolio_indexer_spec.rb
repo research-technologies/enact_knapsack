@@ -22,7 +22,6 @@ RSpec.describe PortfolioIndexer do
       { 'contributor' => '42', 'role' => 'conceptualization', 'role_other' => 'Sound design' }
     end
     let(:funder) { { 'funder_name' => 'AHRC' } }
-    let(:unit) { { 'name' => 'School of Music' } }
     let(:resource) do
       Hyrax.persister.save(resource: Portfolio.new(
         title: ['Indexed portfolio'],
