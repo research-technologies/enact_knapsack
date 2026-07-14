@@ -1122,12 +1122,12 @@ terms:
   -
     id: "https://spdx.org/licenses/DL-DE-BY-2.0.html"
     active: true
-    term: Data licence Germany â€“ attribution â€“ version 2.0
+    term: Data licence Germany – attribution – version 2.0
     licenseId: DL-DE-BY-2.0
   -
     id: "https://spdx.org/licenses/DL-DE-ZERO-2.0.html"
     active: true
-    term: Data licence Germany â€“ zero â€“ version 2.0
+    term: Data licence Germany – zero – version 2.0
     licenseId: DL-DE-ZERO-2.0
   -
     id: "https://spdx.org/licenses/DOC.html"
@@ -1247,7 +1247,7 @@ terms:
   -
     id: "https://spdx.org/licenses/ESA-PL-permissive-2.4.html"
     active: true
-    term: European Space Agency Public License â€“ v2.4 â€“ Permissive (Type 3)
+    term: European Space Agency Public License – v2.4 – Permissive (Type 3)
     licenseId: ESA-PL-permissive-2.4
   -
     id: "https://spdx.org/licenses/ESA-PL-strong-copyleft-2.4.html"
@@ -1257,7 +1257,7 @@ terms:
   -
     id: "https://spdx.org/licenses/ESA-PL-weak-copyleft-2.4.html"
     active: true
-    term: European Space Agency Public License â€“ v2.4 â€“ Weak Copyleft (Type 2)
+    term: European Space Agency Public License – v2.4 – Weak Copyleft (Type 2)
     licenseId: ESA-PL-weak-copyleft-2.4
   -
     id: "https://spdx.org/licenses/etalab-2.0.html"
@@ -2087,17 +2087,17 @@ terms:
   -
     id: "https://spdx.org/licenses/LiLiQ-P-1.1.html"
     active: true
-    term: Licence Libre du QuÃ©bec â€“ Permissive version 1.1
+    term: Licence Libre du Québec – Permissive version 1.1
     licenseId: LiLiQ-P-1.1
   -
     id: "https://spdx.org/licenses/LiLiQ-R-1.1.html"
     active: true
-    term: Licence Libre du QuÃ©bec â€“ RÃ©ciprocitÃ© version 1.1
+    term: Licence Libre du Québec – Réciprocité version 1.1
     licenseId: LiLiQ-R-1.1
   -
     id: "https://spdx.org/licenses/LiLiQ-Rplus-1.1.html"
     active: true
-    term: Licence Libre du QuÃ©bec â€“ RÃ©ciprocitÃ© forte version 1.1
+    term: Licence Libre du Québec – Réciprocité forte version 1.1
     licenseId: LiLiQ-Rplus-1.1
   -
     id: "https://spdx.org/licenses/Linux-man-pages-1-para.html"
