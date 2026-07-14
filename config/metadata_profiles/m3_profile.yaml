@@ -5,7 +5,7 @@ profile:
   responsibility: https://notch8.com
   responsibility_statement: Notch8 / Enact PR Voices Discovery
   type: Enact PR Voices Profile
-  version: 13
+  version: 1
 classes:
   AdminSetResource:
     display_label: AdminSet
