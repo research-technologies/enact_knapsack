@@ -11,13 +11,13 @@ terms:
     label: Dataset
   - id: http://vocab.getty.edu/page/aat/300179434
     label: Portfolio subset
-  - id: https://schema.org/Menu 
+  - id: https://schema.org/Menu
     label: Menu
   - id: https://schema.org/MusicAlbum
     label: Music Album
   - id: https://schema.org/MusicPlayList
     label: Music Play list
-  - id: https://schema.org/RadioSeason 
+  - id: https://schema.org/RadioSeason
     label: Radio Season
   - id: https://schema.org/RadioSeries
     label: Radio Series

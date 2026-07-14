@@ -467,7 +467,7 @@ properties:
       render_as: compound
       html_dl: true
       display: card
-  rights_statement:     
+  rights_statement:
     type: controlled
     name: statement
     available_on:
@@ -477,7 +477,7 @@ properties:
     form:
       cols: 6
     mappings:
-      simple_dc_pmh: dc:rights  
+      simple_dc_pmh: dc:rights
   license:
     type: controlled
     name: license
