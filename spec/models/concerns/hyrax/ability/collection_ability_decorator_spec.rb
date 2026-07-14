@@ -8,6 +8,7 @@ RSpec.describe Ability do
   subject(:ability) { described_class.new(user) }
 
   let(:collection_class) { Hyrax.config.collection_class }
+  let(:admin_set_class) { Hyrax.config.admin_set_class }
 
   shared_examples 'cannot create user collections' do
     it 'cannot create user collections' do
@@ -23,6 +24,13 @@ RSpec.describe Ability do
 
     it 'still retains management of existing collections' do
       expect(ability.can?(:manage_any, collection_class)).to be true
+    end
+
+    # Admin Sets are a separate model registry (`admin_set_models`), so the
+    # decorator's revoke on `collection_models` must not touch them (#94).
+    it 'can still create Admin Sets' do
+      expect(ability.can?(:create, admin_set_class)).to be true
+      expect(ability.can?(:create_any, admin_set_class)).to be true
     end
   end
 
