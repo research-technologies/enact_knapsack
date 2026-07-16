@@ -1,0 +1,24 @@
+<%# OVERRIDE Hyrax 5.2.0 (samvera/hyrax main @ 568ec626) %>
+<%# Hide the User Collections link from non-admins (#94). Safe because creation %>
+<%# is disabled for everyone (see CollectionAbilityDecorator); admins keep it to %>
+<%# manage existing collections. %>
+  <li class="h5 nav-item"><%= t('hyrax.admin.sidebar.repository_objects') %></li>
+
+  <% if can? :read, :admin_dashboard %>
+    <%= menu.nav_link(hyrax.my_collections_path,
+                      class: "nav-link",
+                      onclick: "dontChangeAccordion(event);",
+                      also_active_for: hyrax.dashboard_collections_path) do %>
+      <span class="fa fa-folder-open" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.collections') %></span>
+    <% end %>
+  <% end %>
+
+  <%= menu.nav_link(hyrax.my_works_path,
+                    class: "nav-link",
+                    onclick: "dontChangeAccordion(event);",
+                    also_active_for: hyrax.dashboard_works_path) do %>
+    <span class="fa fa-file" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.works') %></span>
+  <% end %>
+
+  <%= render 'hyrax/dashboard/sidebar/metadata', menu: menu %>
+  <%= render 'hyrax/dashboard/sidebar/menu_partials', menu: menu, section: :repository_content %>
