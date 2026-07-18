@@ -25,10 +25,13 @@ terms:
     label: Visual Media - StillImage
   - id: https://schema.org/Drawing
     label: Visual Media - StillImage - Drawing
+    file_suffixes: [jpg, jpeg, png, tiff, tif, svg, pdf]
   - id: https://schema.org/Painting
     label: Visual Media - StillImage - Painting
+    file_suffixes: [jpg, jpeg, png, tiff, tif]
   - id: https://schema.org/Photograph
     label: Visual Media - StillImage - Photograph
+    file_suffixes: [jpg, jpeg, png, tiff, tif, heic, webp]
   - id: https://schema.org/VisualArtwork
     label: Visual Media - StillImage - Artwork
   - id: http://vocab.getty.edu/page/aat/300015578
@@ -43,6 +46,7 @@ terms:
     label: Visual Media - MovingImage - Animation
   - id: https://vocabularies.coar-repositories.org/resource_types/c_12ce/
     label: Visual Media - MovingImage - Film
+    file_suffixes: [mp4, mov, avi, mkv, webm, m4v]
   - id: http://vocab.getty.edu/page/aat/300375156
     label: Visual Media - MovingImage - Documentary
   - id: https://github.com/research-technologies/prvoices_schema/wiki/Audio-visualPresentation
@@ -57,8 +61,10 @@ terms:
     label: Sound
   - id: https://schema.org/MusicComposition
     label: Sound - MusicComposition
+    file_suffixes: [xml, mxl, mid, midi, pdf]
   - id: https://schema.org/MusicRecording
     label: Sound - MusicRecording
+    file_suffixes: [mp3, wav, flac, aac, m4a, ogg]
   - id: http://vocab.getty.edu/page/aat/300028633
     label: Sound - SpokenWord
   - id: https://schema.org/RadioEpisode
@@ -69,8 +75,10 @@ terms:
     label: Sound - SpokenWord - PoetryRecording
   - id: https://schema.org/Audiobook
     label: Sound - SpokenWord - AudioBook
+    file_suffixes: [mp3, m4a, m4b, aac]
   - id: https://schema.org/PodcastEpisode
     label: Sound - SpokenWord - Podcast
+    file_suffixes: [mp3, m4a, aac, ogg]
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#interactiveresource
     label: InteractiveResource
   - id: https://schema.org/VideoGame
@@ -85,10 +93,12 @@ terms:
     label: Service
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#software
     label: Software
+    file_suffixes: [zip, tar, gz, rb, py, js, java, cpp]
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#standard
     label: Standard
   - id: https://vocabularies.coar-repositories.org/resource_types/542X-3S04/
     label: Design
+    file_suffixes: [pdf, ai, psd, indd, svg]
   - id: https://vocabularies.coar-repositories.org/resource_types/JBNF-DYAD/
     label: Design - IndustrialDesign
   - id: https://vocabularies.coar-repositories.org/resource_types/BW7T-YM2G/

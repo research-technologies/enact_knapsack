@@ -48,6 +48,15 @@ en:
         one: Collection
         other: Collections
   hyrax:
+    # Per-work-type card icons (Hyrax::ModelIcon looks up hyrax.icons.<i18n_key>,
+    # falling back to hyrax.icons.default). Distinguishes the four Portfolio child
+    # types from each other and from the Portfolio container.
+    icons:
+      portfolio: fa fa-cube
+      portfolio_artefact: fa fa-paint-brush
+      portfolio_event: fa fa-calendar
+      portfolio_literature: fa fa-book
+      portfolio_item_collection: fa fa-folder-open
     compound_fields:
       linked_record:
         # Fallback placeholder for any linked_record picker.
@@ -96,7 +105,56 @@ en:
       portfolio_item_collection:
         name: Collection
         description: A grouped collection of items within a portfolio - a thematic set of related works, curated assemblage, or sub-series. Carries extent, extent_type, and collection_order.
+  # Override the generic Hyku deposit-wizard start-screen path cards with
+  # Portfolio-specific wording. Enact's locale loads after Hyku's, so these
+  # same-key definitions win.
+  hyku:
+    deposit_wizard:
+      select_parent:
+        heading: Add to a parent work
+        subtext: Search for the title of the portfolio, artefact, event, piece of literature, or collection this deposit should be added to.
+      start:
+        paths:
+          new:
+            title: Create a new Portfolio
+            desc: A portfolio is the top-level work of a project — start one, then add the child works that belong to it.
+            icon: fa-cube
+          add:
+            title: Add to an existing portfolio or work
+            desc: Deposit a new item into a practice research project you've already started.
+            icon: fa-sitemap
+          standalone:
+            title: Deposit a standalone work
+            desc: Add a single artefact, event or piece of writing that isn't part of a portfolio or another work.
+            icon: fa-file-o
   enact:
+    deposit_wizard:
+      item_start:
+        heading: Add an item
+        subtext: Items are the building blocks of your portfolio — artefacts, events, literature, and collections. Do you know what kind of work this is?
+        modes:
+          known:
+            title: I know which type
+            desc: Go straight to choosing the work type.
+            icon: fa-check-circle
+          guided:
+            title: Help me decide
+            desc: Start with your file, and we'll present subtype options to help you pick the work type.
+            icon: fa-question-circle
+      guided_confirm:
+        heading: What best describes this work?
+        # The instruction tail. Preceded inline by "You uploaded a [BADGE] file."
+        # when a file is present (the badge is rendered by the view), or by
+        # uploaded_none when there is no file.
+        subtext: Pick the option that fits — the tag shows which work type each one belongs to.
+        # Lead-in wrapping the file-type badge: "You uploaded a" [GIF] "file."
+        uploaded_prefix: You uploaded a
+        uploaded_suffix: file.
+        # Shown in place of the file lead-in when nothing was uploaded.
+        uploaded_none: Choose the option that best describes this work.
+        show_all: Not seeing the right fit? Show all types
+      errors:
+        no_subtype: Please choose an option that describes your work.
     relationships:
       none: No related works within this project.
       # Label for the button that opens the interactive relationship map.
