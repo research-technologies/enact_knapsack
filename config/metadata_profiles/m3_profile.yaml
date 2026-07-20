@@ -476,6 +476,8 @@ properties:
     authority: rights_statements
     form:
       cols: 6
+      # small list; typeahead only to match `license` in the same rights card
+      autocomplete: true
     mappings:
       simple_dc_pmh: dc:rights
   license:
@@ -487,6 +489,7 @@ properties:
     authority: licenses
     form:
       cols: 6
+      autocomplete: true
     mappings:
       simple_dc_pmh: dc:license
   ref_unit_of_assessment:
@@ -843,6 +846,8 @@ properties:
     authority: contributor_roles
     form:
       cols: 6
+      multiple: true
+      autocomplete: true
   contributor_role_other:
     type: string
     name: role_other
@@ -999,6 +1004,7 @@ properties:
     authority: relationship_types
     form:
       cols: 6
+      autocomplete: true
   relationship_type_other:
     type: string
     name: type_other
