@@ -66,7 +66,8 @@ module Enact
         id: doc.id,
         title: Array(doc['title_tesim']).first.to_s,
         path: Hyrax::CompoundWorkResolver.path_for(doc.id),
-        roles: ours.filter_map { |entry| entry['role'].presence },
+        # Array() tolerates roles saved as a single string before the multi-select opt-in.
+        roles: ours.flat_map { |entry| Array(entry['role']).reject(&:blank?) },
         role_other: ours.filter_map { |entry| entry['role_other'].presence },
         # The work's indexed thumbnail (thumbnail_path_ss), exposed by
         # SolrDocument#thumbnail_path; nil for a raw hit without the reader.
