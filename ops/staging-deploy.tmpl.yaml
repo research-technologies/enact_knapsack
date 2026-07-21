@@ -281,6 +281,14 @@ fits:
 
 global:
   hyraxName: enact-knapsack-staging
+  # Shared secret this nginx sends to CloudFront (see terraform/cloudfront_iiif.tf
+  # in notch8-ops, aws_cloudfront_function.iiif_origin_verify) so the /iiif
+  # distribution rejects anything that didn't come through this proxy.
+  # Referenced via {{ .Values.global.iiifOriginVerifySecret }} in serverBlock,
+  # NOT as an nginx variable -- bare $VARNAME in serverBlock is parsed by
+  # nginx itself as a runtime variable reference (see ${DOLLAR} elsewhere in
+  # this file) and there is no env-var substitution step for arbitrary names.
+  iiifOriginVerifySecret: $IIIF_ORIGIN_VERIFY_SECRET
 
 nginx:
   enabled: true
@@ -295,12 +303,6 @@ nginx:
     registry: ghcr.io
     repository: notch8/scripts/bitnamilegacy-nginx
     tag: 1.21.6-debian-11-r21
-  # Shared secret this nginx sends to CloudFront (see terraform/cloudfront_iiif.tf
-  # in notch8-ops, aws_cloudfront_function.iiif_origin_verify) so the /iiif
-  # distribution rejects anything that didn't come through this proxy.
-  extraEnvVars:
-    - name: IIIF_ORIGIN_VERIFY_SECRET
-      value: $IIIF_ORIGIN_VERIFY_SECRET
   serverBlock: |-
     upstream rails_app {
       server {{ .Values.global.hyraxName }};
@@ -428,7 +430,7 @@ nginx:
         proxy_set_header       X-Forwarded-For  ${DOLLAR}proxy_add_x_forwarded_for;
         proxy_set_header       X-Forwarded-Host ${DOLLAR}host;
         proxy_set_header       X-Forwarded-Proto https;
-        proxy_set_header       X-Origin-Verify  ${DOLLAR}IIIF_ORIGIN_VERIFY_SECRET;
+        proxy_set_header       X-Origin-Verify  {{ .Values.global.iiifOriginVerifySecret }};
         proxy_pass ${DOLLAR}image_internal;
     }
     location = /auth {
