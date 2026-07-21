@@ -16,6 +16,8 @@ RSpec.describe 'Portfolio relationships indexing', :clean_repo do
     {
       'item' => target.id.to_s,
       'type' => 'source-of',
+      'type_other' => 'Remixes',
+      'type_other_inverse' => 'Is remixed by',
       'position' => '1',
       'note' => 'The model is the source for the export'
     }
@@ -36,6 +38,8 @@ RSpec.describe 'Portfolio relationships indexing', :clean_repo do
     expect(doc['relationships_position_sim']).to include('1')
     expect(doc['relationships_note_tesim'])
       .to include(a_string_including('source for the export'))
+    expect(doc['relationships_type_other_tesim']).to include('Remixes')
+    expect(doc['relationships_type_other_inverse_tesim']).to include('Is remixed by')
   end
 
   it 'does not facet the free-text note (explicit indexing override)' do
@@ -48,6 +52,8 @@ RSpec.describe 'Portfolio relationships indexing', :clean_repo do
     expect(entries.first).to include(
       'item' => target.id.to_s,
       'type' => 'source-of',
+      'type_other' => 'Remixes',
+      'type_other_inverse' => 'Is remixed by',
       'position' => '1'
     )
   end

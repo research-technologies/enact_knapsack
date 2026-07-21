@@ -6,8 +6,11 @@ module Enact
   # this project" block.
   #
   # An edge is stored once, on the source work's `relationships` compound, as an
-  # entry keyed by the M3 members' `name:`s ({"item", "type", "position",
-  # "note"}). The source's own edges are its OUTBOUND edges. A work's INBOUND
+  # entry keyed by the M3 members' `name:`s ({"item", "type", "type_other",
+  # "type_other_inverse", "position", "note"}). A controlled `type` may be left
+  # blank (or set to the "other" term) and described in the free-text
+  # `type_other`, mirroring the contributors `role`/`role_other` pair; issue #107.
+  # The source's own edges are its OUTBOUND edges. A work's INBOUND
   # edges (works that point AT it) are not stored on it; they are found with a
   # Solr reverse lookup on `relationships_item_ssim` (the derived index field
   # for the `item` member). This is the single-source-of-truth design: no
@@ -20,7 +23,10 @@ module Enact
   # map still graphs work-to-work edges only; external targets are not in its
   # node set, so the map controller filters them out.)
   class RelationshipGraph
-    Edge = Struct.new(:target_id, :title, :path, :relation_type, :note, :position, :external, keyword_init: true)
+    # On an inbound edge `type_other` holds the *inverse* prose, not the forward
+    # label, so the view can render both directions with identical logic.
+    Edge = Struct.new(:target_id, :title, :path, :relation_type, :type_other, :type_other_inverse,
+                      :note, :position, :external, keyword_init: true)
 
     # @param document [SolrDocument, #relationships] the work whose edges we render
     def initialize(document)
@@ -32,7 +38,7 @@ module Enact
     # @return [Array<Edge>]
     def outbound
       edges = relationship_entries(@document).filter_map do |entry|
-        build_edge(entry['item'], entry['type'], entry)
+        build_edge(entry['item'], entry, labels: forward_labels(entry))
       end
       sort_edges(edges)
     end
@@ -48,14 +54,29 @@ module Enact
         relationship_entries(source).filter_map do |entry|
           next unless entry['item'].to_s == id.to_s
 
-          build_edge(source.id, Enact::RelationshipTypesService.inverse(entry['type']), entry,
-                     target_id: source.id)
+          build_edge(source.id, entry, labels: inverse_labels(entry), target_id: source.id)
         end
       end
       sort_edges(edges)
     end
 
     private
+
+    # `other_inverse` is carried only so the map can label a free-text edge's
+    # target's-side reading; the outbound show page ignores it.
+    def forward_labels(entry)
+      { code: entry['type'].presence, other: entry['type_other'].presence,
+        other_inverse: entry['type_other_inverse'].presence }
+    end
+
+    # A free-text type has no authority inverse, so it inverts through the
+    # curator's `type_other_inverse`, falling back to the forward prose (i.e. a
+    # symmetric relationship).
+    def inverse_labels(entry)
+      code = entry['type'].present? ? Enact::RelationshipTypesService.inverse(entry['type']) : nil
+      other = entry['type_other'].present? ? (entry['type_other_inverse'].presence || entry['type_other']) : nil
+      { code:, other:, other_inverse: nil }
+    end
 
     # The source works whose `relationships` point at the given id. Limited to a
     # generous page; a single work is not expected to be the target of more
@@ -79,17 +100,17 @@ module Enact
       Hyrax::SolrDocument::Metadata::Solr::CompoundEntries.coerce(blob)
     end
 
-    # Build an Edge from a target value + relation type. Internal works are
-    # resolved to their title/path; external URLs are emitted as external edges
-    # (the URL is both title and path, `external: true`) so the relationships
-    # card can link to them. Returns nil only for blank values or internal
-    # targets that do not resolve to a real record.
-    def build_edge(target_value, relation_type, entry, target_id: nil)
+    # External URLs are emitted as external edges (`external: true`, URL as both
+    # title and path) so the card can link out; a blank value or an internal id
+    # that no longer resolves to a record returns nil and is skipped.
+    def build_edge(target_value, entry, labels:, target_id: nil)
       target_value = target_value.to_s
       title, path, external = resolve_target(target_value)
       return nil if title.nil?
 
-      Edge.new(target_id: target_id || target_value, title:, path:, relation_type:, external:,
+      Edge.new(target_id: target_id || target_value, title:, path:,
+               relation_type: labels[:code], type_other: labels[:other],
+               type_other_inverse: labels[:other_inverse], external:,
                note: entry['note'].presence, position: entry['position'].presence)
     end
 
