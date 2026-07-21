@@ -22,3 +22,9 @@ en:
         role_label: Role
         name_identifier: ORCID
         affiliation: Affiliation
+      relationships:
+        type_other: Type (if "Other")
+        # The label the relationship should read as from the related work's side
+        # when a free-text "Other" type is used (e.g. "remixes" -> "is remixed
+        # by"). Left blank, the relationship reads the same in both directions.
+        type_other_inverse: Reverse label (if "Other")
