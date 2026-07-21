@@ -23,15 +23,7 @@ en:
         name_identifier: ORCID
         affiliation: Affiliation
       relationships:
-        type_other: Type (if "Other")
-        type_other_hint: >-
-          Describe the relationship in your own words when none of the Type
-          options fit (e.g. "Remixes"). Shown on this work in place of a Type.
-        type_other_inverse: Reverse label (if "Other")
-        # The label the relationship reads as from the related work's side when a
-        # free-text "Other" type is used; left blank it reads the same both ways.
-        type_other_inverse_hint: >-
-          How this relationship reads on the related work's page. Your "Type
-          (if Other)" describes it from this work; this describes it from the
-          other work (e.g. "Remixes" here → "Is remixed by" there). Leave blank
-          if it reads the same both ways.
+        type_other: Other relationship type
+        # How the free-text "Other" relationship reads from the linked work's
+        # side; the label names that perspective so curators know which way round.
+        type_other_inverse: Linked Work's Relationship Type
