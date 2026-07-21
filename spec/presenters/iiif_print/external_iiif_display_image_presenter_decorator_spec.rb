@@ -35,6 +35,14 @@ RSpec.describe IiifPrint::ExternalIiifDisplayImagePresenter do
         expect(url).to start_with('https://fallback-tenant.enacthyku.com/iiif/2/')
       end
     end
+
+    context 'when base_url has no scheme (e.g. hostname set from request.host)' do
+      it 'adds https:// rather than passing a bare host through' do
+        url = presenter.display_image_url('tenant-a.enacthyku.com')
+
+        expect(url).to start_with('https://tenant-a.enacthyku.com/iiif/2/')
+      end
+    end
   end
 
   describe '#iiif_endpoint' do
@@ -47,6 +55,24 @@ RSpec.describe IiifPrint::ExternalIiifDisplayImagePresenter do
     context 'when no base_url is given' do
       it 'falls back to #base_url_for_iiif' do
         allow(presenter).to receive(:base_url_for_iiif).and_return('https://fallback-tenant.enacthyku.com')
+
+        endpoint = presenter.iiif_endpoint
+
+        expect(endpoint.url).to eq 'https://fallback-tenant.enacthyku.com/iiif/2/abc123%2Fdef456'
+      end
+    end
+
+    context 'when base_url has no scheme (e.g. hostname set from request.host)' do
+      it 'adds https:// rather than producing a schemeless service @id' do
+        endpoint = presenter.iiif_endpoint(nil, base_url: 'tenant-b.enacthyku.com')
+
+        expect(endpoint.url).to eq 'https://tenant-b.enacthyku.com/iiif/2/abc123%2Fdef456'
+      end
+    end
+
+    context 'when #base_url_for_iiif itself has no scheme' do
+      it 'adds https://' do
+        allow(presenter).to receive(:base_url_for_iiif).and_return('fallback-tenant.enacthyku.com')
 
         endpoint = presenter.iiif_endpoint
 
