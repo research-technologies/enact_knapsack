@@ -24,7 +24,14 @@ en:
         affiliation: Affiliation
       relationships:
         type_other: Type (if "Other")
-        # The label the relationship should read as from the related work's side
-        # when a free-text "Other" type is used (e.g. "remixes" -> "is remixed
-        # by"). Left blank, the relationship reads the same in both directions.
+        type_other_hint: >-
+          Describe the relationship in your own words when none of the Type
+          options fit (e.g. "Remixes"). Shown on this work in place of a Type.
         type_other_inverse: Reverse label (if "Other")
+        # The label the relationship reads as from the related work's side when a
+        # free-text "Other" type is used; left blank it reads the same both ways.
+        type_other_inverse_hint: >-
+          How this relationship reads on the related work's page. Your "Type
+          (if Other)" describes it from this work; this describes it from the
+          other work (e.g. "Remixes" here → "Is remixed by" there). Leave blank
+          if it reads the same both ways.
