@@ -18,7 +18,9 @@
       <% outbound.each do |edge| %>
         <li>
           <span class="enact-relationship-type">
-            <%= t("enact.relationships.types.#{edge.relation_type}", default: Enact::RelationshipTypesService.label(edge.relation_type)) %>
+            <%# Joined like the contributors card's roles + role_other. %>
+            <%= [(t("enact.relationships.types.#{edge.relation_type}", default: Enact::RelationshipTypesService.label(edge.relation_type)) if edge.relation_type.present?),
+                 edge.type_other.presence].compact.join(', ') %>
           </span>
           <% if edge.external %>
             <%= link_to(edge.title, edge.path, target: '_blank', rel: 'noopener noreferrer') %>
@@ -39,7 +41,10 @@
       <% inbound.each do |edge| %>
         <li>
           <span class="enact-relationship-type">
-            <%= t("enact.relationships.inverse_types.#{edge.relation_type}", default: Enact::RelationshipTypesService.label(edge.relation_type)) %>
+            <%# edge.type_other already carries the inverse ("target's side")
+                prose for a free-text "other" edge; see RelationshipGraph#inbound. %>
+            <%= [(t("enact.relationships.inverse_types.#{edge.relation_type}", default: Enact::RelationshipTypesService.label(edge.relation_type)) if edge.relation_type.present?),
+                 edge.type_other.presence].compact.join(', ') %>
           </span>
           <% if edge.external %>
             <%= link_to(edge.title, edge.path, target: '_blank', rel: 'noopener noreferrer') %>
