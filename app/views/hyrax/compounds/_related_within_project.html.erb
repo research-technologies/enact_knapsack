@@ -18,7 +18,6 @@
       <% outbound.each do |edge| %>
         <li>
           <span class="enact-relationship-type">
-            <%# Joined like the contributors card's roles + role_other. %>
             <%= [(t("enact.relationships.types.#{edge.relation_type}", default: Enact::RelationshipTypesService.label(edge.relation_type)) if edge.relation_type.present?),
                  edge.type_other.presence].compact.join(', ') %>
           </span>

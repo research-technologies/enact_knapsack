@@ -161,17 +161,15 @@ module Enact
       [prose, edge.type_other_inverse.presence || prose]
     end
 
-    # term => { label, inverse, color, dc } for the legend and edge labels.
-    # Covers only the types present in the graph - the whole vocabulary would
-    # swamp the legend.
+    # Only the types present in the graph; the whole vocabulary would swamp the
+    # legend.
     def rel_types(links)
       inverses = links.each_with_object({}) { |l, m| m[l[:rel]] ||= l[:rel_inverse] if l[:rel_inverse].present? }
       links.filter_map { |l| l[:rel] }.uniq.index_with { |term| rel_type(term, inverses) }
     end
 
     # A term absent from the authority is a free-text "other" label: shown
-    # verbatim (never humanized) and neutral-coloured, with the curator's
-    # inverse prose. Locale keys override the authority labels for known terms.
+    # verbatim and neutral-coloured, with the curator's inverse prose.
     def rel_type(term, inverses)
       svc = ::Enact::RelationshipTypesService
       return { label: term, inverse: inverses[term].presence || term, color: svc::FALLBACK_COLOR, dc: nil } if svc.term(term).blank?

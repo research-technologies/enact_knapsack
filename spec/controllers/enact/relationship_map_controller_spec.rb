@@ -2,10 +2,8 @@
 
 require 'rails_helper'
 
-# Unit coverage for the free-text "other" edge handling added for issue #107.
-# The controller's private helpers turn Enact::RelationshipGraph::Edge structs
-# into the graph's link keys and legend, so distinct free-text relationship
-# types render on the map with their prose rather than collapsing into "Other".
+# The controller's private helpers turn Edge structs into the map's link keys
+# and legend; these cover the free-text "other" edge handling (issue #107).
 RSpec.describe Enact::RelationshipMapController do
   let(:edge_class) { Enact::RelationshipGraph::Edge }
 

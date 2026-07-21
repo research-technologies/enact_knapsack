@@ -1000,9 +1000,8 @@ properties:
     available_on:
       properties:
       - relationships
-    # Optional, like contributor_role: a curator picks a controlled term or the
-    # "Other" escape hatch and describes it in type_other, mirroring how
-    # contributors leave role blank / pick "Other" and fill role_other.
+    # Optional, like contributor_role: the curator picks a controlled term or the
+    # "Other" escape hatch and describes it in type_other.
     required: false
     authority: relationship_types
     form:

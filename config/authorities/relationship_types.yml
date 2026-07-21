@@ -194,11 +194,10 @@ terms:
     source: datacite
     datacite: Collects
     inverse: iscollectedby
-  # Free-text escape hatch, mirroring the `other` role in contributor_roles.yml.
-  # Selecting "Other" pairs with the sibling `type_other` free-text subproperty
-  # (and `type_other_inverse` for the target's-side label); the graph and map
-  # display that prose in place of a controlled label. `inverse: other` is the
-  # symmetric fallback used when no `type_other_inverse` is supplied.
+  # Free-text escape hatch, mirroring the `other` role in contributor_roles.yml:
+  # selecting "Other" pairs with the sibling `type_other` (+ `type_other_inverse`)
+  # free-text subproperties. `inverse: other` is the symmetric fallback used when
+  # no `type_other_inverse` is supplied.
   - id: other
     term: Other
     source: datacite
