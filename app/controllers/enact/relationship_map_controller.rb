@@ -138,8 +138,14 @@ module Enact
     # `#[]` field access, which silently empties every edge list - so pass the
     # document through as-is.
     def links_for(doc)
-      ::Enact::RelationshipGraph.new(doc).outbound.map do |edge|
+      ::Enact::RelationshipGraph.new(doc).outbound.filter_map do |edge|
         rel, rel_inverse = edge_rel_pair(edge)
+        # An untyped relationship (no controlled type, no prose - possible now
+        # that relationship_type is optional) has no map label or colour and no
+        # legend entry, so drop it rather than emit a `null`-typed edge. The show
+        # page still lists it.
+        next if rel.blank?
+
         { source: doc['id'], target: edge.target_id, rel:, rel_inverse:,
           note: edge.note, position: edge.position, external: edge.external }
       end

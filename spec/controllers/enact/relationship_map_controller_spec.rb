@@ -24,6 +24,30 @@ RSpec.describe Enact::RelationshipMapController do
       edge = edge_class.new(relation_type: nil, type_other: 'Companion to', type_other_inverse: nil)
       expect(controller.send(:edge_rel_pair, edge)).to eq(['Companion to', 'Companion to'])
     end
+
+    it 'is [nil, nil] for an untyped edge (no controlled type, no prose)' do
+      edge = edge_class.new(relation_type: nil, type_other: nil, type_other_inverse: nil)
+      expect(controller.send(:edge_rel_pair, edge)).to eq([nil, nil])
+    end
+  end
+
+  describe '#links_for' do
+    def graph_of(*edges)
+      allow(Enact::RelationshipGraph).to receive(:new)
+        .and_return(instance_double(Enact::RelationshipGraph, outbound: edges))
+    end
+
+    it 'drops an untyped edge so the map never emits a null-typed link' do
+      graph_of(edge_class.new(target_id: 't1', relation_type: nil, type_other: nil, type_other_inverse: nil))
+      expect(controller.send(:links_for, { 'id' => 's1' })).to be_empty
+    end
+
+    it 'keeps a free-text "other" edge keyed by its prose' do
+      graph_of(edge_class.new(target_id: 't1', relation_type: 'other',
+                              type_other: 'Remixes', type_other_inverse: 'Is remixed by'))
+      link = controller.send(:links_for, { 'id' => 's1' }).first
+      expect(link).to include(source: 's1', target: 't1', rel: 'Remixes', rel_inverse: 'Is remixed by')
+    end
   end
 
   describe '#rel_types' do
