@@ -1,0 +1,13 @@
+<%# One subtype card for the guided chooser. A label wrapping a hidden radio named
+    item_subtype (the shared type-select JS marks .is-selected and enables Next);
+    the work-type badge (top-right) shows which of the four types the subtype builds.
+    Local: subtype - a SubtypeSuggestions entry { id:, card_label:, badge: }. %>
+<% selected = deposit_wizard.state.attributes['item_subtype'].to_s == subtype[:id].to_s %>
+<label class="deposit-wizard__type-card deposit-wizard__subtype-card<%= ' is-selected' if selected %>">
+  <%= radio_button_tag 'item_subtype', subtype[:id], selected,
+                       class: 'deposit-wizard__type-radio sr-only', data: { behavior: 'type-option' } %>
+  <span class="deposit-wizard__subtype-head">
+    <span class="deposit-wizard__type-card-label"><%= subtype[:card_label] %></span>
+    <span class="deposit-wizard__file-ext deposit-wizard__subtype-badge"><%= subtype[:badge] %></span>
+  </span>
+</label>

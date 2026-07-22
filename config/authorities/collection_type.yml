@@ -5,8 +5,10 @@ terms:
     label: Anthology
   - id: http://vocab.getty.edu/page/aat/300375748
     label: Archive
+    file_suffixes: [zip, pdf]
   - id: curated_set
     label: Curated set
+    file_suffixes: [zip, pdf]
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.7/appendices/appendix-1/resourceTypeGeneral/#dataset
     label: Dataset
   - id: http://vocab.getty.edu/page/aat/300179434

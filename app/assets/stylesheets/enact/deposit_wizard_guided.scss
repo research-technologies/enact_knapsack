@@ -1,0 +1,84 @@
+// Enact guided subtype chooser styling, layered on Hyku's generic wizard styles.
+// Reuses Hyku's --dw-* custom properties (they resolve at runtime from the
+// .deposit-wizard element Hyku renders). Scoped to the guided_confirm step.
+.deposit-wizard {
+  // Space the subtitle off the cards (Hyku's shared __step-hint has margin: 0).
+  &--guided-confirm .deposit-wizard__step-hint {
+    margin-bottom: 1.5rem;
+  }
+
+  // The file-type badge inside the subtitle sits on the text baseline.
+  &__step-hint .deposit-wizard__file-ext {
+    vertical-align: baseline;
+    margin: 0 0.15rem;
+  }
+
+  // Denser grid than the big path/type cards: smaller min width fits more per row.
+  &--guided-confirm .deposit-wizard__type-cards {
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  // Compact, left-aligned subtype cards (override Hyku's centered path/type card).
+  &__subtype-card {
+    text-align: left;
+    padding: 0.7rem 0.85rem;
+    gap: 0.25rem;
+  }
+
+  // Label + work-type badge on one row (label left, badge right).
+  &__subtype-head {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 0.5rem;
+  }
+
+  &__subtype-card .deposit-wizard__type-card-label {
+    font-size: 0.9rem;
+    line-height: 1.25;
+  }
+
+  // Work-type badge: reuses Hyku's __file-ext pill; nudge to align with label top.
+  &__subtype-badge {
+    flex: none;
+    margin-top: 0.1rem;
+    text-transform: none;
+  }
+
+  // "Not seeing the right fit? Show all types" — a quiet inline disclosure, not a
+  // heading. Match the muted hint scale rather than the browser default summary.
+  &__guided-all {
+    margin-top: 0.5rem;
+  }
+
+  &__guided-all-toggle {
+    display: inline-block;
+    font-size: 0.9rem;
+    font-weight: 600;
+    color: var(--dw-accent);
+    cursor: pointer;
+    list-style: none; // hide the default disclosure triangle...
+    margin-bottom: 1rem;
+
+    &::-webkit-details-marker { display: none; }
+
+    &::before { // ...and supply our own, rotating when open.
+      content: '\25B6'; // ▶ (solid, reads clearly)
+      display: inline-block;
+      margin-right: 0.5rem;
+      font-size: 1rem;
+      line-height: 1;
+      vertical-align: -0.1em;
+      color: var(--dw-accent);
+      transition: transform 0.15s ease;
+    }
+
+    &:hover { text-decoration: underline; }
+  }
+
+  &__guided-all[open] &__guided-all-toggle::before {
+    transform: rotate(90deg);
+  }
+}

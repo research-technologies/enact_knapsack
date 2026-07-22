@@ -1,0 +1,28 @@
+<%# Enact override: the "how do you want to choose the type?" chooser shown on the
+    add/standalone paths. Each card submits its type_mode: "known" -> the work-type
+    picker, "guided" -> the file-driven subtype step. Mirrors the start path-cards. %>
+<%= render 'page_header' %>
+
+<div class="deposit-wizard deposit-wizard--item-start">
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:type) %>
+  <%= render 'step_title', title: t('enact.deposit_wizard.item_start.heading'),
+                           hint: t('enact.deposit_wizard.item_start.subtext') %>
+
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'item_start'), method: :patch,
+               class: 'deposit-wizard__item-start-form' do %>
+    <div class="deposit-wizard__paths">
+      <% Enact::DepositWizard::TYPE_MODES.each do |mode| %>
+        <%= button_tag type: 'submit', name: 'type_mode', value: mode, class: 'deposit-wizard__path-card' do %>
+          <% icon = t("enact.deposit_wizard.item_start.modes.#{mode}.icon", default: nil) %>
+          <% if icon.present? %>
+            <span class="deposit-wizard__path-icon fa <%= icon %>" aria-hidden="true"></span>
+          <% end %>
+          <span class="deposit-wizard__path-title"><%= t("enact.deposit_wizard.item_start.modes.#{mode}.title") %></span>
+          <span class="deposit-wizard__path-desc"><%= t("enact.deposit_wizard.item_start.modes.#{mode}.desc") %></span>
+        <% end %>
+      <% end %>
+    </div>
+
+    <%= render 'nav', back_path: wizard_back_path('item_start') %>
+  <% end %>
+</div>

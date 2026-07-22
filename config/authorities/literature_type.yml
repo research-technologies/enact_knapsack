@@ -7,6 +7,7 @@ terms:
     label: Blog post
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#book
     label: Book
+    file_suffixes: [pdf, epub, docx, doc]
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#bookchapter
     label: BookChapter
   - id: https://vocabularies.coar-repositories.org/resource_types/c_3248/
@@ -19,6 +20,7 @@ terms:
     label: Commentary
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#conferencepaper
     label: Conference Paper
+    file_suffixes: [pdf, docx, doc, pptx]
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#conferenceproceeding
     label: Conference Proceeding
   - id: https://vocabularies.coar-repositories.org/resource_types/c_c94f/
@@ -45,6 +47,7 @@ terms:
     label: Journal
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#journalarticle
     label: Journal Article
+    file_suffixes: [pdf, docx, doc]
   - id: https://vocabularies.coar-repositories.org/resource_types/c_545b/
     label: Letter to the editor
   - id: https://vocabularies.coar-repositories.org/resource_types/c_8544/
@@ -89,6 +92,7 @@ terms:
     label: Technical documentation
   - id: https://vocabularies.coar-repositories.org/resource_types/c_46ec/
     label: Thesis
+    file_suffixes: [pdf, docx, doc]
   - id: https://vocabularies.coar-repositories.org/resource_types/c_7a1f/
     label: Bachelor thesis
   - id: https://vocabularies.coar-repositories.org/resource_types/c_db06/
@@ -105,6 +109,7 @@ terms:
     label: Review
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#report
     label: Report
+    file_suffixes: [pdf, docx, doc]
   - id: https://vocabularies.coar-repositories.org/resource_types/c_2df8fbb1/
     label: Research article
   - id: https://vocabularies.coar-repositories.org/resource_types/c_dcae04bc/

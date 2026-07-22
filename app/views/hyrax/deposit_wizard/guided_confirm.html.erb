@@ -1,0 +1,53 @@
+<%# Guided subtype chooser (Enact). The depositor has uploaded a file; its suffix
+    suggests subtypes, and the chosen subtype fixes the work type. Cards post an
+    `item_subtype` id (the presenter decorator resolves it to a work type). When no
+    file/suffix matches, the full list stands in as a manual picker.
+
+    One `type-select` group holds every card so the shared wizard JS (single group,
+    single `item_subtype` radio) drives selection + the Next button. Suggested cards
+    show first; the rest live behind a "show all" toggle, so no subtype appears
+    twice. %>
+<%= render 'page_header' %>
+
+<div class="deposit-wizard deposit-wizard--guided-confirm">
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:type) %>
+
+  <h2 class="deposit-wizard__section-heading"><%= t('enact.deposit_wizard.guided_confirm.heading') %></h2>
+
+  <p class="deposit-wizard__step-hint">
+    <% if deposit_wizard.guided_file_badge.present? %>
+      <%= t('enact.deposit_wizard.guided_confirm.uploaded_prefix') %>
+      <span class="deposit-wizard__file-ext"><%= deposit_wizard.guided_file_badge %></span>
+      <%= t('enact.deposit_wizard.guided_confirm.uploaded_suffix') %>
+    <% else %>
+      <%= t('enact.deposit_wizard.guided_confirm.uploaded_none') %>
+    <% end %>
+    <%= t('enact.deposit_wizard.guided_confirm.subtext') %>
+  </p>
+
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'guided_confirm'), method: :patch,
+               class: 'deposit-wizard__guided-form' do %>
+    <%# One type-select group holds every card so the shared wizard JS (single
+        group, single item_subtype radio) drives selection + the Next button. %>
+    <div data-behavior="type-select">
+      <div class="deposit-wizard__type-cards">
+        <%= render partial: 'guided_subtype_card', collection: deposit_wizard.guided_primary_subtypes, as: :subtype %>
+      </div>
+
+      <% if deposit_wizard.guided_more_subtypes.any? %>
+        <details class="deposit-wizard__guided-all">
+          <summary class="deposit-wizard__guided-all-toggle">
+            <%= t('enact.deposit_wizard.guided_confirm.show_all') %>
+          </summary>
+          <div class="deposit-wizard__type-cards">
+            <%= render partial: 'guided_subtype_card', collection: deposit_wizard.guided_more_subtypes, as: :subtype %>
+          </div>
+        </details>
+      <% end %>
+    </div>
+
+    <%= render 'nav', back_path: wizard_back_path('guided_confirm'),
+                      next_html: { disabled: deposit_wizard.guided_selected_subtype.blank?,
+                                   data: { behavior: 'type-next' } } %>
+  <% end %>
+</div>
