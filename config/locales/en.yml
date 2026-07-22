@@ -181,3 +181,6 @@ en:
         pagination: Works pages
         prev_page: "‹ Prev"
         next_page: "Next ›"
+    job_statuses:
+      disabled: The job statuses page is not enabled.
+      nav: Job statuses
