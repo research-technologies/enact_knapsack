@@ -50,6 +50,18 @@ RSpec.describe Enact::RelationshipTypesService do
     end
   end
 
+  describe 'the "other" escape-hatch term (issue #107)' do
+    it 'is offered in the deposit dropdown, like the contributor "other" role' do
+      active_ids = Hyrax::TolerantSelectService.new('relationship_types').select_active_options.map(&:last)
+      expect(active_ids).to include('other')
+    end
+
+    it 'labels and inverts symmetrically (the free-text prose supplies meaning)' do
+      expect(described_class.label('other')).to eq('Other')
+      expect(described_class.inverse('other')).to eq('other')
+    end
+  end
+
   describe 'legacy terms' do
     it 'resolves inverses for edges stored under the pre-DataCite vocabulary' do
       expect(described_class.inverse('source-of')).to eq('derived-from')

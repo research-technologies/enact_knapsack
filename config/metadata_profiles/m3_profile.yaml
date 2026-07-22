@@ -1000,11 +1000,15 @@ properties:
     available_on:
       properties:
       - relationships
-    required: true
+    # Optional, like contributor_role: the curator picks a controlled term or the
+    # "Other" escape hatch and describes it in type_other.
+    required: false
     authority: relationship_types
     form:
       cols: 6
       autocomplete: true
+  # type_other and its inverse share a form row (cols 6 + 6) so it reads as one
+  # "if Other" pair rather than two unrelated fields.
   relationship_type_other:
     type: string
     name: type_other
@@ -1015,7 +1019,22 @@ properties:
     indexing:
     - relationships_type_other_tesim
     form:
-      cols: 12
+      cols: 6
+  # Curator-supplied inverse of a free-text "other" relationship (issue #107):
+  # the label the edge should read as from the target work's side, since a
+  # free-text type carries no authority inverse. Falls back to type_other when
+  # left blank (a symmetric relationship).
+  relationship_type_other_inverse:
+    type: string
+    name: type_other_inverse
+    available_on:
+      properties:
+      - relationships
+    required: false
+    indexing:
+    - relationships_type_other_inverse_tesim
+    form:
+      cols: 6
   relationship_position:
     type: string
     name: position

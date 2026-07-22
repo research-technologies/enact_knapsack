@@ -22,3 +22,8 @@ en:
         role_label: Role
         name_identifier: ORCID
         affiliation: Affiliation
+      relationships:
+        type_other: Other relationship type
+        # How the free-text "Other" relationship reads from the linked work's
+        # side; the label names that perspective so curators know which way round.
+        type_other_inverse: Linked Work's Relationship Type
