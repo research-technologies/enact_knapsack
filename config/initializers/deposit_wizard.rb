@@ -20,7 +20,13 @@ Rails.application.config.to_prepare do
 
     # Enact chooses the parent up front (the "add to an existing work" path +
     # select_parent step), so don't also offer it on the review step.
+    # parent_connect is left at its default (on).
     c.parent_connect_placement = :start
+
+    # Portfolio nesting is the relationship Enact models, not free collection
+    # membership, so the review-step collection picker is turned off.
+    c.collection_connect = false
+    c.depositor_sharing  = true
 
     # A non-empty suggestions value feeds the guided_confirm step's cards.
     c.suggestions = Enact::DepositWizard::SubtypeSuggestions.compiled

@@ -91,7 +91,6 @@ module Hyku
 
       private
 
-      # The chosen primary file, or the first uploaded file as a fallback.
       def guided_primary_file
         return uploaded_files.first if state.primary_file_id.blank?
 
