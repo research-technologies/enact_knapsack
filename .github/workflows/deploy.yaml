@@ -41,6 +41,7 @@ jobs:
       SOLR_ADMIN_PASSWORD: ${{ secrets.SOLR_ADMIN_PASSWORD }}
       TEST_USER_EMAIL: ${{ secrets.TEST_USER_EMAIL }}
       TEST_USER_PASSWORD: ${{ secrets.TEST_USER_PASSWORD }}
+      IIIF_ORIGIN_VERIFY_SECRET: ${{ secrets.IIIF_ORIGIN_VERIFY_SECRET }}
     steps:
       - id: setup
         name: Setup
