@@ -100,16 +100,6 @@ extraEnvVars: &envVars
     value: enact-knapsack-production
   - name: HYRAX_SKIP_WINGS
     value: "true"
-  - name: EXTERNAL_IIIF_URL
-    value: https://iiif.enacthyku.com/iiif/2
-  - name: REPOSITORY_S3_STORAGE
-    value: "true"
-  - name: REPOSITORY_S3_BUCKET
-    value: enact-repository-production-822951369940
-  - name: REPOSITORY_S3_REGION
-    value: eu-west-1
-  - name: AWS_REGION
-    value: eu-west-1
   # Running WINGS OFF MODE, so FCREPO env vars are not needed
   # - name: GOOGLE_ANALYTICS_ID
   #   value: $GOOGLE_ANALYTICS_ID
@@ -189,6 +179,21 @@ extraEnvVars: &envVars
     value: enacthyku.com
   - name: HYKU_SHOW_BACKTRACE
     value: "true"
+  # Feature flag only — iiif_print checks .present? to decide whether FileSets
+  # get ExternalIiifDisplayImagePresenter at all; the string value itself is
+  # never read. Real per-tenant host/path is built by
+  # app/presenters/iiif_print/external_iiif_display_image_presenter_decorator.rb.
+  # Do not "fix" this to a real URL — that reintroduces a static, non-tenant-aware host.
+  - name: EXTERNAL_IIIF_URL
+    value: "flag-only-see-external_iiif_display_image_presenter_decorator"
+  - name: REPOSITORY_S3_STORAGE
+    value: "true"
+  - name: REPOSITORY_S3_BUCKET
+    value: enact-repository-production-822951369940
+  - name: REPOSITORY_S3_REGION
+    value: eu-west-1
+  - name: AWS_REGION
+    value: eu-west-1
   - name: NEGATIVE_CAPTCHA_SECRET
     value: $NEGATIVE_CAPTCHA_SECRET
   # Need to flesh out a mail server for them
@@ -287,6 +292,22 @@ fits:
 
 global:
   hyraxName: enact-knapsack-production
+  # Bitnami subcharts (e.g. nginx) don't inherit the top-level imagePullSecrets:
+  # above -- that one's k8s-native format (`- name: X`) and only wired into the
+  # main hyrax/worker deployments. Subcharts read *this* key instead, via their
+  # own common.images.pullSecrets helper, and want a plain secret-name string,
+  # not the `- name: X` map form. Needed once nginx.image pointed at our own
+  # private ghcr.io/research-technologies/enact_knapsack/nginx.
+  imagePullSecrets:
+    - github
+  # Shared secret this nginx sends to CloudFront (see terraform/cloudfront_iiif.tf
+  # in notch8-ops, aws_cloudfront_function.iiif_origin_verify) so the /iiif
+  # distribution rejects anything that didn't come through this proxy.
+  # Referenced via {{ .Values.global.iiifOriginVerifySecret }} in serverBlock,
+  # NOT as an nginx variable -- bare $VARNAME in serverBlock is parsed by
+  # nginx itself as a runtime variable reference (see ${DOLLAR} elsewhere in
+  # this file) and there is no env-var substitution step for arbitrary names.
+  iiifOriginVerifySecret: $IIIF_ORIGIN_VERIFY_SECRET
 
 nginx:
   enabled: true
@@ -298,9 +319,33 @@ nginx:
       memory: "128Mi"
       cpu: "20m"
   image:
+    # Built from the `hyku-nginx` Dockerfile stage, which bakes public/assets
+    # and public/pdf.js in from the `hyku-web` stage of this exact commit - no
+    # shared volume or deploy-time copy step needed for those. Still based on
+    # ghcr.io/notch8/scripts/bitnamilegacy-nginx (see Dockerfile) since the
+    # server block below relies on that image's bots.d/{ddos,blockbots}.conf
+    # includes.
     registry: ghcr.io
-    repository: notch8/scripts/bitnamilegacy-nginx
-    tag: 1.21.6-debian-11-r21
+    repository: "$REPO_LOWER/nginx"
+    tag: "$TAG"
+  extraVolumes:
+    - name: uploads
+      persistentVolumeClaim:
+        claimName: enact-knapsack-production-uploads
+    - name: branding
+      persistentVolumeClaim:
+        claimName: enact-knapsack-production-branding
+  extraVolumeMounts:
+    # Site branding (logo/banner/favicon) - lives on the same "uploads" PVC
+    # the web/worker pods mount at this path, subPath keeps it separate from
+    # the rest of that PVC's contents.
+    - name: uploads
+      mountPath: /app/samvera/hyrax-webapp/public/system
+      subPath: public-system
+    # Per-tenant branding images, uploaded at runtime - can't be baked into
+    # the image like assets/pdf.js above.
+    - name: branding
+      mountPath: /app/samvera/hyrax-webapp/public/branding
   serverBlock: |-
     upstream rails_app {
       server {{ .Values.global.hyraxName }};
@@ -313,7 +358,24 @@ nginx:
 
     log_format loki 'host=${DOLLAR}host ip=${DOLLAR}http_x_forwarded_for remote_user=${DOLLAR}remote_user [${DOLLAR}time_local] '
                       'request="${DOLLAR}request" status=${DOLLAR}status bytes=${DOLLAR}body_bytes_sent '
-                      'referer="${DOLLAR}http_referer" agent="${DOLLAR}http_user_agent" request_time=${DOLLAR}request_time upstream_response_time=${DOLLAR}upstream_response_time upstream_response_length=${DOLLAR}upstream_response_length';
+                      'referer="${DOLLAR}http_referer" agent="${DOLLAR}http_user_agent" request_time=${DOLLAR}request_time upstream_response_time=${DOLLAR}upstream_response_time upstream_response_length=${DOLLAR}upstream_response_length cache_status=${DOLLAR}upstream_cache_status';
+
+    # Cache the /auth (IIIF authorization) decision briefly so the many tile
+    # requests a viewer fires for one file set don't each cost a Rails/Puma
+    # round-trip. Keyed by tenant Host + session cookie + file-set id, so a
+    # cached decision can never be served to a different tenant, a different
+    # session, or a different file set.
+    proxy_cache_path /opt/bitnami/nginx/tmp/iiif_auth_cache levels=1:2 keys_zone=iiif_auth_cache:1m max_size=10m inactive=2m use_temp_path=off;
+
+    # Extracts the file-set id the same way Enact::IiifController#file_set_id_for
+    # does (must stay in sync with that regex). Falls back to the full request
+    # URI (effectively cache-key-per-tile, i.e. no cross-tile sharing) if the
+    # path doesn't match, so an unexpected URL shape degrades to no caching
+    # rather than an incorrect cache hit.
+    map ${DOLLAR}request_uri ${DOLLAR}iiif_auth_fileset_id {
+        "~^/iiif/2/(?<fsid>[\w-]+)/"  ${DOLLAR}fsid;
+        default                        ${DOLLAR}request_uri;
+    }
 
     error_log  /opt/bitnami/nginx/logs/error.log warn;
     #tcp_nopush     on;
@@ -379,7 +441,7 @@ nginx:
         }
 
         # serve static (compiled) assets directly if they exist (for rails production)
-        location ~ ^/(assets|packs|fonts|images|javascripts|stylesheets|swfs|system)/ {
+        location ~ ^/(assets|branding|clover|packs|fonts|images|javascripts|ramp|stylesheets|swfs|system|pdf\.js|uv)/ {
           try_files ${DOLLAR}uri @rails;
 
           # access_log off;
@@ -407,5 +469,59 @@ nginx:
           proxy_set_header Host ${DOLLAR}http_host;
           proxy_redirect off;
           proxy_pass http://rails_app;
+        }
+        ### Required for IIIF authentication
+        ## Requests are gated here, then proxied through to the existing
+        ## CloudFront distribution (unchanged; still OAC-signed to the Lambda) --
+        ## see terraform/cloudfront_iiif.tf in notch8-ops.
+        location ^~  /iiif {
+            resolver         10.0.0.2 valid=30s;
+            auth_request     /auth;
+            auth_request_set ${DOLLAR}auth_status ${DOLLAR}upstream_status;
+            # Use a variable here, so that nginx refreshes this value per request, otherwise ips get cached
+            set ${DOLLAR}image_internal     https://iiif.enacthyku.com;
+
+            # CloudFront routes by SNI + Host; both must match the distribution's
+            # configured alias, not the tenant's own hostname.
+            proxy_ssl_server_name  on;
+            proxy_ssl_name         iiif.enacthyku.com;
+            proxy_set_header       Host             iiif.enacthyku.com;
+            proxy_set_header       X-Real-IP        ${DOLLAR}remote_addr;
+            proxy_set_header       X-Forwarded-For  ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header       X-Forwarded-Host ${DOLLAR}host;
+            proxy_set_header       X-Forwarded-Proto https;
+            proxy_set_header       X-Origin-Verify  {{ .Values.global.iiifOriginVerifySecret }};
+            proxy_pass ${DOLLAR}image_internal;
+        }
+        location = /auth {
+            internal;
+            proxy_pass http://rails_app/check-iiif;
+            proxy_pass_request_body off;
+            proxy_set_header Content-Length '0';
+            proxy_set_header X-Forwarded-Proto https;
+            proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header Host ${DOLLAR}host;
+            proxy_set_header X-Origin-URI ${DOLLAR}request_uri;
+            proxy_set_header X-Forwarded-Host ${DOLLAR}host;
+
+            proxy_cache              iiif_auth_cache;
+            # $http_authorization is included because ApplicationController#authenticate_if_needed
+            # HTTP-Basic-gates staging/hidden tenants BEFORE the CanCan check ever runs, entirely
+            # independent of the session cookie -- without it, a denied (no/stale credentials)
+            # decision could be served back to a request that supplied valid Basic Auth creds.
+            proxy_cache_key          "${DOLLAR}host|${DOLLAR}http_authorization|${DOLLAR}cookie__hyku_session|${DOLLAR}iiif_auth_fileset_id";
+            proxy_cache_valid        200 401 403 20s;
+            proxy_cache_lock         on;
+            proxy_cache_lock_timeout 5s;
+            # Rails resends Set-Cookie on ~every response (session
+            # expire_after touches it) and its default Cache-Control is
+            # no-store; both would otherwise stop nginx from caching this.
+            # Neither header ever reaches the client -- auth_request only
+            # looks at this location's status code.
+            proxy_ignore_headers     Cache-Control Expires Set-Cookie;
+        }
+        location = /check-iiif {
+            allow 127.0.0.1;
+            deny all;
         }
     }

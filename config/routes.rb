@@ -25,6 +25,7 @@ HykuKnapsack::Engine.routes.draw do
   put '/contributors/:id', to: '/enact/contributors#update'
   get '/contributors/:id', to: '/enact/contributors#show', as: :enact_contributor
 
+  get '/check-iiif', to: '/enact/iiif#show', as: :iiif
   # NOTE: the linked_record inline-create endpoint (POST /linked_records/:source)
   # is provided by Hyrax (Hyrax::CompoundLinkedRecordsController) now that the
   # generic linked_record feature lives in the gem; no knapsack route needed.
