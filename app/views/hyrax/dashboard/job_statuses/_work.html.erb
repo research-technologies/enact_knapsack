@@ -1,0 +1,27 @@
+<section class="mb-4">
+  <h2 class="h4">
+    <%= link_to work[:title], job_status_work_path(work) %>
+    <small class="text-muted">(<%= work[:completed] %> of <%= work[:total] %>)</small>
+  </h2>
+
+  <% work[:file_sets].each do |file_set| %>
+    <div class="ms-3 mb-3">
+      <h3 class="h5">
+        <%= link_to file_set[:label], job_status_file_set_path(file_set) %>
+        <small class="text-muted">(<%= file_set[:completed] %> of <%= file_set[:total] %>)</small>
+      </h3>
+
+      <ul class="list-unstyled ms-3">
+        <% file_set[:stages].each do |stage| %>
+          <li class="mb-1">
+            <%= stage[:name] %>
+            <span class="badge bg-<%= stage[:variant] %>"><%= stage[:status_label] %></span>
+            <% if (error = job_status_error(stage)) %>
+              <div class="small text-danger ms-3"><%= error %></div>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+</section>

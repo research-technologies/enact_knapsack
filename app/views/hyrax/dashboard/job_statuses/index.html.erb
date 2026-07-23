@@ -1,35 +1,7 @@
 <h1>Your job activity</h1>
 
-<% if @user_jobs.blank? %>
+<% if @works.blank? %>
   <p>No recent jobs.</p>
 <% else %>
-  <table class="table table-striped">
-    <thead>
-      <tr>
-        <th>Job</th>
-        <th>Status</th>
-        <th>Submitted</th>
-        <th>Duration</th>
-        <th>Details</th>
-      </tr>
-    </thead>
-    <tbody>
-      <% @user_jobs.each do |job| %>
-        <tr>
-          <td><%= job.serialized_params['job_class'] %></td>
-          <td><%= job.status.to_s.titleize %></td>
-          <td><%= job.created_at&.in_time_zone&.strftime('%Y-%m-%d %H:%M %Z') %></td>
-          <td>
-            <% if job.finished_at %>
-              <% secs = (job.finished_at - job.created_at).round %>
-              <%= secs < 60 ? "#{secs}s" : "#{secs / 60}m #{secs % 60}s" %>
-            <% else %>
-              &mdash;
-            <% end %>
-          </td>
-          <td class="<%= 'text-danger' if job.error.present? %>"><%= job.error.to_s.truncate(200).presence || '—' %></td>
-        </tr>
-      <% end %>
-    </tbody>
-  </table>
+  <%= render partial: 'work', collection: @works, as: :work %>
 <% end %>

@@ -15,6 +15,7 @@ module HykuKnapsack
 
         {
           label: job.serialized_params['job_class'],
+          name: name_for(job.serialized_params['job_class']),
           status:,
           error: job.error,
           attempts:,
@@ -24,6 +25,15 @@ module HykuKnapsack
       end
 
       private
+
+      def name_for(job_class)
+        {
+          'ValkyrieIngestJob' => 'Ingest',
+          'ValkyrieCharacterizationJob' => 'Characterize',
+          'ValkyrieCreateDerivativesJob' => 'Derivative',
+          'ValkyrieCreateLargeDerivativesJob' => 'Derivative'
+        }[job_class]
+      end
 
       def status_label_for(status, attempts)
         case status
@@ -46,6 +56,8 @@ module HykuKnapsack
     end
 
     def works
+      return [] if file_set_ids.empty?
+
       work_hits.map do |hit|
         file_sets = file_sets_for(hit)
         total = hit['member_ids_ssim'].count
@@ -54,7 +66,7 @@ module HykuKnapsack
         {
           work_id: hit['id'],
           model: hit.fetch('has_model_ssim', []).first,
-          title: hit.fetch('title_tesim', []).join('; '),
+          title: hit.fetch('title_tesim', []).join('; ').presence || 'Untitled',
           file_sets:,
           total:,
           completed:
@@ -71,7 +83,8 @@ module HykuKnapsack
         Hyrax::SolrService.query(
           "member_ids_ssim:(#{file_set_ids.join(' OR ')})",
           rows: file_set_ids.length,
-          fl: 'id,title_tesim,member_ids_ssim,has_model_ssim'
+          fl: 'id,title_tesim,member_ids_ssim,has_model_ssim',
+          sort: 'date_modified_dtsi desc'
         )
     end
 
@@ -83,7 +96,7 @@ module HykuKnapsack
     def add_extra_info!
       labels_by_id = file_set_labels.index_by { |hit| hit['id'] }
       grouped.each do |group|
-        group[:label] = labels_by_id[group[:file_set_id]]&.fetch('label_tesim', [])&.first
+        group[:label] = labels_by_id[group[:file_set_id]]&.fetch('label_tesim', [])&.first || 'Untitled'
         group[:total] = group[:jobs].count
         group[:completed] = group[:jobs].count(&:succeeded?)
         group[:stages] = group[:jobs].sort_by(&:created_at).map { |job| self.class.stage_for(job) }
