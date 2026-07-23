@@ -22,7 +22,9 @@ module Enact
 
     def file_set_id_for(source_uri)
       uri = CGI.unescape(source_uri)
-
+      # If you change this match algorithm you should also change the match algorithm in the deploy templates
+      # for the nginx iiif_auth cache, in opt/staging-deploy.tmpl.yaml and opt/production-deploy.tmpl.yaml
+      # currently starts with: map ${DOLLAR}request_uri ${DOLLAR}iiif_auth_fileset_id [...]
       match = uri.match(%r{\A/iiif/2/([\w-]+)/})
       raise ActionController::BadRequest, 'Malformed X-Origin-URI header' if match.nil?
 

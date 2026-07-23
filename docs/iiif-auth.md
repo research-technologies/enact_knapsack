@@ -82,7 +82,7 @@ Let's use Universal Viewer as our example viewer and follow what happens:
    1. Universal Viewer embedded iFrame
       1. Based on the info.json for the image, fires a bunch of requests for different sizes of the image.
 
-      Each of image requests goes through each step from "The auth part starts" again. Future work is to make it so that once a given user has been authenticated for a given work, that response is cached for some time, so each IIIF request doesn't have to go through the entire Rails auth flow again and take up Puma threads (which we've found to be a limiting factor in the past).
+      Each of these image requests goes through each step from "The auth part starts" again -- except that the reverse proxy caches the `/auth` decision for a short time, so most of them never reach Rails/Puma at all. See "Caching the auth decision" below.
 
 
 
@@ -90,3 +90,53 @@ Let's use Universal Viewer as our example viewer and follow what happens:
 **NOTE**: We have two "nginx"s in our stack:
 * One nginx is used on the cluster level to receive requests from the AWS load balancers and send them to the correct application on the cluster. We call this one the *Ingress*.
 * One nginx is used on the application level to receive requests from the Ingress, serve static assets, do additional bot blocking, and caching. We call this on the *Reverse proxy*
+
+## Caching the auth decision
+
+Universal Viewer (and other IIIF viewers) fire many requests per page -- deep-zoom
+tiles at different region/size/rotation, thumbnails, etc. -- and each one used to
+cost its own `auth_request` round-trip to Rails: a CanCan `Ability#can?` check,
+which typically means DB/Solr queries. That's a mandatory Rails hit for *every
+tile*, on top of normal page-view traffic, sharing a small Puma thread pool
+(`RAILS_MAX_THREADS=5` per pod) -- exactly the kind of load that has exhausted
+Puma's thread pool on this and other apps before.
+
+The reverse proxy (`location = /auth` in `ops/staging-deploy.tmpl.yaml` /
+`ops/production-deploy.tmpl.yaml`) now caches that decision with nginx's
+`proxy_cache`:
+
+* **What's cached**: the raw HTTP status (200/401/403) `/check-iiif` returns for
+  a given file set -- nothing else. The response body/headers are never sent to
+  the browser either way; `auth_request` only ever looks at the status code.
+* **Cache key**: `$host` (tenant) + `$cookie__hyku_session` (the Devise/Warden
+  session cookie, `_hyku_session`) + the file-set id parsed out of the request
+  path (via an nginx `map`, mirroring `Enact::IiifController#file_set_id_for`).
+  Region/size/rotation/quality don't affect the key, so every tile request for
+  the *same file set* by the *same session* on the *same tenant* within the TTL
+  is a cache hit -- but a different session, a different tenant, or a different
+  file set is always a fresh lookup. This is the property that makes the cache
+  safe: one visitor's cached "allowed" answer can never be handed to a
+  different, unauthorized visitor.
+* **TTL**: 20 seconds (`proxy_cache_valid`), which is long enough to cover a
+  single page's burst of tile requests but short enough that a permission
+  change (login, logout, embargo lift, workflow transition) is only stale for a
+  few seconds at worst.
+* **Anonymous requests**: with no session cookie, `$cookie__hyku_session` is
+  empty, so all anonymous visitors share one cache entry per file set/tenant.
+  That's fine -- for anonymous requests the authorization decision only depends
+  on the resource's own visibility, not on who's asking.
+* `proxy_ignore_headers Cache-Control Expires Set-Cookie;` is required because
+  Rails resends `Set-Cookie` on essentially every response (session
+  `expire_after` touches it) and sends its own no-store `Cache-Control`; nginx
+  would otherwise refuse to cache the response at all.
+* `proxy_cache_lock on;` collapses a burst of simultaneous cache-miss tile
+  requests for the same not-yet-cached file set into a single Rails hit instead
+  of a stampede.
+
+To verify from nginx's access log (`cache_status=` field added to the `loki`
+log format): the first tile request for a private work logs `cache_status=MISS`
+(and a corresponding hit in the Rails app's own logs), subsequent tile requests
+for the same work/session within the TTL log `cache_status=HIT` with no
+matching Rails log entry, and a different session hitting the same URL within
+the TTL window still gets its own independent `MISS` and its own correct
+allow/deny decision.

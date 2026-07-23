@@ -315,7 +315,24 @@ nginx:
 
     log_format loki 'host=${DOLLAR}host ip=${DOLLAR}http_x_forwarded_for remote_user=${DOLLAR}remote_user [${DOLLAR}time_local] '
                       'request="${DOLLAR}request" status=${DOLLAR}status bytes=${DOLLAR}body_bytes_sent '
-                      'referer="${DOLLAR}http_referer" agent="${DOLLAR}http_user_agent" request_time=${DOLLAR}request_time upstream_response_time=${DOLLAR}upstream_response_time upstream_response_length=${DOLLAR}upstream_response_length';
+                      'referer="${DOLLAR}http_referer" agent="${DOLLAR}http_user_agent" request_time=${DOLLAR}request_time upstream_response_time=${DOLLAR}upstream_response_time upstream_response_length=${DOLLAR}upstream_response_length cache_status=${DOLLAR}upstream_cache_status';
+
+    # Cache the /auth (IIIF authorization) decision briefly so the many tile
+    # requests a viewer fires for one file set don't each cost a Rails/Puma
+    # round-trip. Keyed by tenant Host + session cookie + file-set id, so a
+    # cached decision can never be served to a different tenant, a different
+    # session, or a different file set.
+    proxy_cache_path /opt/bitnami/nginx/tmp/iiif_auth_cache levels=1:2 keys_zone=iiif_auth_cache:1m max_size=10m inactive=2m use_temp_path=off;
+
+    # Extracts the file-set id the same way Enact::IiifController#file_set_id_for
+    # does (must stay in sync with that regex). Falls back to the full request
+    # URI (effectively cache-key-per-tile, i.e. no cross-tile sharing) if the
+    # path doesn't match, so an unexpected URL shape degrades to no caching
+    # rather than an incorrect cache hit.
+    map ${DOLLAR}request_uri ${DOLLAR}iiif_auth_fileset_id {
+        "~^/iiif/2/(?<fsid>[\w-]+)/"  ${DOLLAR}fsid;
+        default                        ${DOLLAR}request_uri;
+    }
 
     error_log  /opt/bitnami/nginx/logs/error.log warn;
     #tcp_nopush     on;
@@ -443,6 +460,18 @@ nginx:
             proxy_set_header Host ${DOLLAR}host;
             proxy_set_header X-Origin-URI ${DOLLAR}request_uri;
             proxy_set_header X-Forwarded-Host ${DOLLAR}host;
+
+            proxy_cache              iiif_auth_cache;
+            proxy_cache_key          "${DOLLAR}host|${DOLLAR}cookie__hyku_session|${DOLLAR}iiif_auth_fileset_id";
+            proxy_cache_valid        200 401 403 20s;
+            proxy_cache_lock         on;
+            proxy_cache_lock_timeout 5s;
+            # Rails resends Set-Cookie on ~every response (session
+            # expire_after touches it) and its default Cache-Control is
+            # no-store; both would otherwise stop nginx from caching this.
+            # Neither header ever reaches the client -- auth_request only
+            # looks at this location's status code.
+            proxy_ignore_headers     Cache-Control Expires Set-Cookie;
         }
         location = /check-iiif {
             allow 127.0.0.1;
