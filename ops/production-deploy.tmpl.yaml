@@ -292,6 +292,14 @@ fits:
 
 global:
   hyraxName: enact-knapsack-production
+  # Bitnami subcharts (e.g. nginx) don't inherit the top-level imagePullSecrets:
+  # above -- that one's k8s-native format (`- name: X`) and only wired into the
+  # main hyrax/worker deployments. Subcharts read *this* key instead, via their
+  # own common.images.pullSecrets helper, and want a plain secret-name string,
+  # not the `- name: X` map form. Needed once nginx.image pointed at our own
+  # private ghcr.io/research-technologies/enact_knapsack/nginx.
+  imagePullSecrets:
+    - github
   # Shared secret this nginx sends to CloudFront (see terraform/cloudfront_iiif.tf
   # in notch8-ops, aws_cloudfront_function.iiif_origin_verify) so the /iiif
   # distribution rejects anything that didn't come through this proxy.
