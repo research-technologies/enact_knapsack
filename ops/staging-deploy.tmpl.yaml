@@ -300,9 +300,33 @@ nginx:
       memory: "128Mi"
       cpu: "20m"
   image:
+    # Built from the `hyku-nginx` Dockerfile stage, which bakes public/assets
+    # and public/pdf.js in from the `hyku-web` stage of this exact commit - no
+    # shared volume or deploy-time copy step needed for those. Still based on
+    # ghcr.io/notch8/scripts/bitnamilegacy-nginx (see Dockerfile) since the
+    # server block below relies on that image's bots.d/{ddos,blockbots}.conf
+    # includes.
     registry: ghcr.io
-    repository: notch8/scripts/bitnamilegacy-nginx
-    tag: 1.21.6-debian-11-r21
+    repository: "$REPO_LOWER/nginx"
+    tag: "$TAG"
+  extraVolumes:
+    - name: uploads
+      persistentVolumeClaim:
+        claimName: enact-knapsack-staging-uploads
+    - name: branding
+      persistentVolumeClaim:
+        claimName: enact-knapsack-staging-branding
+  extraVolumeMounts:
+    # Site branding (logo/banner/favicon) - lives on the same "uploads" PVC
+    # the web/worker pods mount at this path, subPath keeps it separate from
+    # the rest of that PVC's contents.
+    - name: uploads
+      mountPath: /app/samvera/hyrax-webapp/public/system
+      subPath: public-system
+    # Per-tenant branding images, uploaded at runtime - can't be baked into
+    # the image like assets/pdf.js above.
+    - name: branding
+      mountPath: /app/samvera/hyrax-webapp/public/branding
   serverBlock: |-
     upstream rails_app {
       server {{ .Values.global.hyraxName }};
@@ -398,7 +422,7 @@ nginx:
         }
 
         # serve static (compiled) assets directly if they exist (for rails production)
-        location ~ ^/(assets|packs|fonts|images|javascripts|stylesheets|swfs|system)/ {
+        location ~ ^/(assets|branding|clover|packs|fonts|images|javascripts|ramp|stylesheets|swfs|system|pdf\.js|uv)/ {
           try_files ${DOLLAR}uri @rails;
 
           # access_log off;
