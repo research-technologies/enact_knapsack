@@ -7,12 +7,13 @@
   <% render_field = conform_field(field, view_options) %>
   <% next unless presenter.respond_to?(render_field) %>
   <% featured_value = Array(presenter.public_send(render_field)).join(' ').to_s %>
-  <% next if featured_value.blank? %>
+  <% safe_value = sanitize(featured_value,
+                           tags: Hyrax::Renderers::HtmlAttributeRenderer::ALLOWED_TAGS,
+                           attributes: Hyrax::Renderers::HtmlAttributeRenderer::ALLOWED_ATTRIBUTES) %>
+  <% next if safe_value.blank? %>
   <section class="work-featured-attribute card mb-4 attribute-<%= field %>">
     <div class="card-body">
-      <%= sanitize(featured_value,
-                   tags: Hyrax::Renderers::HtmlAttributeRenderer::ALLOWED_TAGS,
-                   attributes: Hyrax::Renderers::HtmlAttributeRenderer::ALLOWED_ATTRIBUTES) %>
+      <%= safe_value %>
     </div>
   </section>
 <% end %>
