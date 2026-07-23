@@ -40,6 +40,9 @@ module Enact
 
     # nil when the work is not found or not readable by the current ability.
     def for_work(id)
+      # Reset per call so a reused instance doesn't carry stale traversal state.
+      @visited = Set.new
+      @node_count = 0
       doc = document_for(id)
       doc && build(doc, 0)
     end

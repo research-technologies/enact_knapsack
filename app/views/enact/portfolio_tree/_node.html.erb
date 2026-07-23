@@ -1,11 +1,11 @@
-<li role="treeitem" class="portfolio-tree__item portfolio-tree__item--<%= node.type %>">
+<li class="portfolio-tree__item portfolio-tree__item--<%= node.type %>">
   <% if node.children? %>
     <details class="portfolio-tree__branch" open>
       <summary class="portfolio-tree__row">
         <span class="portfolio-tree__chevron" aria-hidden="true"></span>
         <%= render 'enact/portfolio_tree/label', node: node %>
       </summary>
-      <ul class="portfolio-tree__children" role="group">
+      <ul class="portfolio-tree__children">
         <% node.children.each do |child| %>
           <%= render 'enact/portfolio_tree/node', node: child %>
         <% end %>

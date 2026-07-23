@@ -75,6 +75,16 @@ RSpec.describe Enact::PortfolioTree do
       expect(tree_for(index, 'missing')).to be_nil
     end
 
+    it 'builds the full tree when the same instance is reused' do
+      allow(Hyrax::SolrQueryService).to receive(:new) { FakeSolrQuery.new(index) }
+      service = described_class.new(ability:)
+
+      first = service.for_work('p1')
+      second = service.for_work('p1')
+
+      expect(second.children.map(&:label)).to eq(first.children.map(&:label))
+    end
+
     it 'stops recursing at the depth cap' do
       root = tree_for(index, 'p1', max_depth: 1)
       collection = root.children.find { |n| n.type == 'collection' }
