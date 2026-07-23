@@ -100,16 +100,6 @@ extraEnvVars: &envVars
     value: enact-knapsack-production
   - name: HYRAX_SKIP_WINGS
     value: "true"
-  - name: EXTERNAL_IIIF_URL
-    value: https://iiif.enacthyku.com/iiif/2
-  - name: REPOSITORY_S3_STORAGE
-    value: "true"
-  - name: REPOSITORY_S3_BUCKET
-    value: enact-repository-production-822951369940
-  - name: REPOSITORY_S3_REGION
-    value: eu-west-1
-  - name: AWS_REGION
-    value: eu-west-1
   # Running WINGS OFF MODE, so FCREPO env vars are not needed
   # - name: GOOGLE_ANALYTICS_ID
   #   value: $GOOGLE_ANALYTICS_ID
@@ -189,6 +179,21 @@ extraEnvVars: &envVars
     value: enacthyku.com
   - name: HYKU_SHOW_BACKTRACE
     value: "true"
+  # Feature flag only — iiif_print checks .present? to decide whether FileSets
+  # get ExternalIiifDisplayImagePresenter at all; the string value itself is
+  # never read. Real per-tenant host/path is built by
+  # app/presenters/iiif_print/external_iiif_display_image_presenter_decorator.rb.
+  # Do not "fix" this to a real URL — that reintroduces a static, non-tenant-aware host.
+  - name: EXTERNAL_IIIF_URL
+    value: "flag-only-see-external_iiif_display_image_presenter_decorator"
+  - name: REPOSITORY_S3_STORAGE
+    value: "true"
+  - name: REPOSITORY_S3_BUCKET
+    value: enact-repository-production-822951369940
+  - name: REPOSITORY_S3_REGION
+    value: eu-west-1
+  - name: AWS_REGION
+    value: eu-west-1
   - name: NEGATIVE_CAPTCHA_SECRET
     value: $NEGATIVE_CAPTCHA_SECRET
   # Need to flesh out a mail server for them
@@ -287,6 +292,14 @@ fits:
 
 global:
   hyraxName: enact-knapsack-production
+  # Shared secret this nginx sends to CloudFront (see terraform/cloudfront_iiif.tf
+  # in notch8-ops, aws_cloudfront_function.iiif_origin_verify) so the /iiif
+  # distribution rejects anything that didn't come through this proxy.
+  # Referenced via {{ .Values.global.iiifOriginVerifySecret }} in serverBlock,
+  # NOT as an nginx variable -- bare $VARNAME in serverBlock is parsed by
+  # nginx itself as a runtime variable reference (see ${DOLLAR} elsewhere in
+  # this file) and there is no env-var substitution step for arbitrary names.
+  iiifOriginVerifySecret: $IIIF_ORIGIN_VERIFY_SECRET
 
 nginx:
   enabled: true
@@ -407,5 +420,43 @@ nginx:
           proxy_set_header Host ${DOLLAR}http_host;
           proxy_redirect off;
           proxy_pass http://rails_app;
+        }
+        ### Required for IIIF authentication
+        ## Requests are gated here, then proxied through to the existing
+        ## CloudFront distribution (unchanged; still OAC-signed to the Lambda) --
+        ## see terraform/cloudfront_iiif.tf in notch8-ops.
+        location ^~  /iiif {
+            resolver         10.0.0.2 valid=30s;
+            auth_request     /auth;
+            auth_request_set ${DOLLAR}auth_status ${DOLLAR}upstream_status;
+            # Use a variable here, so that nginx refreshes this value per request, otherwise ips get cached
+            set ${DOLLAR}image_internal     https://iiif.enacthyku.com;
+
+            # CloudFront routes by SNI + Host; both must match the distribution's
+            # configured alias, not the tenant's own hostname.
+            proxy_ssl_server_name  on;
+            proxy_ssl_name         iiif.enacthyku.com;
+            proxy_set_header       Host             iiif.enacthyku.com;
+            proxy_set_header       X-Real-IP        ${DOLLAR}remote_addr;
+            proxy_set_header       X-Forwarded-For  ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header       X-Forwarded-Host ${DOLLAR}host;
+            proxy_set_header       X-Forwarded-Proto https;
+            proxy_set_header       X-Origin-Verify  {{ .Values.global.iiifOriginVerifySecret }};
+            proxy_pass ${DOLLAR}image_internal;
+        }
+        location = /auth {
+            internal;
+            proxy_pass http://rails_app/check-iiif;
+            proxy_pass_request_body off;
+            proxy_set_header Content-Length '0';
+            proxy_set_header X-Forwarded-Proto https;
+            proxy_set_header X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+            proxy_set_header Host ${DOLLAR}host;
+            proxy_set_header X-Origin-URI ${DOLLAR}request_uri;
+            proxy_set_header X-Forwarded-Host ${DOLLAR}host;
+        }
+        location = /check-iiif {
+            allow 127.0.0.1;
+            deny all;
         }
     }
