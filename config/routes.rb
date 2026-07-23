@@ -29,4 +29,10 @@ HykuKnapsack::Engine.routes.draw do
   # NOTE: the linked_record inline-create endpoint (POST /linked_records/:source)
   # is provided by Hyrax (Hyrax::CompoundLinkedRecordsController) now that the
   # generic linked_record feature lives in the gem; no knapsack route needed.
+
+  # HLS streaming. format: false keeps the .m3u8/.ts extension in *path; leading
+  # slash escapes the engine namespace to the top-level Hyrax::HlsController.
+  get '/file_sets/:id/hls/*path', to: '/hyrax/hls#show', as: :file_set_hls, format: false
+
+  get '/dashboard/job_statuses', to: '/hyrax/dashboard/job_statuses#index', as: :dashboard_job_statuses
 end

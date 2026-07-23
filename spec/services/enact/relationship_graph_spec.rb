@@ -16,11 +16,12 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
   let(:target) { index(Hyrax.persister.save(resource: Portfolio.new(title: ['Target work']))) }
 
   # Re-save the source carrying a relationship that points at target, then index
-  # it so the edge is queryable. Returns the source's SolrDocument.
-  def relate(from:, to:, type:, position: nil, note: nil)
-    entry = { 'item' => to.id.to_s, 'type' => type }
-    entry['position'] = position if position
-    entry['note'] = note if note
+  # it so the edge is queryable. Extra keyword fields (type, type_other,
+  # type_other_inverse, position, note) map to the compound entry's string keys;
+  # nil values are omitted. Returns the source's SolrDocument.
+  def relate(from:, to:, **fields)
+    entry = { 'item' => to.id.to_s }
+    fields.each { |key, value| entry[key.to_s] = value unless value.nil? }
     updated = Hyrax.persister.save(resource: Hyrax.query_service.find_by(id: from.id).tap do |r|
       r.relationships = [entry]
     end)
@@ -79,6 +80,22 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
 
       expect(described_class.new(solr_doc_for(updated.id)).outbound).to be_empty
     end
+
+    it 'carries free-text type_other for a bare "other" relationship (issue #107)' do
+      doc = relate(from: source, to: target, type: 'other', type_other: 'Remixes')
+      edge = described_class.new(doc).outbound.first
+
+      expect(edge.relation_type).to eq('other')
+      expect(edge.type_other).to eq('Remixes')
+    end
+
+    it 'carries free-text type_other when no controlled type is picked' do
+      doc = relate(from: source, to: target, type: nil, type_other: 'Remixes')
+      edge = described_class.new(doc).outbound.first
+
+      expect(edge.relation_type).to be_blank
+      expect(edge.type_other).to eq('Remixes')
+    end
   end
 
   describe '#inbound' do
@@ -103,6 +120,22 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
 
     it 'is empty for a work nothing points at' do
       expect(described_class.new(solr_doc_for(target.id)).inbound).to be_empty
+    end
+
+    it 'reads a free-text "other" edge from the target side via type_other_inverse (issue #107)' do
+      relate(from: source, to: target, type: 'other', type_other: 'Remixes', type_other_inverse: 'Is remixed by')
+
+      edge = described_class.new(solr_doc_for(target.id)).inbound.first
+      # the authority inverse of the "other" term is itself; the prose is what displays
+      expect(edge.type_other).to eq('Is remixed by')
+    end
+
+    it 'falls back to the forward free text when no inverse prose is supplied' do
+      relate(from: source, to: target, type: nil, type_other: 'Companion to')
+
+      edge = described_class.new(solr_doc_for(target.id)).inbound.first
+      expect(edge.relation_type).to be_blank
+      expect(edge.type_other).to eq('Companion to')
     end
   end
 end

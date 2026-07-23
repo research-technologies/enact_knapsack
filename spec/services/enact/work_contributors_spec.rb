@@ -3,9 +3,8 @@
 require 'rails_helper'
 
 # The show-page contributors view: a work's `contributors` compound GROUPED by
-# contributor, so a person with several roles (the storage shape is one entry
-# per role) appears once with all of its roles. The display counterpart of
-# Enact::ContributorGraph.
+# contributor, so a person with several roles appears once with all of them.
+# The display counterpart of Enact::ContributorGraph.
 RSpec.describe Enact::WorkContributors do
   # A stand-in Solr doc carrying the raw contributors JSON blob.
   def work_doc(entries)
@@ -37,6 +36,15 @@ RSpec.describe Enact::WorkContributors do
       expect(vron_credit.orcid).to eq('https://orcid.org/0000-0002-1825-0097')
       expect(vron_credit.agent_type).to eq('person')
       expect(vron_credit.path).to be_present
+    end
+
+    it 'flattens a multi-select role array carried on a single entry' do
+      doc = work_doc(
+        [{ 'contributor' => vron.id.to_s, 'role' => %w[director choreographer] }]
+      )
+
+      credit = described_class.new(doc).credits.first
+      expect(credit.roles).to eq(%w[director choreographer])
     end
 
     it 'carries free-text role_other alongside controlled roles' do

@@ -15,6 +15,7 @@ terms:
     label: Design Charrette
   - id: https://schema.org/ExhibitionEvent
     label: Exhibition
+    file_suffixes: [pdf, jpg, jpeg, png]
   - id: https://schema.org/Festival
     label: Festival
   - id: https://schema.org/FoodEvent
@@ -31,8 +32,10 @@ terms:
     label: Music Event
   - id: http://vocab.getty.edu/page/aat/300075520
     label: Residency
+    file_suffixes: [pdf, docx, doc]
   - id: https://schema.org/ScreeningEvent
     label: Screening
+    file_suffixes: [pdf, mp4, mov]
   - id: https://schema.org/SocialEvent
     label: Social Event
   - id: https://schema.org/SportsEvent

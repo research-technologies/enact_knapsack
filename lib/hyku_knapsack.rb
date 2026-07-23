@@ -5,6 +5,9 @@
 
 require "hyku_knapsack/version"
 require "hyku_knapsack/engine"
+require "hyku_knapsack/active_job_user"
+require "hyku_knapsack/current"
+require "hyku_knapsack/user_jobs"
 
 # Disable include_metadata only when flexible mode is explicitly enabled.
 ENV['HYRAX_DISABLE_INCLUDE_METADATA'] = 'true' if ENV['HYRAX_FLEXIBLE'] == 'true'

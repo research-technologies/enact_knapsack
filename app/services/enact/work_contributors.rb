@@ -6,11 +6,9 @@ module Enact
   # Enact::ContributorGraph (which answers the reverse question — the works a
   # given contributor is credited on).
   #
-  # The compound stores one entry per contributor-role pair, so a contributor
-  # with several roles on one work appears as several entries (the storage shape
-  # decided for roles). This service GROUPS those entries back by contributor id,
-  # so each person/organization is shown once with all of its roles — rather than
-  # the generic compound renderer's one-row-per-entry, which repeats the name.
+  # Groups the compound entries by contributor id so each person/organization is
+  # shown once with all of its roles, rather than the generic compound renderer's
+  # one-row-per-entry, which repeats the name.
   #
   # Each contributor id is resolved through Hyrax::CompoundLinkedRecordResolver
   # (label + profile path) and the Enact::Contributor record (ORCID, agent type);
@@ -36,7 +34,8 @@ module Enact
         next if id.blank?
 
         bucket = (memo[id] ||= { roles: [], role_other: [] })
-        bucket[:roles] << entry['role'] if entry['role'].present?
+        # Array() tolerates roles saved as a single string before the multi-select opt-in.
+        bucket[:roles].concat(Array(entry['role']).reject(&:blank?))
         bucket[:role_other] << entry['role_other'] if entry['role_other'].present?
       end
 

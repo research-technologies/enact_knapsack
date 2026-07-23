@@ -138,24 +138,46 @@ module Enact
     # `#[]` field access, which silently empties every edge list - so pass the
     # document through as-is.
     def links_for(doc)
-      ::Enact::RelationshipGraph.new(doc).outbound.map do |edge|
-        { source: doc['id'], target: edge.target_id, rel: edge.relation_type,
+      ::Enact::RelationshipGraph.new(doc).outbound.filter_map do |edge|
+        rel, rel_inverse = edge_rel_pair(edge)
+        # An untyped relationship (no controlled type, no prose - possible now
+        # that relationship_type is optional) has no map label or colour and no
+        # legend entry, so drop it rather than emit a `null`-typed edge. The show
+        # page still lists it.
+        next if rel.blank?
+
+        { source: doc['id'], target: edge.target_id, rel:, rel_inverse:,
           note: edge.note, position: edge.position, external: edge.external }
       end
     end
 
-    # term => { label, inverse, color, dc } for the legend and edge labels.
-    # Covers only the types present in the graph - the whole vocabulary would
-    # swamp the legend. Locale keys override the authority labels when present.
+    # A free-text "other" edge keys by its prose, not the "other" code, so
+    # distinct free-text types stay distinct on the map instead of collapsing
+    # into a single "Other" node; controlled edges invert via the authority, so
+    # their `rel_inverse` is left nil here (issue #107).
+    def edge_rel_pair(edge)
+      prose = edge.type_other.presence if edge.relation_type.blank? || edge.relation_type == 'other'
+      return [edge.relation_type, nil] unless prose
+      [prose, edge.type_other_inverse.presence || prose]
+    end
+
+    # Only the types present in the graph; the whole vocabulary would swamp the
+    # legend.
     def rel_types(links)
-      links.map { |l| l[:rel] }.uniq.index_with do |term|
-        inverse_term = ::Enact::RelationshipTypesService.inverse(term)
-        { label: t("enact.relationships.types.#{term}", default: ::Enact::RelationshipTypesService.label(term)),
-          inverse: t("enact.relationships.inverse_types.#{inverse_term}",
-                     default: ::Enact::RelationshipTypesService.label(inverse_term)),
-          color: ::Enact::RelationshipTypesService.color(term),
-          dc: ::Enact::RelationshipTypesService.datacite(term) }
-      end
+      inverses = links.each_with_object({}) { |l, m| m[l[:rel]] ||= l[:rel_inverse] if l[:rel_inverse].present? }
+      links.filter_map { |l| l[:rel] }.uniq.index_with { |term| rel_type(term, inverses) }
+    end
+
+    # A term absent from the authority is a free-text "other" label: shown
+    # verbatim and neutral-coloured, with the curator's inverse prose.
+    def rel_type(term, inverses)
+      svc = ::Enact::RelationshipTypesService
+      return { label: term, inverse: inverses[term].presence || term, color: svc::FALLBACK_COLOR, dc: nil } if svc.term(term).blank?
+
+      inverse_term = svc.inverse(term)
+      { label: t("enact.relationships.types.#{term}", default: svc.label(term)),
+        inverse: t("enact.relationships.inverse_types.#{inverse_term}", default: svc.label(inverse_term)),
+        color: svc.color(term), dc: svc.datacite(term) }
     end
   end
 end

@@ -18,3 +18,7 @@ file_cache/
 relationship-map-live.png
 plans/*
 .byebug_history
+
+# Scratch/working notes under docs/ (tracked docs live directly in docs/)
+docs/background/
+docs/plans/

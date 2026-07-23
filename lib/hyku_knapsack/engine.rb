@@ -30,6 +30,11 @@ module HykuKnapsack
       app.middleware.use ::ActionDispatch::Static, HykuKnapsack::Engine.root.join('public').to_s
     end
 
+    # Flipflop only loads the host app's config/features.rb; register the knapsack's too.
+    initializer 'hyku_knapsack.flipflop_features' do
+      Flipflop::FeatureLoader.current.append(HykuKnapsack::Engine.instance)
+    end
+
     initializer :append_migrations do |app|
       # only add the migrations if they are not already copied
       # via the rake task. Allows gem to work both with the install:migrations

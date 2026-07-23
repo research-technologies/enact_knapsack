@@ -88,6 +88,18 @@ RSpec.describe Enact::ContributorGraph do
       expect(works.first.roles).to eq(['conceptualization', 'data-curation'])
     end
 
+    it 'flattens a multi-select role array carried on a single entry' do
+      docs = [
+        work_doc(
+          id: 'work-1', title: 'First Work',
+          entries: [{ 'contributor' => '42', 'role' => %w[conceptualization data-curation] }]
+        )
+      ]
+      stub_query_service(docs)
+
+      expect(graph.works.first.roles).to eq(%w[conceptualization data-curation])
+    end
+
     it 'collects free-text role_other alongside controlled roles' do
       docs = [
         work_doc(
