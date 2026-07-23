@@ -156,8 +156,10 @@ en:
       errors:
         no_subtype: Please choose an option that describes your work.
     portfolio_tree:
-      heading: Portfolio hierarchy
-      hint: The shape of your portfolio — the works it holds, and the works inside a collection.
+      # %{type} is the root work's type label (usually Portfolio, but the card is
+      # type-agnostic: a child work can be nested under any container work type).
+      heading: "%{type} hierarchy"
+      hint: The works it holds, and anything nested inside.
       summary: "%{new} new · %{existing} existing"
       status:
         new: New

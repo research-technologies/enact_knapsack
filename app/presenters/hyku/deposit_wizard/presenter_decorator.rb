@@ -8,6 +8,9 @@
 # type on the guided path (the subtype id resolves to exactly one of the four
 # Portfolio types via Enact::DepositWizard::SubtypeSuggestions), the guided
 # analogue of `select_work_type` on the known-type path.
+#
+# It also adds `portfolio_hierarchy` and `portfolio_hierarchy_summary`, which feed
+# the review step's structural hierarchy card (issue #95).
 module Hyku
   module DepositWizard
     module PresenterDecorator

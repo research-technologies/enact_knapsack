@@ -135,5 +135,19 @@ RSpec.describe Enact::PortfolioTree do
     it 'returns nil when there is no target portfolio' do
       expect(deposit(index, parent_id: '', pending: { label: 'x', type: 'PortfolioArtefact' })).to be_nil
     end
+
+    it 'is type-agnostic: builds a tree rooted at a non-portfolio parent' do
+      collection_index = {
+        'c9' => doc('c9', title: 'Documentation media', model: 'PortfolioItemCollection', members: %w[a9]),
+        'a9' => doc('a9', title: 'Existing photo')
+      }
+
+      root = deposit(collection_index, parent_id: 'c9',
+                                       pending: { label: 'New clip', type: 'PortfolioArtefact' })
+
+      # The heading reads from type_label, so a Collection root labels itself.
+      expect(root.type_label).to eq('Collection')
+      expect(root.children.map(&:status)).to eq(%w[existing new])
+    end
   end
 end
