@@ -494,7 +494,11 @@ nginx:
             proxy_set_header X-Forwarded-Host ${DOLLAR}host;
 
             proxy_cache              iiif_auth_cache;
-            proxy_cache_key          "${DOLLAR}host|${DOLLAR}cookie__hyku_session|${DOLLAR}iiif_auth_fileset_id";
+            # $http_authorization is included because ApplicationController#authenticate_if_needed
+            # HTTP-Basic-gates staging/hidden tenants BEFORE the CanCan check ever runs, entirely
+            # independent of the session cookie -- without it, a denied (no/stale credentials)
+            # decision could be served back to a request that supplied valid Basic Auth creds.
+            proxy_cache_key          "${DOLLAR}host|${DOLLAR}http_authorization|${DOLLAR}cookie__hyku_session|${DOLLAR}iiif_auth_fileset_id";
             proxy_cache_valid        200 401 403 20s;
             proxy_cache_lock         on;
             proxy_cache_lock_timeout 5s;

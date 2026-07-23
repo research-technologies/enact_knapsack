@@ -108,15 +108,28 @@ The reverse proxy (`location = /auth` in `ops/staging-deploy.tmpl.yaml` /
 * **What's cached**: the raw HTTP status (200/401/403) `/check-iiif` returns for
   a given file set -- nothing else. The response body/headers are never sent to
   the browser either way; `auth_request` only ever looks at the status code.
-* **Cache key**: `$host` (tenant) + `$cookie__hyku_session` (the Devise/Warden
-  session cookie, `_hyku_session`) + the file-set id parsed out of the request
-  path (via an nginx `map`, mirroring `Enact::IiifController#file_set_id_for`).
-  Region/size/rotation/quality don't affect the key, so every tile request for
-  the *same file set* by the *same session* on the *same tenant* within the TTL
-  is a cache hit -- but a different session, a different tenant, or a different
-  file set is always a fresh lookup. This is the property that makes the cache
-  safe: one visitor's cached "allowed" answer can never be handed to a
-  different, unauthorized visitor.
+* **Cache key**: `$host` (tenant) + `$http_authorization` + `$cookie__hyku_session`
+  (the Devise/Warden session cookie, `_hyku_session`) + the file-set id parsed
+  out of the request path (via an nginx `map`, mirroring
+  `Enact::IiifController#file_set_id_for`). Region/size/rotation/quality don't
+  affect the key, so every tile request for the *same file set* by the *same
+  session* on the *same tenant* within the TTL is a cache hit -- but a
+  different session, a different tenant, or a different file set is always a
+  fresh lookup. This is the property that makes the cache safe: one visitor's
+  cached "allowed" answer can never be handed to a different, unauthorized
+  visitor.
+
+  `$http_authorization` is in there for a reason that's easy to miss:
+  `ApplicationController#authenticate_if_needed` HTTP-Basic-gates staging/hidden
+  tenants *before* the CanCan check ever runs (see
+  `hyrax-webapp/app/controllers/application_controller.rb`), completely
+  independent of the session cookie. Since `Enact::IiifController` inherits
+  that same before_action, the internal `/check-iiif` request Rails sees is
+  gated by it too. Leaving `$http_authorization` out of the key let a denied
+  (missing/wrong Basic Auth) decision get served back to a subsequent request
+  that supplied valid Basic Auth credentials, within the TTL -- it doesn't leak
+  access to a different session, but it does manifest as a request that should
+  succeed instead getting stuck repeating the same 401.
 * **TTL**: 20 seconds (`proxy_cache_valid`), which is long enough to cover a
   single page's burst of tile requests but short enough that a permission
   change (login, logout, embargo lift, workflow transition) is only stale for a
