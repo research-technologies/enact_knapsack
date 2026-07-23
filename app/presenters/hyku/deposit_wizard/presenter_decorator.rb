@@ -89,6 +89,29 @@ module Hyku
         state.attributes['item_subtype'].presence
       end
 
+      # nil unless nesting under a parent - only the "add to an existing work" path
+      # has a hierarchy to show (issue #95).
+      def portfolio_hierarchy
+        return if state.parent_id.blank?
+
+        Enact::PortfolioTree.new(ability: current_ability)
+                            .for_deposit(parent_id: state.parent_id,
+                                         pending: { label: Array(state.attributes['title']).first,
+                                                    type: state.work_type })
+      end
+
+      def portfolio_hierarchy_summary(tree)
+        # Count descendants only; the root Portfolio is not a "new"/"existing" item.
+        counts = { 'new' => 0, 'existing' => 0 }
+        stack = tree.children.dup
+        until stack.empty?
+          node = stack.pop
+          counts[node.status] += 1 if counts.key?(node.status)
+          stack.concat(node.children)
+        end
+        I18n.t('enact.portfolio_tree.summary', new: counts['new'], existing: counts['existing'])
+      end
+
       private
 
       def guided_primary_file

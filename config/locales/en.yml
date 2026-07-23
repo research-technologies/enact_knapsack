@@ -155,6 +155,13 @@ en:
         show_all: Not seeing the right fit? Show all types
       errors:
         no_subtype: Please choose an option that describes your work.
+    portfolio_tree:
+      heading: Portfolio hierarchy
+      hint: The shape of your portfolio — the works it holds, and the works inside a collection.
+      summary: "%{new} new · %{existing} existing"
+      status:
+        new: New
+        existing: Existing
     relationships:
       none: No related works within this project.
       # Label for the button that opens the interactive relationship map.
