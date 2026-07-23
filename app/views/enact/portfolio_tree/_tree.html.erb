@@ -1,0 +1,19 @@
+<%# Reuses the wizard's own `.deposit-wizard__extra` chrome (so the card collapses
+    via the wizard's extra-toggle JS) and native <details> for branches, so the tree
+    needs no JS of its own. Locals: tree (Enact::PortfolioTree::Node), summary. %>
+<section class="deposit-wizard__extra portfolio-tree is-open" data-behavior="extra-portfolio-hierarchy">
+  <button type="button" class="deposit-wizard__extra-toggle" data-behavior="extra-toggle" aria-expanded="true">
+    <span class="deposit-wizard__extra-titles">
+      <span class="deposit-wizard__extra-title"><%= t('enact.portfolio_tree.heading') %></span>
+      <span class="deposit-wizard__extra-subtitle"><%= t('enact.portfolio_tree.hint') %></span>
+    </span>
+    <% if summary.present? %><span class="portfolio-tree__summary"><%= summary %></span><% end %>
+    <span class="deposit-wizard__extra-chevron" aria-hidden="true"></span>
+  </button>
+
+  <div class="deposit-wizard__extra-body" data-behavior="extra-body">
+    <ul class="portfolio-tree__root" role="tree">
+      <%= render 'enact/portfolio_tree/node', node: tree %>
+    </ul>
+  </div>
+</section>

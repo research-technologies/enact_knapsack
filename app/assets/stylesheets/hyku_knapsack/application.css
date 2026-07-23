@@ -13,5 +13,6 @@
  *= require_tree .
  *= require enact/contributors
  *= require enact/deposit_wizard_guided
+ *= require enact/portfolio_tree
  *= require_self
  */

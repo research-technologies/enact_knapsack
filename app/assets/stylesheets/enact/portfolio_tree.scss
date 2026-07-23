@@ -1,0 +1,173 @@
+// The var() fallbacks keep the card legible if it is ever rendered outside
+// `.deposit-wizard`, where Hyku's --dw-* tokens are not defined.
+// Work-type colours mirror TYPE_COLOR in app/assets/javascripts/enact/relationship_map.js;
+// Collection has no colour there yet, so the amber is a proposal.
+
+$pt-types: (
+  portfolio:  (#7bc95a, #e7f6e0, #3c7a2a),
+  artefact:   (#6aa9e0, #e8f1fb, #1c5a94),
+  event:      (#d2b94e, #faf3d8, #77600e),
+  literature: (#c074d0, #f6e9f9, #7d3a8c),
+  collection: (#d98a3d, #fbeedd, #8a4f14)
+);
+
+.portfolio-tree {
+  &__summary {
+    flex: none;
+    align-self: center;
+    padding: 0.1rem 0.6rem;
+    border: 1px solid var(--dw-border-strong, #d3d9e2);
+    border-radius: 20px;
+    background: var(--dw-surface, #fff);
+    color: var(--dw-ink-muted, #667085);
+    font-size: 0.75rem;
+    font-weight: 700;
+  }
+
+  &__root,
+  &__children {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  &__children {
+    margin-left: 0.6rem;
+    padding-left: 0.75rem;
+    border-left: 1.5px solid var(--dw-divider, #e4e8ee);
+  }
+
+  &__item {
+    margin: 0;
+  }
+
+  &__branch {
+    > summary {
+      list-style: none;
+    }
+
+    // <details> exposes no stylable marker, so hide it in both engines and draw
+    // our own chevron below.
+    > summary::-webkit-details-marker,
+    > summary::marker {
+      display: none;
+    }
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    padding: 0.35rem 0.4rem;
+    border-radius: 6px;
+    cursor: default;
+
+    &:hover {
+      background: var(--dw-surface-sunk, #f6f8fa);
+    }
+  }
+
+  &__branch > summary.portfolio-tree__row {
+    cursor: pointer;
+  }
+
+  &__branch > summary.portfolio-tree__row:focus-visible {
+    outline: 2px solid var(--dw-accent, #2b6da5);
+    outline-offset: -2px;
+  }
+
+  &__chevron {
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    border-right: 2px solid var(--dw-ink-subtle, #98a2b3);
+    border-bottom: 2px solid var(--dw-ink-subtle, #98a2b3);
+    transform: rotate(-45deg);
+    transition: transform 0.15s ease;
+
+    &--leaf {
+      visibility: hidden;
+    }
+  }
+
+  &__branch[open] > summary > &__chevron {
+    transform: rotate(45deg);
+  }
+
+  &__label {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    color: var(--dw-ink, #1e2733);
+    text-decoration: none;
+  }
+
+  a.portfolio-tree__label:hover {
+    color: var(--dw-accent, #2b6da5);
+    text-decoration: underline;
+  }
+
+  &__item--portfolio > &__branch > summary > &__label {
+    font-weight: 650;
+  }
+
+  &__num {
+    flex: none;
+    color: var(--dw-ink-subtle, #98a2b3);
+    font-size: 0.8rem;
+  }
+
+  &__spacer {
+    flex: 1 1 auto;
+  }
+
+  &__badge {
+    flex: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    padding: 0.1rem 0.55rem;
+    border-radius: 20px;
+    font-size: 0.7rem;
+    font-weight: 650;
+    white-space: nowrap;
+  }
+
+  &__swatch {
+    width: 0.45rem;
+    height: 0.45rem;
+    border-radius: 50%;
+  }
+
+  &__status {
+    flex: none;
+    padding: 0.05rem 0.45rem;
+    border-radius: 5px;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+
+    &--new {
+      background: var(--dw-accent-tint, #e4f0f0);
+      color: var(--dw-accent, #1c5455);
+    }
+
+    &--existing {
+      background: var(--dw-surface-sunk, #eef1f5);
+      color: var(--dw-ink-muted, #667085);
+    }
+  }
+
+  @each $name, $c in $pt-types {
+    &__badge--#{$name} {
+      background: nth($c, 2);
+      color: nth($c, 3);
+
+      .portfolio-tree__swatch {
+        background: nth($c, 1);
+      }
+    }
+  }
+}

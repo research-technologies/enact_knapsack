@@ -1,0 +1,20 @@
+<li role="treeitem" class="portfolio-tree__item portfolio-tree__item--<%= node.type %>">
+  <% if node.children? %>
+    <details class="portfolio-tree__branch" open>
+      <summary class="portfolio-tree__row">
+        <span class="portfolio-tree__chevron" aria-hidden="true"></span>
+        <%= render 'enact/portfolio_tree/label', node: node %>
+      </summary>
+      <ul class="portfolio-tree__children" role="group">
+        <% node.children.each do |child| %>
+          <%= render 'enact/portfolio_tree/node', node: child %>
+        <% end %>
+      </ul>
+    </details>
+  <% else %>
+    <div class="portfolio-tree__row portfolio-tree__row--leaf">
+      <span class="portfolio-tree__chevron portfolio-tree__chevron--leaf" aria-hidden="true"></span>
+      <%= render 'enact/portfolio_tree/label', node: node %>
+    </div>
+  <% end %>
+</li>
