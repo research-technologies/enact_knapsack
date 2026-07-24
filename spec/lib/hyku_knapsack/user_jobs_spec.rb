@@ -118,5 +118,24 @@ RSpec.describe HykuKnapsack::UserJobs do
 
       expect(groups.map { |group| group[:file_set_id] }).to contain_exactly(file_set.id.to_s)
     end
+
+    it 'drops the routing shim derivatives job when a large derivatives job exists for the file set' do
+      file_set_id = 'file-set-av'
+      GoodJob::Job.create!(serialized_params: { 'tenant' => tenant, 'user_id' => user.id, 'job_class' => 'ValkyrieCreateDerivativesJob', 'arguments' => [file_set_id, 'some-file-id'] })
+      large = GoodJob::Job.create!(serialized_params: { 'tenant' => tenant, 'user_id' => user.id, 'job_class' => 'ValkyrieCreateLargeDerivativesJob', 'arguments' => [file_set_id, 'some-file-id'] })
+
+      group = HykuKnapsack::UserJobs.grouped_for(user).find { |entry| entry[:file_set_id] == file_set_id }
+
+      expect(group[:jobs]).to contain_exactly(large)
+    end
+
+    it 'keeps the derivatives job for a file set with no large derivatives job' do
+      file_set_id = 'file-set-image'
+      plain = GoodJob::Job.create!(serialized_params: { 'tenant' => tenant, 'user_id' => user.id, 'job_class' => 'ValkyrieCreateDerivativesJob', 'arguments' => [file_set_id, 'some-file-id'] })
+
+      group = HykuKnapsack::UserJobs.grouped_for(user).find { |entry| entry[:file_set_id] == file_set_id }
+
+      expect(group[:jobs]).to contain_exactly(plain)
+    end
   end
 end

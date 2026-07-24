@@ -8,7 +8,8 @@ module Hyrax
       before_action :authenticate_user!, :ensure_enabled
 
       def index
-        @user_jobs = HykuKnapsack::UserJobs.for(current_user)
+        grouped = HykuKnapsack::UserJobs.grouped_for(current_user)
+        @works = HykuKnapsack::UserJobsPresenter.new(grouped:).works
       end
 
       private
