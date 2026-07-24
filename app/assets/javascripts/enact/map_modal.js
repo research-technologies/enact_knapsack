@@ -5,6 +5,9 @@
  * the iframe src to about:blank on hide so Cytoscape is torn down and no ghost
  * request is left pending.
  *
+ * DOM lookups are deferred to handler time so the listener survives Turbolinks
+ * cache restores without holding stale element references.
+ *
  * window.enactMapModalReady guards against double-init if this file is somehow
  * included more than once on the same page.
  */
@@ -13,27 +16,27 @@
   window.enactMapModalReady = true;
 
   function setup() {
-    var modal = document.getElementById('enactMapModal');
-    if (!modal) return;
-    var iframe = document.getElementById('enactMapIframe');
-    var titleEl = document.getElementById('enactMapModalLabel');
+    if (!document.getElementById('enactMapModal')) return;
 
     document.body.addEventListener('click', function (e) {
       var trigger = e.target.closest('[data-map-url]');
       if (!trigger) return;
+      var modal = document.getElementById('enactMapModal');
+      if (!modal) return;
       e.preventDefault();
-      var url = trigger.getAttribute('data-map-url');
+      var iframe  = document.getElementById('enactMapIframe');
+      var titleEl = document.getElementById('enactMapModalLabel');
       var title = trigger.getAttribute('data-map-title') || '';
-      iframe.src = url;
-      iframe.title = title;
+      iframe.src          = trigger.getAttribute('data-map-url');
+      iframe.title        = title;
       titleEl.textContent = title;
       $(modal).modal('show');
     });
 
-    $(modal).on('hidden.bs.modal', function () {
-      iframe.src = 'about:blank';
-      iframe.title = '';
-      titleEl.textContent = '';
+    $(document.body).on('hidden.bs.modal', '#enactMapModal', function () {
+      document.getElementById('enactMapIframe').src          = 'about:blank';
+      document.getElementById('enactMapIframe').title        = '';
+      document.getElementById('enactMapModalLabel').textContent = '';
     });
   }
 

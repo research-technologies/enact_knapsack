@@ -11,14 +11,11 @@
             modal so the user stays in the repository experience (client request).
             The map is a standalone (layout:false) Cytoscape page; it loads
             correctly inside an iframe without needing turbolinks guards. %>
-        <% network_label = t('enact.people_map.profile_link', default: 'Research network') %>
-        <% network_url = "/people-map?focus=#{@contributor.id}" %>
         <%# href provides a non-JS fallback (the standalone map page). JS intercepts
             the click via [data-map-url] and opens the modal instead. %>
-        <%= link_to network_label, network_url,
-                    class: 'btn btn-outline-primary btn-sm',
-                    data: { map_url: network_url, map_title: network_label },
-                    aria: { haspopup: 'dialog', controls: 'enactMapModal' } %>
+        <%= enact_map_trigger t('enact.people_map.profile_link', default: 'Research network'),
+                              "/people-map?focus=#{@contributor.id}",
+                              html_class: 'btn btn-outline-primary btn-sm' %>
         <%= render 'enact/shared/map_modal' %>
         <%# Edit is admin-gated in the controller; only surface the link to admins. %>
         <% if current_ability.admin? %>
