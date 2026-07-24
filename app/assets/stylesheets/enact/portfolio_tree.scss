@@ -1,5 +1,6 @@
-// The var() fallbacks keep the card legible if it is ever rendered outside
-// `.deposit-wizard`, where Hyku's --dw-* tokens are not defined.
+// The var() fallbacks mirror Hyku's --dw-* token values, so the card keeps its
+// WCAG AA contrast even when rendered outside `.deposit-wizard` (where the tokens
+// are undefined).
 // Work-type colours mirror TYPE_COLOR in app/assets/javascripts/enact/relationship_map.js;
 // Collection has no colour there yet, so the amber is a proposal.
 
@@ -16,10 +17,10 @@ $pt-types: (
     flex: none;
     align-self: center;
     padding: 0.1rem 0.6rem;
-    border: 1px solid var(--dw-border-strong, #d3d9e2);
+    border: 1px solid var(--dw-border-strong, #d9d5cc);
     border-radius: 20px;
     background: var(--dw-surface, #fff);
-    color: var(--dw-ink-muted, #667085);
+    color: var(--dw-ink-muted, #5d6670);
     font-size: 0.75rem;
     font-weight: 700;
   }
@@ -34,7 +35,7 @@ $pt-types: (
   &__children {
     margin-left: 0.6rem;
     padding-left: 0.75rem;
-    border-left: 1.5px solid var(--dw-divider, #e4e8ee);
+    border-left: 1.5px solid var(--dw-divider, #ece9e2);
   }
 
   &__item {
@@ -63,7 +64,7 @@ $pt-types: (
     cursor: default;
 
     &:hover {
-      background: var(--dw-surface-sunk, #f6f8fa);
+      background: var(--dw-surface-sunk, #f8f9fa);
     }
   }
 
@@ -80,8 +81,8 @@ $pt-types: (
     flex: none;
     width: 0.5rem;
     height: 0.5rem;
-    border-right: 2px solid var(--dw-ink-subtle, #98a2b3);
-    border-bottom: 2px solid var(--dw-ink-subtle, #98a2b3);
+    border-right: 2px solid var(--dw-ink-subtle, #6c7178);
+    border-bottom: 2px solid var(--dw-ink-subtle, #6c7178);
     transform: rotate(-45deg);
     transition: transform 0.15s ease;
 
@@ -99,7 +100,7 @@ $pt-types: (
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-    color: var(--dw-ink, #1e2733);
+    color: var(--dw-ink, #232a32);
     text-decoration: none;
   }
 
@@ -108,13 +109,19 @@ $pt-types: (
     text-decoration: underline;
   }
 
+  a.portfolio-tree__label:focus-visible {
+    outline: 2px solid var(--dw-accent, #2b6da5);
+    outline-offset: 2px;
+    border-radius: 2px;
+  }
+
   &__item--portfolio > &__branch > summary > &__label {
     font-weight: 650;
   }
 
   &__num {
     flex: none;
-    color: var(--dw-ink-subtle, #98a2b3);
+    color: var(--dw-ink-subtle, #6c7178);
     font-size: 0.8rem;
   }
 
@@ -150,13 +157,13 @@ $pt-types: (
     letter-spacing: 0.05em;
 
     &--new {
-      background: var(--dw-accent-tint, #e4f0f0);
-      color: var(--dw-accent, #1c5455);
+      background: var(--dw-accent-tint, #e7f3ff);
+      color: var(--dw-accent, #2b6da5);
     }
 
     &--existing {
-      background: var(--dw-surface-sunk, #eef1f5);
-      color: var(--dw-ink-muted, #667085);
+      background: var(--dw-surface-sunk, #f8f9fa);
+      color: var(--dw-ink-muted, #5d6670);
     }
   }
 
