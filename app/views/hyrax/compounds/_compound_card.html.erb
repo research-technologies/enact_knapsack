@@ -21,11 +21,7 @@
           the user stays in the repository experience (client request). %>
       <% is_portfolio = Array(presenter.solr_document['has_model_ssim']).first.to_s == 'Portfolio' %>
       <% map_query = is_portfolio ? "portfolio=#{presenter.id}" : "focus=#{presenter.id}" %>
-      <%# ?t= is a cache-busting param so the modal JS can detect when the work
-          was edited and reload the iframe instead of showing a stale graph.
-          Ignored by the controller. %>
-      <% map_t = CGI.escape(presenter.solr_document['system_modified_dtsi'].to_s) %>
-      <% map_url = "/relationship-map?#{map_query}&t=#{map_t}" %>
+      <% map_url = "/relationship-map?#{map_query}" %>
       <%# href provides a non-JS fallback (the standalone map page). JS intercepts
           the click via [data-map-url] and opens the modal instead. The map page
           carries turbolinks/turbo reload meta tags so a direct visit still works. %>
