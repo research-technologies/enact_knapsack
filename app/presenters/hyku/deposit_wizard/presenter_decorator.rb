@@ -8,6 +8,9 @@
 # type on the guided path (the subtype id resolves to exactly one of the four
 # Portfolio types via Enact::DepositWizard::SubtypeSuggestions), the guided
 # analogue of `select_work_type` on the known-type path.
+#
+# It also adds `portfolio_hierarchy` and `portfolio_hierarchy_summary`, which feed
+# the review step's structural hierarchy card (issue #95).
 module Hyku
   module DepositWizard
     module PresenterDecorator
@@ -87,6 +90,29 @@ module Hyku
       # re-selecting.
       def guided_selected_subtype
         state.attributes['item_subtype'].presence
+      end
+
+      # nil unless nesting under a parent - only the "add to an existing work" path
+      # has a hierarchy to show (issue #95).
+      def portfolio_hierarchy
+        return if state.parent_id.blank?
+
+        Enact::PortfolioTree.new(ability: current_ability)
+                            .for_deposit(parent_id: state.parent_id,
+                                         pending: { label: Array(state.attributes['title']).first,
+                                                    type: state.work_type })
+      end
+
+      def portfolio_hierarchy_summary(tree)
+        # Count descendants only; the root Portfolio is not a "new"/"existing" item.
+        counts = { 'new' => 0, 'existing' => 0 }
+        stack = tree.children.dup
+        until stack.empty?
+          node = stack.pop
+          counts[node.status] += 1 if counts.key?(node.status)
+          stack.concat(node.children)
+        end
+        I18n.t('enact.portfolio_tree.summary', new: counts['new'], existing: counts['existing'])
       end
 
       private
