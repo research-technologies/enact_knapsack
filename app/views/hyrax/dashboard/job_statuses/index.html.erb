@@ -1,7 +1,14 @@
-<h1>Your job activity</h1>
+<%= stylesheet_link_tag 'enact/job_activity', media: 'all' %>
 
-<% if @works.blank? %>
-  <p>No recent jobs.</p>
-<% else %>
-  <%= render partial: 'work', collection: @works, as: :work %>
-<% end %>
+<div class="job-activity" data-job-activity data-poll-url="<%= HykuKnapsack::Engine.routes.url_helpers.dashboard_job_statuses_path(poll: true) %>">
+  <div class="job-activity-head">
+    <h2 class="job-activity-title"><%= t('enact.job_statuses.title') %></h2>
+    <span class="job-activity-live"><span class="job-activity-live-dot" aria-hidden="true"></span>Live</span>
+  </div>
+
+  <div class="job-activity-body" data-job-activity-body>
+    <%= render 'works', works: @works %>
+  </div>
+</div>
+
+<%= javascript_include_tag 'enact/job_activity' %>

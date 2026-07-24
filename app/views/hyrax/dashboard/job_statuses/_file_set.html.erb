@@ -1,0 +1,49 @@
+<details class="job-fileset"
+         data-file-set
+         data-state="<%= file_set[:state] %>"
+         <%= 'open' if file_set[:open] %>>
+
+  <summary class="job-fileset-header">
+    <span class="job-caret" aria-hidden="true">&rsaquo;</span>
+    <span class="job-fileset-title"><%= link_to file_set[:label], job_status_file_set_path(file_set) %></span>
+    <span class="job-count"><%= file_set[:completed] %> of <%= file_set[:total] %> stages</span>
+
+    <div class="job-track" aria-hidden="true">
+      <% file_set[:stages].each do |stage| %>
+        <span class="job-seg" data-state="<%= stage[:state] %>" data-pct="<%= stage[:progress] %>">
+          <span class="job-seg-fill"></span>
+        </span>
+      <% end %>
+    </div>
+  </summary>
+
+  <ul class="job-stages">
+    <% file_set[:stages].each do |stage| %>
+      <li class="job-stage" data-state="<%= stage[:state] %>" data-pct="<%= stage[:progress] %>">
+        <span class="job-stage-name"><%= stage[:name] %></span>
+
+        <div class="job-stage-detail">
+          <div class="job-stage-line">
+            <span class="badge job-badge"><%= stage[:state].titleize %></span>
+            <% if stage[:meta].present? %>
+              <span class="job-stage-meta"><%= stage[:meta] %><%= " · took #{stage[:elapsed]}" if stage[:state] == 'complete' && stage[:elapsed].present? %></span>
+            <% end %>
+            <% if (error = job_status_error(stage)) %>
+              <button type="button" class="job-retry" disabled>Retry</button>
+            <% end %>
+          </div>
+
+          <% if stage[:state] == 'running' %>
+            <div class="job-stage-bar">
+              <div class="job-stage-bar-fill" style="width: <%= stage[:progress] || 100 %>%;"></div>
+            </div>
+          <% end %>
+
+          <% if error %>
+            <div class="job-error"><%= error %></div>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+</details>
