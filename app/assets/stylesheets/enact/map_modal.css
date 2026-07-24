@@ -4,8 +4,13 @@
  * into any other Bootstrap modal on the page.
  */
 
+/*
+ * Equivalent to min(92vw, 1400px) without the CSS min() function, which
+ * SassC (used in the asset pipeline) rejects due to mixed px + vw units.
+ */
 #enactMapModal .modal-dialog {
-  max-width: min(92vw, 1400px);
+  width: 92vw;
+  max-width: 1400px;
   height: 88vh;
   margin: 3vh auto;
 }
