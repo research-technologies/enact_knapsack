@@ -1,0 +1,85 @@
+<%# Reusable iframe modal for relationship-map and people-map.
+    Triggered by any element with [data-map-url] and [data-map-title].
+    The map pages are standalone (layout:false) documents that boot Cytoscape
+    against their own scoped assets - an iframe is the natural container.
+    Guard with @_enact_map_modal_rendered before rendering so the markup and
+    the initialisation script appear on the page exactly once. %>
+<div class="modal fade" id="enactMapModal" tabindex="-1" role="dialog"
+     aria-labelledby="enactMapModalLabel" aria-modal="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h5 class="modal-title" id="enactMapModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal"
+                aria-label="<%= t('enact.map_modal.close', default: 'Close') %>">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-0">
+        <iframe id="enactMapIframe" src="" frameborder="0" title=""
+                class="enact-map-iframe"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+
+<style>
+#enactMapModal .modal-dialog {
+  max-width: min(92vw, 1400px);
+  height: 88vh;
+  margin: 3vh auto;
+}
+#enactMapModal .modal-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+#enactMapModal .modal-body {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+.enact-map-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+</style>
+
+<script>
+(function () {
+  if (window.enactMapModalReady) return;
+  window.enactMapModalReady = true;
+
+  function setup() {
+    var modal = document.getElementById('enactMapModal');
+    if (!modal) return;
+    var iframe = document.getElementById('enactMapIframe');
+    var titleEl = document.getElementById('enactMapModalLabel');
+
+    document.body.addEventListener('click', function (e) {
+      var trigger = e.target.closest('[data-map-url]');
+      if (!trigger) return;
+      e.preventDefault();
+      var url = trigger.getAttribute('data-map-url');
+      var title = trigger.getAttribute('data-map-title') || '';
+      iframe.src = url;
+      iframe.title = title;
+      titleEl.textContent = title;
+      $(modal).modal('show');
+    });
+
+    $(modal).on('hidden.bs.modal', function () {
+      iframe.src = 'about:blank';
+      iframe.title = '';
+      titleEl.textContent = '';
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', setup);
+  } else {
+    setup();
+  }
+}());
+</script>
