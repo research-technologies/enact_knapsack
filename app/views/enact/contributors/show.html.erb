@@ -7,16 +7,17 @@
     <div class="d-flex justify-content-between align-items-start">
       <h1 class="mb-2"><%= @contributor.display_name %></h1>
       <div class="enact-contributor-actions">
-        <%# Opens the research-network map centred on this person: their direct
-            (first-order) collaborators, plus who is one step further out. %>
-        <%# turbolinks/turbo false: /people-map is a standalone (layout:false) page,
-            so it must load as a full request, not be swapped in by Turbolinks
-            (which leaves Cytoscape half-initialised until a hard refresh). Same
-            as the relationship-map button. %>
-        <%= link_to t('enact.people_map.profile_link', default: 'Research network'),
-                    "/people-map?focus=#{@contributor.id}",
-                    class: 'btn btn-outline-primary btn-sm',
-                    data: { turbolinks: false, turbo: false } %>
+        <%# Opens the research-network map centred on this person in an iframe
+            modal so the user stays in the repository experience (client request).
+            The map is a standalone (layout:false) Cytoscape page; it loads
+            correctly inside an iframe without needing turbolinks guards. %>
+        <% network_label = t('enact.people_map.profile_link', default: 'Research network') %>
+        <%= button_tag network_label,
+                       type: 'button',
+                       class: 'btn btn-outline-primary btn-sm',
+                       data: { map_url: "/people-map?focus=#{@contributor.id}", map_title: network_label },
+                       aria: { haspopup: 'dialog', controls: 'enactMapModal' } %>
+        <%= render 'enact/shared/map_modal' %>
         <%# Edit is admin-gated in the controller; only surface the link to admins. %>
         <% if current_ability.admin? %>
           <%= link_to t('enact.contributors.edit.link', default: 'Edit'),
