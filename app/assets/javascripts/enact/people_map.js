@@ -148,7 +148,7 @@
     if (t2.length) {
       h += '<div class="row"><b>' + t2.length + '</b> in adjacent communities (second order)</div>' + badges(t2, 10);
     }
-    h += '<a class="profilelink" href="' + esc(d.path || '#') + '">&#8599; View full profile</a>';
+    h += '<a class="profilelink" href="' + esc(d.path || '#') + '" target="_blank" rel="noopener noreferrer">&#8599; View full profile</a>';
     DETAIL.innerHTML = h;
   }
   // One "who did what" line: a person's name + a badge per role they played on

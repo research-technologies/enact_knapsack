@@ -225,7 +225,7 @@
           html += `<div class="meta" style="margin-top:8px;word-break:break-all"><b>URL:</b> ${d.path}</div>`;
           html += `<p style="clear:both;margin:12px 0 2px"><a class="pagelink" href="${d.path}" target="_blank" rel="noopener noreferrer">&#8599; Open link</a></p>`;
         } else {
-          html += `<p style="clear:both;margin:12px 0 2px"><a class="pagelink" href="${d.path}">&#8599; View this work's page</a></p>`;
+          html += `<p style="clear:both;margin:12px 0 2px"><a class="pagelink" href="${d.path}" target="_blank" rel="noopener noreferrer">&#8599; View this work's page</a></p>`;
         }
         const edges = node.connectedEdges();
         if (edges.length) {
