@@ -1,0 +1,29 @@
+/*
+ * Sizing for the full-height iframe modal shared by the relationship map and
+ * research network map. Scoped to #enactMapModal so these rules cannot bleed
+ * into any other Bootstrap modal on the page.
+ */
+
+#enactMapModal .modal-dialog {
+  max-width: min(92vw, 1400px);
+  height: 88vh;
+  margin: 3vh auto;
+}
+
+#enactMapModal .modal-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#enactMapModal .modal-body {
+  flex: 1 1 auto;
+  overflow: hidden;
+}
+
+.enact-map-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
