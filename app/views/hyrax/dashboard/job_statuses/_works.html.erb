@@ -1,5 +1,5 @@
 <% if works.blank? %>
-  <p class="job-activity-empty">No recent jobs.</p>
+  <p class="text-muted mb-0">No recent jobs.</p>
 <% else %>
   <%= render partial: 'work', collection: works, as: :work %>
 <% end %>

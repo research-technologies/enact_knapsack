@@ -62,7 +62,23 @@ RSpec.describe Hyrax::Dashboard::JobStatusesController, type: :controller do
         get :index, params: { poll: true }
 
         expect(response.body).to include('In N Out')
-        expect(response.body).not_to include('job-activity-head')
+        expect(response.body).not_to include('card-header')
+      end
+
+      it 'renders a data-state hook the poller can detect for a pending job' do
+        file_set = FactoryBot.valkyrie_create(:hyrax_file_set, label: 'in_n_out.mp4')
+        work = Hyrax.persister.save(resource: PortfolioArtefact.new(title: ['In N Out'], member_ids: [file_set.id]))
+        Hyrax.index_adapter.save(resource: work)
+        GoodJob::Job.create!(executions_count: 0, serialized_params: {
+                               'tenant' => Apartment::Tenant.current,
+                               'user_id' => user.id,
+                               'job_class' => 'ValkyrieCreateDerivativesJob',
+                               'arguments' => [file_set.id.to_s, 'some-file-id']
+                             })
+
+        get :index
+
+        expect(response.body).to include('data-state="pending"')
       end
 
       it 'shows the failure reason for an errored stage' do
