@@ -1,5 +1,5 @@
 <details class="job-fileset"
-         data-file-set
+         data-file-set="<%= file_set[:file_set_id] %>"
          data-state="<%= file_set[:state] %>"
          <%= 'open' if file_set[:open] %>>
 
@@ -19,6 +19,7 @@
 
   <ul class="job-stages">
     <% file_set[:stages].each do |stage| %>
+      <% error = %w[failed retrying].include?(stage[:state]) ? job_status_error(stage) : nil %>
       <li class="job-stage" data-state="<%= stage[:state] %>" data-pct="<%= stage[:progress] %>">
         <span class="job-stage-name"><%= stage[:name] %></span>
 
@@ -28,12 +29,9 @@
             <% if stage[:meta].present? %>
               <span class="job-stage-meta"><%= stage[:meta] %><%= " · took #{stage[:elapsed]}" if stage[:state] == 'complete' && stage[:elapsed].present? %></span>
             <% end %>
-            <% if (error = job_status_error(stage)) %>
-              <button type="button" class="job-retry" disabled>Retry</button>
-            <% end %>
           </div>
 
-          <% if stage[:state] == 'running' %>
+          <% if %w[running retrying].include?(stage[:state]) %>
             <div class="job-stage-bar">
               <div class="job-stage-bar-fill" style="width: <%= stage[:progress] || 100 %>%;"></div>
             </div>

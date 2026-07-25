@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 module HykuKnapsack
-  class UserJobsPresenter
+  class UserJobsPresenter # rubocop:disable Metrics/ClassLength
     def initialize(grouped:)
       @grouped = grouped
       @file_set_ids = grouped.pluck(:file_set_id)
@@ -23,6 +23,7 @@ module HykuKnapsack
 
       def roll_up(states)
         return 'failed'   if states.include?('failed')
+        return 'retrying' if states.include?('retrying')
         return 'running'  if states.include?('running')
         return 'complete' if states.any? && states.all?('complete')
 
@@ -43,7 +44,8 @@ module HykuKnapsack
       def state_for(status)
         case status
         when :succeeded then 'complete'
-        when :running, :retried then 'running'
+        when :running   then 'running'
+        when :retried   then 'retrying'
         when :discarded then 'failed'
         else 'pending'
         end
@@ -52,10 +54,12 @@ module HykuKnapsack
       def elapsed_for(start, stop)
         return if start.nil? || stop.nil?
 
-        ActiveSupport::Duration.build((stop - start).to_i).parts.map { |unit, n| "#{n}#{unit.to_s.first}" }.join(' ').presence || '0s'
+        ActiveSupport::Duration.build((stop - start).to_i).parts.map { |unit, n| "#{n}#{unit.to_s.first}" }.join(' ').sub(/\A0s\z/, 'less than 1s')
       end
 
       def meta_for(state, job)
+        return "Attempt #{job.executions_count}" if state == 'retrying'
+
         verb, at = case state
                    when 'complete' then ['Finished', job.finished_at]
                    when 'running'  then ['Started', job.performed_at]
@@ -109,14 +113,17 @@ module HykuKnapsack
 
     def add_extra_info!
       labels_by_id = file_set_labels.index_by { |hit| hit['id'] }
-      grouped.each do |group|
-        group[:label] = labels_by_id[group[:file_set_id]]&.fetch('label_tesim', [])&.first || 'Untitled'
-        group[:total] = group[:jobs].count
-        group[:completed] = group[:jobs].count(&:succeeded?)
-        group[:stages] = group[:jobs].sort_by(&:created_at).map { |job| self.class.stage_for(job) }
-        group[:state] = self.class.roll_up(group[:stages].map { |stage| stage[:state] })
-        group[:open] = group[:state] != 'complete'
-      end
+      grouped.each { |group| enrich_group(group, labels_by_id) }
+    end
+
+    def enrich_group(group, labels_by_id)
+      jobs = group[:jobs]
+      group[:label] = labels_by_id[group[:file_set_id]]&.fetch('label_tesim', [])&.first || 'Untitled'
+      group[:total] = jobs.count
+      group[:completed] = jobs.count(&:succeeded?)
+      group[:stages] = jobs.sort_by(&:created_at).map { |job| self.class.stage_for(job) }
+      group[:state] = self.class.roll_up(group[:stages].map { |stage| stage[:state] })
+      group[:open] = group[:state] != 'complete'
     end
 
     def file_set_labels

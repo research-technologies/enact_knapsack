@@ -229,12 +229,16 @@ RSpec.describe HykuKnapsack::UserJobsPresenter do
       expect(stage[:state]).to eq('complete')
     end
 
-    it 'maps a running job and a retrying job to a running stage' do
+    it 'maps a running job to running and a retrying job to retrying, keeping the retry error' do
       running = GoodJob::Job.create!(performed_at: Time.current, serialized_params: { 'job_class' => 'ValkyrieCharacterizationJob' })
       retrying = GoodJob::Job.create!(error: 'RuntimeError: fits down', scheduled_at: 1.hour.from_now, executions_count: 3, serialized_params: { 'job_class' => 'ValkyrieCharacterizationJob' })
 
       expect(described_class.stage_for(running)[:state]).to eq('running')
-      expect(described_class.stage_for(retrying)[:state]).to eq('running')
+
+      retry_stage = described_class.stage_for(retrying)
+      expect(retry_stage[:state]).to eq('retrying')
+      expect(retry_stage[:error]).to eq('RuntimeError: fits down')
+      expect(retry_stage[:meta]).to eq('Attempt 3')
     end
 
     it 'maps a queued job to a pending stage' do
@@ -268,6 +272,12 @@ RSpec.describe HykuKnapsack::UserJobsPresenter do
       job = GoodJob::Job.create!(performed_at: Time.utc(2024, 1, 1, 12, 0, 0), finished_at: Time.utc(2024, 1, 1, 12, 0, 38), serialized_params: { 'job_class' => 'ValkyrieIngestJob' })
 
       expect(described_class.stage_for(job)[:elapsed]).to eq('38s')
+    end
+
+    it 'reports a sub-second stage as less than a second' do
+      job = GoodJob::Job.create!(performed_at: Time.utc(2024, 1, 1, 12, 0, 0), finished_at: Time.utc(2024, 1, 1, 12, 0, 0.4), serialized_params: { 'job_class' => 'ValkyrieIngestJob' })
+
+      expect(described_class.stage_for(job)[:elapsed]).to eq('less than 1s')
     end
 
     it 'leaves elapsed nil on a stage that has not finished' do

@@ -14,6 +14,8 @@ module Hyrax
 
         grouped = HykuKnapsack::UserJobs.grouped_for(current_user)
         @works = HykuKnapsack::UserJobsPresenter.new(grouped:).works
+
+        render(partial: 'works', locals: { works: @works }) if params[:poll].to_s == 'true'
       end
 
       private
