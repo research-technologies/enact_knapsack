@@ -81,7 +81,7 @@ module HykuKnapsack
 
     def present_work(hit)
       file_sets = file_sets_for(hit)
-      total = hit['member_ids_ssim'].count
+      total = hit['member_ids_ssim'].count { |id| file_set_member_ids.include?(id) }
       completed = completed(file_sets)
       untracked = [total - file_sets.size, 0].max
       state = self.class.roll_up(file_sets.map { |file_set| file_set[:state] } + Array.new(untracked, 'pending'))
@@ -102,8 +102,8 @@ module HykuKnapsack
                           'id,title_tesim,member_ids_ssim,has_model_ssim', sort: 'date_modified_dtsi desc')
     end
 
-    def solr_query(query, fields, sort: nil)
-      Hyrax::SolrService.query(query, rows: file_set_ids.length, fl: fields, sort:)
+    def solr_query(query, fields, sort: nil, rows: file_set_ids.length)
+      Hyrax::SolrService.query(query, rows:, fl: fields, sort:)
     end
 
     def file_sets_for(hit)
@@ -132,6 +132,15 @@ module HykuKnapsack
 
     def completed(file_sets)
       file_sets.count { |file_set| file_set[:completed].positive? && file_set[:completed] == file_set[:total] }
+    end
+
+    def file_set_member_ids
+      @file_set_member_ids ||= begin
+        member_ids = work_hits.flat_map { |hit| hit['member_ids_ssim'] }.uniq
+        solr_query("id:(#{member_ids.join(' OR ')}) AND has_model_ssim:(\"FileSet\" OR \"Hyrax::FileSet\")",
+                   'id', rows: member_ids.length)
+          .map { |doc| doc['id'] }.to_set
+      end
     end
   end
 end
