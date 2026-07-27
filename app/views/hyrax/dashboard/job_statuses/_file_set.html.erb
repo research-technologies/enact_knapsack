@@ -1,0 +1,49 @@
+<details class="job-fileset border rounded bg-white p-3 mb-2"
+         data-file-set="<%= file_set[:file_set_id] %>"
+         data-state="<%= file_set[:state] %>"
+         <%= 'open' if file_set[:open] %>>
+
+  <summary class="job-toggle d-flex align-items-center flex-wrap pl-2">
+    <span class="job-caret mr-2 text-muted" aria-hidden="true">&rsaquo;</span>
+    <span class="text-primary text-break"><%= link_to file_set[:label], job_status_file_set_path(file_set) %></span>
+    <small class="text-muted ml-auto mr-2 font-weight-bold"><%= file_set[:completed] %> of <%= file_set[:total] %> stages</small>
+
+    <div class="job-track w-100 my-2" aria-hidden="true">
+      <% file_set[:stages].each do |stage| %>
+        <div class="progress progress-seg flex-fill">
+          <div class="progress-bar <%= job_status_bar_class(stage[:state]) %>" style="width: <%= stage[:state] == 'pending' ? 0 : (stage[:progress] || 100) %>%;"></div>
+        </div>
+      <% end %>
+    </div>
+  </summary>
+
+  <div class="pt-1">
+    <% file_set[:stages].each do |stage| %>
+      <% error = %w[failed retrying].include?(stage[:state]) ? job_status_error(stage) : nil %>
+      <div class="d-flex align-items-start py-1">
+        <small class="font-weight-bold text-dark" style="flex: 0 0 7.5rem;"><%= stage[:name] %></small>
+
+        <div class="flex-fill">
+          <div class="d-flex align-items-center flex-wrap">
+            <span class="mr-3" style="flex: 0 0 6.5rem;">
+              <span class="badge badge-pill <%= job_status_badge_class(stage[:state]) %> text-uppercase"><%= stage[:state].titleize %></span>
+            </span>
+            <small class="text-muted"><%= stage[:meta] %><% if stage[:state] == 'complete' && stage[:elapsed].present? %> &middot; took <%= stage[:elapsed] %><% end %></small>
+          </div>
+
+          <% if %w[running retrying].include?(stage[:state]) %>
+            <div class="progress progress-thin mt-2" style="margin-left: 7.5rem;" aria-hidden="true">
+              <div class="progress-bar <%= job_status_bar_class(stage[:state]) %>" style="width: <%= stage[:progress] || 100 %>%;"></div>
+            </div>
+          <% end %>
+
+          <% if error %>
+            <div class="alert alert-<%= stage[:state] == 'failed' ? 'danger' : 'warning' %> mx-0">
+              <small class="text-monospace d-block text-break"><%= error %></small>
+            </div>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+  </div>
+</details>

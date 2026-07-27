@@ -242,3 +242,4 @@ en:
     job_statuses:
       disabled: The job statuses page is not enabled.
       nav: Job statuses
+      title: Your job activity
