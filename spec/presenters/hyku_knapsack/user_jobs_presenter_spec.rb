@@ -112,6 +112,19 @@ RSpec.describe HykuKnapsack::UserJobsPresenter do
     expect(work[:completed]).to eq(1)
   end
 
+  it "ignores child works among a work's members, counting and rolling up only file sets" do
+    file_set = FactoryBot.valkyrie_create(:hyrax_file_set, label: 'a.mp4')
+    child_work = FactoryBot.valkyrie_create(:hyrax_work, title: ['Child'])
+    FactoryBot.valkyrie_create(:hyrax_work, title: ['Parent'], members: [file_set, child_work])
+
+    finished = GoodJob::Job.create!(finished_at: Time.current, serialized_params: { 'job_class' => 'ValkyrieIngestJob' })
+    grouped = [{ file_set_id: file_set.id.to_s, jobs: [finished] }]
+
+    work = described_class.new(grouped:).works.find { |entry| entry[:title] == 'Parent' }
+    expect(work[:total]).to eq(1)
+    expect(work[:state]).to eq('complete')
+  end
+
   it 'does not mark a work complete while a member file set has no jobs yet' do
     done_file_set = FactoryBot.valkyrie_create(:hyrax_file_set, label: 'done.mp4')
     untracked_file_set = FactoryBot.valkyrie_create(:hyrax_file_set, label: 'untracked.mp4')
