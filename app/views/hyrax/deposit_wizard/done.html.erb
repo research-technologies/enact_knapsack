@@ -1,0 +1,35 @@
+<%# OVERRIDE Hyku deposit-wizard done view (hyrax-webapp submodule @ 0dbacbce,
+    app/views/hyrax/deposit_wizard/done.html.erb) to render the read-only Portfolio
+    hierarchy card (issue #95) on the confirmation screen once the work is saved,
+    showing the just-deposited item as "New" beside its existing siblings. Moved
+    here from the review step per LaRita's review - the review page is already busy
+    and this screen shows the portfolio taking shape after each deposit. The card
+    renders below the nav buttons: it auto-expands, so on a large portfolio it stays
+    out of the way of the primary actions (LaRita, 2026-07-28). The only additions
+    to Hyku's view are the `portfolio_hierarchy` block. Re-sync if Hyku's done view
+    changes. %>
+<% deposited = deposit_wizard.last_deposited %>
+<% provide :page_header do %>
+  <h1><span class="fa fa-check-circle" aria-hidden="true"></span> <%= t('hyku.deposit_wizard.done.heading') %></h1>
+<% end %>
+
+<div class="deposit-wizard deposit-wizard--done">
+  <% if deposited %>
+    <p class="deposit-wizard__subtext">
+      <%= t('hyku.deposit_wizard.done.subtext', title: deposited['title'].presence || t('hyku.deposit_wizard.done.untitled')) %>
+    </p>
+
+    <div class="deposit-wizard__nav">
+      <%= link_to t('hyku.deposit_wizard.done.view_work'), deposited['path'], class: 'btn btn-primary' if deposited['path'].present? %>
+      <%= link_to t('hyku.deposit_wizard.done.deposit_another'), main_app.deposit_wizard_path, class: 'btn btn-secondary' %>
+    </div>
+
+    <% if (portfolio_tree = deposit_wizard.portfolio_hierarchy(deposited)) %>
+      <%= render 'enact/portfolio_tree/tree', tree: portfolio_tree,
+                                              summary: deposit_wizard.portfolio_hierarchy_summary(portfolio_tree) %>
+    <% end %>
+  <% else %>
+    <p class="deposit-wizard__subtext"><%= t('hyku.deposit_wizard.done.no_recent') %></p>
+    <%= link_to t('hyku.deposit_wizard.done.deposit_another'), main_app.deposit_wizard_path, class: 'btn btn-primary' %>
+  <% end %>
+</div>

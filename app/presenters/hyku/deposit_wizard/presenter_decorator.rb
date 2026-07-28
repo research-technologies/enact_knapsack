@@ -10,7 +10,7 @@
 # analogue of `select_work_type` on the known-type path.
 #
 # It also adds `portfolio_hierarchy` and `portfolio_hierarchy_summary`, which feed
-# the review step's structural hierarchy card (issue #95).
+# the done step's structural hierarchy card (issue #95).
 module Hyku
   module DepositWizard
     module PresenterDecorator
@@ -92,15 +92,18 @@ module Hyku
         state.attributes['item_subtype'].presence
       end
 
-      # nil unless nesting under a parent - only the "add to an existing work" path
-      # has a hierarchy to show (issue #95).
-      def portfolio_hierarchy
-        return if state.parent_id.blank?
+      # The structural hierarchy for the done screen, built from the stashed deposit
+      # summary (id + parent_id) rather than live wizard state, which reset_state has
+      # already cleared by the time done renders. Takes the hash the view already
+      # pulled via #last_deposited (a single-use session read), so it isn't re-read
+      # here. nil unless the work was nested under a parent - only then is there a
+      # hierarchy to show (issue #95).
+      def portfolio_hierarchy(deposited)
+        parent_id = deposited && deposited['parent_id']
+        return if parent_id.blank?
 
         Enact::PortfolioTree.new(ability: current_ability)
-                            .for_deposit(parent_id: state.parent_id,
-                                         pending: { label: Array(state.attributes['title']).first,
-                                                    type: state.work_type })
+                            .for_completed_deposit(parent_id:, work_id: deposited['id'])
       end
 
       def portfolio_hierarchy_summary(tree)

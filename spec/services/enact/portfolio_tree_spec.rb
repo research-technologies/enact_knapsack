@@ -8,6 +8,11 @@ require 'rails_helper'
 RSpec.describe Enact::PortfolioTree do
   let(:ability) { instance_double(Ability) }
 
+  # Path derivation is delegated to the shared Hyrax::CompoundWorkResolver (route
+  # helpers, collection handling, unroutable fallback), which is tested in Hyrax.
+  # Here we only assert PortfolioTree hands it the right id, so stub it to echo one.
+  before { allow(Hyrax::CompoundWorkResolver).to receive(:path_for) { |id| "/resolved/#{id}" } }
+
   # accessible_by is a no-op here: ability filtering belongs to the real query
   # object and is not re-tested through the fake.
   class FakeSolrQuery
@@ -67,7 +72,7 @@ RSpec.describe Enact::PortfolioTree do
 
       expect(artefact.type).to eq('artefact')
       expect(artefact.type_label).to eq('Artefact')
-      expect(artefact.path).to eq('/concern/portfolio_artefacts/a1')
+      expect(artefact.path).to eq('/resolved/a1')
       expect(artefact.children?).to be(false)
     end
 
@@ -93,6 +98,20 @@ RSpec.describe Enact::PortfolioTree do
       expect(collection.children).to be_empty
     end
 
+    it 'enforces MAX_NODES as a hard ceiling, stopping mid-level' do
+      # Root plus three direct members; capped at 2 total nodes means the root
+      # plus exactly one member, and no more siblings built at that level.
+      wide = {
+        'p1' => doc('p1', title: 'Root', model: 'Portfolio', members: %w[a1 a2 a3]),
+        'a1' => doc('a1', title: 'One'),
+        'a2' => doc('a2', title: 'Two'),
+        'a3' => doc('a3', title: 'Three')
+      }
+
+      root = tree_for(wide, 'p1', max_nodes: 2)
+      expect(root.children.size).to eq(1)
+    end
+
     it 'guards against a membership cycle' do
       cyclic = {
         'p1' => doc('p1', title: 'Root', model: 'Portfolio', members: %w[a1]),
@@ -104,50 +123,66 @@ RSpec.describe Enact::PortfolioTree do
     end
   end
 
-  describe '#for_deposit' do
+  describe '#for_completed_deposit' do
     let(:index) do
       {
-        'p1' => doc('p1', title: 'A Machine for Learning', model: 'Portfolio', members: %w[a1]),
-        'a1' => doc('a1', title: 'Existing artefact')
+        'p1' => doc('p1', title: 'A Machine for Learning', model: 'Portfolio', members: %w[a1 e1]),
+        'a1' => doc('a1', title: 'Existing artefact'),
+        'e1' => doc('e1', title: 'Unveiling event', model: 'PortfolioEvent')
       }
     end
 
-    def deposit(index, parent_id:, pending:)
+    def completed(index, parent_id:, work_id:)
       allow(Hyrax::SolrQueryService).to receive(:new) { FakeSolrQuery.new(index) }
-      described_class.new(ability:).for_deposit(parent_id:, pending:)
+      described_class.new(ability:).for_completed_deposit(parent_id:, work_id:)
     end
 
-    it 'stamps saved works existing and appends the pending item as a new leaf' do
-      root = deposit(index, parent_id: 'p1',
-                            pending: { label: 'Unveiling event', type: 'PortfolioEvent' })
+    it 'stamps every saved work existing except the just-deposited one, stamped new' do
+      root = completed(index, parent_id: 'p1', work_id: 'e1')
 
       expect(root.status).to eq('existing')
-      expect(root.children.map(&:status)).to eq(%w[existing new])
 
-      pending = root.children.last
-      expect(pending.label).to eq('Unveiling event')
-      expect(pending.type).to eq('event')
-      expect(pending.type_label).to eq('Event')
-      expect(pending.id).to be_nil
-      expect(pending.path).to be_nil
+      new_node = root.children.find { |n| n.label == 'Unveiling event' }
+      existing_node = root.children.find { |n| n.label == 'Existing artefact' }
+      expect(new_node.status).to eq('new')
+      expect(existing_node.status).to eq('existing')
+
+      # Unlike the old pending node, the new item is a real saved work with a link.
+      expect(new_node.id).to eq('e1')
+      expect(new_node.path).to eq('/resolved/e1')
+    end
+
+    it 'marks a work nested inside a collection item, not just a direct member' do
+      nested = {
+        'p1' => doc('p1', title: 'Root', model: 'Portfolio', members: %w[c1]),
+        'c1' => doc('c1', title: 'Documentation media', model: 'PortfolioItemCollection', members: %w[g1]),
+        'g1' => doc('g1', title: 'Photographic record')
+      }
+
+      root = completed(nested, parent_id: 'p1', work_id: 'g1')
+      collection = root.children.find { |n| n.type == 'collection' }
+
+      expect(collection.status).to eq('existing')
+      expect(collection.children.first.status).to eq('new')
     end
 
     it 'returns nil when there is no target portfolio' do
-      expect(deposit(index, parent_id: '', pending: { label: 'x', type: 'PortfolioArtefact' })).to be_nil
+      expect(completed(index, parent_id: '', work_id: 'a1')).to be_nil
     end
 
     it 'is type-agnostic: builds a tree rooted at a non-portfolio parent' do
       collection_index = {
-        'c9' => doc('c9', title: 'Documentation media', model: 'PortfolioItemCollection', members: %w[a9]),
-        'a9' => doc('a9', title: 'Existing photo')
+        'c9' => doc('c9', title: 'Documentation media', model: 'PortfolioItemCollection', members: %w[a9 a10]),
+        'a9' => doc('a9', title: 'Existing photo'),
+        'a10' => doc('a10', title: 'New clip')
       }
 
-      root = deposit(collection_index, parent_id: 'c9',
-                                       pending: { label: 'New clip', type: 'PortfolioArtefact' })
+      root = completed(collection_index, parent_id: 'c9', work_id: 'a10')
 
       # The heading reads from type_label, so a Collection root labels itself.
       expect(root.type_label).to eq('Collection')
-      expect(root.children.map(&:status)).to eq(%w[existing new])
+      expect(root.children.find { |n| n.label == 'New clip' }.status).to eq('new')
+      expect(root.children.find { |n| n.label == 'Existing photo' }.status).to eq('existing')
     end
   end
 end

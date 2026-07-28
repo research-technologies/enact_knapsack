@@ -18,6 +18,8 @@ module Enact
     end
 
     # Caps so a mis-modelled or malicious hierarchy cannot run the recursion away.
+    # MAX_NODES is a hard ceiling on total nodes built (enforced mid-level in
+    # child_nodes), not just a stop-descending guard.
     MAX_DEPTH = 12
     MAX_NODES = 500
 
@@ -47,16 +49,17 @@ module Enact
       doc && build(doc, 0)
     end
 
-    # The target Portfolio and its members stamped `existing`, plus the item being
-    # deposited appended as a `new` leaf. nil unless a parent was chosen - only the
-    # "add to an existing work" path has a hierarchy to show. `pending` is a
-    # { label:, type: } hash for the not-yet-saved work.
-    def for_deposit(parent_id:, pending:)
+    # The target Portfolio (or collection) rooted at `parent_id` with every member
+    # stamped `existing`, except the just-deposited work (matched by `work_id`),
+    # stamped `new`. Built after the work is saved, for the done screen. nil unless
+    # a parent was chosen - only the "add to an existing work" path has a hierarchy
+    # to show (issue #95).
+    def for_completed_deposit(parent_id:, work_id:)
       root = for_work(parent_id)
       return nil if root.nil?
 
       stamp(root, 'existing')
-      root.children << pending_node(pending)
+      mark_new(root, work_id.to_s)
       root
     end
 
@@ -69,33 +72,43 @@ module Enact
     end
 
     def child_nodes(doc, depth)
-      return [] if depth >= @max_depth || @node_count >= @max_nodes
+      return [] if depth >= @max_depth
 
-      member_documents(doc).filter_map do |child|
+      nodes = []
+      member_documents(doc).each do |child|
+        # Hard node cap: stop mid-level too, so total nodes can't exceed @max_nodes
+        # by a level's fan-out (the count is a ceiling, not just a descend guard).
+        break if @node_count >= @max_nodes
         # A member pointing back up the tree would otherwise recurse forever.
         next if @visited.include?(child['id'].to_s)
 
-        build(child, depth + 1)
+        nodes << build(child, depth + 1)
       end
+      nodes
     end
 
     def node_for(doc, children)
       model = Array(doc['has_model_ssim']).first.to_s
       key, label = TYPE_META.fetch(model) { [model.underscore.presence || 'work', human_type(doc, model)] }
       Node.new(id: doc['id'], label: title_of(doc), type: key, type_label: label,
-               path: work_path(model, doc['id']), status: nil, children:)
-    end
-
-    def pending_node(pending)
-      model = pending[:type].to_s
-      key, label = TYPE_META.fetch(model) { [model.underscore.presence || 'work', model.titleize.presence || 'Item'] }
-      Node.new(id: nil, label: pending[:label].presence || '(untitled)', type: key,
-               type_label: label, path: nil, status: 'new', children: [])
+               path: Hyrax::CompoundWorkResolver.path_for(doc['id']), status: nil, children:)
     end
 
     def stamp(node, status)
       node.status = status
       node.children.each { |child| stamp(child, status) }
+    end
+
+    # Re-stamp only the just-deposited node `new`, wherever it sits in the tree
+    # (a direct member, or a member of a collection item). Stops at the first
+    # match; a fresh deposit has no members of its own to descend into.
+    def mark_new(node, work_id)
+      if node.id.to_s == work_id
+        node.status = 'new'
+        return true
+      end
+
+      node.children.any? { |child| mark_new(child, work_id) }
     end
 
     def member_documents(doc)
@@ -123,10 +136,6 @@ module Enact
 
     def human_type(doc, model)
       Array(doc['human_readable_type_tesim']).first.presence || model.titleize
-    end
-
-    def work_path(model, id)
-      model.present? ? "/concern/#{model.tableize}/#{id}" : "/#{id}"
     end
   end
 end
