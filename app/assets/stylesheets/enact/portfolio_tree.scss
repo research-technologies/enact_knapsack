@@ -32,6 +32,18 @@ $pt-types: (
     list-style: none;
   }
 
+  // The card auto-expands, so cap the tree height and scroll a large portfolio
+  // within the card instead of letting it push the page down indefinitely
+  // (LaRita's #95 review - up to MAX_NODES=500 rows are possible). overflow-y:auto
+  // only shows a scrollbar when it actually overflows, so small trees are
+  // unaffected. Rows carry focusable links/summaries, so the region stays
+  // keyboard-reachable; padding-right keeps focus outlines clear of the scrollbar.
+  &__root {
+    max-height: 24rem;
+    overflow-y: auto;
+    padding-right: 0.25rem;
+  }
+
   &__children {
     margin-left: 0.6rem;
     padding-left: 0.75rem;
