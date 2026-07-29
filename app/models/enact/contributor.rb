@@ -69,12 +69,29 @@ module Enact
     scope :unclaimed, -> { where(user_id: nil) }
     scope :claimed, -> { where.not(user_id: nil) }
 
-    # Case-insensitive match on display_name OR orcid; LIKE wildcards in the term
-    # are escaped so `%`/`_` are treated literally. Shared by the browse index
-    # search and the contributors linked-record search.
+    # Case-insensitive match on display_name, orcid, or any value in the metadata
+    # blob (affiliations and name_identifiers). The blob is matched as text
+    # (`metadata::text`), so a substring hit on a jsonb key or scheme label is a
+    # possible over-match — rare and harmless at current volumes. LIKE wildcards in
+    # the term are escaped. Shared by the browse index and the picker search.
     scope :matching, lambda { |term|
       escaped = sanitize_sql_like(term.to_s.strip)
-      where('display_name ILIKE :t OR orcid ILIKE :t', t: "%#{escaped}%")
+      where('display_name ILIKE :t OR orcid ILIKE :t OR metadata::text ILIKE :t', t: "%#{escaped}%")
+    }
+
+    # Trigram-fuzzy name match (pg_trgm) for the create-form duplicate check,
+    # catching typos and spelling variants (Jon↔John, Smyth↔Smith) that the
+    # substring `matching` scope misses. Kept distinct from `matching` on purpose:
+    # the live typeahead wants fast substring results, this "did you mean" check
+    # wants fuzzy recall on a complete name. Empty for a blank term.
+    SIMILAR_NAME_THRESHOLD = 0.3
+    scope :similar_to, lambda { |term|
+      name = term.to_s.strip
+      next none if name.blank?
+
+      where('similarity(display_name, :n) >= :threshold', n: name, threshold: SIMILAR_NAME_THRESHOLD)
+        .order(Arel.sql(sanitize_sql_array(['similarity(display_name, ?) DESC', name])))
+        .limit(10)
     }
 
     def claimed?
