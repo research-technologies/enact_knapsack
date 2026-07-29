@@ -82,6 +82,9 @@
                 // every interpolated value must be HTML-escaped here.
                 options.formatResult = formatLinkedRecordResult;
                 options.escapeMarkup = function(m) { return m; };
+                // select2 v3 also runs the selection display through escapeMarkup, so
+                // escape the selected text ourselves now that escapeMarkup is a no-op.
+                options.formatSelection = function(data) { return escapeHtml(data && data.text); };
             }
 
             $el.select2(options);
