@@ -148,7 +148,10 @@
     if (t2.length) {
       h += '<div class="row"><b>' + t2.length + '</b> in adjacent communities (second order)</div>' + badges(t2, 10);
     }
-    h += '<a class="profilelink" href="' + esc(d.path || '#') + '" target="_blank" rel="noopener noreferrer">&#8599; View full profile</a>';
+    // target=_top: an in-repository contributor profile, so break out of the map
+    // iframe and navigate the parent window (one tab, full chrome) rather than a
+    // new tab, keeping the user in the repository experience (issue #137).
+    h += '<a class="profilelink" href="' + esc(d.path || '#') + '" target="_top">&#8599; View full profile</a>';
     DETAIL.innerHTML = h;
   }
   // One "who did what" line: a person's name + a badge per role they played on
