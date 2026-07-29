@@ -2,11 +2,12 @@
     Triggered by any element with [data-map-url] and [data-map-title].
     The map pages are standalone (layout:false) documents that boot Cytoscape
     against their own scoped assets - an iframe is the natural container.
-    Self-guards via @_enact_map_modal_rendered so callers can render this
-    partial unconditionally and the markup + asset tags appear exactly once.
+    Render once per page at a top-level position, NOT nested inside a flex or
+    otherwise positioned container (a transformed/filtered ancestor breaks the
+    Bootstrap modal's fixed positioning and focus trap). The map trigger
+    elsewhere on the page targets it by its #enactMapModal id.
     CSS/JS live in app/assets/{stylesheets,javascripts}/enact/map_modal.* and
     are precompiled via config/initializers/map_modal_assets.rb. %>
-<% return if @_enact_map_modal_rendered; @_enact_map_modal_rendered = true %>
 <%= stylesheet_link_tag 'enact/map_modal', media: 'all' %>
 <div class="modal fade" id="enactMapModal" tabindex="-1" role="dialog"
      aria-labelledby="enactMapModalLabel" aria-modal="true">

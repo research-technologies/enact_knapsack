@@ -16,7 +16,6 @@
         <%= enact_map_trigger t('enact.people_map.profile_link', default: 'Research network'),
                               "/people-map?focus=#{@contributor.id}",
                               html_class: 'btn btn-outline-primary btn-sm' %>
-        <%= render 'enact/shared/map_modal' %>
         <%# Edit is admin-gated in the controller; only surface the link to admins. %>
         <% if current_ability.admin? %>
           <%= link_to t('enact.contributors.edit.link', default: 'Edit'),
@@ -176,3 +175,6 @@
     <% end %>
   </section>
 </div>
+<%# Rendered once at the top level (not inside the flex .enact-contributor-actions)
+    so the Bootstrap modal's fixed positioning/focus trap are not confined. %>
+<%= render 'enact/shared/map_modal' %>
