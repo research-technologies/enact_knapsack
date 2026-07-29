@@ -12,10 +12,6 @@ module Enact
     # owner until the (deferred) claim flow exists, so only admins/curators may
     # curate one. Index/show stay public.
     before_action :require_admin!, only: %i[edit update]
-    # The similarity check is only reachable from the deposit-form picker (whose
-    # inline create is itself login-gated); require a signed-in user so the
-    # contributor table isn't fuzzy-queryable anonymously.
-    before_action :authenticate_user!, only: %i[similar]
     # Browse all contributors (linked from the home page Featured Researcher
     # tab). Optional free-text search (name / ORCID) and person/organization
     # filter narrow the list server-side; alphabetical and paginated.
@@ -27,18 +23,6 @@ module Enact
       scope = scope.matching(@search) if @search.present?
       scope = scope.where(agent_type: @agent_type) if @agent_type
       @contributors = scope.order(:display_name).page(params[:page]).per(24)
-    end
-
-    # "Did you mean" duplicate check for the picker's create form: return
-    # contributors with a display_name similar to params[:q] (Contributor.similar_to)
-    # so the curator can pick one instead of creating a duplicate. Rows mirror the
-    # picker's search-result shape so the same front-end renderer displays them.
-    def similar
-      candidates = Enact::Contributor.similar_to(params[:q].to_s).map do |contributor|
-        { id: contributor.id.to_s, label: contributor.display_name,
-          orcid: contributor.orcid, affiliation: contributor.affiliations.first }
-      end
-      render json: candidates
     end
 
     # Works crediting this contributor, scoped to what the viewer may see, then

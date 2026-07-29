@@ -34,14 +34,29 @@ module Enact
     end
 
     # Picker autocomplete: the generic linked_record QA authority delegates here.
-    # Beyond the generic `id/label/value`, each row carries `orcid` and the primary
-    # `affiliation` as optional detail the picker renders on a second line, so a
-    # curator can tell two same-named contributors apart.
+    # Each row carries an optional `detail` string (ORCID · affiliation) the picker
+    # renders as a muted second line, so a curator can tell two same-named
+    # contributors apart.
     def search(query)
-      Enact::Contributor.matching(query).order(:display_name).limit(20).map do |contributor|
-        { id: contributor.id.to_s, label: contributor.display_name, value: contributor.id.to_s,
-          orcid: contributor.orcid, affiliation: contributor.affiliations.first }
-      end
+      Enact::Contributor.matching(query).order(:display_name).limit(20).map { |c| row(c) }
+    end
+
+    # Fuzzy "did you mean" duplicate check for the picker's create form, delegated
+    # here by the generic linked_record_similar QA authority. Trigram-similar names
+    # (Enact::Contributor#similar_to) catch typos/variants the substring `search`
+    # misses; same row shape as `search`.
+    def similar(query)
+      Enact::Contributor.similar_to(query).map { |c| row(c) }
+    end
+
+    # Shared picker row for search/similar: the generic id/label/value plus the
+    # optional `detail` line (nil when the contributor has neither ORCID nor
+    # affiliation, so the picker falls back to the plain label).
+    def row(contributor)
+      detail = [contributor.orcid, contributor.affiliations.first]
+               .map { |v| v.to_s.strip }.reject(&:blank?).join(' · ')
+      { id: contributor.id.to_s, label: contributor.display_name, value: contributor.id.to_s,
+        detail: detail.presence }
     end
 
     # Inline lookup-OR-create: the generic endpoint hands us the submitted
@@ -95,6 +110,7 @@ Rails.application.config.to_prepare do
   Hyrax::CompoundLinkedRecordResolver.register(
     :contributors,
     finder: src.method(:finder), label: src.method(:label), path: src.method(:path),
-    search: src.method(:search), create: src.method(:create), match: src.method(:match)
+    search: src.method(:search), create: src.method(:create), match: src.method(:match),
+    similar: src.method(:similar)
   )
 end

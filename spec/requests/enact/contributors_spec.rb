@@ -63,44 +63,11 @@ RSpec.describe 'Enact contributors pages', type: :request, singletenant: true do
     end
   end
 
-  describe 'GET /contributors/similar (picker create-form duplicate check)' do
-    context 'as a signed-in user' do
-      before { login_as(create(:user), scope: :user) }
-
-      it 'returns similar existing contributors as JSON rows (fuzzy, catches typos)' do
-        john = Enact::Contributor.create!(display_name: 'John Smith',
-                                          orcid: 'https://orcid.org/0000-0002-1825-0097',
-                                          affiliations: ['Nottingham'])
-        get '/contributors/similar', params: { q: 'Jon Smith' }
-        expect(response).to have_http_status(:ok)
-        body = response.parsed_body
-        row = body.find { |r| r['id'] == john.id.to_s }
-        expect(row).to include('label' => 'John Smith',
-                               'orcid' => 'https://orcid.org/0000-0002-1825-0097',
-                               'affiliation' => 'Nottingham')
-      end
-
-      it 'returns an empty array for a blank term' do
-        Enact::Contributor.create!(display_name: 'John Smith')
-        get '/contributors/similar', params: { q: '' }
-        expect(response).to have_http_status(:ok)
-        expect(response.parsed_body).to eq([])
-      end
-
-      it 'does not route the check to the show action (similar is not an :id)' do
-        get '/contributors/similar', params: { q: 'Ada' }
-        expect(response).to have_http_status(:ok)
-        expect(response.media_type).to eq('application/json')
-      end
-    end
-
-    context 'when not signed in' do
-      it 'is not publicly accessible' do
-        get '/contributors/similar', params: { q: 'Ada' }
-        expect(response).not_to have_http_status(:ok)
-      end
-    end
-  end
+  # The picker's fuzzy "did you mean" duplicate check is now served by Hyrax's
+  # generic linked_record_similar QA authority (ContributorSource registers a
+  # `similar:` proc); the knapsack no longer exposes a /contributors/similar
+  # route. The source's `similar`/`search` row shape is covered in
+  # spec/services/enact/contributor_source_search_spec.rb.
 
   describe 'GET /contributors/:id (show)' do
     it 'renders the contributor profile' do
