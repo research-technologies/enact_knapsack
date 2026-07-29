@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 5.2.0 (samvera/hyrax @ 14fdd67): relabel the `authenticated`
+# OVERRIDE Hyrax 5.2.0: relabel the `authenticated`
 # visibility option in the Sharing-tab dropdown (notch8/enact_knapsack#84).
 #
 # Upstream AbilityHelper#visibility_text special-cases `authenticated` to
