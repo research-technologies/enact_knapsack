@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax::DepositWizardController (hyrax-webapp submodule @ 0dbacbce,
+# OVERRIDE Hyrax::DepositWizardController (Hyku v7.1.0,
 # app/controllers/hyrax/deposit_wizard_controller.rb) to carry the deposited
 # work's id and its parent's id onto the done screen. The confirmation view
 # renders the Portfolio hierarchy card there once the work is actually saved
