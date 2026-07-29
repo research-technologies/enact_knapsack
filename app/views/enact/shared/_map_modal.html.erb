@@ -1,0 +1,29 @@
+<%# Reusable iframe modal for relationship-map and people-map.
+    Triggered by any element with [data-map-url] and [data-map-title].
+    The map pages are standalone (layout:false) documents that boot Cytoscape
+    against their own scoped assets - an iframe is the natural container.
+    Self-guards via @_enact_map_modal_rendered so callers can render this
+    partial unconditionally and the markup + asset tags appear exactly once.
+    CSS/JS live in app/assets/{stylesheets,javascripts}/enact/map_modal.* and
+    are precompiled via config/initializers/map_modal_assets.rb. %>
+<% return if @_enact_map_modal_rendered; @_enact_map_modal_rendered = true %>
+<%= stylesheet_link_tag 'enact/map_modal', media: 'all' %>
+<div class="modal fade" id="enactMapModal" tabindex="-1" role="dialog"
+     aria-labelledby="enactMapModalLabel" aria-modal="true">
+  <div class="modal-dialog modal-xl" role="document">
+    <div class="modal-content">
+      <div class="modal-header py-2">
+        <h5 class="modal-title" id="enactMapModalLabel"></h5>
+        <button type="button" class="close" data-dismiss="modal"
+                aria-label="<%= t('enact.map_modal.close', default: 'Close') %>">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body p-0">
+        <iframe id="enactMapIframe" src="" title=""
+                class="enact-map-iframe"></iframe>
+      </div>
+    </div>
+  </div>
+</div>
+<%= javascript_include_tag 'enact/map_modal' %>

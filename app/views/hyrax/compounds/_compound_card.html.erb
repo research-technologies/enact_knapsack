@@ -17,14 +17,17 @@
     <% if field.to_sym == :relationships %>
       <%# Entry point to the interactive relationship map. From a Portfolio it
           opens the whole-project diagram (?portfolio=); from a single work it
-          opens that work's focused view (?focus=). turbo/turbolinks off because
-          the map is a standalone (layout: false) page. %>
+          opens that work's focused view (?focus=). Opens in an iframe modal so
+          the user stays in the repository experience (client request). %>
       <% is_portfolio = Array(presenter.solr_document['has_model_ssim']).first.to_s == 'Portfolio' %>
       <% map_query = is_portfolio ? "portfolio=#{presenter.id}" : "focus=#{presenter.id}" %>
-      <%= link_to t('enact.relationships.map_button'),
-                  "/relationship-map?#{map_query}",
-                  class: 'btn btn-outline-secondary btn-sm enact-relationship-map-link',
-                  data: { turbolinks: false, turbo: false } %>
+      <% map_url = "/relationship-map?#{map_query}" %>
+      <%# href provides a non-JS fallback (the standalone map page). JS intercepts
+          the click via [data-map-url] and opens the modal instead. The map page
+          carries turbolinks/turbo reload meta tags so a direct visit still works. %>
+      <%= enact_map_trigger t('enact.relationships.map_button'), map_url,
+                            html_class: 'btn btn-outline-secondary btn-sm enact-relationship-map-link' %>
+      <%= render 'enact/shared/map_modal' %>
     <% end %>
   </div>
   <div class="card-body">
