@@ -23,6 +23,25 @@
     if (!dataEl) { return; }
     var payload = JSON.parse(dataEl.textContent);
 
+    // HTML-escape before interpolating into innerHTML or attribute values -
+    // labels, descriptions, keywords, dates and paths all derive from
+    // user-entered work metadata. Quotes are escaped too, since escaped
+    // values are also placed inside href="..." attributes. Mirrors the
+    // helper in the sibling people_map.js.
+    function esc(s) {
+      return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+        return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+      });
+    }
+    // Only http(s) and scheme-less (root-relative/anchor) URLs are allowed as
+    // hrefs; a javascript:/data: URI arriving through user-controlled metadata
+    // falls back to '#' so it cannot execute when the link is clicked.
+    function safeHref(u) {
+      var s = String(u == null ? '' : u).trim();
+      if (/^[a-z][a-z0-9+.-]*:/i.test(s) && !/^https?:/i.test(s)) { return '#'; }
+      return s;
+    }
+
     // Mobile: the side panel is a collapsible drawer, revealed by #panel-toggle
     // (only displayed on narrow screens via CSS). openPanelOnMobile() opens it
     // when the user taps a node/edge so the details they asked for are shown.
@@ -212,20 +231,20 @@
       function showNode(node) {
         const d = node.data();
         let html = '';
-        if (d.thumb) html += `<img src="${d.thumb}" alt="" style="width:120px;height:120px;border-radius:8px;float:right;margin:0 0 8px 10px">`;
-        html += `<h1 style="font-size:16px">${d.label}</h1>`;
+        if (d.thumb) html += `<img src="${esc(d.thumb)}" alt="" style="width:120px;height:120px;border-radius:8px;float:right;margin:0 0 8px 10px">`;
+        html += `<h1 style="font-size:16px">${esc(d.label)}</h1>`;
         const typeLabel = TYPE_LABEL[d.type] || d.type;
-        if (typeLabel) html += `<div class="meta"><b>Type:</b> <span class="type-dot" style="background:${typeColor(d.type)}"></span>${typeLabel}</div>`;
-        if (d.date) html += `<div class="meta"><b>Date:</b> ${d.date}</div>`;
+        if (typeLabel) html += `<div class="meta"><b>Type:</b> <span class="type-dot" style="background:${typeColor(d.type)}"></span>${esc(typeLabel)}</div>`;
+        if (d.date) html += `<div class="meta"><b>Date:</b> ${esc(d.date)}</div>`;
         html += `<div class="meta"><b>Connections:</b> ${degree[d.id] || 0}</div>`;
-        if (d.keywords && d.keywords.length) html += `<div class="meta"><b>Keywords:</b> ${d.keywords.join(', ')}</div>`;
+        if (d.keywords && d.keywords.length) html += `<div class="meta"><b>Keywords:</b> ${d.keywords.map(esc).join(', ')}</div>`;
         if (d.closed) html += `<div class="meta"><b>Access:</b> restricted</div>`;
-        if (d.description) html += `<p class="meta" style="margin-top:8px">${d.description}</p>`;
+        if (d.description) html += `<p class="meta" style="margin-top:8px">${esc(d.description)}</p>`;
         if (d.external) {
-          html += `<div class="meta" style="margin-top:8px;word-break:break-all"><b>URL:</b> ${d.path}</div>`;
-          html += `<p style="clear:both;margin:12px 0 2px"><a class="pagelink" href="${d.path}" target="_blank" rel="noopener noreferrer">&#8599; Open link</a></p>`;
+          html += `<div class="meta" style="margin-top:8px;word-break:break-all"><b>URL:</b> ${esc(d.path)}</div>`;
+          html += `<p style="clear:both;margin:12px 0 2px"><a class="pagelink" href="${esc(safeHref(d.path))}" target="_blank" rel="noopener noreferrer">&#8599; Open link</a></p>`;
         } else {
-          html += `<p style="clear:both;margin:12px 0 2px"><a class="pagelink" href="${d.path}" target="_blank" rel="noopener noreferrer">&#8599; View this work's page</a></p>`;
+          html += `<p style="clear:both;margin:12px 0 2px"><a class="pagelink" href="${esc(safeHref(d.path))}" target="_blank" rel="noopener noreferrer">&#8599; View this work's page</a></p>`;
         }
         const edges = node.connectedEdges();
         if (edges.length) {
@@ -234,7 +253,7 @@
             const out = ed.source().id() === d.id;
             const other = out ? ed.target().data('label') : ed.source().data('label');
             const verb = out ? relLabelOf(ed.data('rel')) : relInverseOf(ed.data('rel'));
-            html += `<div class="meta" style="margin:6px 0"><span class="rel-name" style="color:${relColor(ed)}">${verb}</span> &rarr; ${other}</div>`;
+            html += `<div class="meta" style="margin:6px 0"><span class="rel-name" style="color:${relColor(ed)}">${esc(verb)}</span> &rarr; ${esc(other)}</div>`;
           });
           html += `</div>`;
         }
@@ -245,12 +264,12 @@
       function showLink(edge) {
         const r = edge.data('rel');
         let html = `<h1 style="font-size:16px">Relationship</h1>`;
-        html += `<div class="meta" style="margin:8px 0;font-size:14px"><b>${edge.source().data('label')}</b> `
-              + `<span class="rel-name" style="color:${relColor(edge)}">${relLabelOf(r)}</span> <b>${edge.target().data('label')}</b></div>`;
+        html += `<div class="meta" style="margin:8px 0;font-size:14px"><b>${esc(edge.source().data('label'))}</b> `
+              + `<span class="rel-name" style="color:${relColor(edge)}">${esc(relLabelOf(r))}</span> <b>${esc(edge.target().data('label'))}</b></div>`;
         html += `<span class="pill">relationship</span>`;
         const dc = (REL[r] || {}).dc;
         html += `<div class="datacite" style="margin-top:6px">relation_type: ${r}${dc ? ` &middot; DataCite ${dc}` : ''}</div>`;
-        if (edge.data('note')) html += `<div class="narr">${edge.data('note')}</div><div class="datacite" style="margin-top:4px">note &mdash; the curatorial "why"</div>`;
+        if (edge.data('note')) html += `<div class="narr">${esc(edge.data('note'))}</div><div class="datacite" style="margin-top:4px">note &mdash; the curatorial "why"</div>`;
         html += `<p style="margin-top:14px"><a class="reset">&larr; back</a></p>`;
         detail.innerHTML = html;
         detail.querySelector('.reset').addEventListener('click', resetPanel);
