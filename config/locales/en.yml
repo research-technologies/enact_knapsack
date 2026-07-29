@@ -155,6 +155,15 @@ en:
         show_all: Not seeing the right fit? Show all types
       errors:
         no_subtype: Please choose an option that describes your work.
+    portfolio_tree:
+      # %{type} is the root work's type label (usually Portfolio, but the card is
+      # type-agnostic: a child work can be nested under any container work type).
+      heading: "%{type} hierarchy"
+      hint: The works it holds, and anything nested inside.
+      summary: "%{new} new · %{existing} existing"
+      status:
+        new: New
+        existing: Existing
     relationships:
       none: No related works within this project.
       # Label for the button that opens the interactive relationship map.
