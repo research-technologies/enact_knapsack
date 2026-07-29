@@ -42,4 +42,26 @@ RSpec.describe 'Enact :contributors linked_record create proc' do
       expect(created.name_identifiers).to eq([])
     end
   end
+
+  context 'when the ORCID already belongs to another contributor (hard fail)' do
+    before do
+      Enact::Contributor.create!(display_name: 'Existing', orcid: 'https://orcid.org/0000-0002-1825-0097')
+    end
+
+    let(:attrs) { { display_name: 'Duplicate', orcid: 'https://orcid.org/0000-0002-1825-0097' } }
+
+    it 'does not create a second contributor and reports the ORCID error' do
+      expect(created).not_to be_persisted
+      expect(created.errors[:orcid]).to be_present
+      expect(Enact::Contributor.where(orcid: 'https://orcid.org/0000-0002-1825-0097').count).to eq(1)
+    end
+
+    it 'matches ORCID case-insensitively (an uppercased duplicate is still rejected)' do
+      dup = Hyrax::CompoundLinkedRecordResolver.create(
+        :contributors, { display_name: 'Dup2', orcid: 'HTTPS://ORCID.ORG/0000-0002-1825-0097' }
+      )
+      expect(dup).not_to be_persisted
+      expect(dup.errors[:orcid]).to be_present
+    end
+  end
 end
