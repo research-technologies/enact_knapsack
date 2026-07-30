@@ -24,6 +24,7 @@
 #enactMapModal .modal-body {
   flex: 1 1 auto;
   overflow: hidden;
+  position: relative;
 }
 
 .enact-map-iframe {
@@ -31,4 +32,47 @@
   width: 100%;
   height: 100%;
   border: 0;
+}
+
+/*
+ * Loading overlay: covers the blank iframe while the standalone map page loads
+ * and boots Cytoscape. map_modal.js toggles .is-hidden on the iframe's `load`
+ * event. Solid background so the empty iframe never shows through.
+ */
+.enact-map-loading {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #333333;
+  font-size: 0.95rem;
+}
+
+.enact-map-loading.is-hidden {
+  display: none;
+}
+
+.enact-map-spinner {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 12px;
+  border: 4px solid #d0d0d0;
+  border-top-color: #2b6cb0;
+  border-radius: 50%;
+  animation: enact-map-spin 0.8s linear infinite;
+}
+
+@keyframes enact-map-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Keep motion but slow it for users who prefer reduced motion (WCAG 2.3.3). */
+@media (prefers-reduced-motion: reduce) {
+  .enact-map-spinner { animation-duration: 2.4s; }
 }

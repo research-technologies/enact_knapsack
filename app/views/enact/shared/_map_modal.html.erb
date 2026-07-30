@@ -21,6 +21,14 @@
         </button>
       </div>
       <div class="modal-body p-0">
+        <%# Shown while the iframe loads the standalone map page and boots
+            Cytoscape, so the modal never shows a blank body. map_modal.js
+            hides it on the iframe's `load` event. role=status announces it to
+            assistive tech; the spinner itself is decorative. %>
+        <div id="enactMapLoading" class="enact-map-loading" role="status">
+          <span class="enact-map-spinner" aria-hidden="true"></span>
+          <span><%= t('enact.map_modal.loading', default: 'Loading the map...') %></span>
+        </div>
         <iframe id="enactMapIframe" src="" title=""
                 class="enact-map-iframe"></iframe>
       </div>

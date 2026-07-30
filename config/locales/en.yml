@@ -186,6 +186,8 @@ en:
       # Accessible label for the close (x) button on the map iframe modal
       # (app/views/enact/shared/_map_modal.html.erb).
       close: Close
+      # Shown in the modal (role=status) while the map iframe loads and boots.
+      loading: Loading the map...
     homepage:
       featured_researcher:
         # Button on the home page Featured Researcher tab linking to the
