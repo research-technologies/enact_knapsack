@@ -33,12 +33,17 @@
         return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
       });
     }
-    // Only http(s) and scheme-less (root-relative/anchor) URLs are allowed as
-    // hrefs; a javascript:/data: URI arriving through user-controlled metadata
-    // falls back to '#' so it cannot execute when the link is clicked.
+    // Only http(s) and scheme-less same-origin (root-relative/anchor) URLs are
+    // allowed as hrefs; anything else arriving through user-controlled metadata
+    // falls back to '#' so it cannot execute or redirect off-site when clicked.
+    // The scheme is detected on a normalised probe (control chars and internal
+    // whitespace stripped, lower-cased) so tricks like "java\nscript:" cannot
+    // slip a scheme past the check that a browser URL parser would still honour.
     function safeHref(u) {
       var s = String(u == null ? '' : u).trim();
-      if (/^[a-z][a-z0-9+.-]*:/i.test(s) && !/^https?:/i.test(s)) { return '#'; }
+      var probe = s.replace(/[\x00-\x20]/g, '').toLowerCase();
+      if (probe.slice(0, 2) === '//') { return '#'; } // protocol-relative -> off-site
+      if (/^[a-z][a-z0-9+.-]*:/.test(probe) && !/^https?:/.test(probe)) { return '#'; }
       return s;
     }
 
@@ -104,7 +109,7 @@
       row.dataset.rel = k;
       row.innerHTML = `<span class="rel-toggle" aria-hidden="true"></span>`
         + `<span class="swatch" style="border-color:${REL[k].color}"></span>`
-        + `<span>${REL[k].label} <span class="datacite">${REL[k].dc || ''}</span></span>`;
+        + `<span>${esc(REL[k].label)} <span class="datacite">${esc(REL[k].dc || '')}</span></span>`;
       legendEl.appendChild(row);
     });
 
@@ -268,7 +273,7 @@
               + `<span class="rel-name" style="color:${relColor(edge)}">${esc(relLabelOf(r))}</span> <b>${esc(edge.target().data('label'))}</b></div>`;
         html += `<span class="pill">relationship</span>`;
         const dc = (REL[r] || {}).dc;
-        html += `<div class="datacite" style="margin-top:6px">relation_type: ${r}${dc ? ` &middot; DataCite ${dc}` : ''}</div>`;
+        html += `<div class="datacite" style="margin-top:6px">relation_type: ${esc(r)}${dc ? ` &middot; DataCite ${esc(dc)}` : ''}</div>`;
         if (edge.data('note')) html += `<div class="narr">${esc(edge.data('note'))}</div><div class="datacite" style="margin-top:4px">note &mdash; the curatorial "why"</div>`;
         html += `<p style="margin-top:14px"><a class="reset">&larr; back</a></p>`;
         detail.innerHTML = html;
