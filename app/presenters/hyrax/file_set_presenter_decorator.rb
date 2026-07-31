@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyrax 5.x (samvera/hyrax main @ ab3f45b): add an enact-specific
+# OVERRIDE Hyrax 5.2.0: add an enact-specific
 # `credit` reader to the FileSet presenter.
 #
 # Hyrax::FileSetPresenter now defines readers for flexible-profile fields

@@ -33,12 +33,14 @@ module Enact
       HykuKnapsack::Engine.routes.url_helpers.enact_contributor_path(contributor)
     end
 
-    # Picker autocomplete: the generic linked_record QA authority
-    # (/authorities/search/linked_record/contributors) delegates here. Match on
-    # name or ORCID via the model scope; shape each row for select2.
+    # Picker autocomplete: the generic linked_record QA authority delegates here.
+    # Beyond the generic `id/label/value`, each row carries `orcid` and the primary
+    # `affiliation` as optional detail the picker renders on a second line, so a
+    # curator can tell two same-named contributors apart.
     def search(query)
       Enact::Contributor.matching(query).order(:display_name).limit(20).map do |contributor|
-        { id: contributor.id.to_s, label: contributor.display_name, value: contributor.id.to_s }
+        { id: contributor.id.to_s, label: contributor.display_name, value: contributor.id.to_s,
+          orcid: contributor.orcid, affiliation: contributor.affiliations.first }
       end
     end
 

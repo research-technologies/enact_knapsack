@@ -129,6 +129,75 @@ RSpec.describe Enact::Contributor do
     end
   end
 
+  describe '.matching (picker autocomplete / browse-index search)' do
+    it 'matches on display_name (case-insensitive substring)' do
+      ada = described_class.create!(display_name: 'Ada Lovelace')
+      expect(described_class.matching('lovelace')).to include(ada)
+    end
+
+    it 'matches on orcid' do
+      ada = described_class.create!(display_name: 'Ada', orcid: 'https://orcid.org/0000-0002-1825-0097')
+      expect(described_class.matching('0000-0002-1825-0097')).to include(ada)
+    end
+
+    it 'matches on an affiliation stored in the metadata blob' do
+      ada = described_class.create!(display_name: 'Ada', affiliations: ['Analytical Society'])
+      other = described_class.create!(display_name: 'Grace', affiliations: ['US Navy'])
+      results = described_class.matching('analytical')
+      expect(results).to include(ada)
+      expect(results).not_to include(other)
+    end
+
+    it 'matches on a name_identifier value stored in the metadata blob' do
+      ada = described_class.create!(
+        display_name: 'Ada',
+        name_identifiers: [{ 'value' => '0000000121032683', 'scheme' => 'ISNI' }]
+      )
+      expect(described_class.matching('0000000121032683')).to include(ada)
+    end
+
+    it 'treats LIKE wildcards in the term literally (escaped)' do
+      literal = described_class.create!(display_name: '100% Ada')
+      plain = described_class.create!(display_name: 'Grace')
+      results = described_class.matching('100%')
+      expect(results).to include(literal)
+      expect(results).not_to include(plain)
+    end
+  end
+
+  describe '.similar_to (fuzzy name match for the create-form duplicate check)' do
+    it 'finds a name that differs only by a typo (trigram similarity, not substring)' do
+      john = described_class.create!(display_name: 'John Smith')
+      expect(described_class.similar_to('Jon Smith')).to include(john)
+    end
+
+    it 'finds a spelling variant the substring search would miss' do
+      smith = described_class.create!(display_name: 'John Smith')
+      # A pure ILIKE '%John Smyth%' would not match "John Smith".
+      expect(described_class.matching('John Smyth')).not_to include(smith)
+      expect(described_class.similar_to('John Smyth')).to include(smith)
+    end
+
+    it 'excludes clearly dissimilar names' do
+      described_class.create!(display_name: 'John Smith')
+      grace = described_class.create!(display_name: 'Grace Hopper')
+      expect(described_class.similar_to('Jon Smith')).not_to include(grace)
+    end
+
+    it 'orders the most similar first' do
+      exact = described_class.create!(display_name: 'John Smith')
+      variant = described_class.create!(display_name: 'Johnny Smithson')
+      results = described_class.similar_to('John Smith').to_a
+      expect(results.index(exact)).to be < results.index(variant)
+    end
+
+    it 'returns nothing for a blank term' do
+      described_class.create!(display_name: 'John Smith')
+      expect(described_class.similar_to('')).to be_empty
+      expect(described_class.similar_to('   ')).to be_empty
+    end
+  end
+
   describe 'claim state (user_id reserved; unused in Phase 1)' do
     it 'is unclaimed when user_id is nil' do
       contributor = described_class.create!(display_name: 'Ada')

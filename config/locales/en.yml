@@ -61,9 +61,13 @@ en:
       linked_record:
         # Fallback placeholder for any linked_record picker.
         placeholder: Search
-        add_new: "+ Add new"
+        add_new: "Add new"
         create: Create
         cancel: Cancel
+        # Fuzzy "did you mean" duplicate check shown before an inline create.
+        similar_heading: "Similar records already exist:"
+        use_existing: Use this
+        create_again_hint: Press Create again to add as a new record.
         # Per-source placeholder, keyed by the subproperty's `authority:`.
         contributors:
           placeholder: Search for a contributor
@@ -248,3 +252,4 @@ en:
     job_statuses:
       disabled: The job statuses page is not enabled.
       nav: Job statuses
+      title: Your job activity

@@ -10,6 +10,23 @@
   text-decoration: none;
 }
 
+/* Contributor picker (select2) result-row detail line: display_name plus a muted
+   ORCID / affiliation line (rendered by formatResult in compound_metadata.js).
+   These rules are kept here, additive to the gem's compound styles, rather than
+   in a knapsack copy of hyrax/_compound_metadata.scss: shadowing that Sass
+   partial shifts its @import position in the cascade and breaks select2's
+   .select2-offscreen hide rule (leaving the native control visible behind the
+   widget). #6c757d is Bootstrap's $gray-600. On a highlighted result select2
+   paints the row white-on-blue, so the detail inherits that color to stay
+   readable instead of a fixed gray. */
+.linked-record-option-detail {
+  color: #6c757d;
+}
+
+.select2-results .select2-highlighted .linked-record-option-detail {
+  color: inherit;
+}
+
 .enact-contributor-orcid .enact-orcid-icon {
   vertical-align: text-bottom;
 }

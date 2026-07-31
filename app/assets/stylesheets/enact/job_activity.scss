@@ -1,0 +1,63 @@
+@keyframes job-dot-ring {
+  0%   { box-shadow: 0 0 0 0 rgba(255, 193, 7, .5); }
+  70%  { box-shadow: 0 0 0 6px rgba(255, 193, 7, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(255, 193, 7, 0); }
+}
+
+.job-activity {
+  max-width: 900px;
+  margin: 0 auto;
+
+  summary { list-style: none; cursor: pointer; }
+  summary::-webkit-details-marker { display: none; }
+
+  .job-caret {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 1rem;
+    height: 1rem;
+    flex: none;
+    font-size: 1.25rem;
+    line-height: 1;
+    transition: transform .15s ease;
+  }
+  details[open] > summary .job-caret { transform: rotate(90deg); }
+
+  .job-dot {
+    display: inline-block;
+    width: .625rem;
+    height: .625rem;
+    border-radius: 50%;
+    flex: none;
+
+    &.job-dot-active { background-color: #ffc107; }
+    &.job-dot-done   { background-color: #28a745; }
+    &.job-dot-error  { background-color: #dc3545; }
+
+    &.job-dot-pulse { animation: job-dot-ring 1.4s ease-out infinite; }
+    &.job-dot-error-glow { box-shadow: 0 0 0 3px rgba(220, 53, 69, .24); }
+  }
+
+  .progress.progress-thin { height: 5px; }
+  .progress.progress-seg  { height: 6px; }
+  .job-track { display: flex; gap: 4px; }
+
+  .job-toggle {
+    &:hover { background-color: #f8f9fa; }
+    &:focus { outline: 2px solid #0056b3; outline-offset: 2px; }
+  }
+
+  // Accessible tint badges — Bootstrap's solid badge-* fills fail WCAG AA.
+  .job-badge-complete { background-color: #d4edda; color: #155724; }
+  .job-badge-running  { background-color: #d1ecf1; color: #0c5460; }
+  .job-badge-retrying { background-color: #fff3cd; color: #856404; }
+  .job-badge-failed   { background-color: #f8d7da; color: #721c24; }
+  .job-badge-queued   { background-color: #e2e3e5; color: #383d41; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .job-dot-pulse { animation: none; }
+  .job-caret { transition: none; }
+  .progress-bar-animated { animation: none; }
+}

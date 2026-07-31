@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDE Hyku v7.1.0 / Hyrax v5.2.0 (samvera/hyrax main @ 568ec626)
+# OVERRIDE Hyku v7.1.0 / Hyrax v5.2.0
 #
 # Disable User Collection creation for everyone (#94). Create is granted from
 # three places (admin?, the Hyku collection roles, and the collection type's

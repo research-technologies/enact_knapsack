@@ -19,6 +19,36 @@ RSpec.describe Hyrax::Dashboard::JobStatusesHelper, type: :helper do
     end
   end
 
+  describe '#job_status_badge_class' do
+    it 'maps each state to its accessible tint badge class, defaulting to queued' do
+      expect(helper.job_status_badge_class('complete')).to eq('job-badge-complete')
+      expect(helper.job_status_badge_class('running')).to eq('job-badge-running')
+      expect(helper.job_status_badge_class('retrying')).to eq('job-badge-retrying')
+      expect(helper.job_status_badge_class('failed')).to eq('job-badge-failed')
+      expect(helper.job_status_badge_class('pending')).to eq('job-badge-queued')
+    end
+  end
+
+  describe '#job_status_bar_class' do
+    it 'animates in-progress bars, leaves pending empty, and fills the rest' do
+      expect(helper.job_status_bar_class('running')).to eq('bg-info progress-bar-striped progress-bar-animated')
+      expect(helper.job_status_bar_class('retrying')).to eq('bg-warning progress-bar-striped progress-bar-animated')
+      expect(helper.job_status_bar_class('pending')).to eq('')
+      expect(helper.job_status_bar_class('complete')).to eq('bg-success')
+      expect(helper.job_status_bar_class('failed')).to eq('bg-danger')
+    end
+  end
+
+  describe '#job_status_dot_class' do
+    it 'is green when done, red-glow on failure, and amber while in progress (pulsing when active)' do
+      expect(helper.job_status_dot_class('complete')).to eq('job-dot-done')
+      expect(helper.job_status_dot_class('failed')).to eq('job-dot-error job-dot-error-glow')
+      expect(helper.job_status_dot_class('running')).to eq('job-dot-active job-dot-pulse')
+      expect(helper.job_status_dot_class('retrying')).to eq('job-dot-active job-dot-pulse')
+      expect(helper.job_status_dot_class('pending')).to eq('job-dot-active')
+    end
+  end
+
   describe '#job_status_error' do
     it 'returns the stage error truncated to 200 characters' do
       stage = { error: 'x' * 300 }
