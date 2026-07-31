@@ -23,22 +23,18 @@
     if (!dataEl) { return; }
     var payload = JSON.parse(dataEl.textContent);
 
-    // HTML-escape before interpolating into innerHTML or attribute values -
-    // labels, descriptions, keywords, dates and paths all derive from
-    // user-entered work metadata. Quotes are escaped too, since escaped
-    // values are also placed inside href="..." attributes. Mirrors the
-    // helper in the sibling people_map.js.
+    // HTML-escape user-entered work metadata before it reaches innerHTML or an
+    // attribute. Quotes too, since escaped values also land inside href="...".
+    // Mirrors the helper in the sibling people_map.js.
     function esc(s) {
       return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
         return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
       });
     }
-    // Only http(s) and scheme-less same-origin (root-relative/anchor) URLs are
-    // allowed as hrefs; anything else arriving through user-controlled metadata
-    // falls back to '#' so it cannot execute or redirect off-site when clicked.
-    // The scheme is detected on a normalised probe (control chars and internal
-    // whitespace stripped, lower-cased) so tricks like "java\nscript:" cannot
-    // slip a scheme past the check that a browser URL parser would still honour.
+    // Allow only http(s) and scheme-less same-origin (relative/anchor) hrefs;
+    // anything else from user metadata falls back to '#' so it can't execute or
+    // redirect off-site. The scheme is checked on a normalised probe (control
+    // chars/whitespace stripped) so "java\nscript:" can't slip past.
     function safeHref(u) {
       var s = String(u == null ? '' : u).trim();
       var probe = s.replace(/[\x00-\x20]/g, '').toLowerCase();
