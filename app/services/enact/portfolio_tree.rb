@@ -23,6 +23,11 @@ module Enact
     MAX_DEPTH = 12
     MAX_NODES = 500
 
+    # Only the fields a node needs, so the batch member fetch does not drag back
+    # every stored field of every member. has_model_ssim also lets
+    # CompoundWorkResolver route the doc without a re-query. Cuts Solr payload.
+    FIELDS = 'id,has_model_ssim,title_tesim,human_readable_type_tesim,member_ids_ssim'
+
     # has_model => [badge key, human label]; badge keys match enact/portfolio_tree.scss.
     TYPE_META = {
       'Portfolio' => %w[portfolio Portfolio],
@@ -31,6 +36,15 @@ module Enact
       'PortfolioLiterature' => %w[literature Literature],
       'PortfolioItemCollection' => %w[collection Collection]
     }.freeze
+
+    # Work types whose members are other portfolio works, so the tree descends
+    # into them. Leaf item types only "contain" their own FileSets, so descending
+    # into them would cost one Solr query per leaf just to fetch (then discard)
+    # files - and would render a FileSet node under every item.
+    CONTAINER_MODELS = %w[Portfolio PortfolioItemCollection].freeze
+
+    # Models the tree renders; non-work members (notably Hyrax::FileSet) are dropped.
+    WORK_MODELS = TYPE_META.keys.freeze
 
     def initialize(ability:, max_depth: MAX_DEPTH, max_nodes: MAX_NODES)
       @ability = ability
@@ -73,6 +87,9 @@ module Enact
 
     def child_nodes(doc, depth)
       return [] if depth >= @max_depth
+      # Only containers hold other works; skip the member fetch for leaf item
+      # types entirely (their only members are FileSets - see CONTAINER_MODELS).
+      return [] unless CONTAINER_MODELS.include?(model_of(doc))
 
       nodes = []
       member_documents(doc).each do |child|
@@ -87,11 +104,17 @@ module Enact
       nodes
     end
 
+    def model_of(doc)
+      Array(doc['has_model_ssim']).first.to_s
+    end
+
     def node_for(doc, children)
-      model = Array(doc['has_model_ssim']).first.to_s
+      model = model_of(doc)
       key, label = TYPE_META.fetch(model) { [model.underscore.presence || 'work', human_type(doc, model)] }
+      # Pass the doc we already fetched so path_for classifies it in-memory
+      # instead of re-querying Solr once per node (issue #95 render perf).
       Node.new(id: doc['id'], label: title_of(doc), type: key, type_label: label,
-               path: Hyrax::CompoundWorkResolver.path_for(doc['id']), status: nil, children:)
+               path: Hyrax::CompoundWorkResolver.path_for(doc['id'], doc:), status: nil, children:)
     end
 
     def stamp(node, status)
@@ -118,7 +141,8 @@ module Enact
       Hyrax::SolrQueryService.new
                              .with_field_pairs(field_pairs: { 'id' => ids }, join_with: 'OR')
                              .accessible_by(ability: @ability)
-                             .solr_documents(rows: ids.length)
+                             .solr_documents(rows: ids.length, fl: FIELDS)
+                             .select { |child| WORK_MODELS.include?(model_of(child)) }
     end
 
     def document_for(id)
@@ -127,7 +151,7 @@ module Enact
       Hyrax::SolrQueryService.new
                              .with_field_pairs(field_pairs: { 'id' => id.to_s })
                              .accessible_by(ability: @ability)
-                             .solr_documents(rows: 1).first
+                             .solr_documents(rows: 1, fl: FIELDS).first
     end
 
     def title_of(doc)

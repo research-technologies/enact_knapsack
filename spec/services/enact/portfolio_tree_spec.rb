@@ -11,7 +11,7 @@ RSpec.describe Enact::PortfolioTree do
   # Path derivation is delegated to the shared Hyrax::CompoundWorkResolver (route
   # helpers, collection handling, unroutable fallback), which is tested in Hyrax.
   # Here we only assert PortfolioTree hands it the right id, so stub it to echo one.
-  before { allow(Hyrax::CompoundWorkResolver).to receive(:path_for) { |id| "/resolved/#{id}" } }
+  before { allow(Hyrax::CompoundWorkResolver).to receive(:path_for) { |id, **| "/resolved/#{id}" } }
 
   # accessible_by is a no-op here: ability filtering belongs to the real query
   # object and is not re-tested through the fake.
@@ -67,6 +67,15 @@ RSpec.describe Enact::PortfolioTree do
       expect(collection.children.map(&:label)).to eq(['Photographic record'])
     end
 
+    # Guards the render-perf fix (#95): each node's path is resolved from the doc
+    # already fetched in the batch, not by re-querying Solr per node.
+    it 'resolves node paths from the already-fetched doc, not a per-node re-query' do
+      tree_for(index, 'p1')
+
+      expect(Hyrax::CompoundWorkResolver).to have_received(:path_for)
+        .with('a1', doc: an_instance_of(SolrDocument))
+    end
+
     it 'maps work types to a badge key and human label' do
       artefact = tree_for(index, 'p1').children.find { |n| n.label == 'Scale model' }
 
@@ -114,12 +123,43 @@ RSpec.describe Enact::PortfolioTree do
 
     it 'guards against a membership cycle' do
       cyclic = {
-        'p1' => doc('p1', title: 'Root', model: 'Portfolio', members: %w[a1]),
-        'a1' => doc('a1', title: 'Child', members: %w[p1]) # points back at the root
+        'p1' => doc('p1', title: 'Root', model: 'Portfolio', members: %w[c1]),
+        # A container that points back at the root; without the visited guard this
+        # would recurse forever.
+        'c1' => doc('c1', title: 'Child', model: 'PortfolioItemCollection', members: %w[p1])
       }
 
       root = tree_for(cyclic, 'p1')
       expect(root.children.first.children).to be_empty
+    end
+
+    it 'does not descend into leaf item types (their members are only FileSets)' do
+      with_file = {
+        'p1' => doc('p1', title: 'Root', model: 'Portfolio', members: %w[a1]),
+        'a1' => doc('a1', title: 'Scale model', model: 'PortfolioArtefact', members: %w[fs1]),
+        'fs1' => doc('fs1', title: 'scan.tif', model: 'Hyrax::FileSet')
+      }
+      allow(Hyrax::SolrQueryService).to receive(:new) { FakeSolrQuery.new(with_file) }
+
+      artefact = described_class.new(ability:).for_work('p1').children.first
+
+      expect(artefact.label).to eq('Scale model')
+      expect(artefact.children).to be_empty
+      # Only the root doc + the root's members are fetched; the leaf artefact's
+      # members (its FileSet) are never queried - the render-perf fix (#95).
+      expect(Hyrax::SolrQueryService).to have_received(:new).twice
+    end
+
+    it 'drops non-work members (FileSets) rather than rendering them as nodes' do
+      mixed = {
+        'p1' => doc('p1', title: 'Root', model: 'Portfolio', members: %w[a1 cover]),
+        'a1' => doc('a1', title: 'Scale model', model: 'PortfolioArtefact'),
+        'cover' => doc('cover', title: 'cover.jpg', model: 'Hyrax::FileSet')
+      }
+
+      root = tree_for(mixed, 'p1')
+
+      expect(root.children.map(&:label)).to eq(['Scale model'])
     end
   end
 
