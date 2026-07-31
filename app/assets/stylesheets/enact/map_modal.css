@@ -34,11 +34,7 @@
   border: 0;
 }
 
-/*
- * Loading overlay: covers the blank iframe while the standalone map page loads
- * and boots Cytoscape. map_modal.js toggles .is-hidden on the iframe's `load`
- * event. Solid background so the empty iframe never shows through.
- */
+/* Opaque overlay covering the iframe until map_modal.js clears .is-hidden on load. */
 .enact-map-loading {
   position: absolute;
   top: 0;

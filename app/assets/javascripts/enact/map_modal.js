@@ -1,17 +1,9 @@
 /*
- * Initialiser for the enactMapModal iframe modal. Listens for clicks on any
- * [data-map-url] element, loads that URL into the iframe, copies
- * data-map-title to the modal heading, then opens the Bootstrap modal. A
- * loading overlay (#enactMapLoading) is shown until the iframe fires `load`,
- * so the modal never shows a blank body while the map page loads and boots.
- * Clears the iframe src to about:blank on hide so Cytoscape is torn down and
- * no ghost request is left pending.
- *
- * DOM lookups are deferred to handler time so the listener survives Turbolinks
- * cache restores without holding stale element references.
- *
- * window.enactMapModalReady guards against double-init if this file is somehow
- * included more than once on the same page.
+ * Opens any [data-map-url] trigger's URL in the shared #enactMapModal iframe.
+ * On hide, resets src to about:blank so Cytoscape is torn down and no ghost
+ * request is left pending. DOM lookups are deferred to handler time so the
+ * listener survives Turbolinks cache restores. enactMapModalReady guards against
+ * double-init if the file is included more than once.
  */
 (function () {
   if (window.enactMapModalReady) return;
@@ -30,9 +22,7 @@
       var loading = document.getElementById('enactMapLoading');
       var titleEl = document.getElementById('enactMapModalLabel');
       var title = trigger.getAttribute('data-map-title') || '';
-      // Show the loading overlay until the map page finishes loading. onload
-      // (assignment, not addEventListener) so re-opens never stack listeners,
-      // and lookups stay at handler time per the Turbolinks-safe pattern above.
+      // onload assignment (not addEventListener) so re-opens don't stack handlers.
       if (loading) {
         loading.classList.remove('is-hidden');
         iframe.onload = function () { loading.classList.add('is-hidden'); };

@@ -148,9 +148,8 @@
     if (t2.length) {
       h += '<div class="row"><b>' + t2.length + '</b> in adjacent communities (second order)</div>' + badges(t2, 10);
     }
-    // target=_top: an in-repository contributor profile, so break out of the map
-    // iframe and navigate the parent window (one tab, full chrome) rather than a
-    // new tab, keeping the user in the repository experience (issue #137).
+    // target=_top: break out of the iframe into the parent window (one tab),
+    // not a new tab - #137 is about keeping the user in the repository.
     h += '<a class="profilelink" href="' + esc(d.path || '#') + '" target="_top">&#8599; View full profile</a>';
     DETAIL.innerHTML = h;
   }

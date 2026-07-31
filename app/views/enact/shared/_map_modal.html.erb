@@ -1,13 +1,9 @@
-<%# Reusable iframe modal for relationship-map and people-map.
-    Triggered by any element with [data-map-url] and [data-map-title].
-    The map pages are standalone (layout:false) documents that boot Cytoscape
-    against their own scoped assets - an iframe is the natural container.
-    Render once per page at a top-level position, NOT nested inside a flex or
-    otherwise positioned container (a transformed/filtered ancestor breaks the
-    Bootstrap modal's fixed positioning and focus trap). The map trigger
-    elsewhere on the page targets it by its #enactMapModal id.
-    CSS/JS live in app/assets/{stylesheets,javascripts}/enact/map_modal.* and
-    are precompiled via config/initializers/map_modal_assets.rb. %>
+<%# Shared iframe modal for the relationship and people maps (standalone
+    layout:false Cytoscape pages, so an iframe is the natural container).
+    Render once per page at a top-level position: nested in a flex or transformed
+    container, the modal's fixed positioning and focus trap break.
+    Assets in app/assets/{stylesheets,javascripts}/enact/map_modal.*, precompiled
+    via config/initializers/map_modal_assets.rb. %>
 <%= stylesheet_link_tag 'enact/map_modal', media: 'all' %>
 <div class="modal fade" id="enactMapModal" tabindex="-1" role="dialog"
      aria-labelledby="enactMapModalLabel" aria-modal="true">
@@ -21,10 +17,8 @@
         </button>
       </div>
       <div class="modal-body p-0">
-        <%# Shown while the iframe loads the standalone map page and boots
-            Cytoscape, so the modal never shows a blank body. map_modal.js
-            hides it on the iframe's `load` event. role=status announces it to
-            assistive tech; the spinner itself is decorative. %>
+        <%# role=status announces loading to assistive tech; the spinner is
+            decorative. map_modal.js toggles .is-hidden on the iframe load. %>
         <div id="enactMapLoading" class="enact-map-loading" role="status">
           <span class="enact-map-spinner" aria-hidden="true"></span>
           <span><%= t('enact.map_modal.loading', default: 'Loading the map...') %></span>

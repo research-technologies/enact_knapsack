@@ -225,10 +225,8 @@
           html += `<div class="meta" style="margin-top:8px;word-break:break-all"><b>URL:</b> ${d.path}</div>`;
           html += `<p style="clear:both;margin:12px 0 2px"><a class="pagelink" href="${d.path}" target="_blank" rel="noopener noreferrer">&#8599; Open link</a></p>`;
         } else {
-          // target=_top: this is an in-repository work, so break out of the map
-          // iframe and navigate the parent window (one tab, full chrome) rather
-          // than opening a new tab, which would drop the user out of the
-          // repository experience issue #137 exists to keep them in.
+          // target=_top: break out of the iframe into the parent window (one tab),
+          // not a new tab - #137 is about keeping the user in the repository.
           html += `<p style="clear:both;margin:12px 0 2px"><a class="pagelink" href="${d.path}" target="_top">&#8599; View this work's page</a></p>`;
         }
         const edges = node.connectedEdges();
