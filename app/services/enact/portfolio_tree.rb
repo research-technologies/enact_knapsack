@@ -1,12 +1,12 @@
 # frozen_string_literal: true
 
 module Enact
-  # The structural composition tree of a Portfolio, read from `member_ids_ssim`.
-  # Distinct from Enact::RelationshipGraph, which reads the curated cross-links on
-  # the `relationships` compound - this is containment, not citation. Issue #95.
+  # A Portfolio's composition tree, read from `member_ids_ssim`. This is
+  # containment; Enact::RelationshipGraph reads the curated cross-links on the
+  # `relationships` compound. Issue #95.
   class PortfolioTree
-    # `status` is nil for a plain tree; the deposit review tree stamps saved works
-    # `existing` and the pending item `new`.
+    # status: nil for a plain tree; the deposit done-screen tree stamps saved
+    # works `existing` and the just-deposited one `new`.
     Node = Struct.new(:id, :label, :type, :type_label, :path, :status, :children, keyword_init: true) do
       def count
         children.size
@@ -17,18 +17,15 @@ module Enact
       end
     end
 
-    # Caps so a mis-modelled or malicious hierarchy cannot run the recursion away.
-    # MAX_NODES is a hard ceiling on total nodes built (enforced mid-level in
-    # child_nodes), not just a stop-descending guard.
+    # Backstops against a mis-modelled or cyclic hierarchy running away.
     MAX_DEPTH = 12
     MAX_NODES = 500
 
-    # Only the fields a node needs, so the batch member fetch does not drag back
-    # every stored field of every member. has_model_ssim also lets
-    # CompoundWorkResolver route the doc without a re-query. Cuts Solr payload.
+    # A node needs only these fields; fetching full docs for every member is the
+    # bulk of the render cost for large portfolios.
     FIELDS = 'id,has_model_ssim,title_tesim,human_readable_type_tesim,member_ids_ssim'
 
-    # has_model => [badge key, human label]; badge keys match enact/portfolio_tree.scss.
+    # Badge keys match enact/portfolio_tree.scss.
     TYPE_META = {
       'Portfolio' => %w[portfolio Portfolio],
       'PortfolioArtefact' => %w[artefact Artefact],
@@ -37,13 +34,10 @@ module Enact
       'PortfolioItemCollection' => %w[collection Collection]
     }.freeze
 
-    # Work types whose members are other portfolio works, so the tree descends
-    # into them. Leaf item types only "contain" their own FileSets, so descending
-    # into them would cost one Solr query per leaf just to fetch (then discard)
-    # files - and would render a FileSet node under every item.
+    # Only these types contain other works. Leaf items just hold their FileSets,
+    # so descending into them would cost a Solr query per item and surface
+    # FileSets as tree nodes.
     CONTAINER_MODELS = %w[Portfolio PortfolioItemCollection].freeze
-
-    # Models the tree renders; non-work members (notably Hyrax::FileSet) are dropped.
     WORK_MODELS = TYPE_META.keys.freeze
 
     def initialize(ability:, max_depth: MAX_DEPTH, max_nodes: MAX_NODES)
@@ -54,20 +48,16 @@ module Enact
       @node_count = 0
     end
 
-    # nil when the work is not found or not readable by the current ability.
     def for_work(id)
-      # Reset per call so a reused instance doesn't carry stale traversal state.
+      # Reset so a reused instance doesn't carry stale traversal state.
       @visited = Set.new
       @node_count = 0
       doc = document_for(id)
       doc && build(doc, 0)
     end
 
-    # The target Portfolio (or collection) rooted at `parent_id` with every member
-    # stamped `existing`, except the just-deposited work (matched by `work_id`),
-    # stamped `new`. Built after the work is saved, for the done screen. nil unless
-    # a parent was chosen - only the "add to an existing work" path has a hierarchy
-    # to show (issue #95).
+    # nil unless a parent was chosen: only the "add to an existing work" path has
+    # a hierarchy to show.
     def for_completed_deposit(parent_id:, work_id:)
       root = for_work(parent_id)
       return nil if root.nil?
@@ -87,17 +77,12 @@ module Enact
 
     def child_nodes(doc, depth)
       return [] if depth >= @max_depth
-      # Only containers hold other works; skip the member fetch for leaf item
-      # types entirely (their only members are FileSets - see CONTAINER_MODELS).
       return [] unless CONTAINER_MODELS.include?(model_of(doc))
 
       nodes = []
       member_documents(doc).each do |child|
-        # Hard node cap: stop mid-level too, so total nodes can't exceed @max_nodes
-        # by a level's fan-out (the count is a ceiling, not just a descend guard).
         break if @node_count >= @max_nodes
-        # A member pointing back up the tree would otherwise recurse forever.
-        next if @visited.include?(child['id'].to_s)
+        next if @visited.include?(child['id'].to_s) # membership cycle
 
         nodes << build(child, depth + 1)
       end
@@ -111,8 +96,7 @@ module Enact
     def node_for(doc, children)
       model = model_of(doc)
       key, label = TYPE_META.fetch(model) { [model.underscore.presence || 'work', human_type(doc, model)] }
-      # Pass the doc we already fetched so path_for classifies it in-memory
-      # instead of re-querying Solr once per node (issue #95 render perf).
+      # Pass the doc so path_for classifies it in-memory rather than re-querying per node.
       Node.new(id: doc['id'], label: title_of(doc), type: key, type_label: label,
                path: Hyrax::CompoundWorkResolver.path_for(doc['id'], doc:), status: nil, children:)
     end
@@ -122,9 +106,6 @@ module Enact
       node.children.each { |child| stamp(child, status) }
     end
 
-    # Re-stamp only the just-deposited node `new`, wherever it sits in the tree
-    # (a direct member, or a member of a collection item). Stops at the first
-    # match; a fresh deposit has no members of its own to descend into.
     def mark_new(node, work_id)
       if node.id.to_s == work_id
         node.status = 'new'
