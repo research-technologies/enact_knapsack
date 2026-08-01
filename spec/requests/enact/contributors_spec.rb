@@ -66,8 +66,9 @@ RSpec.describe 'Enact contributors pages', type: :request, singletenant: true do
   # The picker's fuzzy "did you mean" duplicate check is now served by Hyrax's
   # generic linked_record_similar QA authority (ContributorSource registers a
   # `similar:` proc); the knapsack no longer exposes a /contributors/similar
-  # route. The source's `similar`/`search` row shape is covered in
-  # spec/services/enact/contributor_source_search_spec.rb.
+  # route. Row shape is covered in
+  # spec/services/enact/contributor_source_search_spec.rb, the endpoints
+  # themselves in spec/requests/enact/contributor_authorities_spec.rb.
 
   describe 'GET /contributors/:id (show)' do
     it 'renders the contributor profile' do
