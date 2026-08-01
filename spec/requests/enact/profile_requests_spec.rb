@@ -139,6 +139,11 @@ RSpec.describe 'Enact research profile requests', type: :request, singletenant: 
       expect(Enact::ProfileRequest.last.note).to eq('I deposited this in 2019.')
     end
 
+    it 'refuses to claim a profile that does not exist' do
+      expect { post '/contributors/999999/claim' }
+        .not_to change(Enact::ProfileRequest, :count)
+    end
+
     it 'refuses to claim a profile another user already holds' do
       ada.update!(user: FactoryBot.create(:user))
       expect { post "/contributors/#{ada.id}/claim" }

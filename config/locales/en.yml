@@ -321,6 +321,7 @@ en:
         title: Claim this research profile
       errors:
         contributor_claimed: is already linked to another user
+        contributor_missing: does not exist
         organization_claim: cannot be linked to an organization profile
         organization_claim_request: is an organization and cannot be claimed
         user_linked: already has a research profile

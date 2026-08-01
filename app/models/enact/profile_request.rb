@@ -46,21 +46,23 @@ module Enact
 
     private
 
-    # Distinct messages because the two ways a profile can be unclaimable need
-    # different answers: an admin can resolve a mis-linked profile, but nobody
-    # can turn an organization into a person.
     def contributor_must_be_linkable
-      return if contributor.blank? || contributor.linkable?
+      dangling = contributor_id.present? && contributor.blank?
+      return if !dangling && (contributor.blank? || contributor.linkable?)
 
-      if contributor.organization?
-        errors.add(:contributor, :organization,
-                   message: I18n.t('enact.research_profiles.errors.organization_claim_request',
-                                   default: 'is an organization and cannot be claimed'))
-      else
-        errors.add(:contributor, :already_claimed,
-                   message: I18n.t('enact.research_profiles.errors.contributor_claimed',
-                                   default: 'is already linked to another user'))
-      end
+      key, message = unlinkable_reason(dangling)
+      errors.add(:contributor, key, message:)
+    end
+
+    def unlinkable_reason(dangling)
+      return [:blank, t_error('contributor_missing', 'does not exist')] if dangling
+      return [:organization, t_error('organization_claim_request', 'is an organization and cannot be claimed')] if contributor.organization?
+
+      [:already_claimed, t_error('contributor_claimed', 'is already linked to another user')]
+    end
+
+    def t_error(key, default)
+      I18n.t("enact.research_profiles.errors.#{key}", default:)
     end
 
     def user_must_not_have_a_profile

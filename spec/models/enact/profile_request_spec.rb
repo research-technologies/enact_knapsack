@@ -87,6 +87,12 @@ RSpec.describe Enact::ProfileRequest do
     end
   end
 
+  it 'rejects a claim naming a contributor that does not exist' do
+    request = described_class.new(user:, contributor_id: 999_999)
+    expect(request).not_to be_valid
+    expect(request.errors[:contributor]).to be_present
+  end
+
   it 'rejects a claim on an organization' do
     org = Enact::Contributor.create!(display_name: 'Acme Lab', agent_type: 'organization')
     request = described_class.new(user:, contributor: org)
