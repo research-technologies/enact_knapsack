@@ -30,14 +30,8 @@ module Enact
       @user = find_linkable_user
       return if performed?
 
+      load_request_history
       linker = Enact::ProfileLinker.new(@user)
-      @profile_request = Enact::ProfileRequest.pending.find_by(user_id: @user.id)
-      # The profile the user named, when they claimed a specific one. Shown first
-      # and filtered out of the heuristic tiers so it is never offered twice.
-      @claimed_profile = @profile_request&.contributor
-      # Prior declines, so a repeat request does not read as a first-time ask.
-      @past_declines = Enact::ProfileRequest.where(user_id: @user.id)
-                                            .declined.order(reviewed_at: :desc)
       @search = params[:q].to_s.strip
       @orcid_match = linker.orcid_match
       @orcid_conflict = linker.orcid_conflict
@@ -91,6 +85,13 @@ module Enact
 
     private
 
+    def load_request_history
+      @profile_request = Enact::ProfileRequest.pending.find_by(user_id: @user.id)
+      @claimed_profile = @profile_request&.contributor
+      @past_declines = Enact::ProfileRequest.where(user_id: @user.id)
+                                            .declined.order(reviewed_at: :desc)
+    end
+
     def dedupe_claimed_profile
       return if @claimed_profile.blank?
 
@@ -138,7 +139,7 @@ module Enact
       end
       redirect_to redirect_to, notice: t('enact.research_profiles.admin.linked', name: contributor.display_name)
     rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid
-      redirect_to worklist_path, alert: t('enact.research_profiles.admin.already_linked')
+      redirect_to review_path(user), alert: t('enact.research_profiles.admin.already_linked')
     end
 
     def find_linkable_user(id = params[:user_id])
@@ -170,13 +171,12 @@ module Enact
     def find_linkable_contributor(id)
       contributor = Enact::Contributor.find_by(id:)
       if contributor.nil?
-        redirect_to worklist_path, alert: t('enact.research_profiles.admin.profile_missing')
+        redirect_to review_path(@user), alert: t('enact.research_profiles.admin.profile_missing')
         return nil
       end
       return contributor unless contributor.claimed?
 
-      redirect_to "/contributors/#{contributor.id}",
-                  alert: t('enact.research_profiles.admin.profile_already_linked')
+      redirect_to review_path(@user), alert: t('enact.research_profiles.admin.profile_already_linked')
       nil
     end
 

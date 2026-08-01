@@ -42,11 +42,12 @@ module Enact
     #
     # Substring hits rank first — an exact fragment the admin typed is a stronger
     # signal than a fuzzy name.
+    # Unclaimed only: a profile another user holds cannot be linked
     def search(term)
       return nil if term.blank?
 
-      substring = Contributor.matching(term).order(:display_name).limit(SEARCH_LIMIT).to_a
-      fuzzy = Contributor.similar_to(term).to_a
+      substring = Contributor.unclaimed.matching(term).order(:display_name).limit(SEARCH_LIMIT).to_a
+      fuzzy = Contributor.unclaimed.similar_to(term).to_a
       seen = substring.map(&:id).to_set
       (substring + fuzzy.reject { |c| seen.include?(c.id) }).first(SEARCH_LIMIT)
     end

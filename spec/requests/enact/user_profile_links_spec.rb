@@ -214,6 +214,12 @@ RSpec.describe 'Enact research profile linking (admin)', type: :request, singlet
       expect(response.body).to include('Grace Hopper')
     end
 
+    it 'omits profiles another user already holds' do
+      Enact::Contributor.create!(display_name: 'Grace Hopper', user: FactoryBot.create(:user))
+      get "/dashboard/research-profiles/#{user.id}/link?q=Hopper"
+      expect(response.body).not_to include('Grace Hopper')
+    end
+
     it 'tolerates a typo in the search term' do
       Enact::Contributor.create!(display_name: 'John Smith')
       get "/dashboard/research-profiles/#{user.id}/link?q=Jon+Smith"
@@ -318,6 +324,12 @@ RSpec.describe 'Enact research profile linking (admin)', type: :request, singlet
       taken = Enact::Contributor.create!(display_name: 'Ada', user: FactoryBot.create(:user))
       post "/dashboard/research-profiles/#{user.id}/link", params: { contributor_id: taken.id }
       expect(taken.reload.user).not_to eq(user)
+      expect(response).to redirect_to("/dashboard/research-profiles/#{user.to_param}/link")
+    end
+
+    it 'returns to the review page when the profile no longer exists' do
+      post "/dashboard/research-profiles/#{user.id}/link", params: { contributor_id: 0 }
+      expect(response).to redirect_to("/dashboard/research-profiles/#{user.to_param}/link")
     end
 
     it 're-renders the form when the submitted ORCID is already in use' do
