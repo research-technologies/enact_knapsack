@@ -169,6 +169,13 @@ RSpec.describe 'Enact research profile requests', type: :request, singletenant: 
       expect(response.body).to include('Is this you?')
     end
 
+    it 'is absent on an organization profile' do
+      org = Enact::Contributor.create!(display_name: 'Acme Lab', agent_type: 'organization')
+      login_as(user, scope: :user)
+      get "/contributors/#{org.id}"
+      expect(response.body).not_to include('Is this you?')
+    end
+
     # No CTA that only leads to a login wall.
     it 'is absent for an anonymous visitor' do
       get "/contributors/#{ada.id}"

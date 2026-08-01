@@ -222,6 +222,37 @@ RSpec.describe Enact::Contributor do
       expect(contributor.reload.user).to eq(user)
     end
 
+    it 'refuses to link an organization to a user account' do
+      org = described_class.new(display_name: 'Acme Lab', agent_type: 'organization', user:)
+      expect(org).not_to be_valid
+      expect(org.errors[:user_id]).to be_present
+    end
+
+    describe '#linkable?' do
+      it 'is true for an unclaimed person' do
+        expect(described_class.new(display_name: 'Ada')).to be_linkable
+      end
+
+      it 'is false once claimed' do
+        expect(described_class.create!(display_name: 'Ada', user:)).not_to be_linkable
+      end
+
+      it 'is false for an organization' do
+        expect(described_class.new(display_name: 'Acme Lab', agent_type: 'organization')).not_to be_linkable
+      end
+
+      # The scope must select exactly what the predicate answers true for.
+      it 'agrees with the .linkable scope' do
+        person = described_class.create!(display_name: 'Ada')
+        claimed = described_class.create!(display_name: 'Grace', user:)
+        org = described_class.create!(display_name: 'Acme Lab', agent_type: 'organization')
+
+        expect(described_class.linkable).to include(person)
+        expect(described_class.linkable).not_to include(claimed, org)
+        expect([person, claimed, org].select(&:linkable?)).to eq([person])
+      end
+    end
+
     it 'rejects a second profile claiming the same user' do
       described_class.create!(display_name: 'Ada', user:)
       duplicate = described_class.new(display_name: 'Ada (dup)', user:)

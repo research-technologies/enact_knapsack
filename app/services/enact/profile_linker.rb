@@ -17,7 +17,7 @@ module Enact
     def orcid_match
       return nil if orcid.blank?
 
-      @orcid_match ||= Contributor.unclaimed.where('LOWER(orcid) = LOWER(?)', orcid).order(:id).first
+      @orcid_match ||= linkable.where('LOWER(orcid) = LOWER(?)', orcid).order(:id).first
     end
 
     # A profile with this ORCID that ANOTHER user already holds. Creating from
@@ -31,7 +31,7 @@ module Enact
 
     # Minus the ORCID hit, which is already shown above these.
     def suggestions
-      Contributor.unclaimed.similar_to(search_name).reject { |c| c.id == orcid_match&.id }
+      linkable.similar_to(search_name).reject { |c| c.id == orcid_match&.id }
     end
 
     # Both scopes, because neither alone is enough: `matching` is the only tier
@@ -46,8 +46,8 @@ module Enact
     def search(term)
       return nil if term.blank?
 
-      substring = Contributor.unclaimed.matching(term).order(:display_name).limit(SEARCH_LIMIT).to_a
-      fuzzy = Contributor.unclaimed.similar_to(term).to_a
+      substring = linkable.matching(term).order(:display_name).limit(SEARCH_LIMIT).to_a
+      fuzzy = linkable.similar_to(term).to_a
       seen = substring.map(&:id).to_set
       (substring + fuzzy.reject { |c| seen.include?(c.id) }).first(SEARCH_LIMIT)
     end
@@ -69,6 +69,10 @@ module Enact
     end
 
     private
+
+    def linkable
+      Contributor.linkable
+    end
 
     def orcid
       @orcid ||= @user.orcid.to_s.strip

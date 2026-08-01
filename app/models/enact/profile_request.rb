@@ -20,7 +20,7 @@ module Enact
     # so a declined request never permanently bars someone from asking again.
     validates :user_id, uniqueness: { conditions: -> { where(status: 'pending') } }, if: :pending?
 
-    validate :contributor_must_be_unclaimed
+    validate :contributor_must_be_linkable
     validate :user_must_not_have_a_profile, on: :create
 
     scope :for_user, ->(user) { where(user:) }
@@ -46,12 +46,21 @@ module Enact
 
     private
 
-    def contributor_must_be_unclaimed
-      return if contributor.blank? || !contributor.claimed?
+    # Distinct messages because the two ways a profile can be unclaimable need
+    # different answers: an admin can resolve a mis-linked profile, but nobody
+    # can turn an organization into a person.
+    def contributor_must_be_linkable
+      return if contributor.blank? || contributor.linkable?
 
-      errors.add(:contributor, :already_claimed,
-                 message: I18n.t('enact.research_profiles.errors.contributor_claimed',
-                                 default: 'is already linked to another user'))
+      if contributor.organization?
+        errors.add(:contributor, :organization,
+                   message: I18n.t('enact.research_profiles.errors.organization_claim_request',
+                                   default: 'is an organization and cannot be claimed'))
+      else
+        errors.add(:contributor, :already_claimed,
+                   message: I18n.t('enact.research_profiles.errors.contributor_claimed',
+                                   default: 'is already linked to another user'))
+      end
     end
 
     def user_must_not_have_a_profile

@@ -220,6 +220,19 @@ RSpec.describe 'Enact research profile linking (admin)', type: :request, singlet
       expect(response.body).not_to include('Grace Hopper')
     end
 
+    it 'omits organizations, which cannot hold a user account' do
+      Enact::Contributor.create!(display_name: 'Hopper Lab', agent_type: 'organization')
+      get "/dashboard/research-profiles/#{user.id}/link?q=Hopper"
+      expect(response.body).not_to include('Hopper Lab')
+    end
+
+    it 'omits an organization from the fuzzy suggestions' do
+      user.update!(display_name: 'Acme Lab')
+      Enact::Contributor.create!(display_name: 'Acme Labs', agent_type: 'organization')
+      get "/dashboard/research-profiles/#{user.id}/link"
+      expect(response.body).not_to include('Acme Labs')
+    end
+
     it 'tolerates a typo in the search term' do
       Enact::Contributor.create!(display_name: 'John Smith')
       get "/dashboard/research-profiles/#{user.id}/link?q=Jon+Smith"

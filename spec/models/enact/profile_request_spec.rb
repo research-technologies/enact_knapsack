@@ -87,6 +87,13 @@ RSpec.describe Enact::ProfileRequest do
     end
   end
 
+  it 'rejects a claim on an organization' do
+    org = Enact::Contributor.create!(display_name: 'Acme Lab', agent_type: 'organization')
+    request = described_class.new(user:, contributor: org)
+    expect(request).not_to be_valid
+    expect(request.errors[:contributor]).to be_present
+  end
+
   it 'rejects a claim on an already-claimed contributor' do
     claimed = Enact::Contributor.create!(display_name: 'Ada', user: FactoryBot.create(:user))
     request = described_class.new(user:, contributor: claimed)

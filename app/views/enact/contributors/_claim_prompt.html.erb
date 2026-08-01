@@ -2,7 +2,7 @@
     request before any link is made.
 
     Locals: contributor %>
-<% if current_user.present? && !contributor.claimed? &&
+<% if current_user.present? && contributor.linkable? &&
       current_user.enact_contributor.blank? &&
       current_user.profile_requests.pending.none? %>
   <div class="enact-claim-prompt mt-2">
