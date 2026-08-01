@@ -1,0 +1,7 @@
+// Bootstrap rounds the outer corners of an .input-group; this design is square throughout.
+#search-form-header {
+  .form-control,
+  .btn {
+    border-radius: 0;
+  }
+}
