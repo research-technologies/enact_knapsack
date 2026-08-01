@@ -1,0 +1,29 @@
+<%# One candidate profile in the admin link screen.
+
+    Locals: contributor, user %>
+<li class="list-group-item d-flex justify-content-between align-items-start enact-candidate-row">
+  <div class="mr-3">
+    <div>
+      <%= link_to contributor.display_name, "/contributors/#{contributor.id}",
+                  target: '_blank', rel: 'noopener' %>
+      <span class="badge badge-secondary ml-1">
+        <%= t("enact.contributors.types.#{contributor.agent_type}",
+              default: contributor.agent_type.humanize) %>
+      </span>
+    </div>
+    <div class="small text-muted">
+      <% if contributor.orcid.present? %>
+        <span class="enact-candidate-orcid mr-2"><%= contributor.orcid %></span>
+      <% end %>
+      <% if contributor.affiliations.present? %>
+        <span class="enact-candidate-affiliation"><%= contributor.affiliations.to_sentence %></span>
+      <% end %>
+    </div>
+  </div>
+
+  <%= button_to t('enact.research_profiles.admin.link_this', default: 'Link this profile'),
+                HykuKnapsack::Engine.routes.url_helpers.dashboard_research_profile_link_path(user),
+                method: :post,
+                params: { contributor_id: contributor.id },
+                class: 'btn btn-outline-primary btn-sm text-nowrap' %>
+</li>

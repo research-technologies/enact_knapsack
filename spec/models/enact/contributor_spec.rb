@@ -198,7 +198,7 @@ RSpec.describe Enact::Contributor do
     end
   end
 
-  describe 'claim state (user_id reserved; unused in Phase 1)' do
+  describe 'claim state' do
     it 'is unclaimed when user_id is nil' do
       contributor = described_class.create!(display_name: 'Ada')
       expect(contributor).not_to be_claimed
@@ -206,11 +206,80 @@ RSpec.describe Enact::Contributor do
       expect(described_class.claimed).not_to include(contributor)
     end
 
-    it 'is claimed when user_id is set' do
-      contributor = described_class.create!(display_name: 'Ada', user_id: 42)
+    it 'is claimed when linked to a user' do
+      contributor = described_class.create!(display_name: 'Ada', user: FactoryBot.create(:user))
       expect(contributor).to be_claimed
       expect(described_class.claimed).to include(contributor)
       expect(described_class.unclaimed).not_to include(contributor)
+    end
+  end
+
+  describe 'the 1:1 user link' do
+    let(:user) { FactoryBot.create(:user) }
+
+    it 'links to a user' do
+      contributor = described_class.create!(display_name: 'Ada', user:)
+      expect(contributor.reload.user).to eq(user)
+    end
+
+    it 'rejects a second profile claiming the same user' do
+      described_class.create!(display_name: 'Ada', user:)
+      duplicate = described_class.new(display_name: 'Ada (dup)', user:)
+      expect(duplicate).not_to be_valid
+      expect(duplicate.errors[:user_id]).to be_present
+    end
+
+    it 'enforces the 1:1 link in the database, not just in the model' do
+      described_class.create!(display_name: 'Ada', user:)
+      duplicate = described_class.create!(display_name: 'Ada (dup)')
+      # rubocop:disable Rails/SkipsModelValidations -- bypassing the validation is
+      # the point: this asserts the partial unique index, not the model callback.
+      expect { duplicate.update_column(:user_id, user.id) }
+        .to raise_error(ActiveRecord::RecordNotUnique)
+      # rubocop:enable Rails/SkipsModelValidations
+    end
+
+    it 'allows any number of unlinked profiles' do
+      described_class.create!(display_name: 'Ada')
+      expect { described_class.create!(display_name: 'Grace') }.not_to raise_error
+      expect(described_class.unclaimed.count).to eq(2)
+    end
+
+    describe '#editable_by?' do
+      it 'is true for the linked user' do
+        contributor = described_class.create!(display_name: 'Ada', user:)
+        expect(contributor).to be_editable_by(user)
+      end
+
+      it 'is false for a different user' do
+        contributor = described_class.create!(display_name: 'Ada', user:)
+        expect(contributor).not_to be_editable_by(FactoryBot.create(:user))
+      end
+
+      it 'is false for an unclaimed profile' do
+        expect(described_class.create!(display_name: 'Ada')).not_to be_editable_by(user)
+      end
+
+      it 'is false for nil (an anonymous visitor)' do
+        contributor = described_class.create!(display_name: 'Ada', user:)
+        expect(contributor).not_to be_editable_by(nil)
+      end
+    end
+
+    describe '#linked_user' do
+      it 'returns the linked user' do
+        expect(described_class.create!(display_name: 'Ada', user:).linked_user).to eq(user)
+      end
+
+      it 'returns nil when the profile is unlinked' do
+        expect(described_class.create!(display_name: 'Ada').linked_user).to be_nil
+      end
+
+      it 'returns nil when the linked user has been deleted' do
+        contributor = described_class.create!(display_name: 'Ada', user:)
+        user.destroy
+        expect(contributor.reload.linked_user).to be_nil
+      end
     end
   end
 end

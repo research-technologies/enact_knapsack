@@ -1,0 +1,57 @@
+<%# "Is this you?" — opens a modal to request this profile. An admin reviews the
+    request before any link is made.
+
+    Locals: contributor %>
+<% if current_user.present? && !contributor.claimed? &&
+      current_user.enact_contributor.blank? &&
+      current_user.profile_requests.pending.none? %>
+  <div class="enact-claim-prompt mt-2">
+    <button type="button" class="btn btn-link btn-sm p-0"
+            data-toggle="modal" data-target="#enact-claim-modal" role="button">
+      <%= t('enact.research_profiles.claim.prompt', default: 'Is this you?') %>
+    </button>
+  </div>
+
+  <div class="modal fade" id="enact-claim-modal" tabindex="-1" role="dialog"
+       aria-labelledby="enact-claim-modal-label" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <%= form_with url: HykuKnapsack::Engine.routes.url_helpers.claim_enact_contributor_path(contributor),
+                      method: :post do %>
+          <div class="modal-header">
+            <h4 class="modal-title" id="enact-claim-modal-label">
+              <%= t('enact.research_profiles.claim.title', default: 'Claim this research profile') %>
+            </h4>
+            <button type="button" class="close" data-dismiss="modal"
+                    aria-label="<%= t('enact.research_profiles.claim.close', default: 'Close') %>">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+
+          <div class="modal-body">
+            <p>
+              <%= t('enact.research_profiles.claim.body_html',
+                    profile: tag.strong(contributor.display_name),
+                    default: 'Request to be linked to %{profile}. An administrator will review this before the profile becomes yours to edit.') %>
+            </p>
+            <div class="form-group mb-0">
+              <%= label_tag 'profile_request[note]',
+                            t('enact.research_profiles.claim.note_label',
+                              default: 'Anything the reviewer should know? (optional)'),
+                            class: 'form-label small text-muted' %>
+              <%= text_area_tag 'profile_request[note]', nil, rows: 3, class: 'form-control' %>
+            </div>
+          </div>
+
+          <div class="modal-footer">
+            <button type="button" class="btn btn-link" data-dismiss="modal">
+              <%= t('enact.research_profiles.claim.cancel', default: 'Cancel') %>
+            </button>
+            <%= submit_tag t('enact.research_profiles.claim.action', default: 'Request to claim this profile'),
+                           name: nil, class: 'btn btn-primary' %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+  </div>
+<% end %>

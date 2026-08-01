@@ -28,11 +28,22 @@
                                 id: 'collapseUserActivity',
                                 open: menu.user_activity_section?,
                                 title: t('hyrax.admin.sidebar.user_activity') do %>
+    <%# OVERRIDE: "Account profile", not Hyrax's bare "Profile" — this app also has
+        research profiles, and two adjacent items both called "Profile" would be
+        ambiguous. This one is the login account; the next is the scholarly identity. %>
     <%= menu.nav_link(hyrax.dashboard_profile_path(current_user),
                       class: "nav-link",
                       also_active_for: hyrax.edit_dashboard_profile_path(current_user),
-                      title: t('hyrax.admin.sidebar.profile')) do %>
-      <span class="fa fa-id-card" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.profile') %></span>
+                      title: t('enact.account_profile.nav')) do %>
+      <span class="fa fa-id-card" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('enact.account_profile.nav') %></span>
+    <% end %>
+
+    <%# The user's own research profile, or their request for one. Sits directly
+        under the account profile: the two are the paired halves of "who am I here". %>
+    <%= menu.nav_link(HykuKnapsack::Engine.routes.url_helpers.dashboard_research_profile_path,
+                      class: "nav-link",
+                      title: t('enact.research_profiles.mine.nav')) do %>
+      <span class="fa fa-id-badge" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('enact.research_profiles.mine.nav') %></span>
     <% end %>
 
     <%= menu.nav_link(hyrax.notifications_path,

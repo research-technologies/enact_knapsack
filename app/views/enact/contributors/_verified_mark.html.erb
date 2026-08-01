@@ -1,0 +1,12 @@
+<%# A verified mark beside a claimed profile's name. It says only that some
+    account holds this profile; it never names or links to the account.
+
+    Locals: contributor %>
+<% if contributor.claimed? %>
+  <span class="enact-contributor-verified ml-1"
+        title="<%= t('enact.research_profiles.verified.tooltip',
+                     default: 'Verified — this profile belongs to a repository account') %>">
+    <span class="fa fa-check-circle" aria-hidden="true"></span>
+    <span class="sr-only"><%= t('enact.research_profiles.verified.label', default: 'Verified') %></span>
+  </span>
+<% end %>

@@ -1,0 +1,69 @@
+<%# OVERRIDE Hyku's override of Hyrax v5.2.0  %>
+<%# OVERRIDE Hyku to add the Research profiles worklist beside Users and Groups %>
+
+<% if menu.show_task? %>
+  <li class="h5 nav-item"><%= t('hyrax.admin.sidebar.tasks') %></li>
+<% end %>
+
+<% if can? :review, :submissions %>
+  <%= menu.nav_link(hyrax.admin_workflows_path,
+                    class: "nav-link",
+                    onclick: "dontChangeAccordion(event);",
+                    title: t('hyrax.admin.sidebar.workflow_review')) do %>
+    <span class="fa fa-flag" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.workflow_review') %></span>
+  <% end %>
+<% end %>
+
+<%# OVERRIDE: the research-profile worklist — users waiting for a profile, and
+    the link/unlink actions. Leads the accounts group (above Users and Groups)
+    because it is a queue with work waiting in it, not a browse page. The
+    controller enforces the same ability; this keeps the item out of a curator's
+    nav. The badge shows the pending queue depth so an admin sees waiting
+    requests without opening the page. %>
+<% if can?(:manage, :research_profile_links) %>
+  <% pending_profile_requests = Enact::ProfileRequest.pending.count %>
+  <%= menu.nav_link(HykuKnapsack::Engine.routes.url_helpers.dashboard_research_profiles_path,
+                    class: "nav-link",
+                    title: t('enact.research_profiles.admin.nav')) do %>
+    <span class="fa fa-id-badge" aria-hidden="true"></span>
+    <span class="sidebar-action-text"><%= t('enact.research_profiles.admin.nav') %></span>
+    <% if pending_profile_requests.positive? %>
+      <span class="badge badge-primary ml-1"><%= pending_profile_requests %></span>
+    <% end %>
+  <% end %>
+<% end %>
+
+<% if can? :read, User %>
+  <%= menu.nav_link(hyrax.admin_users_path,
+                    class: "nav-link",
+                    onclick: "dontChangeAccordion(event);",
+                    title: t('hyrax.admin.sidebar.users')) do %>
+    <span class="fa fa-user" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.users') %></span>
+  <% end %>
+<% end %>
+
+<% if can? :read, Hyrax::Group %>
+    <%= menu.nav_link(main_app.admin_groups_path,
+                      class: "nav-link",
+                      title: t('hyrax.admin.sidebar.manage_groups')) do %>
+        <span class="fa fa-users"></span> <span class="sidebar-action-text"><%= t('hyrax.admin.sidebar.manage_groups') %></span>
+    <% end %>
+<% end %>
+
+<% if can? :read, :admin_dashboard %>
+  <%= menu.nav_link(hyrax.embargoes_path,
+                    class: "nav-link",
+                    onclick: "dontChangeAccordion(event);",
+                    title: t('hyrax.embargoes.index.manage_embargoes')) do %>
+    <span class="fa fa-flag" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.embargoes.index.manage_embargoes') %></span>
+  <% end %>
+
+  <%= menu.nav_link(hyrax.leases_path,
+                    class: "nav-link",
+                    onclick: "dontChangeAccordion(event);",
+                    title: t('hyrax.leases.index.manage_leases')) do %>
+    <span class="fa fa-flag" aria-hidden="true"></span> <span class="sidebar-action-text"><%= t('hyrax.leases.index.manage_leases') %></span>
+  <% end %>
+<% end %>
+
+<%= render 'hyrax/dashboard/sidebar/menu_partials', menu: menu, section: :tasks %>

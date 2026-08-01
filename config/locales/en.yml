@@ -200,7 +200,6 @@ en:
       # Empty state + ORCID link label for the work show-page contributors card.
       none: No contributors listed.
       orcid: ORCID
-      # Admin-gated profile edit (Phase 1: no owner/claim yet).
       edit:
         title: Edit profile
         link: Edit
@@ -243,7 +242,103 @@ en:
         pagination: Works pages
         prev_page: "‹ Prev"
         next_page: "Next ›"
+    # Overrides Hyrax's bare "Profile" sidebar label, which is ambiguous once
+    # research profiles exist alongside account ones.
+    account_profile:
+      nav: Account profile
     job_statuses:
       disabled: The job statuses page is not enabled.
       nav: Job statuses
       title: Your job activity
+    research_profiles:
+      already_requested: You already have a request awaiting review.
+      admin:
+        already_linked: That profile or user is already linked.
+        claim_request: The profile this user asked to claim
+        claiming: 'Claiming:'
+        col_action: Action
+        col_orcid: ORCID
+        col_profile: Research profile
+        col_user: User
+        cancel: Cancel
+        create: Create and link a new profile
+        create_explain: Opens a form prefilled from this user’s name, ORCID and affiliation. These are copied once — later changes to the account are not carried over.
+        create_for_html: This profile will be linked to %{email}.
+        create_heading: Or create a new profile
+        create_submit: Create profile and link
+        create_title: New research profile
+        name_hint: How this person should be credited on works.
+        decline_heading: Or decline this request
+        decline_needs_reason: Please give a reason — it is shown to the person who asked.
+        decline_reason_hint: Shown to the person who asked, so they know what to do next.
+        decline_reason_label: Reason for declining
+        decline_submit: Decline request
+        declined: Request declined.
+        forbidden: You are not authorized to manage research profile links.
+        link: Link
+        link_this: Link this profile
+        link_title: Link a research profile
+        linked: Linked to %{name}.
+        # Short so it does not wrap in the sidebar; `title` carries the full phrasing.
+        nav: Link profiles
+        no_name: "(no name)"
+        no_results: No profiles match that search.
+        none: There are no users to show.
+        not_linked: There was no link to remove.
+        orcid_conflict_html: This user’s ORCID already belongs to %{profile}, which another user has claimed. Resolve that before creating a new profile.
+        past_declines:
+          one: Declined before
+          other: Declined before (%{count} times)
+        orcid_match: Same ORCID — almost certainly the same person
+        pagination: Worklist pages
+        profile_already_linked: That profile is already linked to another user.
+        profile_missing: That profile no longer exists.
+        request_missing: That request is no longer open.
+        requested_on: Requested %{date}
+        review: Review
+        search: Search
+        search_label: Search users
+        search_placeholder: Search by name or email
+        search_profiles: Search all profiles
+        search_profiles_placeholder: Search by name or ORCID
+        suggestions: Similar existing profiles
+        summary: "%{requests} waiting for review · %{unlinked} without a profile"
+        title: Link research profiles
+        unlink: Unlink
+        unlinked: Profile unlinked. The profile itself was not deleted.
+        user_already_linked: That user already has a profile (%{name}).
+        user_missing: That user no longer exists.
+      request_missing: There was no open request to withdraw.
+      requested: Your request has been sent for review.
+      withdrawn: Your request has been withdrawn.
+      claim:
+        action: Request to claim this profile
+        body_html: Request to be linked to %{profile}. An administrator will review this before the profile becomes yours to edit.
+        cancel: Cancel
+        close: Close
+        note_label: Anything the reviewer should know? (optional)
+        prompt: Is this you?
+        title: Claim this research profile
+      errors:
+        contributor_claimed: is already linked to another user
+        user_linked: already has a research profile
+      verified:
+        label: Verified
+        tooltip: Verified — this profile belongs to a repository account
+      panel:
+        missing_user: The linked account no longer exists.
+        unlink: Unlink
+        unlink_from: Unlink from user %{email}
+      mine:
+        browse_html: Already listed? You can %{link} and claim the one that is you.
+        declined: Your previous request was declined on %{date}.
+        browse_link: browse existing profiles
+        explain: A research profile collects the works you are credited on. An administrator reviews each request.
+        nav: Research profile
+        none: You do not have a research profile yet.
+        note_label: Anything the reviewer should know? (optional)
+        pending: Your request is awaiting review.
+        pending_claim_html: Your request to claim %{profile} is awaiting review.
+        request: Request a research profile
+        title: Research profile
+        withdraw: Withdraw request

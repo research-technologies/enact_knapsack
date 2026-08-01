@@ -1,0 +1,68 @@
+<%# The route to getting a research profile: a pending request, or an invitation
+    to ask for one. Linking is admin-approved, so this page never creates a
+    profile itself — it only records the ask.
+
+    A user who already HAS a profile never reaches here. %>
+<div class="container enact-my-research-profile">
+  <h1><%= t('enact.research_profiles.mine.title', default: 'Research profile') %></h1>
+
+  <%# A previous decline, with the reviewer's reason so a returning user
+      knows their request was considered rather than ignored, and what to change
+      before asking again. %>
+  <% if @last_decline.present? %>
+    <div class="alert alert-warning">
+      <p class="mb-1">
+        <%= t('enact.research_profiles.mine.declined',
+              date: l(@last_decline.reviewed_at.to_date, format: :long),
+              default: 'Your previous request was declined on %{date}.') %>
+      </p>
+      <% if @last_decline.review_note.present? %>
+        <p class="mb-0 font-italic">&ldquo;<%= @last_decline.review_note %>&rdquo;</p>
+      <% end %>
+    </div>
+  <% end %>
+
+  <% if @pending_request.present? %>
+    <div class="alert alert-info">
+      <p class="mb-2">
+        <% if @pending_request.claim? && @pending_request.contributor.present? %>
+          <%= t('enact.research_profiles.mine.pending_claim_html',
+                profile: link_to(@pending_request.contributor.display_name,
+                                 "/contributors/#{@pending_request.contributor.id}"),
+                default: 'Your request to claim %{profile} is awaiting review.') %>
+        <% else %>
+          <%= t('enact.research_profiles.mine.pending', default: 'Your request is awaiting review.') %>
+        <% end %>
+      </p>
+      <%= button_to t('enact.research_profiles.mine.withdraw', default: 'Withdraw request'),
+                    HykuKnapsack::Engine.routes.url_helpers
+                      .dashboard_research_profile_request_path(@pending_request),
+                    method: :delete, class: 'btn btn-outline-secondary btn-sm' %>
+    </div>
+
+  <% else %>
+    <p class="text-muted"><%= t('enact.research_profiles.mine.none',
+                                default: 'You do not have a research profile yet.') %></p>
+    <p class="text-muted small"><%= t('enact.research_profiles.mine.explain',
+                                      default: 'A research profile collects the works you are credited on. An administrator reviews each request.') %></p>
+
+    <%= form_with url: HykuKnapsack::Engine.routes.url_helpers.dashboard_research_profile_requests_path,
+                  method: :post, class: 'enact-request-profile' do |f| %>
+      <div class="form-group">
+        <%= label_tag 'profile_request[note]',
+                      t('enact.research_profiles.mine.note_label', default: 'Anything the reviewer should know? (optional)'),
+                      class: 'form-label small text-muted' %>
+        <%= text_area_tag 'profile_request[note]', nil, rows: 3, class: 'form-control' %>
+      </div>
+      <%= f.submit t('enact.research_profiles.mine.request', default: 'Request a research profile'),
+                   class: 'btn btn-primary' %>
+    <% end %>
+
+    <p class="mt-3 mb-0 small text-muted">
+      <%= t('enact.research_profiles.mine.browse_html',
+            link: link_to(t('enact.research_profiles.mine.browse_link', default: 'browse existing profiles'),
+                          '/contributors'),
+            default: 'Already listed? You can %{link} and claim the one that is you.') %>
+    </p>
+  <% end %>
+</div>

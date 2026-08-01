@@ -1,0 +1,147 @@
+<%# Admin research-profile worklist: every user in one list, ordered by what can
+    be done about them — pending requests first (oldest ask leading), then users
+    with no profile, then users who already have one. %>
+<div class="container enact-profile-worklist">
+  <h1><%= t('enact.research_profiles.admin.title', default: 'Link research profiles') %></h1>
+
+  <p class="text-muted">
+    <%= t('enact.research_profiles.admin.summary',
+          requests: @request_count, unlinked: @unlinked_count,
+          default: '%{requests} waiting for review · %{unlinked} without a profile') %>
+  </p>
+
+  <%= form_with url: HykuKnapsack::Engine.routes.url_helpers.dashboard_research_profiles_path,
+                method: :get, class: 'mb-4' do %>
+    <div class="form-row align-items-end">
+      <div class="col-md-6 mb-2">
+        <%= label_tag :q, t('enact.research_profiles.admin.search_label', default: 'Search users'),
+                      class: 'form-label small text-muted' %>
+        <%= search_field_tag :q, @search,
+                             placeholder: t('enact.research_profiles.admin.search_placeholder',
+                                            default: 'Search by name or email'),
+                             class: 'form-control' %>
+      </div>
+      <div class="col-md-3 mb-2">
+        <%= submit_tag t('enact.research_profiles.admin.search', default: 'Search'),
+                       name: nil, class: 'btn btn-outline-secondary' %>
+      </div>
+    </div>
+  <% end %>
+
+  <% if @users.any? %>
+    <table class="table table-striped enact-worklist-table">
+      <thead>
+        <tr>
+          <th><%= t('enact.research_profiles.admin.col_user', default: 'User') %></th>
+          <th><%= t('enact.research_profiles.admin.col_orcid', default: 'ORCID') %></th>
+          <th><%= t('enact.research_profiles.admin.col_profile', default: 'Research profile') %></th>
+          <th class="text-right"><%= t('enact.research_profiles.admin.col_action', default: 'Action') %></th>
+        </tr>
+      </thead>
+      <tbody>
+        <%# Preloaded for the whole page rather than looked up per row: with every
+            user listed, a per-row query would be an N+1 on the largest table here. %>
+        <% ids = @users.map(&:id) %>
+        <% pending_by_user = Enact::ProfileRequest.pending.where(user_id: ids)
+                                                 .includes(:contributor).index_by(&:user_id) %>
+        <% profile_by_user = Enact::Contributor.where(user_id: ids).index_by(&:user_id) %>
+        <% @users.each do |user| %>
+          <% pending = pending_by_user[user.id] %>
+          <% profile = profile_by_user[user.id] %>
+          <tr>
+            <%# Many Hyku accounts never set a display name, so lead with whichever
+                identifier is real rather than a row of "(no name)" placeholders. %>
+            <td>
+              <% if user.display_name.present? %>
+                <div><%= user.display_name %></div>
+                <div class="small text-muted"><%= user.email %></div>
+              <% else %>
+                <div><%= user.email %></div>
+              <% end %>
+              <% if pending&.note.present? %>
+                <div class="small font-italic text-muted mt-1">&ldquo;<%= pending.note %>&rdquo;</div>
+              <% end %>
+            </td>
+            <td class="small"><%= user.orcid.presence || '—' %></td>
+            <td class="small">
+              <% if profile.present? %>
+                <%= link_to profile.display_name, "/contributors/#{profile.id}",
+                            target: '_blank', rel: 'noopener' %>
+              <% elsif pending.present? %>
+                <%# A claim names the profile the user believes is theirs — the
+                    whole value of a targeted request, so surface it here. %>
+                <% if pending.claim? && pending.contributor.present? %>
+                  <%= t('enact.research_profiles.admin.claiming', default: 'Claiming:') %>
+                  <%= link_to pending.contributor.display_name,
+                              "/contributors/#{pending.contributor.id}",
+                              target: '_blank', rel: 'noopener' %>
+                <% else %>
+                  <span class="text-muted"><%= t('enact.research_profiles.admin.requested_on',
+                                                 date: l(pending.created_at.to_date, format: :long),
+                                                 default: 'Requested %{date}') %></span>
+                <% end %>
+              <% else %>
+                <span class="text-muted">—</span>
+              <% end %>
+            </td>
+            <%# button_to renders a block-level <form>, so the buttons are laid
+                out as flex items to keep them on one row. %>
+            <td class="text-right text-nowrap">
+              <div class="d-flex justify-content-end align-items-start">
+                <%# Review only — approving and declining both happen there,
+                    where the request's note and the candidate profiles are in
+                    view. This row shows an email and a date, which is not
+                    enough to decide on. %>
+                <% if pending.present? %>
+                  <%= link_to t('enact.research_profiles.admin.review', default: 'Review'),
+                              HykuKnapsack::Engine.routes.url_helpers.new_dashboard_research_profile_link_path(user),
+                              class: 'btn btn-primary btn-sm' %>
+                <% elsif profile.present? %>
+                  <%= button_to t('enact.research_profiles.admin.unlink', default: 'Unlink'),
+                                HykuKnapsack::Engine.routes.url_helpers.enact_contributor_link_path(profile),
+                                method: :delete, class: 'btn btn-outline-secondary btn-sm' %>
+                <% else %>
+                  <%= link_to t('enact.research_profiles.admin.link', default: 'Link'),
+                              HykuKnapsack::Engine.routes.url_helpers.new_dashboard_research_profile_link_path(user),
+                              class: 'btn btn-primary btn-sm' %>
+                <% end %>
+              </div>
+            </td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+
+    <%# Pagination is rendered manually rather than with Kaminari's `paginate`:
+        this route lives in the knapsack's isolated engine, and Kaminari resolves
+        page links by string-keyed controller/action through url_for, which only
+        honors symbol keys — so the engine route never matches. Page links must
+        carry q, or paging silently resets the search. %>
+    <% if @users.total_pages > 1 %>
+      <% page_link = ->(page) { HykuKnapsack::Engine.routes.url_helpers
+                                  .dashboard_research_profiles_path(page:, q: @search.presence) } %>
+      <nav aria-label="<%= t('enact.research_profiles.admin.pagination', default: 'Worklist pages') %>">
+        <ul class="pagination justify-content-center">
+          <li class="page-item <%= 'disabled' unless @users.prev_page %>">
+            <%= link_to t('enact.contributors.index.prev_page', default: '‹ Prev'),
+                        @users.prev_page ? page_link.call(@users.prev_page) : '#', class: 'page-link' %>
+          </li>
+          <li class="page-item disabled">
+            <span class="page-link"><%= @users.current_page %> / <%= @users.total_pages %></span>
+          </li>
+          <li class="page-item <%= 'disabled' unless @users.next_page %>">
+            <%= link_to t('enact.contributors.index.next_page', default: 'Next ›'),
+                        @users.next_page ? page_link.call(@users.next_page) : '#', class: 'page-link' %>
+          </li>
+        </ul>
+      </nav>
+    <% end %>
+
+  <% elsif @search.present? %>
+    <p class="text-muted"><%= t('enact.research_profiles.admin.no_results',
+                                default: 'No profiles match that search.') %></p>
+  <% else %>
+    <p class="text-muted"><%= t('enact.research_profiles.admin.none',
+                                default: 'There are no users to show.') %></p>
+  <% end %>
+</div>
