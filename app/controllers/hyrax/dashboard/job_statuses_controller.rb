@@ -8,8 +8,14 @@ module Hyrax
       before_action :authenticate_user!, :ensure_enabled
 
       def index
+        add_breadcrumb t(:'hyrax.controls.home'), root_path
+        add_breadcrumb t(:'hyrax.dashboard.breadcrumbs.admin'), hyrax.dashboard_path
+        add_breadcrumb t('enact.job_statuses.title'), request.path
+
         grouped = HykuKnapsack::UserJobs.grouped_for(current_user)
         @works = HykuKnapsack::UserJobsPresenter.new(grouped:).works
+
+        render(partial: 'works', locals: { works: @works }) if params[:poll].to_s == 'true'
       end
 
       private
