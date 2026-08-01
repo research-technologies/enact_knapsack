@@ -37,7 +37,12 @@ module Enact
     # Each row carries an optional `detail` string (ORCID · affiliation) the picker
     # renders as a muted second line, so a curator can tell two same-named
     # contributors apart.
+    #
+    # Blank terms short-circuit: `matching` would build ILIKE '%%' and dump an
+    # arbitrary 20 rows.
     def search(query)
+      return [] if query.to_s.strip.blank?
+
       Enact::Contributor.matching(query).order(:display_name).limit(20).map { |c| row(c) }
     end
 

@@ -48,6 +48,14 @@ RSpec.describe 'Enact :contributors linked_record picker procs' do
         expect(results.map { |r| r[:id] }).to include(ada.id.to_s)
       end
     end
+
+    context 'a blank or whitespace-only term' do
+      let(:query) { '   ' }
+
+      it 'returns no rows rather than every contributor' do
+        expect(results).to eq([])
+      end
+    end
   end
 
   describe 'similar (fuzzy "did you mean" check)' do
