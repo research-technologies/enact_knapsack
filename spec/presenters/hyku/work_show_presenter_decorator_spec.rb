@@ -101,4 +101,64 @@ RSpec.describe Hyku::WorkShowPresenterDecorator do
       end
     end
   end
+
+  describe 'member panes', :clean_repo do
+    subject(:presenter) { Hyku::WorkShowPresenter.new(parent_doc, ability, nil) }
+
+    let(:user) { FactoryBot.create(:user) }
+    let(:ability) { ::Ability.new(user) }
+
+    let(:file_set) do
+      resource = Hyrax.persister.save(resource: Hyrax::FileSet.new(title: ['Bound portfolio.pdf']))
+      Hyrax::SolrService.add(Hyrax::Indexers::FileSetIndexer.new(resource:).to_solr, commit: true)
+      resource
+    end
+
+    let(:child_work) do
+      resource = Hyrax.persister.save(resource: Portfolio.new(title: ['A Machine for Learning']))
+      Hyrax::SolrService.add(PortfolioIndexer.new(resource:).to_solr, commit: true)
+      resource
+    end
+
+    let(:parent_doc) do
+      resource = Hyrax.persister.save(
+        resource: Portfolio.new(title: ['Primary Space'], member_ids: [file_set.id, child_work.id])
+      )
+      Hyrax::SolrService.add(PortfolioIndexer.new(resource:).to_solr, commit: true)
+      ::SolrDocument.new(Hyrax::SolrService.query("{!field f=id}#{resource.id}", rows: 1).first)
+    end
+
+    it 'splits members into file set ids and child work ids' do
+      # Stubbed explicitly: the fixtures have no visibility, so with the flag on they
+      # would both be filtered out and this would pass without splitting anything.
+      allow(Flipflop).to receive(:hide_private_items?).and_return(false)
+
+      file_sets, child_works = presenter.enact_member_ids
+
+      expect(file_sets.map(&:to_s)).to eq([file_set.id.to_s])
+      expect(child_works.map(&:to_s)).to eq([child_work.id.to_s])
+    end
+
+    it 'skips a member id with no indexed document rather than raising' do
+      # A real UUID with no Solr document, which is what a deleted-but-still-referenced
+      # member looks like. An unsaved record's id casts to "" and tests something else.
+      ghost = Valkyrie::ID.new(SecureRandom.uuid)
+      resource = Hyrax.persister.save(
+        resource: Portfolio.new(title: ['Has a ghost'], member_ids: [child_work.id, ghost])
+      )
+      Hyrax::SolrService.add(PortfolioIndexer.new(resource:).to_solr, commit: true)
+      doc = ::SolrDocument.new(Hyrax::SolrService.query("{!field f=id}#{resource.id}", rows: 1).first)
+
+      presenter = Hyku::WorkShowPresenter.new(doc, ability, nil)
+
+      expect(presenter.enact_member_ids.last.map(&:to_s)).to eq([child_work.id.to_s])
+      expect(presenter.enact_member_ids.first).to be_empty
+    end
+
+    it 'drops members the ability cannot read when hide_private_items is on' do
+      allow(Flipflop).to receive(:hide_private_items?).and_return(true)
+
+      expect(presenter.enact_member_ids).to eq([[], []])
+    end
+  end
 end

@@ -1,0 +1,130 @@
+<% content_for(:extra_body_classes, 'works-show ') %>
+<% provide :page_title, @presenter.page_title %>
+
+<% content_for :canonical_url do %>
+  <link rel="canonical" href="<%= canonical_url_for(@presenter) %>" />
+<% end %>
+
+<%# :head yields after _appearance_styles, so this lands after the tenant's Custom
+    CSS -- which is why enact_show.scss only consumes the tunable custom properties
+    and never declares them. %>
+<% content_for :head do %>
+  <%= stylesheet_link_tag 'enact/enact_show', media: 'all' %>
+  <%= javascript_include_tag 'enact/enact_show' %>
+  <%= render 'shared/enact_theme_vars' %>
+<% end %>
+
+<%= render 'shared/citations' %>
+<%= render 'shared/additional_citations' %>
+
+<% panes = enact_show_panes(@presenter) %>
+<% active_pane = enact_active_pane(@presenter) %>
+
+<div class="enact-show" itemscope itemtype="http://schema.org/CreativeWork">
+
+  <div class="enact-masthead">
+    <div class="enact-masthead-inner">
+      <%= render 'work_title', presenter: @presenter, item_count: enact_child_work_ids(@presenter).total_count %>
+      <div class="enact-masthead-actions">
+        <%= render 'show_actions', presenter: @presenter %>
+      </div>
+    </div>
+  </div>
+
+  <%= render 'workflow_actions_widget', presenter: @presenter %>
+
+  <% if enact_viewer?(@presenter) %>
+    <div class="enact-viewer">
+      <% if @presenter.video_embed_viewer? %>
+        <%= render 'video_embed_viewer', presenter: @presenter %>
+      <% elsif @presenter.iiif_viewer? %>
+        <%= render 'representative_media', presenter: @presenter, viewer: true %>
+      <% elsif @presenter.show_pdf_viewer? %>
+        <%= render 'pdf_js', file_set_presenter: pdf_file_set_presenter(@presenter) %>
+      <% else %>
+        <div class="enact-viewer-thumb">
+          <%= render 'representative_media', presenter: @presenter, viewer: false %>
+        </div>
+      <% end %>
+    </div>
+  <% end %>
+
+  <div class="enact-body">
+    <div class="enact-main">
+      <ul class="nav nav-tabs enact-tabs" role="tablist" aria-label="<%= t('enact.show.tabs_label') %>">
+        <% panes.each do |key, label| %>
+          <%# role=presentation: listitem is not a permitted child of tablist, and the
+              intervening role breaks the tab's ownership by the list. %>
+          <li class="nav-item" role="presentation">
+            <a class="nav-link <%= 'active' if key == active_pane %>"
+               id="enact-tab-<%= key %>"
+               href="#enact-pane-<%= key %>"
+               data-toggle="tab"
+               role="tab"
+               aria-controls="enact-pane-<%= key %>"
+               aria-selected="<%= key == active_pane %>"><%= label %></a>
+          </li>
+        <% end %>
+      </ul>
+
+      <div class="tab-content enact-panes">
+        <% panes.each do |key, _label| %>
+          <%# No Bootstrap `fade` class: it brings transition: opacity .15s linear, and
+              the design switches panes instantly. %>
+          <div class="tab-pane <%= 'active show' if key == active_pane %>"
+               id="enact-pane-<%= key %>"
+               role="tabpanel"
+               tabindex="0"
+               aria-labelledby="enact-tab-<%= key %>">
+            <% case key %>
+            <% when :context %>
+              <div class="enact-prose"><%= enact_context_html(@presenter) %></div>
+            <% when :metadata %>
+              <%= render 'work_description', presenter: @presenter %>
+
+              <%# Collections, parent works, and the admin set when signed in. Rendered
+                  before its heading so the heading can be skipped when it is empty,
+                  which it is on a work with no collections or parents. %>
+              <% placement_html = capture do %>
+                <%= render 'relationships', presenter: @presenter %>
+                <%= render 'related_items', presenter: @presenter %>
+              <% end %>
+              <% if enact_section_present?(placement_html) %>
+                <div class="enact-placement">
+                  <div class="enact-section-head">
+                    <h2 class="enact-section-title"><%= t('enact.show.placement_heading') %></h2>
+                  </div>
+                  <%= placement_html %>
+                </div>
+              <% end %>
+
+              <%# Same capture-then-guard as the placement block above: a work whose
+                  profile fields are all blank would otherwise show a lone heading. %>
+              <% metadata_html = capture { render 'metadata', presenter: @presenter } %>
+              <% if enact_section_present?(metadata_html) %>
+                <div class="enact-section-head enact-metadata-head">
+                  <h2 class="enact-section-title"><%= t('enact.show.metadata_heading') %></h2>
+                </div>
+                <%= metadata_html %>
+              <% end %>
+            <% when :items %>
+              <%= render 'enact_items', presenter: @presenter, members: enact_child_works(@presenter),
+                                            paginated: enact_child_work_ids(@presenter),
+                                            items_label: enact_items_label(@presenter) %>
+            <% when :files %>
+              <%= render 'enact_files', presenter: @presenter, members: enact_file_sets(@presenter),
+                                            paginated: enact_file_set_ids(@presenter) %>
+            <% end %>
+          </div>
+        <% end %>
+      </div>
+    </div>
+
+    <%= render 'enact_sidebar', presenter: @presenter %>
+  </div>
+
+  <span class='hide analytics-event' data-category="work" data-action="work-view" data-name="<%= @presenter.id %>"></span>
+  <% @presenter.member_of_collection_ids.each do |collection_id| %>
+    <span class='hide analytics-event' data-category="work-in-collection" data-action="work-in-collection-view" data-name="<%= collection_id %>"></span>
+  <% end %>
+</div>

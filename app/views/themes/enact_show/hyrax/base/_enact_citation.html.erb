@@ -1,0 +1,44 @@
+<section class="enact-card">
+  <h2 class="enact-card-head"><%= t('enact.show.cite') %></h2>
+  <div class="enact-card-body">
+    <% if all_authors(presenter).any? %>
+      <%
+        citations = {
+          'apa' => export_as_apa_citation(presenter),
+          'mla' => export_as_mla_citation(presenter),
+          'chicago' => export_as_chicago_citation(presenter)
+        }.select { |_style, text| text.present? }
+      %>
+      <% if citations.any? %>
+        <div class="enact-cite" data-enact-cite>
+          <select class="form-control form-control-sm enact-cite-picker" data-enact-cite-picker
+                  aria-label="<%= t('enact.show.citation_style') %>">
+            <% citations.each_key do |style| %>
+              <option value="<%= style %>"><%= t("enact.show.citation_styles.#{style}") %></option>
+            <% end %>
+          </select>
+
+          <% citations.each_with_index do |(style, text), index| %>
+            <blockquote class="enact-cite-text" data-enact-cite-text="<%= style %>"
+                        <%= 'hidden' unless index.zero? %>><%= text %></blockquote>
+          <% end %>
+
+          <%# The confirmation sits beside the button: .enact-cite is a flex column, so as
+              siblings they would stack. %>
+          <div class="d-flex align-items-center">
+            <button type="button" class="enact-cite-copy" data-enact-cite-copy>
+              <%= t('enact.show.citation_copy') %>
+            </button>
+            <span class="enact-cite-copied ml-2" data-enact-cite-copied hidden aria-live="polite"><%= t('enact.show.citation_copied') %></span>
+          </div>
+        </div>
+      <% end %>
+    <% end %>
+
+    <div class="enact-cite-exports">
+      <%= link_to t('enact.show.endnote'),
+                  polymorphic_path([main_app, presenter], format: 'endnote'),
+                  class: 'enact-cite-export-link' %>
+    </div>
+  </div>
+</section>

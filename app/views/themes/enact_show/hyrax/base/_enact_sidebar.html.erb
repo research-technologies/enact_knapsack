@@ -1,0 +1,41 @@
+<aside class="enact-sidebar">
+  <%# No access check needed here: _download_pdf re-resolves with downloadable: true and
+      renders nothing when nothing qualifies. %>
+  <% if presenter.show_pdf_download_button? %>
+    <%= render 'download_pdf', presenter: presenter %>
+  <% end %>
+
+  <% if presenter.try(:contributors).present? %>
+    <section class="enact-card">
+      <h2 class="enact-card-head"><%= t('enact.show.contributors') %></h2>
+      <div class="enact-card-body">
+        <%= render 'hyrax/compounds/work_contributors', presenter: presenter %>
+      </div>
+    </section>
+  <% end %>
+
+  <% if enact_relationships_card?(presenter) %>
+    <section class="enact-card">
+      <h2 class="enact-card-head"><%= t('enact.show.relationships') %></h2>
+      <div class="enact-card-body">
+        <%= render 'hyrax/compounds/related_within_project', presenter: presenter %>
+        <%= link_to t('enact.relationships.map_button'),
+                    enact_relationship_map_path(presenter),
+                    class: 'btn btn-primary btn-sm enact-relationship-map-link mt-3',
+                    data: { turbolinks: false, turbo: false } %>
+      </div>
+    </section>
+  <% end %>
+
+  <%# Through the shared partial so the knapsack's override stays in play. Rescued per
+      card as render_compound_cards does. %>
+  <% enact_card_fields(presenter).each do |field| %>
+    <% begin %>
+      <%= render 'hyrax/compounds/compound_card', presenter: presenter, field: field %>
+    <% rescue StandardError => e %>
+      <% Hyrax.logger.warn("enact_show sidebar, #{field} card: #{e.message}") %>
+    <% end %>
+  <% end %>
+
+  <%= render 'enact_citation', presenter: presenter %>
+</aside>
