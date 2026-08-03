@@ -62,7 +62,14 @@
                 <div class="small font-italic text-muted mt-1">&ldquo;<%= pending.note %>&rdquo;</div>
               <% end %>
             </td>
-            <td class="small"><%= user.orcid.presence || '—' %></td>
+            <td class="small">
+              <% if user.orcid.present? %>
+                <%= user.orcid %>
+              <% else %>
+                <span aria-hidden="true">&ndash;</span>
+                <span class="sr-only"><%= t('enact.research_profiles.admin.none_value', default: 'None') %></span>
+              <% end %>
+            </td>
             <td class="small">
               <% if profile.present? %>
                 <%= link_to profile.display_name, "/contributors/#{profile.id}",
@@ -81,7 +88,8 @@
                                                  default: 'Requested %{date}') %></span>
                 <% end %>
               <% else %>
-                <span class="text-muted">—</span>
+                <span class="text-muted" aria-hidden="true">&ndash;</span>
+                <span class="sr-only"><%= t('enact.research_profiles.admin.none_value', default: 'None') %></span>
               <% end %>
             </td>
             <%# button_to renders a block-level <form>, so the buttons are laid

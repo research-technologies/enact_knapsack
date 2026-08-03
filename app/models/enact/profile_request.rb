@@ -20,7 +20,9 @@ module Enact
     # so a declined request never permanently bars someone from asking again.
     validates :user_id, uniqueness: { conditions: -> { where(status: 'pending') } }, if: :pending?
 
-    validate :contributor_must_be_linkable
+    # Approving links the profile first, so re-checking on update would make a
+    # request reject the very link it is approving.
+    validate :contributor_must_be_linkable, on: :create
     validate :user_must_not_have_a_profile, on: :create
 
     scope :for_user, ->(user) { where(user:) }

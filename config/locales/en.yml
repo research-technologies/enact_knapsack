@@ -306,14 +306,14 @@ en:
         col_user: User
         cancel: Cancel
         create: Create and link a new profile
-        create_explain: Opens a form prefilled from this user’s name, ORCID and affiliation. These are copied once — later changes to the account are not carried over.
+        create_explain: Opens a form prefilled from this user’s name, ORCID and affiliation. These are copied once; later changes to the account are not carried over.
         create_for_html: This profile will be linked to %{email}.
         create_heading: Or create a new profile
         create_submit: Create profile and link
         create_title: New research profile
         name_hint: How this person should be credited on works.
         decline_heading: Or decline this request
-        decline_needs_reason: Please give a reason — it is shown to the person who asked.
+        decline_needs_reason: Please give a reason. It is shown to the person who asked.
         decline_reason_hint: Shown to the person who asked, so they know what to do next.
         decline_reason_label: Reason for declining
         decline_submit: Decline request
@@ -325,15 +325,17 @@ en:
         linked: Linked to %{name}.
         # Short so it does not wrap in the sidebar; `title` carries the full phrasing.
         nav: Link profiles
+        no_longer_linkable: Already linked
         no_name: "(no name)"
         no_results: No profiles match that search.
         none: There are no users to show.
+        none_value: None
         not_linked: There was no link to remove.
         orcid_conflict_html: This user’s ORCID already belongs to %{profile}, which another user has claimed. Resolve that before creating a new profile.
         past_declines:
           one: Declined before
           other: Declined before (%{count} times)
-        orcid_match: Same ORCID — almost certainly the same person
+        orcid_match: Same ORCID, almost certainly the same person
         pagination: Worklist pages
         profile_already_linked: That profile is already linked to another user.
         profile_missing: That profile no longer exists.
@@ -371,7 +373,7 @@ en:
         user_linked: already has a research profile
       verified:
         label: Verified
-        tooltip: Verified — this profile belongs to a repository account
+        tooltip: Verified. This profile belongs to a repository account
       panel:
         missing_user: The linked account no longer exists.
         unlink: Unlink

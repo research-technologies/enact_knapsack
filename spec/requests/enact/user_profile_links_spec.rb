@@ -362,6 +362,16 @@ RSpec.describe 'Enact research profile linking (admin)', type: :request, singlet
       expect(blob).not_to include(user.email)
     end
 
+    it 'approves a claim request for the profile it names' do
+      contributor = Enact::Contributor.create!(display_name: 'Ada Lovelace')
+      request = Enact::ProfileRequest.create!(user:, contributor:)
+
+      post "/dashboard/research-profiles/#{user.id}/link", params: { contributor_id: contributor.id }
+
+      expect(contributor.reload.user).to eq(user)
+      expect(request.reload).to be_approved
+    end
+
     it 'approves the pending request in the same action' do
       request = Enact::ProfileRequest.create!(user:)
       post "/dashboard/research-profiles/#{user.id}/link",

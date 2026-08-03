@@ -3,9 +3,11 @@
 
     Locals: contributor %>
 <% if contributor.claimed? %>
-  <span class="enact-contributor-verified ml-1"
+  <%# tabindex on a non-interactive span is deliberate: without it the title is
+      unreachable by keyboard. %>
+  <span class="enact-contributor-verified ml-1" tabindex="0"
         title="<%= t('enact.research_profiles.verified.tooltip',
-                     default: 'Verified — this profile belongs to a repository account') %>">
+                     default: 'Verified. This profile belongs to a repository account') %>">
     <span class="fa fa-check-circle" aria-hidden="true"></span>
     <span class="sr-only"><%= t('enact.research_profiles.verified.label', default: 'Verified') %></span>
   </span>

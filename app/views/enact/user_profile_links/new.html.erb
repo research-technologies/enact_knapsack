@@ -41,7 +41,7 @@
           <li>
             <%= l(declined.reviewed_at.to_date, format: :long) %>
             <% if declined.review_note.present? %>
-              &mdash; &ldquo;<%= declined.review_note %>&rdquo;
+              &ndash; &ldquo;<%= declined.review_note %>&rdquo;
             <% end %>
           </li>
         <% end %>
@@ -73,7 +73,7 @@
   <% if @orcid_match.present? %>
     <section class="mb-4">
       <h2 class="h6 text-muted"><%= t('enact.research_profiles.admin.orcid_match',
-                                      default: 'Same ORCID — almost certainly the same person') %></h2>
+                                      default: 'Same ORCID, almost certainly the same person') %></h2>
       <ul class="list-group">
         <%= render 'enact/contributors/candidate_row', contributor: @orcid_match, user: @user %>
       </ul>
@@ -128,7 +128,7 @@
                                     default: 'Or create a new profile') %></h2>
     <p class="small text-muted">
       <%= t('enact.research_profiles.admin.create_explain',
-            default: 'Opens a form prefilled from this user’s name, ORCID and affiliation. These are copied once — later changes to the account are not carried over.') %>
+            default: 'Opens a form prefilled from this user’s name, ORCID and affiliation. These are copied once; later changes to the account are not carried over.') %>
     </p>
     <%# A link to the prefilled form: the admin reviews and
         corrects the snapshot before the profile is written. %>

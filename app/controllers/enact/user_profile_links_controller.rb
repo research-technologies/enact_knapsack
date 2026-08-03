@@ -115,7 +115,11 @@ module Enact
         apply_link(contributor, @user, redirect_to: "/contributors/#{contributor.id}")
       else
         @contributor = contributor
+        # new_profile can redirect (find_linkable_user), so rendering
+        # unconditionally after it would raise DoubleRenderError.
         new_profile
+        return if performed?
+
         render :new_profile, status: :unprocessable_entity
       end
     end
@@ -138,8 +142,10 @@ module Enact
         Enact::ProfileRequest.pending.find_by(user_id: user.id)&.approve!(by: current_user)
       end
       redirect_to redirect_to, notice: t('enact.research_profiles.admin.linked', name: contributor.display_name)
-    rescue ActiveRecord::RecordNotUnique, ActiveRecord::RecordInvalid
+    rescue ActiveRecord::RecordNotUnique
       redirect_to review_path(user), alert: t('enact.research_profiles.admin.already_linked')
+    rescue ActiveRecord::RecordInvalid => e
+      redirect_to review_path(user), alert: e.record.errors.full_messages.to_sentence
     end
 
     def find_linkable_user(id = params[:user_id])

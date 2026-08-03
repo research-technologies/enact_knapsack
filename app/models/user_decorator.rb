@@ -17,6 +17,9 @@ module UserDecorator
             inverse_of: :user,
             dependent: nil
 
+    # `users` is shared across tenants but enact_profile_requests is per-tenant,
+    # so this clears only the current tenant's rows. The rest are unreachable
+    # once the account is gone.
     has_many :profile_requests,
              class_name: 'Enact::ProfileRequest',
              inverse_of: :user,

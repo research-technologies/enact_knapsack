@@ -21,9 +21,16 @@
     </div>
   </div>
 
-  <%= button_to t('enact.research_profiles.admin.link_this', default: 'Link this profile'),
-                HykuKnapsack::Engine.routes.url_helpers.dashboard_research_profile_link_path(user),
-                method: :post,
-                params: { contributor_id: contributor.id },
-                class: 'btn btn-outline-primary btn-sm text-nowrap' %>
+  <%# A candidate can be claimed by someone else between render and click. %>
+  <% if contributor.linkable? %>
+    <%= button_to t('enact.research_profiles.admin.link_this', default: 'Link this profile'),
+                  HykuKnapsack::Engine.routes.url_helpers.dashboard_research_profile_link_path(user),
+                  method: :post,
+                  params: { contributor_id: contributor.id },
+                  class: 'btn btn-outline-primary btn-sm text-nowrap' %>
+  <% else %>
+    <span class="text-muted small text-nowrap">
+      <%= t('enact.research_profiles.admin.no_longer_linkable', default: 'Already linked') %>
+    </span>
+  <% end %>
 </li>
