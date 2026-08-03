@@ -36,8 +36,7 @@ module Enact
     end
 
     def users
-      filter(::User.all)
-        .select('users.*, pending_requests.created_at AS requested_at')
+      filter(scoped_users)
         .joins(JOINS)
         .order(Arel.sql(ORDER))
         .page(@page).per(PER_PAGE)
@@ -51,10 +50,21 @@ module Enact
 
     private
 
+    # `users` is an Apartment excluded_model, so `User.all` spans the whole
+    # installation; `for_repository` joins the per-tenant `roles` table to narrow
+    # it, as Hyku's own admin user list does.
+    #
+    # A subquery rather than a direct join: `for_repository` is an inner join, so
+    # composing it with the LEFT JOINs above would multiply rows and throw off
+    # Kaminari's count.
+    def scoped_users
+      ::User.where(id: ::User.for_repository.select(:id))
+    end
+
     # `where.missing` needs User's has_one :enact_contributor (see UserDecorator).
     # Guests are excluded for free by User's default_scope.
     def unlinked
-      ::User.where.missing(:enact_contributor)
+      scoped_users.where.missing(:enact_contributor)
     end
 
     def filter(relation)

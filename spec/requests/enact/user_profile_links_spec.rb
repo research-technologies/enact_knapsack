@@ -42,6 +42,23 @@ RSpec.describe 'Enact research profile linking (admin)', type: :request, singlet
         expect(response.body).to include(linked.email)
       end
 
+      # `roles` is per-tenant, so an account with no role here stands in for one
+      # belonging to another tenant.
+      it 'omits accounts belonging to another tenant' do
+        outsider = FactoryBot.create(:user)
+        outsider.roles.destroy_all
+
+        get worklist_path
+        expect(response.body).not_to include(outsider.email)
+      end
+
+      it 'counts only this tenant in the summary' do
+        FactoryBot.create(:user).roles.destroy_all
+
+        get worklist_path
+        expect(assigns(:unlinked_count)).to eq(::User.for_repository.where.missing(:enact_contributor).distinct.count)
+      end
+
       it 'offers the action each group can take' do
         requester = FactoryBot.create(:user)
         Enact::ProfileRequest.create!(user: requester)
@@ -113,6 +130,27 @@ RSpec.describe 'Enact research profile linking (admin)', type: :request, singlet
 
       get worklist_path
       expect(response.body).to include(requester.email)
+    end
+  end
+
+  describe 'accounts from another tenant' do
+    let(:outsider) do
+      other = FactoryBot.create(:user)
+      other.roles.destroy_all
+      other
+    end
+
+    before { login_as(admin, scope: :user) }
+
+    it 'cannot be reached from the link screen' do
+      get "/dashboard/research-profiles/#{outsider.id}/link"
+      expect(response).to redirect_to(worklist_path)
+    end
+
+    it 'cannot be linked to a profile in this tenant' do
+      contributor = Enact::Contributor.create!(display_name: 'Ada Lovelace')
+      post "/dashboard/research-profiles/#{outsider.id}/link", params: { contributor_id: contributor.id }
+      expect(contributor.reload.user_id).to be_nil
     end
   end
 

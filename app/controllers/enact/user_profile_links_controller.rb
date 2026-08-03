@@ -163,9 +163,10 @@ module Enact
     def lookup_user(id)
       return nil if id.blank?
 
-      return ::User.find_by(id:) if id.to_s.match?(/\A\d+\z/)
-
-      ::User.from_url_component(id.to_s)
+      user = id.to_s.match?(/\A\d+\z/) ? ::User.find_by(id:) : ::User.from_url_component(id.to_s)
+      # Without this a hand-built URL links another tenant's account to a profile
+      # in this one. See Enact::ProfileWorklist#scoped_users.
+      user if user && ::User.for_repository.exists?(id: user.id)
     end
 
     def find_linkable_contributor(id)
