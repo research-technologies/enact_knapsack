@@ -42,8 +42,10 @@ module Enact
         .page(@page).per(PER_PAGE)
     end
 
+    # Scoped like #users: an unscoped count would report work that never appears
+    # in the list and so can never be actioned.
     def request_count
-      ProfileRequest.pending.count
+      ProfileRequest.pending.where(user_id: scoped_users.select(:id)).count
     end
 
     delegate :count, to: :unlinked, prefix: :unlinked

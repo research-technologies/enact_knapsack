@@ -52,6 +52,15 @@ RSpec.describe 'Enact research profile linking (admin)', type: :request, singlet
         expect(response.body).not_to include(outsider.email)
       end
 
+      it 'excludes another tenant’s request from the pending count' do
+        outsider = FactoryBot.create(:user)
+        Enact::ProfileRequest.create!(user: outsider)
+        outsider.roles.destroy_all
+
+        get worklist_path
+        expect(assigns(:request_count)).to eq(0)
+      end
+
       it 'counts only this tenant in the summary' do
         FactoryBot.create(:user).roles.destroy_all
 

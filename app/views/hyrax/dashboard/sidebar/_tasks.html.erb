@@ -21,7 +21,8 @@
     nav. The badge shows the pending queue depth so an admin sees waiting
     requests without opening the page. %>
 <% if can?(:manage, :research_profile_links) %>
-  <% pending_profile_requests = Enact::ProfileRequest.pending.count %>
+  <%# Through the worklist so the badge and the page it links to always agree. %>
+  <% pending_profile_requests = Enact::ProfileWorklist.new.request_count %>
   <%= menu.nav_link(HykuKnapsack::Engine.routes.url_helpers.dashboard_research_profiles_path,
                     class: "nav-link",
                     title: t('enact.research_profiles.admin.nav')) do %>

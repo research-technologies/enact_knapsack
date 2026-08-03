@@ -24,7 +24,17 @@ RSpec.describe 'Research profile dashboard navigation', type: :request, singlete
       Enact::ProfileRequest.create!(user:)
       login_as(admin, scope: :user)
       get '/dashboard'
-      expect(response.body).to include('/dashboard/research-profiles')
+      expect(response.body).to include('badge badge-primary')
+    end
+
+    it 'ignores requests from another tenant' do
+      outsider = FactoryBot.create(:user)
+      Enact::ProfileRequest.create!(user: outsider)
+      outsider.roles.destroy_all
+
+      login_as(admin, scope: :user)
+      get '/dashboard'
+      expect(response.body).not_to include('badge badge-primary')
     end
   end
 
