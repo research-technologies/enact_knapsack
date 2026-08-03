@@ -2,5 +2,6 @@
 
 module HykuKnapsack
   module ApplicationHelper
+    include ::EnactThemeHelper
   end
 end

@@ -1,0 +1,902 @@
+// enact_show work show theme. Its own sprockets unit, so no Bootstrap variables in scope.
+//
+// Two traps: never use the `font:` shorthand, and keep serif prose off h1-h6.
+// _appearance_styles pins font-family with !important and wins in both cases.
+
+// works-show as well as the theme class: show_page_theme is on every page's body, and
+// Turbolinks never removes a stylesheet once merged into head.
+.enact_show.works-show {
+  $ink: #1a1d1c;
+  $muted: #5b6563;
+  // 4.67:1 on white; the design's #7a8380 was 3.90:1 and failed AA.
+  $faint: #6d7674;
+  $border: #e0e4e2;
+  $hairline: #eef1f0;
+
+  // Clips the scrollbar overhang from the 50vw bleeds below. Must be on the body: a
+  // clipping ancestor inside the page crops the bleed instead.
+  overflow-x: clip;
+
+  .enact-show {
+    color: $ink;
+
+    .btn,
+    .form-control {
+      border-radius: 0;
+    }
+
+    // box-shadow: none drops Bootstrap's focus glow, which never clears 3:1 here.
+    .btn:focus-visible,
+    .form-control:focus-visible,
+    select:focus-visible {
+      box-shadow: none;
+      outline: 2px solid var(--enact-link, #0e5c58);
+      outline-offset: 2px;
+    }
+  }
+
+  // ---- breadcrumb --------------------------------------------------------
+
+  // Beats Blacklight's `.navbar + .container { @extend .py-2 }`, whose !important no
+  // amount of specificity can outrank.
+  #content-wrapper {
+    padding-top: 0 !important;
+  }
+
+  .breadcrumb {
+    background: #eef1f0;
+    border: 0;
+    border-radius: 0;
+    color: $muted;
+    font-size: 0.75rem;
+    line-height: 1.4;
+    margin: 0 calc(50% - 50vw);
+    padding: 0.7rem calc(50vw - 50%);
+  }
+
+  .breadcrumb-item + .breadcrumb-item::before {
+    color: #b6bdba;
+  }
+
+  // ---- masthead ----------------------------------------------------------
+
+  // Full-bleed band, container-aligned content: the negative margin escapes Hyku's
+  // .container and the matching padding pulls the content back to its edge.
+  .enact-masthead {
+    background: var(--enact-band, #f4f6f5);
+    border-bottom: 1px solid var(--enact-hairline, #{$border});
+    margin: 0 calc(50% - 50vw) 1.75rem;
+    padding: 1.75rem calc(50vw - 50%) 1.5rem;
+  }
+
+  .enact-masthead-inner {
+    align-items: start;
+    display: grid;
+    gap: 2rem;
+    grid-template-columns: minmax(0, 1fr) auto;
+  }
+
+  .enact-masthead-actions {
+    .show-actions {
+      align-items: center;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0;
+      justify-content: flex-end;
+      margin: 0;
+    }
+
+    // Dissolves Hyku's two .col-sm-6 halves so their buttons become flex items of one
+    // cluster, without touching the row markup.
+    .show-actions > [class*='col-'] {
+      display: contents;
+    }
+
+    // -1px collapses adjacent borders into one seam. .btn-group would do this, but
+    // `display: contents` above leaves no element to put it on.
+    .btn {
+      font-size: 0.8125rem;
+      line-height: 1.3;
+      margin: 0 0 0 -1px;
+      padding: 0.35rem 0.7rem;
+      white-space: nowrap;
+    }
+
+    // Also from .btn-group: draw the active button's borders over its neighbours'.
+    .btn:hover,
+    .btn:focus,
+    .btn:active {
+      position: relative;
+      z-index: 1;
+    }
+  }
+
+  .enact-eyebrow {
+    align-items: center;
+    display: flex;
+    gap: 0.6rem;
+    margin-bottom: 0.55rem;
+  }
+
+  .enact-eyebrow-type,
+  .enact-eyebrow-count {
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  .enact-eyebrow-type {
+    color: var(--enact-link, #0e5c58);
+  }
+
+  .enact-eyebrow-count {
+    color: $muted;
+  }
+
+  .enact-eyebrow-sep {
+    background: #c3cbc8;
+    display: inline-block;
+    height: 0.7rem;
+    width: 1px;
+  }
+
+  .enact-title {
+    color: var(--enact-brand-ink, #0a3a37);
+    font-size: 2.125rem;
+    font-weight: 600;
+    letter-spacing: -0.015em;
+    line-height: 1.15;
+    margin: 0 0 0.75rem;
+  }
+
+  .enact-citation-permalink {
+    display: inline-block;
+    font-size: 0.8125rem;
+    white-space: nowrap;
+  }
+
+  // Only when it trails the citation sentence; alone in the line it would read as an
+  // orphan indent.
+  .enact-citation-line > * + .enact-citation-permalink {
+    margin-left: 0.35rem;
+  }
+
+  .enact-citation-line {
+    color: #3c4543;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    margin: 0 0 0.875rem;
+    max-width: 62ch;
+  }
+
+  .enact-badges {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0;
+  }
+
+  // ---- badges ------------------------------------------------------------
+
+  // Scoped to .enact-show, not the body class, so the layout's own badges (the navbar
+  // notification count) are left alone.
+  .enact-show {
+    // Equalises the box: the license chip has a real border, the solid badges do not.
+    .badge,
+    .enact-badge-license {
+      border: 1px solid transparent;
+      border-radius: 0;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      line-height: 1.5;
+      padding: 0.25rem 0.625rem;
+      text-transform: uppercase;
+      vertical-align: baseline;
+    }
+
+    .badge-success {
+      background-color: var(--enact-primary, #0e5c58);
+      color: var(--enact-primary-text, #fff);
+    }
+
+    .badge-primary {
+      background-color: #1a1d1c;
+      color: #fff;
+    }
+
+    // Embargo, lease and restricted keep Bootstrap's amber and red on purpose: the
+    // colour is the only cue that access is limited.
+
+    .enact-badge-license {
+      background: #fff;
+      border: 1px solid #d3d9d7;
+      color: #3c4543;
+    }
+
+    // Smaller in lists, same colours, so the difference reads as hierarchy.
+    .enact-item-kind .badge,
+    .enact-tile-meta .badge {
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      line-height: 1.35;
+      padding: 0.0625rem 0.375rem;
+    }
+  }
+
+  // ---- viewer ------------------------------------------------------------
+
+  .enact-viewer {
+    margin-bottom: 1.75rem;
+
+    &::after {
+      border-top: 1px solid var(--enact-hairline, #{$border});
+      content: '';
+      display: block;
+      margin: 1.75rem calc(50% - 50vw) 0;
+    }
+  }
+
+  // position: relative because Hyrax positions the viewer iframe absolutely but gives it
+  // no context. Height replaces Hyku's 500px, ~194px of which UV spends on its chrome.
+  .viewer-wrapper {
+    height: 776px;
+    overflow: hidden;
+    position: relative;
+  }
+
+  @media (max-width: 1199px) {
+    .viewer-wrapper {
+      height: 716px;
+    }
+  }
+
+  @media (max-width: 991px) {
+    .viewer-wrapper {
+      height: 586px;
+    }
+  }
+
+  // Hyrax's representative_media emits an uncapped img.
+  .enact-viewer-thumb {
+    text-align: center;
+
+    img {
+      max-height: 420px;
+      max-width: 100%;
+      width: auto;
+    }
+  }
+
+  .enact-viewer-download {
+    margin-top: 1rem;
+  }
+
+  // ---- body grid ---------------------------------------------------------
+
+  // Three bands: 320px rail, then cards below the content two abreast, then stacked.
+  .enact-body {
+    align-items: start;
+    display: grid;
+    gap: 2.5rem;
+    grid-template-columns: minmax(0, 1fr) 320px;
+  }
+
+  @media (max-width: 991px) {
+    .enact-body {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+
+  .enact-main {
+    min-width: 0;
+  }
+
+  // ---- tabs --------------------------------------------------------------
+
+  .enact-tabs {
+    border-bottom-color: #d3d9d7;
+
+    .nav-link {
+      // Squared for every state, not just .active: the hover fill picks up the same
+      // radius, which is what made an inactive tab read as a rounded pill.
+      border-radius: 0;
+      border-top: 3px solid transparent;
+      color: $muted;
+      font-size: 0.875rem;
+      font-weight: 600;
+      line-height: 1.2;
+      padding: 0.75rem 1.25rem;
+
+      &.active {
+        border-left-color: #d3d9d7;
+        border-right-color: #d3d9d7;
+        border-top-color: var(--enact-link, #0e5c58);
+        color: var(--enact-brand-ink, #0a3a37);
+
+        // !important to beat the appearance styles, which tint :hover/:focus and so
+        // leave a clicked tab permanently filled.
+        &:hover,
+        &:focus {
+          background-color: #fff !important;
+        }
+      }
+    }
+  }
+
+  .enact-panes {
+    padding-top: 1.375rem;
+  }
+
+  // ---- prose (context statement) -----------------------------------------
+
+  .enact-prose {
+    p,
+    li {
+      color: #2c3432;
+      font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      max-width: 66ch;
+    }
+
+    // The featured-attributes partial wraps its content in a card; here it is body
+    // copy, not a panel.
+    .card,
+    .work-featured-attribute {
+      background: none;
+      border: 0;
+    }
+
+    .card-body {
+      padding: 0;
+    }
+
+    // Trailing margins stacked on top of the .enact-body row gap, reading as a 78px
+    // band before the cards. !important because the section carries Bootstrap's mb-4.
+    > :last-child {
+      margin-bottom: 0 !important;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+  }
+
+  // ---- metadata table ----------------------------------------------------
+
+  .enact-panes {
+    // Grid on the <dl> avoids forking _attribute_rows; Hyrax emits one dd per dt, so
+    // auto-placement pairs them.
+    dl.work-show {
+      display: grid;
+      font-size: 0.875rem;
+      grid-template-columns: 210px minmax(0, 1fr);
+      line-height: 1.55;
+      margin: 0;
+
+      dt {
+        border-bottom: 1px solid $hairline;
+        color: $muted;
+        font-weight: 600;
+        line-height: 1.5;
+        padding: 0.7rem 1.1rem 0.7rem 0;
+      }
+
+      dd {
+        border-bottom: 1px solid $hairline;
+        // overflow-x: clip on the body makes overflow unreachable, not scrollable, so a
+        // long unbroken identifier or URL has to wrap rather than run off the grid cell.
+        overflow-wrap: anywhere;
+        color: $ink;
+        margin: 0;
+        padding: 0.7rem 0;
+      }
+
+      ul.tabular {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+    }
+
+    // Reversed so the rows appear above the control and it moves down on expand. The
+    // display change stops the browser hiding closed children, so the :not([open]) rule
+    // below has to restore that by hand; keep the two together.
+    details.enact-fields {
+      display: flex;
+      flex-direction: column;
+      margin-bottom: 1.25rem;
+
+      > .enact-fields-toggle {
+        order: 2;
+      }
+
+      > dl {
+        order: 1;
+      }
+
+      &:not([open]) > dl {
+        display: none;
+      }
+    }
+
+    .enact-fields-toggle {
+      color: var(--enact-link, #0e5c58);
+      cursor: pointer;
+      display: inline-block;
+      font-size: 0.8125rem;
+      font-weight: 600;
+      line-height: 1.4;
+      list-style: none;
+      margin-top: 0.875rem;
+
+      &::-webkit-details-marker {
+        display: none;
+      }
+
+      span {
+        border-bottom: 1px solid #9cc3bf;
+      }
+    }
+
+    // Both labels ship; CSS shows the one matching the open state, so the disclosure
+    // needs no script.
+    .enact-fields-less {
+      display: none;
+    }
+
+    details[open] > .enact-fields-toggle {
+      .enact-fields-more {
+        display: none;
+      }
+
+      .enact-fields-less {
+        display: inline;
+      }
+    }
+
+    @media (max-width: 640px) {
+      dl.work-show {
+        grid-template-columns: minmax(0, 1fr);
+
+        dt {
+          border-bottom: 0;
+          padding-bottom: 0;
+        }
+      }
+    }
+  }
+
+  // ---- shared section furniture ------------------------------------------
+
+  .enact-section-head {
+    align-items: baseline;
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.375rem;
+  }
+
+  .enact-placement .enact-section-head {
+    margin-bottom: 0.75rem;
+  }
+
+  // Sibling selector, not a flat margin: the placement block is absent on records with
+  // no collections or parents.
+  .enact-placement + .enact-metadata-head {
+    margin-top: 2.25rem;
+  }
+
+  .enact-section-title {
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1.2;
+    margin: 0;
+    text-transform: uppercase;
+    color: $muted;
+  }
+
+  .enact-section-count {
+    color: $faint;
+    font-size: 0.75rem;
+    line-height: 1.4;
+  }
+
+  .enact-section-note {
+    color: $muted;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    margin: 0 0 1.125rem;
+    max-width: 70ch;
+  }
+
+  // ---- files tiles -------------------------------------------------------
+
+  .enact-tiles {
+    display: grid;
+    gap: 1.125rem;
+    grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+    margin: 0;
+  }
+
+  .enact-tile-thumb {
+    align-items: center;
+    background: var(--enact-band, #f4f6f5);
+    border: 1px solid $border;
+    display: flex;
+    height: 120px;
+    justify-content: center;
+    overflow: hidden;
+    margin-bottom: 0.5rem;
+
+    img {
+      max-height: 118px;
+      max-width: 100%;
+      object-fit: contain;
+      width: auto;
+    }
+  }
+
+  .enact-tile-name {
+    color: var(--enact-link, #0e5c58);
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1.35;
+    word-break: break-word;
+  }
+
+  .enact-tile-meta {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem;
+    margin-top: 0.25rem;
+  }
+
+  .enact-tile-date {
+    color: $faint;
+    font-size: 0.6875rem;
+    line-height: 1.5;
+  }
+
+  // ---- child works list --------------------------------------------------
+
+  .enact-items {
+    margin: 0;
+  }
+
+  .enact-item {
+    align-items: flex-start;
+    border-top: 1px solid $hairline;
+    display: flex;
+    gap: 1.125rem;
+    padding: 1.125rem 0;
+  }
+
+  .enact-item-num {
+    color: $faint;
+    flex: 0 0 1.5rem;
+    font-family: ui-monospace, Menlo, monospace;
+    font-size: 0.75rem;
+    font-weight: 600;
+    line-height: 1.4;
+    padding-top: 0.125rem;
+  }
+
+  .enact-item-thumb {
+    border: 1px solid #dfe3e1;
+    display: block;
+    flex: 0 0 78px;
+    height: 104px;
+    overflow: hidden;
+
+    img {
+      display: block;
+      max-height: 102px;
+      max-width: 100%;
+      object-fit: contain;
+      width: auto;
+    }
+  }
+
+  .enact-item-body {
+    flex: 1;
+    min-width: 0;
+  }
+
+  .enact-item-kind {
+    align-items: center;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.55rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .enact-item-type {
+    color: var(--enact-link, #0e5c58);
+    font-size: 0.6875rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1.5;
+    text-transform: uppercase;
+  }
+
+  .enact-item-date {
+    color: $faint;
+    font-size: 0.75rem;
+    line-height: 1.5;
+  }
+
+  .enact-item-title {
+    border-bottom: 1px solid #b9d3d0;
+    font-size: 1rem;
+    font-weight: 600;
+    line-height: 1.35;
+    text-decoration: none;
+  }
+
+  .enact-item-note {
+    color: #4a5250;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 0.8125rem;
+    line-height: 1.6;
+    margin: 0.375rem 0 0;
+    max-width: 70ch;
+  }
+
+  // Blacklight's paginator emits Bootstrap's ul.pagination. Squared off and brought down
+  // to the size of the theme's other controls.
+  .enact-pager {
+    margin-top: 1.25rem;
+
+    .pagination {
+      border-radius: 0;
+      margin: 0;
+    }
+
+    // Bootstrap rounds the first and last links separately, so both need naming.
+    .page-link,
+    .page-item:first-child .page-link,
+    .page-item:last-child .page-link {
+      border-radius: 0;
+    }
+
+    .page-link {
+      border-color: $border;
+      color: var(--enact-link, #0e5c58);
+      font-size: 0.85rem;
+      line-height: 1.4;
+      padding: 0.25rem 0.6rem;
+    }
+
+    .page-item.active .page-link {
+      background-color: var(--enact-primary, #0e5c58);
+      border-color: var(--enact-primary, #0e5c58);
+      color: var(--enact-primary-text, #fff);
+    }
+
+    .page-item.disabled .page-link {
+      color: $faint;
+    }
+  }
+
+  // ---- sidebar -----------------------------------------------------------
+
+  .enact-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+  }
+
+  @media (max-width: 991px) and (min-width: 641px) {
+    // Columns, not a 2-col grid: a grid row is as tall as its tallest item, so a short
+    // card left a gap beside a tall one. grid masonry is not shipped widely enough yet.
+    .enact-sidebar {
+      column-count: 2;
+      column-gap: 1.25rem;
+      display: block;
+    }
+
+    // Columns have no row gap, so spacing is per item.
+    .enact-sidebar > * {
+      break-inside: avoid;
+      margin-bottom: 1.25rem;
+    }
+
+    // .card chained purely for specificity: the compound card carries `margin: 0` in a
+    // later rule, which would otherwise win and collapse the spacing.
+    .enact-sidebar > .hyrax-compound-card.card {
+      margin-bottom: 1.25rem;
+    }
+  }
+
+  .enact-card {
+    background: #fff;
+    border: 1px solid $border;
+  }
+
+  // Restyled rather than reimplemented, so the shared partial keeps rendering the
+  // contents. !important because the appearance styles' facet-panel block targets every
+  // .card and gives it a heavier border; .enact-card escapes only by not being a .card.
+  .enact-sidebar .hyrax-compound-card {
+    background: #fff;
+    border: 1px solid $border;
+    border-color: $border !important;
+    border-radius: 0;
+    margin: 0;
+
+    .card-header {
+      background-color: #fff !important;
+      border-bottom: 3px solid var(--enact-accent, #f5c400);
+      border-radius: 0;
+      padding: 0.7rem 0.95rem;
+    }
+
+    .card-title {
+      color: var(--enact-brand-ink, #0a3a37);
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      line-height: 1.2;
+      margin: 0;
+      text-transform: uppercase;
+    }
+
+    .card-body {
+      font-size: 0.875rem;
+      padding: 0.9rem 0.95rem;
+    }
+
+    // The compound renderer emits its own <dl>; keep the metadata-table grid out of
+    // a 320px column.
+    dl {
+      display: block;
+      margin: 0;
+    }
+  }
+
+  .enact-card-head {
+    border-bottom: 3px solid var(--enact-accent, #f5c400);
+    color: var(--enact-brand-ink, #0a3a37);
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    line-height: 1.2;
+    margin: 0;
+    padding: 0.7rem 0.95rem;
+    text-transform: uppercase;
+  }
+
+  // 14px is the sidebar body size, matching the tab labels and metadata values.
+  .enact-card-body {
+    font-size: 0.875rem;
+    padding: 0.9rem 0.95rem;
+  }
+
+  // ---- cite card ---------------------------------------------------------
+
+  .enact-cite {
+    display: flex;
+    flex-direction: column;
+    gap: 0.7rem;
+  }
+
+  .enact-cite-text {
+    background: var(--enact-band, #f4f6f5);
+    border-left: 3px solid var(--enact-accent, #f5c400);
+    color: #2c3432;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 0.875rem;
+    line-height: 1.6;
+    margin: 0;
+    padding: 0.7rem 0.75rem;
+    overflow-wrap: anywhere;
+  }
+
+  .enact-cite-copy {
+    align-self: flex-start;
+    background: var(--enact-accent, #f5c400);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    color: #3a2f00;
+    cursor: pointer;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+    padding: 0.55rem 1.1rem;
+    text-transform: uppercase;
+
+    // is-copied as well as :active because :active lasts only while the mouse is
+    // down; the script holds the class for the confirmation.
+    &:active,
+    &.is-copied {
+      background: var(--enact-primary, #0e5c58);
+      border-color: var(--enact-primary, #0e5c58);
+      color: var(--enact-primary-text, #fff);
+    }
+  }
+
+  // Spaced only when it follows the citation block; alone in the card it needs none.
+  .enact-cite + .enact-cite-exports {
+    margin-top: 0.9rem;
+  }
+
+  // A plain link, not a .btn: .btn-secondary is painted by the appearance styles with
+  // !important.
+  .enact-cite-export-link {
+    color: var(--enact-link, #0e5c58);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .enact-cite-copied {
+    color: var(--enact-link, #0e5c58);
+    font-size: 0.75rem;
+    font-weight: 600;
+  }
+
+  .enact-relationship-map-link {
+    display: block;
+    width: 100%;
+  }
+
+  // Only btn-success's green needs correcting; btn-block's full width is right here.
+  // Accent matches the design's download and copy, which reserves teal for the map.
+  .download-pdf-controls .btn {
+    background-color: var(--enact-accent, #f5c400);
+    border-color: rgba(0, 0, 0, 0.12);
+    color: #3a2f00;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    line-height: 1.3;
+    padding: 0.7rem 1.1rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+
+    &:hover,
+    &:focus,
+    &:active {
+      background-color: var(--enact-accent, #f5c400);
+      border-color: rgba(0, 0, 0, 0.12);
+      color: #3a2f00;
+    }
+  }
+
+  // ---- narrow viewports --------------------------------------------------
+
+  @media (max-width: 991px) {
+    .enact-masthead-inner {
+      grid-template-columns: minmax(0, 1fr);
+    }
+
+    .enact-masthead-actions {
+      margin-top: 0.75rem;
+
+      .show-actions {
+        justify-content: flex-start;
+      }
+    }
+
+    .enact-title {
+      font-size: 1.75rem;
+    }
+  }
+
+  // Bootstrap keeps .tab-pane display:none in print, so without this a printed record is
+  // whichever tab happened to be open. The default show page prints everything.
+  @media print {
+    .enact-tabs {
+      display: none;
+    }
+
+    .enact-panes .tab-pane {
+      display: block;
+    }
+  }
+}

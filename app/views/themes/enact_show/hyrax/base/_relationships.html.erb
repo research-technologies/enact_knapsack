@@ -1,0 +1,8 @@
+<%# OVERRIDE Hyku's hyrax/base/_relationships.html.erb: upstream closes the <dl> before
+    the parent-works rows, leaving those dt/dd outside any <dl> on a child work. %>
+<dl class="work-show">
+  <%= render 'relationships_parent_rows', presenter: presenter %>
+  <% if presenter.parent_works(current_user).present? %>
+    <%= render 'relationships_parent_works_rows', presenter: presenter %>
+  <% end %>
+</dl>

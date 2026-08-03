@@ -19,6 +19,9 @@ HykuKnapsack::Engine.routes.draw do
   # an individual profile. Leading slash escapes the isolated engine namespace
   # -> top-level Enact::ContributorsController.
   get '/contributors', to: '/enact/contributors#index', as: :enact_contributors
+  # The picker's fuzzy "did you mean" duplicate check is served by Hyrax's generic
+  # linked_record_similar QA authority (ContributorSource registers a `similar:`
+  # proc), so no knapsack route is needed.
   # Edit/update are admin-gated in the controller (Phase 1: no owner/claim yet).
   get '/contributors/:id/edit', to: '/enact/contributors#edit', as: :edit_enact_contributor
   patch '/contributors/:id', to: '/enact/contributors#update'

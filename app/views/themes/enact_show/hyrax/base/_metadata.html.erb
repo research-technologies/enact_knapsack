@@ -1,0 +1,37 @@
+<%# OVERRIDE Hyrax's hyrax/base/_metadata.html.erb: upstream wraps every row in one
+    <dl>, and the design needs them in two groups for the disclosure. The classic branch
+    delegates to _attribute_rows so its long static field list is not duplicated. %>
+<% if Hyrax.config.flexible? %>
+  <% shown, rest = enact_metadata_rows(presenter) %>
+
+  <dl class="work-show pt-3 <%= dom_class(presenter) %>" <%= presenter.microdata_type_to_html %>>
+    <% shown.each do |render_field, view_options| %>
+      <%= presenter.attribute_to_html(render_field, view_options) %>
+    <% end %>
+    <%# Always in the open list, never behind the disclosure: an access limitation is the
+        last thing a reader should have to click to find. Hyku and Hyrax both render these
+        in the main dl unconditionally. %>
+    <%= presenter.attribute_to_html(:embargo_release_date, render_as: :date, html_dl: true) %>
+    <%= presenter.attribute_to_html(:lease_expiration_date, render_as: :date, html_dl: true) %>
+  </dl>
+
+  <% if rest.any? %>
+    <details class="enact-fields">
+      <summary class="enact-fields-toggle">
+        <span class="enact-fields-more"><%= t('enact.show.fields_show_all', count: shown.size + rest.size) %></span>
+        <span class="enact-fields-less"><%= t('enact.show.fields_show_fewer') %></span>
+      </summary>
+      <dl class="work-show <%= dom_class(presenter) %>">
+        <% rest.each do |render_field, view_options| %>
+          <%= presenter.attribute_to_html(render_field, view_options) %>
+        <% end %>
+      </dl>
+    </details>
+  <% end %>
+<% else %>
+  <dl class="work-show pt-3 <%= dom_class(presenter) %>" <%= presenter.microdata_type_to_html %>>
+    <%= render 'attribute_rows', presenter: presenter %>
+    <%= presenter.attribute_to_html(:embargo_release_date, render_as: :date, html_dl: true) %>
+    <%= presenter.attribute_to_html(:lease_expiration_date, render_as: :date, html_dl: true) %>
+  </dl>
+<% end %>

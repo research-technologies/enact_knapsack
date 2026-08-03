@@ -61,9 +61,13 @@ en:
       linked_record:
         # Fallback placeholder for any linked_record picker.
         placeholder: Search
-        add_new: "+ Add new"
+        add_new: "Add new"
         create: Create
         cancel: Cancel
+        # Fuzzy "did you mean" duplicate check shown before an inline create.
+        similar_heading: "Similar records already exist:"
+        use_existing: Use this
+        create_again_hint: Press Create again to add as a new record.
         # Per-source placeholder, keyed by the subproperty's `authority:`.
         contributors:
           placeholder: Search for a contributor
@@ -185,12 +189,56 @@ en:
         pair-with: Pairs with
         referenced-by: Is referenced by
         juxtaposed-with: Is juxtaposed with
+    show:
+      tabs_label: Record sections
+      tabs:
+        context: Context statement
+        metadata: Additional information
+        files: Files
+      files_heading: Files on this record
+      # Looked up by model param_key so each work type can name its members.
+      items:
+        default: Items
+        portfolio: Portfolio items
+      metadata_heading: Descriptive metadata
+      # Not "Relationships": that name belongs to the sidebar card of Enact edges.
+      placement_heading: Part of
+      parent_work_label: Parent work
+      fields_show_all: Show all %{count} fields
+      fields_show_fewer: Show fewer fields
+      files_note: Files deposited against this record itself. Files belonging to the works this record contains live on those works.
+      items_note: The works this record contains, in the order they were deposited.
+      files_count:
+        one: 1 file
+        other: "%{count} files"
+      items_count:
+        one: 1 item
+        other: "%{count} items"
+      # Heads the sidebar card, not a tab.
+      relationships: Relationships
+      cite: Cite
+      endnote: Download for EndNote
+      permalink: Permalink
+      contributors: Contributors
+      citation_style: Citation style
+      citation_styles:
+        apa: APA (7th ed.)
+        mla: MLA (9th ed.)
+        chicago: Chicago
+      citation_copy: Copy
+      citation_copied: Copied
     people_map:
       # Button on a contributor profile opening the research-network map centred
       # on that person (first-order + second-order collaborators).
       profile_link: Research network
       # Link on the contributors browse index opening the whole network.
       index_link: View as network
+    map_modal:
+      # Accessible label for the close (x) button on the map iframe modal
+      # (app/views/enact/shared/_map_modal.html.erb).
+      close: Close
+      # Shown in the modal (role=status) while the map iframe loads and boots.
+      loading: Loading the map...
     homepage:
       featured_researcher:
         # Button on the home page Featured Researcher tab linking to the
@@ -251,3 +299,4 @@ en:
     job_statuses:
       disabled: The job statuses page is not enabled.
       nav: Job statuses
+      title: Your job activity

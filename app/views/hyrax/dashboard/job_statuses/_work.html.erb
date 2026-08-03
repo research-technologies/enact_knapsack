@@ -1,0 +1,21 @@
+<details class="job-work border-bottom px-3 py-2"
+         data-work="<%= work[:work_id] %>"
+         data-state="<%= work[:state] %>"
+         <%= 'open' if work[:open] %>>
+
+  <summary class="job-toggle d-flex align-items-center flex-wrap py-1 pl-2">
+    <span class="job-caret mr-2 text-muted" aria-hidden="true">&rsaquo;</span>
+    <span class="job-dot <%= job_status_dot_class(work[:state]) %> mr-2" aria-hidden="true"></span>
+    <span class="sr-only"><%= work[:state].titleize %>. </span>
+    <span class="font-weight-bold"><%= link_to work[:title], job_status_work_path(work) %></span>
+    <small class="text-muted ml-auto mr-2 font-weight-bold"><%= work[:completed] %> of <%= work[:total] %> file sets</small>
+
+    <div class="progress progress-thin w-100 ml-4 mr-2 mt-2" aria-hidden="true">
+      <div class="progress-bar <%= work[:has_error] ? 'bg-danger' : 'bg-success' %>" style="width: <%= work[:pct] %>%;"></div>
+    </div>
+  </summary>
+
+  <div class="pl-4 pt-2">
+    <%= render partial: 'file_set', collection: work[:file_sets], as: :file_set %>
+  </div>
+</details>

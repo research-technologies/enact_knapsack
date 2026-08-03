@@ -1,0 +1,46 @@
+<div class="enact-section">
+  <div class="enact-section-head">
+    <h2 class="enact-section-title"><%= items_label %></h2>
+    <span class="enact-section-count"><%= t('enact.show.items_count', count: paginated.total_count) %></span>
+  </div>
+  <p class="enact-section-note"><%= t('enact.show.items_note') %></p>
+
+  <ol class="enact-items list-unstyled">
+    <% members.each_with_index do |member, index| %>
+      <li class="enact-item">
+        <%# offset_value so the number is the item's place in the portfolio, not on the page. %>
+        <span class="enact-item-num"><%= format('%02d', paginated.offset_value + index + 1) %></span>
+        <span class="enact-item-thumb">
+          <%# suppress_link, not just alt="": thumbnail_tag brings its own anchor, and an
+              anchor holding only an empty alt has no accessible name. %>
+          <%= document_presenter(member).thumbnail.thumbnail_tag({ alt: '' }, { suppress_link: true }) %>
+        </span>
+        <div class="enact-item-body">
+          <div class="enact-item-kind">
+            <span class="enact-item-type"><%= member.human_readable_type %></span>
+            <%= member.permission_badge %>
+            <% if member.try(:date_uploaded).present? %>
+              <span class="enact-item-date"><%= member.date_uploaded %></span>
+            <% end %>
+          </div>
+          <%= link_to member.link_name, contextual_path(member, presenter), class: 'enact-item-title' %>
+          <%# Read-gated: hide_private_items? is off by default, so unreadable members do
+              reach this list, and Hyrax's own member row renders no description. %>
+          <% description = Array(member.try(:description)).first if can?(:read, member.solr_document) %>
+          <% if description.present? %>
+            <p class="enact-item-note"><%= description.to_s.truncate(280) %></p>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ol>
+
+  <% if paginated.total_pages > 1 %>
+    <div class="enact-pager">
+      <%# pane reopens the tab, anchor lands the reload near it. %>
+      <%= paginate paginated, outer_window: 2, theme: 'blacklight',
+                   param_name: :items_page, route_set: main_app,
+                   params: { pane: 'items', anchor: 'enact-pane-items' } %>
+    </div>
+  <% end %>
+</div>
