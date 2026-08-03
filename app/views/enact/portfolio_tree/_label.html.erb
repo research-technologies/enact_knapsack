@@ -1,0 +1,21 @@
+<% if node.path.present? %>
+  <%= link_to node.label, node.path, class: 'portfolio-tree__label' %>
+<% else %>
+  <span class="portfolio-tree__label"><%= node.label %></span>
+<% end %>
+
+<span class="portfolio-tree__badge portfolio-tree__badge--<%= node.type %>">
+  <span class="portfolio-tree__swatch" aria-hidden="true"></span><%= node.type_label %>
+</span>
+
+<% if node.children? %>
+  <span class="portfolio-tree__num">(<%= node.count %>)</span>
+<% end %>
+
+<span class="portfolio-tree__spacer"></span>
+
+<% if node.status.present? %>
+  <span class="portfolio-tree__status portfolio-tree__status--<%= node.status %>">
+    <%= t("enact.portfolio_tree.status.#{node.status}") %>
+  </span>
+<% end %>
