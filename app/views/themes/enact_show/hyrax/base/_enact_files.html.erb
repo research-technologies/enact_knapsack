@@ -1,0 +1,35 @@
+<div class="enact-section">
+  <div class="enact-section-head">
+    <h2 class="enact-section-title"><%= t('enact.show.files_heading') %></h2>
+    <span class="enact-section-count"><%= t('enact.show.files_count', count: paginated.total_count) %></span>
+  </div>
+  <p class="enact-section-note"><%= t('enact.show.files_note') %></p>
+
+  <ul class="enact-tiles list-unstyled">
+    <% members.each do |member| %>
+      <li class="enact-tile">
+        <div class="enact-tile-thumb">
+          <%# suppress_link, not just alt="": thumbnail_tag brings its own anchor, and an
+              anchor holding only an empty alt has no accessible name. %>
+          <%= document_presenter(member).thumbnail.thumbnail_tag({ alt: '' }, { suppress_link: true }) %>
+        </div>
+        <%= link_to member.link_name, contextual_path(member, presenter), class: 'enact-tile-name' %>
+        <div class="enact-tile-meta">
+          <%= member.permission_badge %>
+          <% if member.try(:date_uploaded).present? %>
+            <span class="enact-tile-date"><%= member.date_uploaded %></span>
+          <% end %>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+
+  <% if paginated.total_pages > 1 %>
+    <div class="enact-pager">
+      <%# pane reopens the tab, anchor lands the reload near it. %>
+      <%= paginate paginated, outer_window: 2, theme: 'blacklight',
+                   param_name: :files_page, route_set: main_app,
+                   params: { pane: 'files', anchor: 'enact-pane-files' } %>
+    </div>
+  <% end %>
+</div>

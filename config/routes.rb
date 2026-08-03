@@ -19,11 +19,9 @@ HykuKnapsack::Engine.routes.draw do
   # an individual profile. Leading slash escapes the isolated engine namespace
   # -> top-level Enact::ContributorsController.
   get '/contributors', to: '/enact/contributors#index', as: :enact_contributors
-  # Fuzzy "did you mean" lookup for the picker's create form: given a typed name,
-  # returns similar existing contributors so a curator doesn't create a duplicate.
-  # Enact-specific (fuzzy name similarity is a researcher-profile concern); the
-  # generic picker JS calls it via the wrapper's data-similar-url when present.
-  get '/contributors/similar', to: '/enact/contributors#similar', as: :similar_enact_contributors
+  # The picker's fuzzy "did you mean" duplicate check is served by Hyrax's generic
+  # linked_record_similar QA authority (ContributorSource registers a `similar:`
+  # proc), so no knapsack route is needed.
   get '/contributors/:id/edit', to: '/enact/contributors#edit', as: :edit_enact_contributor
   patch '/contributors/:id', to: '/enact/contributors#update'
   put '/contributors/:id', to: '/enact/contributors#update'

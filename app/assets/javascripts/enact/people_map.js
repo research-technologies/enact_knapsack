@@ -148,7 +148,9 @@
     if (t2.length) {
       h += '<div class="row"><b>' + t2.length + '</b> in adjacent communities (second order)</div>' + badges(t2, 10);
     }
-    h += '<a class="profilelink" href="' + esc(d.path || '#') + '">&#8599; View full profile</a>';
+    // target=_top: break out of the iframe into the parent window (one tab),
+    // not a new tab - #137 is about keeping the user in the repository.
+    h += '<a class="profilelink" href="' + esc(d.path || '#') + '" target="_top">&#8599; View full profile</a>';
     DETAIL.innerHTML = h;
   }
   // One "who did what" line: a person's name + a badge per role they played on

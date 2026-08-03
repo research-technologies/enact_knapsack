@@ -1,0 +1,74 @@
+/*
+ * Sizing for the full-height iframe modal shared by the relationship map and
+ * research network map. Scoped to #enactMapModal so these rules cannot bleed
+ * into any other Bootstrap modal on the page.
+ */
+
+/*
+ * Equivalent to min(92vw, 1400px) without the CSS min() function, which
+ * SassC (used in the asset pipeline) rejects due to mixed px + vw units.
+ */
+#enactMapModal .modal-dialog {
+  width: 92vw;
+  max-width: 1400px;
+  height: 88vh;
+  margin: 3vh auto;
+}
+
+#enactMapModal .modal-content {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+}
+
+#enactMapModal .modal-body {
+  flex: 1 1 auto;
+  overflow: hidden;
+  position: relative;
+}
+
+.enact-map-iframe {
+  display: block;
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+/* Opaque overlay covering the iframe until map_modal.js clears .is-hidden on load. */
+.enact-map-loading {
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background: #ffffff;
+  color: #333333;
+  font-size: 0.95rem;
+}
+
+.enact-map-loading.is-hidden {
+  display: none;
+}
+
+.enact-map-spinner {
+  width: 40px;
+  height: 40px;
+  margin-bottom: 12px;
+  border: 4px solid #d0d0d0;
+  border-top-color: #2b6cb0;
+  border-radius: 50%;
+  animation: enact-map-spin 0.8s linear infinite;
+}
+
+@keyframes enact-map-spin {
+  to { transform: rotate(360deg); }
+}
+
+/* Keep motion but slow it for users who prefer reduced motion (WCAG 2.3.3). */
+@media (prefers-reduced-motion: reduce) {
+  .enact-map-spinner { animation-duration: 2.4s; }
+}

@@ -1,0 +1,39 @@
+<% item_count = local_assigns.fetch(:item_count, 0) %>
+<div class="work-title-wrapper enact-masthead-head">
+  <div class="enact-eyebrow">
+    <span class="enact-eyebrow-type"><%= presenter.human_readable_type %></span>
+    <% if item_count.positive? %>
+      <span class="enact-eyebrow-sep" aria-hidden="true"></span>
+      <span class="enact-eyebrow-count"><%= t('enact.show.items_count', count: item_count) %></span>
+    <% end %>
+  </div>
+
+  <% presenter.title.each_with_index do |title, index| %>
+    <% if index.zero? %>
+      <h1 class="enact-title"><%= markdown(title) %></h1>
+    <% else %>
+      <h1 class="enact-title enact-title-alt"><%= markdown(title) %></h1>
+    <% end %>
+  <% end %>
+
+  <%# Skipped with no authors: the formatter would emit an authorless fragment. %>
+  <p class="enact-citation-line">
+    <% if all_authors(presenter).any? %>
+      <%= export_as_apa_citation(presenter) %>
+    <% end %>
+    <%# Outside the gate: a work with no contributors still needs a permalink. Stands in
+        for the design's DOI, which Portfolio has no property for. %>
+    <%= link_to t('enact.show.permalink'), canonical_url_for(presenter),
+                class: 'enact-citation-permalink' %>
+  </p>
+
+  <%# Not Hyku's `title-with-badges`: its left margins read as an indent on their own row. %>
+  <div class="enact-badges">
+    <%= presenter.permission_badge %>
+    <%= presenter.workflow.badge %>
+    <% license = Array(presenter.try(:rights)).filter_map { |row| row['license'].presence }.first %>
+    <% if license.present? %>
+      <span class="enact-badge-license"><%= Enact::LicensesService.short_label(license) %></span>
+    <% end %>
+  </div>
+</div>
