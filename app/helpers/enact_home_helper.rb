@@ -31,6 +31,13 @@ module EnactHomeHelper
     truncate(enact_plain_text(text), length:, separator: ' ')
   end
 
+  # Tags become spaces first, or consecutive paragraphs run together into
+  # "...lighthouses.The portfolio gathers...". Nokogiri rather than strip_tags, which leaves named
+  # entities encoded for the view to escape a second time.
+  def enact_plain_text(html)
+    Nokogiri::HTML.fragment(html.to_s.gsub(/<[^>]+>/, ' ')).text.squish
+  end
+
   # Hyrax hands back an asset-pipeline placeholder when a work has no thumbnail of its own, and the
   # design asks for the diagonal stripe rather than an icon. Anything that is not a path at all
   # counts as no thumbnail: to_s on a nil would otherwise read as one and render a broken image.

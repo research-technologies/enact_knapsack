@@ -256,6 +256,12 @@ en:
         search_button: Search
         advanced_search: Advanced search
         browse_everything: Browse everything
+      # Fallbacks for the homepage_about_section_* content blocks.
+      about:
+        heading: What this repository holds
+        first_paragraph: Practice research rarely arrives as a single file. A commission might leave behind drawings, a maquette, a film of the opening, a review and an article written years later, each meaningless on its own.
+        second_paragraph: Portfolios keep those parts together and in sequence, with a context statement explaining what the collection argues. Everything here is deposited by the researchers themselves.
+        about_link: About this repository
       recent:
         heading: Recently uploaded
         all: See all
