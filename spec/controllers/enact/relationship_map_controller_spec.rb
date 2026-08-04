@@ -2,32 +2,10 @@
 
 require 'rails_helper'
 
-# The controller's private helpers turn Edge structs into the map's link keys
-# and legend; these cover the free-text "other" edge handling (issue #107).
+# The labelling rules themselves live on Enact::RelationshipGraph::Edge and are specced
+# there (issue #107).
 RSpec.describe Enact::RelationshipMapController do
   let(:edge_class) { Enact::RelationshipGraph::Edge }
-
-  describe '#edge_rel_pair' do
-    it 'keys a controlled edge by its authority code (authority supplies the inverse)' do
-      edge = edge_class.new(relation_type: 'cites', type_other: nil, type_other_inverse: nil)
-      expect(controller.send(:edge_rel_pair, edge)).to eq(['cites', nil])
-    end
-
-    it 'keys an "other" edge by its prose so distinct free-text types stay distinct' do
-      edge = edge_class.new(relation_type: 'other', type_other: 'Remixes', type_other_inverse: 'Is remixed by')
-      expect(controller.send(:edge_rel_pair, edge)).to eq(['Remixes', 'Is remixed by'])
-    end
-
-    it 'keys a bare free-text edge by its prose and falls back to it for the inverse' do
-      edge = edge_class.new(relation_type: nil, type_other: 'Companion to', type_other_inverse: nil)
-      expect(controller.send(:edge_rel_pair, edge)).to eq(['Companion to', 'Companion to'])
-    end
-
-    it 'is [nil, nil] for an untyped edge (no controlled type, no prose)' do
-      edge = edge_class.new(relation_type: nil, type_other: nil, type_other_inverse: nil)
-      expect(controller.send(:edge_rel_pair, edge)).to eq([nil, nil])
-    end
-  end
 
   describe '#links_for' do
     def graph_of(*edges)
