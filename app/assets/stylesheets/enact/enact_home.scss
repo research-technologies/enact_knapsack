@@ -16,6 +16,7 @@
   @include enact-controls-reset;
 
   // Anchors, not .btn, so the reset above does not reach them.
+  .enact-featured-save:focus-visible,
   .enact-nav-share:focus-visible {
     @include enact-focus-ring;
   }
@@ -251,6 +252,195 @@
     white-space: nowrap;
   }
 
+  // ---- featured portfolios -----------------------------------------------
+
+  .enact-portfolio-grid {
+    display: grid;
+    gap: 1.875rem 1.75rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 1.375rem 0 0;
+  }
+
+  .enact-portfolio {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .enact-portfolio-cover {
+    @include enact-thumb-placeholder;
+
+    align-items: center;
+    border: 1px solid $thumb-border;
+    display: flex;
+    height: 220px;
+    justify-content: center;
+    margin-bottom: 0.875rem;
+    overflow: hidden;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  .enact-eyebrow {
+    align-items: center;
+    display: flex;
+    gap: 0.5625rem;
+    margin: 0 0 0.4375rem;
+  }
+
+  .enact-eyebrow-type,
+  .enact-eyebrow-count {
+    @include enact-eyebrow-label;
+  }
+
+  .enact-eyebrow-type {
+    color: var(--enact-link, #{$brand-700});
+  }
+
+  .enact-eyebrow-count {
+    color: $muted;
+  }
+
+  .enact-eyebrow-sep {
+    background: #c3cbc9;
+    display: inline-block;
+    height: 0.6875rem;
+    width: 1px;
+  }
+
+  // Zeroed because an h3 brings its own margins.
+  .enact-portfolio-heading {
+    margin: 0 0 0.5rem;
+  }
+
+  .enact-portfolio-title {
+    display: inline-block;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-decoration: none;
+  }
+
+  .enact-portfolio-blurb {
+    color: #3c4543;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .enact-portfolio-credit {
+    color: $faint;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    margin: 0.5625rem 0 0;
+  }
+
+  // ---- featured reorder (editors only) -------------------------------------
+
+  .enact-portfolio-grid-editable .enact-portfolio {
+    position: relative;
+  }
+
+  .enact-portfolio-grid-editable .enact-portfolio.is-dragging {
+    opacity: 0.4;
+  }
+
+  .enact-portfolio-tools {
+    display: flex;
+    gap: 0.25rem;
+    left: 0.375rem;
+    position: absolute;
+    top: 0.375rem;
+    z-index: 1;
+  }
+
+  .enact-portfolio-handle,
+  .enact-portfolio-move,
+  .enact-portfolio-unfeature {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid $border;
+    color: $muted;
+    cursor: pointer;
+    display: flex;
+    font-size: 0.875rem;
+    height: 1.75rem;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+    text-decoration: none;
+    width: 1.75rem;
+  }
+
+  .enact-portfolio-handle {
+    cursor: grab;
+  }
+
+  // Set apart from the move cluster, because the two look alike and this one deletes.
+  .enact-portfolio-remove {
+    margin-left: 0.625rem;
+
+    &:hover,
+    &:focus {
+      background: #fff;
+      border-color: #9a4a3f;
+      color: #9a4a3f;
+    }
+  }
+
+  .enact-portfolio-handle:hover,
+  .enact-portfolio-handle:focus,
+  .enact-portfolio-move:hover,
+  .enact-portfolio-move:focus {
+    color: var(--enact-link, #{$brand-700});
+  }
+
+  .enact-portfolio-handle:focus-visible,
+  .enact-portfolio-move:focus-visible,
+  .enact-portfolio-unfeature:focus-visible {
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.95);
+    outline: 2px solid $ink;
+    outline-offset: 2px;
+  }
+
+  .enact-featured-reorder-hint {
+    color: $faint;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin: 1.25rem 0 0.625rem;
+  }
+
+  .enact-featured-save {
+    background: var(--enact-primary, #{$brand-700});
+    border: 0;
+    color: var(--enact-primary-text, #fff);
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1.3;
+    margin-top: 0.875rem;
+    padding: 0.6875rem 1.25rem;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    &:hover,
+    &:focus {
+      background: $brand-900;
+      color: var(--enact-primary-text, #fff);
+    }
+  }
+
   // ---- narrower viewports ------------------------------------------------
 
   @media (max-width: 1199px) {
@@ -291,12 +481,43 @@
       font-size: 0.75rem;
     }
 
-    .enact-hero-search-submit {
+    .enact-hero-search-submit,
+    .enact-featured-save {
       font-size: 0.75rem;
     }
 
     .enact-section {
       padding-top: 2.375rem;
+    }
+
+    .enact-portfolio-grid {
+      gap: 1.75rem 1.625rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .enact-portfolio {
+      align-items: start;
+      display: grid;
+      gap: 1.125rem;
+      grid-template-columns: 180px minmax(0, 1fr);
+    }
+
+    .enact-portfolio-cover {
+      height: 132px;
+      margin-bottom: 0;
+    }
+
+    .enact-portfolio-title {
+      font-size: 1.1875rem;
+    }
+
+    .enact-portfolio-blurb {
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .enact-portfolio-credit {
+      font-size: 0.75rem;
     }
 
   }
@@ -337,7 +558,8 @@
       font-size: 1.3125rem;
     }
 
-    .enact-hero-search-submit {
+    .enact-hero-search-submit,
+    .enact-featured-save {
       font-size: 0.6875rem;
     }
 
@@ -345,8 +567,30 @@
       padding-top: 2rem;
     }
 
+    .enact-portfolio-grid {
+      gap: 1.5rem 1.25rem;
+      padding-top: 1.375rem;
+    }
+
+    // gap, grid-template-columns and align-items all have to go back: left alone, the laptop rule
+    // above doubles the space under the cover and collapses a cover with no thumbnail to the width
+    // of its own borders.
+    .enact-portfolio {
+      align-items: stretch;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      grid-template-columns: none;
+    }
+
+    .enact-portfolio-cover {
+      height: 165px;
+      margin-bottom: 0.6875rem;
+    }
+
     // 44px touch floor from tablet down.
-    .enact-nav-share {
+    .enact-nav-share,
+    .enact-featured-save {
       align-items: center;
       display: inline-flex;
       min-height: 44px;
@@ -397,6 +641,24 @@
 
     .enact-section {
       padding-top: 1.625rem;
+    }
+
+    .enact-portfolio-grid {
+      gap: 1.375rem;
+      grid-template-columns: minmax(0, 1fr);
+      padding-top: 1.125rem;
+    }
+
+    .enact-portfolio-cover {
+      height: 190px;
+    }
+
+    .enact-featured-save {
+      display: block;
+      min-height: 48px;
+      padding-block: 0.9375rem;
+      text-align: center;
+      width: 100%;
     }
 
   }

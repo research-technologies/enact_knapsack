@@ -1,6 +1,7 @@
 <% content_for :head do %>
   <% if controller_name == 'homepage' %>
     <%= stylesheet_link_tag 'enact/enact_home', media: 'all' %>
+    <%= javascript_include_tag 'enact/enact_home' if can? :update, FeaturedWork %>
   <% end %>
 <% end %>
 

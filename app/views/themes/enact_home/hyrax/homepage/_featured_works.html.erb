@@ -1,0 +1,78 @@
+<% featured = @enact_home_featured.to_a %>
+<% editable = can?(:update, FeaturedWork) && @featured_work_list.present? && !@featured_work_list.empty? %>
+
+<% if featured.any? || editable %>
+  <section class="enact-section enact-featured">
+    <div class="enact-section-head">
+      <h2 class="enact-section-title"><%= t('enact.homepage.featured.heading') %></h2>
+    </div>
+
+    <% if editable %>
+      <%= form_for [hyrax, @featured_work_list] do |f| %>
+        <ul class="enact-portfolio-grid enact-portfolio-grid-editable" role="list" data-featured-grid
+            data-moved-template="<%= t('enact.homepage.featured.moved', title: '%{title}',
+                                       position: '%{position}', total: '%{total}') %>"
+            data-at-template="<%= t('enact.homepage.featured.at_position', title: '%{title}',
+                                    position: '%{position}', total: '%{total}') %>"
+            data-unfeature-confirm="<%= t('enact.homepage.featured.unfeature_confirm') %>">
+          <%= f.fields_for :featured_works do |featured_work| %>
+            <% presenter = featured_work.object.presenter %>
+            <li class="enact-portfolio"
+                data-id="<%= presenter.id %>"
+                data-title="<%= Array(presenter.title).first %>">
+              <%= featured_work.hidden_field :id %>
+              <%= featured_work.hidden_field :order, data: { property: 'order' } %>
+
+              <div class="enact-portfolio-tools">
+                <button type="button" class="enact-portfolio-handle" data-featured-handle
+                        aria-label="<%= t('enact.homepage.featured.reorder_handle',
+                                          title: Array(presenter.title).first) %>">
+                  <span aria-hidden="true">⠿</span>
+                </button>
+
+                <button type="button" class="enact-portfolio-move" data-featured-move="-1"
+                        aria-label="<%= t('enact.homepage.featured.move_earlier',
+                                          title: Array(presenter.title).first) %>">
+                  <span aria-hidden="true">&lsaquo;</span>
+                </button>
+
+                <button type="button" class="enact-portfolio-move" data-featured-move="1"
+                        aria-label="<%= t('enact.homepage.featured.move_later',
+                                          title: Array(presenter.title).first) %>">
+                  <span aria-hidden="true">&rsaquo;</span>
+                </button>
+
+                <%# Not data-behavior="unfeature": Hyrax's handler for that only adds .collapse to
+                    the anchor, so the card and its hidden id field would survive the delete and the
+                    next Save order would post a destroyed id. enact_home.js removes the card. %>
+                <% if can? :destroy, FeaturedWork %>
+                  <%= link_to hyrax.featured_work_path(presenter, format: :json),
+                              class: 'enact-portfolio-unfeature enact-portfolio-remove',
+                              title: t('enact.homepage.featured.unfeature'),
+                              data: { featured_unfeature: true } do %>
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only"><%= t('enact.homepage.featured.unfeature') %></span>
+                  <% end %>
+                <% end %>
+              </div>
+
+              <%= render 'hyrax/homepage/featured_card', presenter: presenter %>
+            </li>
+          <% end %>
+        </ul>
+
+        <p class="sr-only" role="status" aria-live="polite" data-featured-status></p>
+        <p class="enact-featured-reorder-hint"><%= t('enact.homepage.featured.reorder_hint') %></p>
+        <%= f.submit(t('enact.homepage.featured.save_order'), class: 'enact-featured-save') %>
+      <% end %>
+    <% else %>
+      <ul class="enact-portfolio-grid" role="list">
+        <% featured.each do |work| %>
+          <li class="enact-portfolio">
+            <%= render 'hyrax/homepage/featured_card', presenter: work.presenter %>
+          </li>
+        <% end %>
+      </ul>
+    <% end %>
+  </section>
+<% end %>

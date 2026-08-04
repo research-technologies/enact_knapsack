@@ -256,6 +256,23 @@ en:
         search_button: Search
         advanced_search: Advanced search
         browse_everything: Browse everything
+      featured:
+        heading: Featured
+        reorder_handle: "Reorder %{title}: drag, or use the arrow keys"
+        move_earlier: Move %{title} earlier
+        move_later: Move %{title} later
+        moved: Moved %{title} to position %{position} of %{total}
+        at_position: "%{title} is already at position %{position} of %{total}"
+        reorder_hint: Drag a card to reorder, or use the arrow buttons. Save the order when you are done.
+        save_order: Save order
+        unfeature: Remove from featured
+        unfeature_confirm: Remove this work from the featured list?
+        items:
+          one: 1 item
+          other: "%{count} items"
+        contributors_and_others:
+          one: "%{names} and 1 other"
+          other: "%{names} and %{count} others"
       # Keyed to match Hyrax::HomepageControllerDecorator.
       stats:
         items:
