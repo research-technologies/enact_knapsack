@@ -116,11 +116,6 @@
       if (!container.clientWidth || !container.clientHeight) { requestAnimationFrame(buildGraph); return; }
       if (!window.cytoscape) { requestAnimationFrame(buildGraph); return; }
 
-      // Removed rather than hidden: hidden, it stays in the accessibility tree of a
-      // populated map (issue #162). Only reachable on a page cached from before the
-      // server stopped rendering it for a non-empty graph.
-      const emptyEl = document.getElementById('empty');
-      if (emptyEl) { emptyEl.remove(); }
       const elements = [
         // carry all fields (thumb, type, date, keywords, description...) plus the
         // derived size + ring colour so the stylesheet can map them per node.
@@ -363,8 +358,18 @@
       });
     }
 
-    if (G.nodes.length === 0) { /* the server rendered the #empty message; nothing to build */ }
-    else { buildGraph(); }
+    if (G.nodes.length === 0) {
+      // The server rendered the #empty message and there is nothing to build.
+    } else {
+      // Removed rather than hidden, and before the build rather than inside it: hidden,
+      // it stays in the accessibility tree of a populated map (issue #162), and a build
+      // that stalls on an unmeasured container or an absent Cytoscape would leave the
+      // overlay up. Only a page cached from before the server stopped rendering it for
+      // a populated graph still carries one.
+      const stale = document.getElementById('empty');
+      if (stale) { stale.remove(); }
+      buildGraph();
+    }
   }
 
   if (document.readyState === 'loading') {
