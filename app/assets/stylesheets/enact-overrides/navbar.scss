@@ -3,46 +3,19 @@
 // The container insets are scoped to .public-facing: the dashboard layout has no
 // .container to align to, so there the inset only pushes the brand away from the sidebar.
 
-// Mirrors Bootstrap's .container content edge onto the full-bleed navbars. Widths tracked
-// by hand, so a Bootstrap bump shows up as misalignment. !important because the markup
-// carries px-2/px-3, and Bootstrap's spacing utilities ship !important.
-@mixin page-container-inset {
-  padding-left: 15px !important;
-  padding-right: 15px !important;
-
-  @media (min-width: 576px) {
-    padding-left: calc((100% - 540px) / 2 + 15px) !important;
-    padding-right: calc((100% - 540px) / 2 + 15px) !important;
-  }
-
-  @media (min-width: 768px) {
-    padding-left: calc((100% - 720px) / 2 + 15px) !important;
-    padding-right: calc((100% - 720px) / 2 + 15px) !important;
-  }
-
-  @media (min-width: 992px) {
-    padding-left: calc((100% - 960px) / 2 + 15px) !important;
-    padding-right: calc((100% - 960px) / 2 + 15px) !important;
-  }
-
-  @media (min-width: 1200px) {
-    padding-left: calc((100% - 1140px) / 2 + 15px) !important;
-    padding-right: calc((100% - 1140px) / 2 + 15px) !important;
-  }
-}
+// The container-inset mixin lives in enact/_primitives.scss so this sheet and the page sheets share
+// one width table.
+@import 'enact/primitives';
 
 .public-facing #masthead {
-  @include page-container-inset;
+  @include enact-container-inset;
 }
 
-// Hyku's 10px holds the brand inside the edge everything else aligns to. Hyku zeroes it
-// for its own institutional_repository theme, so upstream agrees.
+// Hyku zeroes this for its own institutional_repository theme, so upstream agrees.
 #masthead #logo {
   margin-left: 0;
 }
 
-// px-3 on the list plus the trailing link's own padding left these 24px short of the
-// content edge.
 #user_utility_links {
   padding-right: 0 !important;
 
@@ -52,10 +25,9 @@
 }
 
 .public-facing nav[aria-label='Root Menu'] {
-  @include page-container-inset;
+  @include enact-container-inset;
 
-  // Bootstrap only sets row direction from 576px up, and this nav has no
-  // .navbar-collapse, so below that the links stacked instead of collapsing.
+  // Bootstrap only sets row direction from 576px up, and this nav has no .navbar-collapse.
   .navbar-nav {
     flex-direction: row;
   }
@@ -64,10 +36,5 @@
   [class*='col-'] {
     padding-left: 0;
     padding-right: 0;
-  }
-
-  // First link only: the others' padding is what spaces them apart.
-  .nav-item:first-child .nav-link {
-    padding-left: 0;
   }
 }

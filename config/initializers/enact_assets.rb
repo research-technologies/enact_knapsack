@@ -9,6 +9,8 @@
 # JS the same way, and are worth folding in here.
 if Rails.application.config.respond_to?(:assets)
   Rails.application.config.assets.precompile += %w[
+    enact/enact_home.css
+    enact/enact_home.js
     enact/enact_show.css
     enact/enact_show.js
   ]

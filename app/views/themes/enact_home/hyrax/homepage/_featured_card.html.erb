@@ -1,0 +1,36 @@
+<% document = presenter.solr_document %>
+<% credit = enact_contributor_summary(document) %>
+
+<%= link_to [main_app, presenter], class: 'enact-portfolio-cover',
+            data: { turbolinks: block_valkyrie_redirect? }, tabindex: -1,
+            aria: { hidden: true } do %>
+  <%= render_thumbnail_tag(presenter, { alt: '' }, { suppress_link: true }) if enact_thumbnail?(presenter) %>
+<% end %>
+
+<div class="enact-portfolio-body">
+  <p class="enact-eyebrow">
+    <span class="enact-eyebrow-type"><%= work_type_facet_label(Array(document['has_model_ssim']).first) %></span>
+    <span class="enact-eyebrow-sep" aria-hidden="true"></span>
+    <span class="enact-eyebrow-count">
+      <%= t('enact.homepage.featured.items', count: @enact_home_item_counts.to_h[presenter.id].to_i) %>
+    </span>
+  </p>
+
+  <h3 class="enact-portfolio-heading">
+    <%# title comes back empty for an unindexed dynamic property, and link_to nil renders the href
+        as the link text. %>
+    <%= link_to Array(presenter.title).first.presence || document.title_or_label,
+                [main_app, presenter],
+                class: 'enact-portfolio-title',
+                data: { turbolinks: block_valkyrie_redirect? } %>
+  </h3>
+
+  <% blurb = enact_card_blurb(presenter) %>
+  <% if blurb %>
+    <p class="enact-portfolio-blurb"><%= blurb %></p>
+  <% end %>
+
+  <% if credit %>
+    <p class="enact-portfolio-credit"><%= credit %></p>
+  <% end %>
+</div>

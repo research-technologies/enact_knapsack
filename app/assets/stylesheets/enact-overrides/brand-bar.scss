@@ -1,0 +1,119 @@
+// Brand bar and nav row, on every public page via hyku_knapsack/application. CSS rather than view
+// overrides, because a stale markup override silently drops whatever upstream added; the alignment
+// half lives in navbar.scss. The band's own colours stay the tenant's Appearance settings.
+
+@import 'enact/primitives';
+
+// !important because _appearance_styles pins the body font with !important of its own. The
+// underline belongs to the span, which carries the 4px offset: the anchor is underlined by
+// default too, and both drew.
+.public-facing #masthead #logo {
+  text-decoration: none;
+}
+
+.public-facing #masthead #logo .institution_name {
+  font-family: var(--enact-serif, Georgia, 'Times New Roman', serif) !important;
+  font-size: 1.625rem;
+  font-weight: 600;
+  line-height: 1;
+  text-decoration: underline;
+  text-underline-offset: 4px;
+}
+
+// Site chrome, so styled here rather than in a theme sheet: this row also renders on /about,
+// /help, /contact and work show pages, where a theme-scoped rule left it Bootstrap grey.
+//
+// !important on the background because Bootstrap's .bg-light utility carries its own. min-height so
+// the row does not change height as you navigate: the home page puts search in the hero, so its nav
+// holds only links (~27px), while every other page holds the search group (38px). 65px is that
+// control plus the 12.8px padding either side and the 1px rule.
+.public-facing nav[aria-label='Root Menu'] {
+  align-items: center;
+  background-color: #fff !important;
+  border-bottom: 1px solid #e0e4e2 !important;
+  min-height: 4.0625rem;
+  padding-bottom: 0.8rem !important;
+  padding-top: 0.8rem !important;
+}
+
+// Bootstrap only pads nav links from its expand breakpoint up, so below 576px the four items ran
+// together into "HomeAboutHelpContact".
+.public-facing nav[aria-label='Root Menu'] .nav.navbar-nav {
+  column-gap: 1.5rem;
+}
+
+// Long selector on purpose: _appearance_styles colours these links with
+// `body.public-facing .nav.navbar-nav > li.nav-item > a.nav-link`, and that block is emitted after
+// application.css, so this has to win on specificity rather than order.
+.public-facing nav[aria-label='Root Menu'] .nav.navbar-nav > li.nav-item > a.nav-link {
+  color: #1a1d1c;
+  font-size: 1rem;
+  line-height: 1.4;
+  padding: 0 0 0.125rem;
+}
+
+// Matched to the selector above, or its higher specificity keeps the colour and only the underline
+// lands.
+.public-facing nav[aria-label='Root Menu'] .nav.navbar-nav > li.nav-item.active > a.nav-link {
+  border-bottom: 2px solid var(--enact-accent, #f5c400);
+  color: var(--enact-brand-ink, #0a3a37);
+  padding-bottom: 2px;
+}
+
+@media (max-width: 1199px) {
+  .public-facing nav[aria-label='Root Menu'] .nav.navbar-nav > li.nav-item > a.nav-link {
+    font-size: 0.9375rem;
+  }
+
+  .public-facing #masthead #logo .institution_name {
+    font-size: 1.5rem;
+  }
+}
+
+@media (max-width: 1023px) {
+  .public-facing nav[aria-label='Root Menu'] .nav.navbar-nav > li.nav-item > a.nav-link {
+    font-size: 0.875rem;
+  }
+
+  .public-facing #masthead #logo .institution_name {
+    font-size: 1.375rem;
+  }
+}
+
+@media (max-width: 743px) {
+  .public-facing #masthead #logo .institution_name {
+    font-size: 1.3125rem;
+  }
+}
+
+.public-facing #masthead .navbar-toggler {
+  border-color: #6fa39d;
+  border-radius: 0;
+}
+
+.public-facing #masthead,
+.public-facing nav[aria-label='Root Menu'] {
+  @include enact-controls-reset;
+}
+
+// The default_home and neutral_repository themes render this nav inside .image-masthead, where
+// _appearance_styles paints each link as a coloured button over the banner, so the Enact treatment
+// above is undone for that context. No background-color: that block's own
+// `.image-masthead > .navbar.navbar-expand-sm` rule is more specific and paints the band.
+.public-facing .image-masthead nav[aria-label='Root Menu'] {
+  border-bottom: 0 !important;
+  padding-bottom: 1rem !important;
+  padding-top: 1rem !important;
+}
+
+.public-facing .image-masthead nav[aria-label='Root Menu'] .nav.navbar-nav {
+  column-gap: 0;
+}
+
+.public-facing .image-masthead nav[aria-label='Root Menu'] .nav.navbar-nav > li.nav-item > a.nav-link {
+  padding: 0.5rem 1rem;
+}
+
+.public-facing .image-masthead nav[aria-label='Root Menu'] .nav.navbar-nav > li.nav-item.active > a.nav-link {
+  border-bottom: 0;
+}

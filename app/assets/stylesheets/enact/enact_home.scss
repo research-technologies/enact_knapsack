@@ -1,0 +1,1184 @@
+// Its own sprockets unit, so no Bootstrap variables are in scope.
+//
+// Two traps carried over from enact_show: never use the `font:` shorthand, and keep serif prose off
+// h1-h6 unless it is declared with !important. _appearance_styles pins font-family with !important
+// on the body and on every heading.
+
+@import 'tokens';
+@import 'primitives';
+
+// hyrax-homepage as well as the theme class: home_page_theme is on every page's body, and
+// Turbolinks never removes a stylesheet once merged into head.
+.enact_home.hyrax-homepage {
+  // Must be on the body: a clipping ancestor inside the page crops the bleed instead.
+  overflow-x: clip;
+
+  @include enact-controls-reset;
+
+  // Anchors, not .btn, so the reset above does not reach them.
+  .enact-type-tile:focus-visible,
+  .enact-researcher-link:focus-visible,
+  .enact-featured-save:focus-visible,
+  .enact-nav-share:focus-visible {
+    @include enact-focus-ring;
+  }
+
+  // These sit on the dark bands, where the teal ring manages 1.6:1.
+  .enact-hero-search-field:focus-visible,
+  .enact-hero-search-submit:focus-visible,
+  .enact-hero-links a:focus-visible,
+  .enact-about-cta:focus-visible,
+  .enact-about-prose a:focus-visible,
+  .enact-about-terms:focus-visible {
+    @include enact-focus-ring($brand-300);
+  }
+
+  // ---- nav row -----------------------------------------------------------
+
+  // The row itself is site chrome, styled in enact-overrides/brand-bar.scss.
+  .enact-nav-share {
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+
+  // ---- hero --------------------------------------------------------------
+
+  // The image is an inline background-image from the tenant's banner, so the gradient cannot join
+  // it in one declaration and goes on ::before instead.
+  .enact-hero {
+    background-color: $brand-950;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 340px;
+    position: relative;
+  }
+
+  .enact-hero::before {
+    background: linear-gradient(
+      90deg,
+      rgba(6, 42, 40, 0.94) 0%,
+      rgba(6, 42, 40, 0.9) 60%,
+      rgba(6, 42, 40, 0.82) 78%,
+      rgba(6, 42, 40, 0.5) 100%
+    );
+    content: '';
+    inset: 0;
+    position: absolute;
+  }
+
+  .enact-hero-inner {
+    padding-bottom: 3.75rem;
+    padding-top: 4rem;
+    // Above the gradient layer.
+    position: relative;
+  }
+
+  .enact-hero-eyebrow {
+    color: $brand-300;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    line-height: 1;
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+  }
+
+  // Declared rather than left to _appearance_styles, which pins the Header Font on every h1-h6
+  // with !important: a tenant that has chosen nothing still has the Helvetica default.
+  .enact-hero-title {
+    color: #fff;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif) !important;
+    font-size: 2.875rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0 0 0.875rem;
+    // The copy measure that breaks the headline onto two lines.
+    max-width: 45rem;
+    text-wrap: pretty;
+  }
+
+  .enact-hero-lede {
+    color: $brand-150;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 1.1875rem;
+    line-height: 1.55;
+    margin: 0 0 1.875rem;
+    max-width: 35rem;
+    text-wrap: pretty;
+  }
+
+  .enact-hero-intro {
+    color: $brand-150;
+    margin-bottom: 1.875rem;
+    max-width: 45rem;
+
+    p,
+    div {
+      font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+      font-size: 1.1875rem;
+      line-height: 1.55;
+    }
+
+    a {
+      color: $brand-300;
+    }
+  }
+
+  // ---- hero search -------------------------------------------------------
+
+  .enact-hero-search {
+    display: flex;
+    max-width: 37.5rem;
+  }
+
+  .enact-hero-search-field {
+    border: 0;
+    color: $ink;
+    flex: 1;
+    font-size: 1rem;
+    line-height: 1.4;
+    min-width: 0;
+    padding: 0.9375rem 1.125rem;
+
+    &::placeholder {
+      color: $faint;
+      opacity: 1;
+    }
+  }
+
+  .enact-hero-search-submit {
+    background: var(--enact-accent, #f5c400);
+    border: 0;
+    color: #3c3000;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+    padding: 0.9375rem 1.875rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .enact-hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.375rem;
+    margin: 1rem 0 0;
+
+    a {
+      color: $brand-300;
+      font-size: 0.9375rem;
+      line-height: 1.4;
+    }
+  }
+
+  // ---- counts band -------------------------------------------------------
+
+  .enact-stats {
+    background: var(--enact-band-dark, #{$brand-900});
+  }
+
+  .enact-stats-inner {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
+    padding-bottom: 1.25rem;
+    padding-top: 1.25rem;
+  }
+
+  .enact-stat {
+    margin: 0;
+  }
+
+  .enact-stat-link {
+    align-items: baseline;
+    display: flex;
+    gap: 0.625rem;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    &:focus-visible {
+      @include enact-focus-ring($brand-300);
+    }
+  }
+
+  .enact-stat-number {
+    color: #fff;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 1.625rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .enact-stat-key {
+    color: $brand-300;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  // ---- section furniture -------------------------------------------------
+
+  .enact-section {
+    padding-top: 2.75rem;
+  }
+
+  // Fixed height so the accent rules of two side-by-side sections line up: a head with a "See all"
+  // link is otherwise taller than one without. 33px is the 21px row plus 12px padding,
+  // counted together because the box is border-box.
+  .enact-section-head {
+    align-items: baseline;
+    border-bottom: 3px solid var(--enact-accent, #f5c400);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 2.0625rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .enact-section-title {
+    @include enact-section-title(var(--enact-brand-ink, #{$brand-900}), 0.8125rem);
+  }
+
+  // Trimmed to the label's, or the link makes the row taller than the 33px above.
+  .enact-section-link {
+    font-size: 0.9375rem;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  // ---- featured portfolios -----------------------------------------------
+
+  .enact-portfolio-grid {
+    display: grid;
+    gap: 1.875rem 1.75rem;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 1.375rem 0 0;
+  }
+
+  .enact-portfolio {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+
+  .enact-portfolio-cover {
+    @include enact-thumb-placeholder;
+
+    align-items: center;
+    border: 1px solid $thumb-border;
+    display: flex;
+    height: 220px;
+    justify-content: center;
+    margin-bottom: 0.875rem;
+    overflow: hidden;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  .enact-eyebrow {
+    align-items: center;
+    display: flex;
+    gap: 0.5625rem;
+    margin: 0 0 0.4375rem;
+  }
+
+  .enact-eyebrow-type,
+  .enact-eyebrow-count {
+    @include enact-eyebrow-label;
+  }
+
+  .enact-eyebrow-type {
+    color: var(--enact-link, #{$brand-700});
+  }
+
+  .enact-eyebrow-count {
+    color: $muted;
+  }
+
+  .enact-eyebrow-sep {
+    background: #c3cbc9;
+    display: inline-block;
+    height: 0.6875rem;
+    width: 1px;
+  }
+
+  // Zeroed because an h3 brings its own margins.
+  .enact-portfolio-heading {
+    margin: 0 0 0.5rem;
+  }
+
+  .enact-portfolio-title {
+    display: inline-block;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 1.375rem;
+    font-weight: 700;
+    line-height: 1.25;
+    text-decoration: none;
+  }
+
+  .enact-portfolio-blurb {
+    color: #3c4543;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 0.9375rem;
+    line-height: 1.55;
+    margin: 0;
+    text-wrap: pretty;
+  }
+
+  .enact-portfolio-credit {
+    color: $faint;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    margin: 0.5625rem 0 0;
+  }
+
+  // ---- featured reorder (editors only) -------------------------------------
+
+  .enact-portfolio-grid-editable .enact-portfolio {
+    position: relative;
+  }
+
+  .enact-portfolio-grid-editable .enact-portfolio.is-dragging {
+    opacity: 0.4;
+  }
+
+  .enact-portfolio-tools {
+    display: flex;
+    gap: 0.25rem;
+    left: 0.375rem;
+    position: absolute;
+    top: 0.375rem;
+    z-index: 1;
+  }
+
+  .enact-portfolio-handle,
+  .enact-portfolio-move,
+  .enact-portfolio-unfeature {
+    align-items: center;
+    background: rgba(255, 255, 255, 0.92);
+    border: 1px solid $border;
+    color: $muted;
+    cursor: pointer;
+    display: flex;
+    font-size: 0.875rem;
+    height: 1.75rem;
+    justify-content: center;
+    line-height: 1;
+    padding: 0;
+    text-decoration: none;
+    width: 1.75rem;
+  }
+
+  .enact-portfolio-handle {
+    cursor: grab;
+  }
+
+  // Set apart from the move cluster, because the two look alike and this one deletes.
+  .enact-portfolio-remove {
+    margin-left: 0.625rem;
+
+    &:hover,
+    &:focus {
+      background: #fff;
+      border-color: #9a4a3f;
+      color: #9a4a3f;
+    }
+  }
+
+  .enact-portfolio-handle:hover,
+  .enact-portfolio-handle:focus,
+  .enact-portfolio-move:hover,
+  .enact-portfolio-move:focus {
+    color: var(--enact-link, #{$brand-700});
+  }
+
+  .enact-portfolio-handle:focus-visible,
+  .enact-portfolio-move:focus-visible,
+  .enact-portfolio-unfeature:focus-visible {
+    box-shadow: 0 0 0 6px rgba(255, 255, 255, 0.95);
+    outline: 2px solid $ink;
+    outline-offset: 2px;
+  }
+
+  .enact-featured-reorder-hint {
+    color: $faint;
+    font-size: 0.8125rem;
+    line-height: 1.5;
+    margin: 1.25rem 0 0.625rem;
+  }
+
+  // ---- browse --------------------------------------------------------------
+
+  // A tile per column rather than a stacked list, which only works in a narrow column:
+  // four full-width bars would leave the name and the count at opposite ends of 1140px.
+  .enact-type-tiles {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 1.375rem 0 0;
+  }
+
+  .enact-type-tile {
+    align-items: baseline;
+    background: var(--enact-band, #f4f6f5);
+    border: 1px solid $border;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: space-between;
+    padding: 0.6875rem 1.125rem;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.03)),
+        var(--enact-band, #f4f6f5);
+    }
+  }
+
+  // A span, not a heading, so the appearance styles' heading rule never reaches it.
+  .enact-type-name {
+    color: var(--enact-link, #{$brand-700});
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: break-word;
+  }
+
+  .enact-type-count {
+    color: $muted;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  // ---- recently uploaded + featured researcher ----------------------------
+
+  .enact-recent-row {
+    align-items: start;
+    display: grid;
+    gap: 2.75rem;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  }
+
+  .enact-recent-row-single {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .enact-recent-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .enact-recent-item {
+    align-items: center;
+    border-bottom: 1px solid var(--enact-hairline, #{$hairline});
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 64px minmax(0, 1fr);
+    padding: 0.9375rem 0;
+  }
+
+  .enact-recent-thumb {
+    @include enact-thumb-placeholder;
+
+    align-items: center;
+    border: 1px solid $thumb-border;
+    display: flex;
+    height: 64px;
+    justify-content: center;
+    overflow: hidden;
+    width: 64px;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  .enact-recent-body {
+    display: block;
+    min-width: 0;
+  }
+
+  .enact-recent-heading {
+    margin: 0 0 0.1875rem;
+  }
+
+  // The family is named because the h3 wrapper is pinned to the Header Font and this link would
+  // otherwise inherit it.
+  .enact-recent-title {
+    display: inline-block;
+    font-family: var(--enact-sans, 'Helvetica Neue', Helvetica, Arial, sans-serif);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: break-word;
+  }
+
+  .enact-recent-meta {
+    align-items: center;
+    color: $faint;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.8125rem;
+    gap: 0.625rem;
+    line-height: 1.4;
+  }
+
+  .enact-recent-type {
+    color: $muted;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .enact-researcher-body {
+    padding-top: 0.9375rem;
+
+    // Admin-written HTML, so the treatment goes on whatever it contains.
+    p,
+    div {
+      color: #3c4543;
+      font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+
+    img {
+      border: 1px solid $thumb-border;
+      height: auto;
+      max-width: 100%;
+    }
+  }
+
+  .enact-researcher-link,
+  .enact-featured-save {
+    background: var(--enact-primary, #{$brand-700});
+    border: 0;
+    color: var(--enact-primary-text, #fff);
+    cursor: pointer;
+    display: inline-block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1.3;
+    margin-top: 0.875rem;
+    padding: 0.6875rem 1.25rem;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    &:hover,
+    &:focus {
+      background: $brand-900;
+      color: var(--enact-primary-text, #fff);
+    }
+  }
+
+  // ---- about band ---------------------------------------------------------
+
+  // No bottom padding: the footer follows in the same colour and the hairline is the only division.
+  .enact-about {
+    background: var(--enact-band-dark, #{$brand-900});
+    margin-top: 3rem;
+    padding-top: 2.75rem;
+
+    @include enact-full-bleed;
+  }
+
+  .enact-about-inner {
+    align-items: start;
+    display: grid;
+    gap: 3.5rem;
+    grid-template-columns: minmax(0, 1fr) 300px;
+    padding-bottom: 2.25rem;
+  }
+
+  // As the hero headline.
+  .enact-about-title {
+    color: #fff;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif) !important;
+    font-size: 1.625rem;
+    font-weight: 700;
+    line-height: 1.2;
+    margin: 0 0 0.875rem;
+  }
+
+  .enact-about-prose {
+    p,
+    div {
+      color: $brand-200;
+      font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+      font-size: 1.0625rem;
+      line-height: 1.65;
+      margin: 0 0 0.75rem;
+      max-width: 38.75rem;
+      text-wrap: pretty;
+    }
+
+    > :last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      color: $brand-300;
+    }
+  }
+
+  .enact-about-actions {
+    display: flex;
+    flex-direction: column;
+    gap: 0.625rem;
+    padding-top: 0.375rem;
+  }
+
+  .enact-about-cta {
+    background: var(--enact-accent, #f5c400);
+    color: #3c3000;
+    display: block;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1.3;
+    padding: 0.8125rem 1.125rem;
+    text-align: center;
+    text-decoration: none;
+    text-transform: uppercase;
+
+    &:hover,
+    &:focus {
+      color: #3c3000;
+    }
+  }
+
+  // align-self so it centres against the CTAs once the actions become a row below 1200px.
+  .enact-about-terms {
+    align-self: center;
+    color: $brand-300;
+    font-size: 0.8125rem;
+    line-height: 1.4;
+    text-align: center;
+  }
+
+  .enact-about-cta-outline {
+    background: transparent;
+    border: 1px solid $brand-outline-dark;
+    color: #fff;
+
+    &:hover,
+    &:focus {
+      background: rgba(255, 255, 255, 0.06);
+      color: #fff;
+    }
+  }
+
+  // ---- narrower viewports ------------------------------------------------
+
+  @media (max-width: 1199px) {
+    .enact-hero {
+      min-height: 300px;
+    }
+
+    .enact-hero::before {
+      background: linear-gradient(90deg, rgba(6, 42, 40, 0.94) 0%, rgba(6, 42, 40, 0.86) 100%);
+    }
+
+    .enact-hero-inner {
+      padding-bottom: 3rem;
+      padding-top: 3.25rem;
+    }
+
+    .enact-hero-title {
+      font-size: 2.375rem;
+    }
+
+    .enact-hero-lede {
+      font-size: 1.0625rem;
+    }
+
+    .enact-stats-inner {
+      gap: 3rem;
+    }
+
+    .enact-stat-number {
+      font-size: 1.4375rem;
+    }
+
+    .enact-hero-eyebrow {
+      font-size: 0.6875rem;
+    }
+
+    .enact-section-title {
+      font-size: 0.75rem;
+    }
+
+    .enact-hero-search-submit,
+    .enact-about-cta,
+    .enact-researcher-link,
+    .enact-featured-save {
+      font-size: 0.75rem;
+    }
+
+    .enact-section {
+      padding-top: 2.375rem;
+    }
+
+    .enact-portfolio-grid {
+      gap: 1.75rem 1.625rem;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .enact-portfolio {
+      align-items: start;
+      display: grid;
+      gap: 1.125rem;
+      grid-template-columns: 180px minmax(0, 1fr);
+    }
+
+    .enact-portfolio-cover {
+      height: 132px;
+      margin-bottom: 0;
+    }
+
+    .enact-portfolio-title {
+      font-size: 1.1875rem;
+    }
+
+    .enact-portfolio-blurb {
+      font-size: 0.875rem;
+      line-height: 1.5;
+    }
+
+    .enact-portfolio-credit {
+      font-size: 0.75rem;
+    }
+
+    .enact-type-name {
+      font-size: 1.125rem;
+    }
+
+    .enact-recent-row {
+      gap: 2.125rem;
+    }
+
+    .enact-recent-item {
+      gap: 0.875rem;
+      grid-template-columns: 56px minmax(0, 1fr);
+      padding: 0.8125rem 0;
+    }
+
+    .enact-recent-thumb {
+      height: 56px;
+      width: 56px;
+    }
+
+    .enact-recent-title {
+      font-size: 1rem;
+    }
+
+    .enact-recent-meta {
+      font-size: 0.75rem;
+      gap: 0.5625rem;
+    }
+
+    .enact-about {
+      margin-top: 2.5rem;
+      padding-top: 2.375rem;
+    }
+
+    .enact-about-inner {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 1.125rem;
+      padding-bottom: 1.875rem;
+    }
+
+    .enact-about-actions {
+      flex-direction: row;
+      flex-wrap: wrap;
+      padding-top: 0;
+    }
+
+    .enact-about-title {
+      font-size: 1.5rem;
+    }
+
+    .enact-about-prose p,
+    .enact-about-prose div {
+      font-size: 1rem;
+    }
+  }
+
+  @media (max-width: 1023px) {
+    .enact-hero {
+      min-height: 270px;
+    }
+
+    .enact-hero-inner {
+      padding-bottom: 2.5rem;
+      padding-top: 2.75rem;
+    }
+
+    .enact-hero-title {
+      font-size: 2.0625rem;
+    }
+
+    .enact-hero-lede {
+      font-size: 1rem;
+    }
+
+    .enact-hero-search-field,
+    .enact-hero-search-submit {
+      min-height: 48px;
+      padding-block: 0;
+    }
+
+    .enact-hero-search {
+      max-width: none;
+    }
+
+    .enact-stats-inner {
+      gap: 2rem;
+    }
+
+    .enact-stat-number {
+      font-size: 1.3125rem;
+    }
+
+    .enact-hero-search-submit,
+    .enact-about-cta,
+    .enact-researcher-link,
+    .enact-featured-save {
+      font-size: 0.6875rem;
+    }
+
+    .enact-section {
+      padding-top: 2rem;
+    }
+
+    .enact-portfolio-grid {
+      gap: 1.5rem 1.25rem;
+      padding-top: 1.375rem;
+    }
+
+    // gap, grid-template-columns and align-items all have to go back: left alone, the laptop rule
+    // above doubles the space under the cover and collapses a cover with no thumbnail to the width
+    // of its own borders.
+    .enact-portfolio {
+      align-items: stretch;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      grid-template-columns: none;
+    }
+
+    .enact-portfolio-cover {
+      height: 165px;
+      margin-bottom: 0.6875rem;
+    }
+
+    .enact-type-tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding-top: 1.125rem;
+    }
+
+    .enact-type-tile {
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
+      min-height: 44px;
+      padding: 0.875rem 1rem;
+    }
+
+    .enact-type-name {
+      font-size: 1.0625rem;
+    }
+
+    // 44px touch floor from tablet down.
+    .enact-nav-share,
+    .enact-researcher-link,
+    .enact-featured-save {
+      align-items: center;
+      display: inline-flex;
+      min-height: 44px;
+    }
+
+    // Two columns only work because containers.scss widens this band to the Enact gutter;
+    // against Bootstrap's 540px container each title came out about 177px wide.
+    .enact-recent-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .enact-recent-list {
+      column-gap: 1.5rem;
+      columns: 2;
+    }
+
+    .enact-recent-item {
+      break-inside: avoid;
+      grid-template-columns: 52px minmax(0, 1fr);
+    }
+
+    .enact-recent-thumb {
+      height: 52px;
+      width: 52px;
+    }
+
+    .enact-recent-title {
+      font-size: 0.9375rem;
+    }
+
+    .enact-about {
+      margin-top: 2.125rem;
+      padding-top: 2rem;
+    }
+
+    .enact-about-title {
+      font-size: 1.375rem;
+    }
+
+    .enact-about-inner {
+      padding-bottom: 1.625rem;
+    }
+
+    .enact-about-prose p,
+    .enact-about-prose div {
+      font-size: 0.9375rem;
+    }
+
+    .enact-about-cta {
+      align-items: center;
+      display: flex;
+      justify-content: center;
+      min-height: 44px;
+    }
+  }
+
+  @media (max-width: 743px) {
+    .enact-hero {
+      min-height: 250px;
+    }
+
+    .enact-hero-inner {
+      padding-bottom: 1.875rem;
+      padding-top: 2.125rem;
+    }
+
+    .enact-hero-title {
+      font-size: 1.6875rem;
+    }
+
+    .enact-hero-lede {
+      font-size: 0.9375rem;
+      margin-bottom: 1.125rem;
+    }
+
+    .enact-hero-search {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .enact-stats-inner {
+      flex-direction: column;
+      gap: 0.4375rem;
+    }
+
+    .enact-stat-number {
+      font-size: 1.1875rem;
+    }
+
+    .enact-hero-eyebrow {
+      font-size: 0.625rem;
+    }
+
+    .enact-section-title {
+      font-size: 0.6875rem;
+    }
+
+    .enact-section {
+      padding-top: 1.625rem;
+    }
+
+    .enact-portfolio-grid {
+      gap: 1.375rem;
+      grid-template-columns: minmax(0, 1fr);
+      padding-top: 1.125rem;
+    }
+
+    .enact-portfolio-cover {
+      height: 190px;
+    }
+
+    .enact-type-tiles {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.5rem;
+      padding-top: 1rem;
+    }
+
+    .enact-type-tile {
+      min-height: 48px;
+      padding: 0 1rem;
+    }
+
+    .enact-recent-list {
+      columns: auto;
+    }
+
+    .enact-recent-item {
+      gap: 0.75rem;
+      grid-template-columns: 48px minmax(0, 1fr);
+      padding: 0.75rem 0;
+    }
+
+    .enact-recent-thumb {
+      height: 48px;
+      width: 48px;
+    }
+
+    .enact-researcher-link,
+    .enact-featured-save {
+      display: block;
+      min-height: 48px;
+      padding-block: 0.9375rem;
+      text-align: center;
+      width: 100%;
+    }
+
+    .enact-about {
+      margin-top: 1.75rem;
+      padding-top: 1.625rem;
+    }
+
+    .enact-about-title {
+      font-size: 1.25rem;
+    }
+
+    .enact-about-inner {
+      padding-bottom: 1.5rem;
+    }
+
+    .enact-about-actions {
+      flex-direction: column;
+    }
+
+    .enact-about-cta {
+      min-height: 48px;
+    }
+
+  }
+}
+
+// ---- footer legal strip ----------------------------------------------------
+
+// Outside the .enact_home block so the selector can carry `body`: _appearance_styles has
+// `body.public-facing footer.navbar { background-color: ... !important }`, which outranks a plain
+// `.enact_home footer.navbar` however many !importants it carries.
+body.enact_home.hyrax-homepage footer.navbar {
+  background-color: var(--enact-band-dark, #{$brand-900}) !important;
+  border-top: 1px solid $brand-border-dark;
+  display: block;
+  margin: 0;
+  padding-bottom: 1.75rem;
+  padding-top: 1.625rem;
+
+  @include enact-container-inset;
+
+  .row {
+    margin: 0;
+  }
+
+  // Three items wrapping in one line, rather than Bootstrap's two justified halves.
+  .navbar-text {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.375rem 1.625rem;
+    padding: 0;
+    width: 100%;
+  }
+
+  // display: contents dissolves Bootstrap's two justified halves so the four lines inside become
+  // flex items of .navbar-text and wrap on one row.
+  [class*='col-'] {
+    display: contents;
+  }
+
+  .navbar-text > [class*='col-'] > div {
+    text-align: left !important;
+  }
+
+  // The markup nests each line in its own padded div; the flex gap does that spacing now.
+  .p-1,
+  .p-2,
+  .p-lg-2 {
+    padding: 0 !important;
+  }
+
+  .navbar-text,
+  .navbar-text div {
+    color: $brand-100 !important;
+    font-size: 0.8125rem;
+    line-height: 1.6;
+  }
+
+  a,
+  .navbar-link {
+    color: $brand-300;
+  }
+}
+
+// Stacked in one column on mobile. Inside the body-scoped block so it
+// is not outranked by the rules above.
+@media (max-width: 1199px) {
+  body.enact_home.hyrax-homepage footer.navbar {
+    padding-top: 1.375rem;
+  }
+}
+
+@media (max-width: 743px) {
+  body.enact_home.hyrax-homepage footer.navbar {
+    padding-top: 1.25rem;
+  }
+
+  body.enact_home.hyrax-homepage footer.navbar .navbar-text {
+    flex-direction: column;
+    gap: 0.3125rem;
+  }
+}
+
+
+// The footer's inset above is body-scoped, so containers.scss cannot outrank it; the gutters are
+// repeated here for the one page that has a footer under this theme, from the same tokens.
+@each $max, $gutter in ($frame-laptop-max: $gutter-laptop,
+                        $frame-tablet-max: $gutter-tablet,
+                        $frame-mobile-max: $gutter-mobile) {
+  @media (max-width: $max) {
+    body.enact_home.hyrax-homepage footer.navbar {
+      padding-left: $gutter !important;
+      padding-right: $gutter !important;
+    }
+  }
+}

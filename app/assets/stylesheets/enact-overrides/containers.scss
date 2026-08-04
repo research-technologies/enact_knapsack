@@ -1,0 +1,68 @@
+// Page gutters, on every public page via hyku_knapsack/application.
+//
+// Enact's gutters are 40 / 32 / 24 / 16px at its four frames. Bootstrap instead steps a
+// centred fixed-width .container at 540 / 720 / 960 / 1140, which lands far from that anywhere
+// except right at a breakpoint: measured 117px gutters at 744, and 150px at 991 leaving a 690px
+// column. So below 1200px the container goes fluid and the gutter is set here; at 1200 and
+// up Bootstrap's centred 1140px is close enough to leave alone.
+//
+// Site-wide rather than home-page-only because #masthead, the nav row and the footer are shared
+// chrome: widening them for one page made the brand bar jump 104px sideways on the way to /about.
+// `body` on those three selectors because require_tree emits enact-overrides alphabetically, so
+// navbar.scss comes after this file and its inset mixin would otherwise win on order.
+//
+// .enact-about is deliberately untouched: its own full-bleed derives padding-inline from the same
+// terms as its margin, so a constant would break it as soon as a classic scrollbar makes 50vw and
+// 50% differ.
+@import 'enact/tokens';
+
+@mixin enact-page-gutter($gutter) {
+  #content-wrapper.container,
+  .enact-hero-inner.container,
+  .enact-stats-inner.container {
+    max-width: none;
+    padding-left: $gutter;
+    padding-right: $gutter;
+  }
+}
+
+@mixin enact-chrome-gutter($gutter) {
+  padding-left: $gutter !important;
+  padding-right: $gutter !important;
+}
+
+@media (max-width: $frame-laptop-max) {
+  .public-facing {
+    @include enact-page-gutter($gutter-laptop);
+  }
+
+  body.public-facing #masthead,
+  body.public-facing nav[aria-label='Root Menu'],
+  body.public-facing footer.navbar {
+    @include enact-chrome-gutter($gutter-laptop);
+  }
+}
+
+@media (max-width: $frame-tablet-max) {
+  .public-facing {
+    @include enact-page-gutter($gutter-tablet);
+  }
+
+  body.public-facing #masthead,
+  body.public-facing nav[aria-label='Root Menu'],
+  body.public-facing footer.navbar {
+    @include enact-chrome-gutter($gutter-tablet);
+  }
+}
+
+@media (max-width: $frame-mobile-max) {
+  .public-facing {
+    @include enact-page-gutter($gutter-mobile);
+  }
+
+  body.public-facing #masthead,
+  body.public-facing nav[aria-label='Root Menu'],
+  body.public-facing footer.navbar {
+    @include enact-chrome-gutter($gutter-mobile);
+  }
+}

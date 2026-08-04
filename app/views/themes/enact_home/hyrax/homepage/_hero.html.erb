@@ -1,0 +1,29 @@
+<div class="enact-hero" style="background-image: url('<%= banner_image %>')">
+  <div class="container enact-hero-inner">
+    <p class="enact-hero-eyebrow"><%= application_name %></p>
+
+    <%# The Home page text block replaces the lede, not the headline: it is arbitrary HTML, so it
+        cannot be wrapped in the h1, and letting it replace the whole block left the page with no
+        content h1. A tenant-editable headline would need a content block of its own. %>
+    <h1 class="enact-hero-title"><%= t('enact.homepage.hero.title') %></h1>
+
+    <% if @home_text&.value.present? %>
+      <div class="enact-hero-intro"><%= displayable_content_block @home_text %></div>
+    <% else %>
+      <p class="enact-hero-lede"><%= t('enact.homepage.hero.lede') %></p>
+    <% end %>
+
+    <%= form_tag main_app.search_catalog_path, method: :get, class: 'enact-hero-search', role: 'search' do %>
+      <label class="sr-only" for="enact-hero-q"><%= t('enact.homepage.hero.search_label') %></label>
+      <%= text_field_tag :q, params[:q], id: 'enact-hero-q', autocomplete: 'off',
+                         class: 'enact-hero-search-field',
+                         placeholder: t('enact.homepage.hero.search_placeholder') %>
+      <%= button_tag t('enact.homepage.hero.search_button'), class: 'enact-hero-search-submit' %>
+    <% end %>
+
+    <p class="enact-hero-links">
+      <%= link_to t('enact.homepage.hero.advanced_search'), main_app.advanced_search_catalog_path %>
+      <%= link_to t('enact.homepage.hero.browse_everything'), main_app.search_catalog_path %>
+    </p>
+  </div>
+</div>

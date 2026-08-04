@@ -1,0 +1,20 @@
+<% work_types = @enact_home_work_types.to_h %>
+
+<% if work_types.any? %>
+  <section class="enact-section">
+    <div class="enact-section-head">
+      <h2 class="enact-section-title"><%= t('enact.homepage.browse.work_types') %></h2>
+    </div>
+
+    <ul class="enact-type-tiles" role="list">
+      <% work_types.each do |model, count| %>
+        <li>
+          <%= link_to main_app.search_catalog_path(f: { has_model_ssim: [model] }), class: 'enact-type-tile' do %>
+            <span class="enact-type-name"><%= work_type_facet_label(model) %></span>
+            <span class="enact-type-count"><%= number_with_delimiter(count) %></span>
+          <% end %>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>

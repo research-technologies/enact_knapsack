@@ -1,0 +1,34 @@
+<section class="enact-about">
+  <div class="enact-about-inner">
+    <div class="enact-about-copy">
+      <%# Plain text, not displayable_content_block: the block is TinyMCE HTML, and that helper's
+          wrapper div cannot go inside an h2. %>
+      <h2 class="enact-about-title">
+        <%= enact_plain_text(@homepage_about_section_heading&.value).presence ||
+              t('enact.homepage.about.heading') %>
+      </h2>
+
+      <% if @homepage_about_section_content&.value.present? %>
+        <div class="enact-about-prose"><%= displayable_content_block @homepage_about_section_content %></div>
+      <% else %>
+        <div class="enact-about-prose">
+          <p><%= t('enact.homepage.about.first_paragraph') %></p>
+          <p><%= t('enact.homepage.about.second_paragraph') %></p>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="enact-about-actions">
+      <% if enact_share_work? %>
+        <% href, data = enact_share_work_target %>
+        <%= link_to t('hyrax.share_button'), href, data: data, class: 'enact-about-cta' %>
+      <% end %>
+      <%= link_to t('enact.homepage.about.about_link'), hyrax.about_path,
+                  class: 'enact-about-cta enact-about-cta-outline' %>
+
+      <%# Nothing else in the public UI links /terms, so replacing Hyku's template would leave it
+          unreachable. Inside the band, or a white strip cuts through the dark block. %>
+      <%= link_to t(:'hyrax.pages.tabs.terms_page'), hyrax.terms_path, class: 'enact-about-terms' %>
+    </div>
+  </div>
+</section>

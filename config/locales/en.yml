@@ -1,4 +1,7 @@
 en:
+  date:
+    formats:
+      enact_short: "%-d %b %Y"
   simple_form:
     labels:
       defaults:
@@ -244,6 +247,55 @@ en:
         # Button on the home page Featured Researcher tab linking to the
         # contributors browse index ("Research profiles").
         view_all: View all research profiles
+      # The lede is the fallback for the Home page text content block.
+      hero:
+        title: Practice research, kept together
+        lede: Portfolios of artworks, documentation and writing, deposited as whole projects, in the order their makers intended.
+        search_label: Search the repository
+        search_placeholder: Search portfolios and works
+        search_button: Search
+        advanced_search: Advanced search
+        browse_everything: Browse everything
+      # Fallbacks for the homepage_about_section_* content blocks.
+      about:
+        heading: What this repository holds
+        first_paragraph: Practice research rarely arrives as a single file. A commission might leave behind drawings, a maquette, a film of the opening, a review and an article written years later, each meaningless on its own.
+        second_paragraph: Portfolios keep those parts together and in sequence, with a context statement explaining what the collection argues. Everything here is deposited by the researchers themselves.
+        about_link: About this repository
+      recent:
+        heading: Recently uploaded
+        all: See all
+        all_label: See all recently uploaded works
+        in_portfolio: in %{title}
+      researcher:
+        heading: Featured researcher
+      browse:
+        work_types: Browse by work type
+      featured:
+        heading: Featured
+        reorder_handle: "Reorder %{title}: drag, or use the arrow keys"
+        move_earlier: Move %{title} earlier
+        move_later: Move %{title} later
+        moved: Moved %{title} to position %{position} of %{total}
+        at_position: "%{title} is already at position %{position} of %{total}"
+        reorder_hint: Drag a card to reorder, or use the arrow buttons. Save the order when you are done.
+        save_order: Save order
+        unfeature: Remove from featured
+        unfeature_confirm: Remove this work from the featured list?
+        items:
+          one: 1 item
+          other: "%{count} items"
+        contributors_and_others:
+          one: "%{names} and 1 other"
+          other: "%{names} and %{count} others"
+      # Keyed to match Hyrax::HomepageControllerDecorator.
+      stats:
+        items:
+          one: item
+          other: items
+        portfolios:
+          one: portfolio
+          other: portfolios
     contributors:
       agent_type: Type
       affiliation: Affiliation

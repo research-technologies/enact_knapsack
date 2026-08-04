@@ -1,0 +1,21 @@
+<% counts = @enact_home_counts.to_h.reject { |_key, count| count.to_i.zero? } %>
+
+<% if counts.any? %>
+  <div class="enact-stats">
+    <div class="container enact-stats-inner">
+      <%# Items goes to the unfiltered catalogue rather than an OR of the five work types, because
+          Blacklight ANDs repeated facet values. The totals agree while a tenant holds only works:
+          the homepage builder counts works alone, the catalogue also counts public collections. %>
+      <% paths = { items: main_app.search_catalog_path,
+                   portfolios: main_app.search_catalog_path(f: { has_model_ssim: ['Portfolio'] }) } %>
+      <% counts.each do |key, count| %>
+        <p class="enact-stat">
+          <%= link_to paths[key], class: 'enact-stat-link' do %>
+            <span class="enact-stat-number"><%= number_with_delimiter(count) %></span>
+            <span class="enact-stat-key"><%= t("enact.homepage.stats.#{key}", count: count) %></span>
+          <% end %>
+        </p>
+      <% end %>
+    </div>
+  </div>
+<% end %>

@@ -3,5 +3,6 @@
 module HykuKnapsack
   module ApplicationHelper
     include ::EnactThemeHelper
+    include ::EnactHomeHelper
   end
 end

@@ -1,0 +1,20 @@
+<% provide :page_title, application_name %>
+
+<div class="enact-home">
+  <%= render 'hyrax/homepage/browse' %>
+  <%= render 'hyrax/homepage/featured_works' %>
+
+  <%# Two columns only when both halves have something, so whichever survives takes the width. %>
+  <% recent = @recent_documents.present? %>
+  <% researcher = enact_featured_researcher? %>
+  <% if recent || researcher %>
+    <div class="enact-recent-row <%= 'enact-recent-row-single' unless recent && researcher %>">
+      <%= render 'hyrax/homepage/recently_uploaded' %>
+      <%= render 'hyrax/homepage/featured_researcher' %>
+    </div>
+  <% end %>
+
+  <%= render 'hyrax/homepage/about' %>
+</div>
+
+<%= render '/shared/select_work_type_modal', create_work_presenter: @presenter.create_work_presenter if @presenter.draw_select_work_modal? %>

@@ -1,0 +1,30 @@
+<%# OVERRIDE Hyrax v5.2.0 _controls.html.erb for the enact_home theme: search moves into the hero
+    on the home page, so that slot carries "Share your work" there and the gem's search form
+    everywhere else this partial is reached (/about, /help, /contact).
+
+    `locale: nil` on the path passed to current_page? is load-bearing. Hyrax merges the locale into
+    default_url_options, so hyrax.root_path is "/?locale=en", and current_page? compares
+    request.fullpath rather than request.path as soon as the candidate URL has a query string. It
+    would then be false on a plain "/", which is where visitors land. Passing locale: nil drops the
+    param from the comparison only; each href still carries it. %>
+<nav class="navbar bg-light navbar-expand-sm justify-content-between align-items-center px-2 py-3 border-bottom" role="navigation" aria-label="Root Menu">
+  <ul class="nav navbar-nav">
+    <li class="nav-item <%= 'active font-weight-bold' if current_page?(hyrax.root_path(locale: nil)) %>">
+      <%= link_to t(:'hyrax.controls.home'), hyrax.root_path, class: "nav-link", aria: current_page?(hyrax.root_path(locale: nil)) ? {current: 'page'} : nil %></li>
+    <li class="nav-item <%= 'active font-weight-bold' if current_page?(hyrax.about_path(locale: nil)) %>">
+      <%= link_to t(:'hyrax.controls.about'), hyrax.about_path, class: "nav-link", aria: current_page?(hyrax.about_path(locale: nil)) ? {current: 'page'} : nil %></li>
+    <li class="nav-item <%= 'active font-weight-bold' if current_page?(hyrax.help_path(locale: nil)) %>">
+      <%= link_to t(:'hyrax.controls.help'), hyrax.help_path, class: "nav-link", aria: current_page?(hyrax.help_path(locale: nil)) ? {current: 'page'} : nil %></li>
+    <li class="nav-item <%= 'active font-weight-bold' if current_page?(hyrax.contact_path(locale: nil)) %>">
+      <%= link_to t(:'hyrax.controls.contact'), hyrax.contact_path, class: "nav-link", aria: current_page?(hyrax.contact_path(locale: nil)) ? {current: 'page'} : nil %></li>
+  </ul><!-- /.nav -->
+
+  <% if controller_name != 'homepage' %>
+    <div class="col-sm-7">
+      <%= render partial: 'catalog/search_form' %>
+    </div>
+  <% elsif enact_share_work? %>
+    <% href, data = enact_share_work_target %>
+    <%= link_to t('hyrax.share_button'), href, data: data, class: 'enact-nav-share' %>
+  <% end %>
+</nav><!-- /.navbar -->

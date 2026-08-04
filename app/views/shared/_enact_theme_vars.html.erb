@@ -1,8 +1,38 @@
+<%# The Enact custom properties, from the tenant's Appearance settings. Rendered by
+    _head_tag_extras after shared/appearance_styles, so a tenant overriding one from Custom CSS
+    needs !important: :root { --enact-serif: Lora !important; } %>
 <% appearance = Hyku::Forms::Admin::Appearance.new %>
+<% defaults = appearance.default_fonts %>
+
+<%# Compared against the stored default rather than sniffed for "sans" in the family name, which a
+    regex here got wrong: the picker offers Google families whose names say nothing about their
+    shape ("Open Sans", "PT Serif"). An untouched setting means the tenant has chosen nothing, so
+    the Georgia stack leads; a changed one is a deliberate choice and leads instead. %>
+<% headline_chosen = appearance.headline_font.to_s.strip.presence &&
+                     appearance.headline_font.to_s.strip != defaults['headline_font'].to_s.strip %>
+<% serif_stack = 'Georgia, Times New Roman, serif' %>
+<%# Trailing semicolon stripped because the stored defaults are literal declarations
+    ("Helvetica Neue, Helvetica, Arial, sans-serif;"). Family names stay unquoted: multi-word names
+    are legal unquoted in CSS, and ERB would escape the quotes into entities inside a style block. %>
+<% headline_family = appearance.font_headline_family.to_s.strip.delete_suffix(';') %>
+<% serif = headline_chosen ? "#{headline_family}, #{serif_stack}" : serif_stack %>
+
+<% body_family = appearance.font_body_family.to_s.strip.delete_suffix(';') %>
+<% sans_stack = 'Helvetica Neue, Helvetica, Arial, sans-serif' %>
+<% sans = body_family.include?(',') ? body_family : "#{body_family}, #{sans_stack}" %>
+
+<%# Loads the Header Font, which _appearance_styles does not: both of its @import guards test the
+    *body* font, so on a tenant whose body font is the Helvetica default the headline import is
+    skipped while the family is still pinned with !important, and the font never arrives. An
+    upstream Hyku bug in shared/_appearance_styles.html.erb. %>
+<%= stylesheet_link_tag "https://#{appearance.font_import_headline_url}", media: 'all' if headline_chosen %>
+
 <style>
   :root {
     --enact-primary: <%= appearance.header_and_footer_background_color %>;
     --enact-primary-text: <%= appearance.header_and_footer_text_color %>;
     --enact-link: <%= appearance.link_color %>;
+    --enact-serif: <%= serif %>;
+    --enact-sans: <%= sans %>;
   }
 </style>

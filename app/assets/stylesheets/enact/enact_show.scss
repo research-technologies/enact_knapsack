@@ -3,16 +3,12 @@
 // Two traps: never use the `font:` shorthand, and keep serif prose off h1-h6.
 // _appearance_styles pins font-family with !important and wins in both cases.
 
+@import 'tokens';
+@import 'primitives';
+
 // works-show as well as the theme class: show_page_theme is on every page's body, and
 // Turbolinks never removes a stylesheet once merged into head.
 .enact_show.works-show {
-  $ink: #1a1d1c;
-  $muted: #5b6563;
-  // 4.67:1 on white; the design's #7a8380 was 3.90:1 and failed AA.
-  $faint: #6d7674;
-  $border: #e0e4e2;
-  $hairline: #eef1f0;
-
   // Clips the scrollbar overhang from the 50vw bleeds below. Must be on the body: a
   // clipping ancestor inside the page crops the bleed instead.
   overflow-x: clip;
@@ -20,19 +16,7 @@
   .enact-show {
     color: $ink;
 
-    .btn,
-    .form-control {
-      border-radius: 0;
-    }
-
-    // box-shadow: none drops Bootstrap's focus glow, which never clears 3:1 here.
-    .btn:focus-visible,
-    .form-control:focus-visible,
-    select:focus-visible {
-      box-shadow: none;
-      outline: 2px solid var(--enact-link, #0e5c58);
-      outline-offset: 2px;
-    }
+    @include enact-controls-reset;
   }
 
   // ---- breadcrumb --------------------------------------------------------
@@ -50,8 +34,10 @@
     color: $muted;
     font-size: 0.75rem;
     line-height: 1.4;
-    margin: 0 calc(50% - 50vw);
-    padding: 0.7rem calc(50vw - 50%);
+    margin: 0;
+    padding-block: 0.7rem;
+
+    @include enact-full-bleed;
   }
 
   .breadcrumb-item + .breadcrumb-item::before {
@@ -65,8 +51,10 @@
   .enact-masthead {
     background: var(--enact-band, #f4f6f5);
     border-bottom: 1px solid var(--enact-hairline, #{$border});
-    margin: 0 calc(50% - 50vw) 1.75rem;
-    padding: 1.75rem calc(50vw - 50%) 1.5rem;
+    margin-bottom: 1.75rem;
+    padding-block: 1.75rem 1.5rem;
+
+    @include enact-full-bleed;
   }
 
   .enact-masthead-inner {
@@ -120,15 +108,11 @@
 
   .enact-eyebrow-type,
   .enact-eyebrow-count {
-    font-size: 0.6875rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    line-height: 1;
-    text-transform: uppercase;
+    @include enact-eyebrow-label;
   }
 
   .enact-eyebrow-type {
-    color: var(--enact-link, #0e5c58);
+    color: var(--enact-link, #{$brand-700});
   }
 
   .enact-eyebrow-count {
@@ -143,7 +127,7 @@
   }
 
   .enact-title {
-    color: var(--enact-brand-ink, #0a3a37);
+    color: var(--enact-brand-ink, #{$brand-900});
     font-size: 2.125rem;
     font-weight: 600;
     letter-spacing: -0.015em;
@@ -199,7 +183,7 @@
     }
 
     .badge-success {
-      background-color: var(--enact-primary, #0e5c58);
+      background-color: var(--enact-primary, #{$brand-700});
       color: var(--enact-primary-text, #fff);
     }
 
@@ -314,8 +298,8 @@
       &.active {
         border-left-color: #d3d9d7;
         border-right-color: #d3d9d7;
-        border-top-color: var(--enact-link, #0e5c58);
-        color: var(--enact-brand-ink, #0a3a37);
+        border-top-color: var(--enact-link, #{$brand-700});
+        color: var(--enact-brand-ink, #{$brand-900});
 
         // !important to beat the appearance styles, which tint :hover/:focus and so
         // leave a clicked tab permanently filled.
@@ -425,7 +409,7 @@
     }
 
     .enact-fields-toggle {
-      color: var(--enact-link, #0e5c58);
+      color: var(--enact-link, #{$brand-700});
       cursor: pointer;
       display: inline-block;
       font-size: 0.8125rem;
@@ -491,13 +475,7 @@
   }
 
   .enact-section-title {
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.12em;
-    line-height: 1.2;
-    margin: 0;
-    text-transform: uppercase;
-    color: $muted;
+    @include enact-section-title($muted);
   }
 
   .enact-section-count {
@@ -542,7 +520,7 @@
   }
 
   .enact-tile-name {
-    color: var(--enact-link, #0e5c58);
+    color: var(--enact-link, #{$brand-700});
     display: block;
     font-size: 0.8125rem;
     font-weight: 600;
@@ -589,7 +567,7 @@
   }
 
   .enact-item-thumb {
-    border: 1px solid #dfe3e1;
+    border: 1px solid $thumb-border;
     display: block;
     flex: 0 0 78px;
     height: 104px;
@@ -618,7 +596,7 @@
   }
 
   .enact-item-type {
-    color: var(--enact-link, #0e5c58);
+    color: var(--enact-link, #{$brand-700});
     font-size: 0.6875rem;
     font-weight: 600;
     letter-spacing: 0.1em;
@@ -668,15 +646,15 @@
 
     .page-link {
       border-color: $border;
-      color: var(--enact-link, #0e5c58);
+      color: var(--enact-link, #{$brand-700});
       font-size: 0.85rem;
       line-height: 1.4;
       padding: 0.25rem 0.6rem;
     }
 
     .page-item.active .page-link {
-      background-color: var(--enact-primary, #0e5c58);
-      border-color: var(--enact-primary, #0e5c58);
+      background-color: var(--enact-primary, #{$brand-700});
+      border-color: var(--enact-primary, #{$brand-700});
       color: var(--enact-primary-text, #fff);
     }
 
@@ -738,7 +716,9 @@
     }
 
     .card-title {
-      color: var(--enact-brand-ink, #0a3a37);
+      color: var(--enact-brand-ink, #{$brand-900});
+      // An h2, so _appearance_styles pins the tenant's Header Font on it.
+      font-family: var(--enact-sans, 'Helvetica Neue', Helvetica, Arial, sans-serif) !important;
       font-size: 0.75rem;
       font-weight: 600;
       letter-spacing: 0.08em;
@@ -762,7 +742,9 @@
 
   .enact-card-head {
     border-bottom: 3px solid var(--enact-accent, #f5c400);
-    color: var(--enact-brand-ink, #0a3a37);
+    color: var(--enact-brand-ink, #{$brand-900});
+    // As .card-title above.
+    font-family: var(--enact-sans, 'Helvetica Neue', Helvetica, Arial, sans-serif) !important;
     font-size: 0.75rem;
     font-weight: 600;
     letter-spacing: 0.08em;
@@ -815,8 +797,8 @@
     // down; the script holds the class for the confirmation.
     &:active,
     &.is-copied {
-      background: var(--enact-primary, #0e5c58);
-      border-color: var(--enact-primary, #0e5c58);
+      background: var(--enact-primary, #{$brand-700});
+      border-color: var(--enact-primary, #{$brand-700});
       color: var(--enact-primary-text, #fff);
     }
   }
@@ -829,13 +811,13 @@
   // A plain link, not a .btn: .btn-secondary is painted by the appearance styles with
   // !important.
   .enact-cite-export-link {
-    color: var(--enact-link, #0e5c58);
+    color: var(--enact-link, #{$brand-700});
     font-size: 0.75rem;
     font-weight: 600;
   }
 
   .enact-cite-copied {
-    color: var(--enact-link, #0e5c58);
+    color: var(--enact-link, #{$brand-700});
     font-size: 0.75rem;
     font-weight: 600;
   }
