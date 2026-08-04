@@ -1,0 +1,421 @@
+// Its own sprockets unit, so no Bootstrap variables are in scope.
+//
+// Two traps carried over from enact_show: never use the `font:` shorthand, and keep serif prose off
+// h1-h6 unless it is declared with !important. _appearance_styles pins font-family with !important
+// on the body and on every heading.
+
+@import 'tokens';
+@import 'primitives';
+
+// hyrax-homepage as well as the theme class: home_page_theme is on every page's body, and
+// Turbolinks never removes a stylesheet once merged into head.
+.enact_home.hyrax-homepage {
+  // Must be on the body: a clipping ancestor inside the page crops the bleed instead.
+  overflow-x: clip;
+
+  @include enact-controls-reset;
+
+  // Anchors, not .btn, so the reset above does not reach them.
+  .enact-nav-share:focus-visible {
+    @include enact-focus-ring;
+  }
+
+  // These sit on the dark bands, where the teal ring manages 1.6:1.
+  .enact-hero-search-field:focus-visible,
+  .enact-hero-search-submit:focus-visible,
+  .enact-hero-links a:focus-visible {
+    @include enact-focus-ring($brand-300);
+  }
+
+  // ---- nav row -----------------------------------------------------------
+
+  // The row itself is site chrome, styled in enact-overrides/brand-bar.scss.
+  .enact-nav-share {
+    font-size: 0.9375rem;
+    line-height: 1.4;
+  }
+
+  // ---- hero --------------------------------------------------------------
+
+  // The image is an inline background-image from the tenant's banner, so the gradient cannot join
+  // it in one declaration and goes on ::before instead.
+  .enact-hero {
+    background-color: $brand-950;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 340px;
+    position: relative;
+  }
+
+  .enact-hero::before {
+    background: linear-gradient(
+      90deg,
+      rgba(6, 42, 40, 0.94) 0%,
+      rgba(6, 42, 40, 0.9) 60%,
+      rgba(6, 42, 40, 0.82) 78%,
+      rgba(6, 42, 40, 0.5) 100%
+    );
+    content: '';
+    inset: 0;
+    position: absolute;
+  }
+
+  .enact-hero-inner {
+    padding-bottom: 3.75rem;
+    padding-top: 4rem;
+    // Above the gradient layer.
+    position: relative;
+  }
+
+  .enact-hero-eyebrow {
+    color: $brand-300;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    line-height: 1;
+    margin: 0 0 1rem;
+    text-transform: uppercase;
+  }
+
+  // Declared rather than left to _appearance_styles, which pins the Header Font on every h1-h6
+  // with !important: a tenant that has chosen nothing still has the Helvetica default.
+  .enact-hero-title {
+    color: #fff;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif) !important;
+    font-size: 2.875rem;
+    font-weight: 700;
+    line-height: 1.1;
+    margin: 0 0 0.875rem;
+    // The copy measure that breaks the headline onto two lines.
+    max-width: 45rem;
+    text-wrap: pretty;
+  }
+
+  .enact-hero-lede {
+    color: $brand-150;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 1.1875rem;
+    line-height: 1.55;
+    margin: 0 0 1.875rem;
+    max-width: 35rem;
+    text-wrap: pretty;
+  }
+
+  .enact-hero-intro {
+    color: $brand-150;
+    margin-bottom: 1.875rem;
+    max-width: 45rem;
+
+    p,
+    div {
+      font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+      font-size: 1.1875rem;
+      line-height: 1.55;
+    }
+
+    a {
+      color: $brand-300;
+    }
+  }
+
+  // ---- hero search -------------------------------------------------------
+
+  .enact-hero-search {
+    display: flex;
+    max-width: 37.5rem;
+  }
+
+  .enact-hero-search-field {
+    border: 0;
+    color: $ink;
+    flex: 1;
+    font-size: 1rem;
+    line-height: 1.4;
+    min-width: 0;
+    padding: 0.9375rem 1.125rem;
+
+    &::placeholder {
+      color: $faint;
+      opacity: 1;
+    }
+  }
+
+  .enact-hero-search-submit {
+    background: var(--enact-accent, #f5c400);
+    border: 0;
+    color: #3c3000;
+    cursor: pointer;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    line-height: 1.4;
+    padding: 0.9375rem 1.875rem;
+    text-transform: uppercase;
+    white-space: nowrap;
+  }
+
+  .enact-hero-links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 1.375rem;
+    margin: 1rem 0 0;
+
+    a {
+      color: $brand-300;
+      font-size: 0.9375rem;
+      line-height: 1.4;
+    }
+  }
+
+  // ---- counts band -------------------------------------------------------
+
+  .enact-stats {
+    background: var(--enact-band-dark, #{$brand-900});
+  }
+
+  .enact-stats-inner {
+    align-items: baseline;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4rem;
+    padding-bottom: 1.25rem;
+    padding-top: 1.25rem;
+  }
+
+  .enact-stat {
+    margin: 0;
+  }
+
+  .enact-stat-link {
+    align-items: baseline;
+    display: flex;
+    gap: 0.625rem;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+
+    &:focus-visible {
+      @include enact-focus-ring($brand-300);
+    }
+  }
+
+  .enact-stat-number {
+    color: #fff;
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 1.625rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .enact-stat-key {
+    color: $brand-300;
+    font-size: 0.75rem;
+    font-weight: 600;
+    letter-spacing: 0.12em;
+    line-height: 1;
+    text-transform: uppercase;
+  }
+
+  // ---- section furniture -------------------------------------------------
+
+  .enact-section {
+    padding-top: 2.75rem;
+  }
+
+  // Fixed height so the accent rules of two side-by-side sections line up: a head with a "See all"
+  // link is otherwise taller than one without. 33px is the 21px row plus 12px padding,
+  // counted together because the box is border-box.
+  .enact-section-head {
+    align-items: baseline;
+    border-bottom: 3px solid var(--enact-accent, #f5c400);
+    display: flex;
+    justify-content: space-between;
+    gap: 1rem;
+    min-height: 2.0625rem;
+    padding-bottom: 0.75rem;
+  }
+
+  .enact-section-title {
+    @include enact-section-title(var(--enact-brand-ink, #{$brand-900}), 0.8125rem);
+  }
+
+  // Trimmed to the label's, or the link makes the row taller than the 33px above.
+  .enact-section-link {
+    font-size: 0.9375rem;
+    line-height: 1.2;
+    white-space: nowrap;
+  }
+
+  // ---- narrower viewports ------------------------------------------------
+
+  @media (max-width: 1199px) {
+    .enact-hero {
+      min-height: 300px;
+    }
+
+    .enact-hero::before {
+      background: linear-gradient(90deg, rgba(6, 42, 40, 0.94) 0%, rgba(6, 42, 40, 0.86) 100%);
+    }
+
+    .enact-hero-inner {
+      padding-bottom: 3rem;
+      padding-top: 3.25rem;
+    }
+
+    .enact-hero-title {
+      font-size: 2.375rem;
+    }
+
+    .enact-hero-lede {
+      font-size: 1.0625rem;
+    }
+
+    .enact-stats-inner {
+      gap: 3rem;
+    }
+
+    .enact-stat-number {
+      font-size: 1.4375rem;
+    }
+
+    .enact-hero-eyebrow {
+      font-size: 0.6875rem;
+    }
+
+    .enact-section-title {
+      font-size: 0.75rem;
+    }
+
+    .enact-hero-search-submit {
+      font-size: 0.75rem;
+    }
+
+    .enact-section {
+      padding-top: 2.375rem;
+    }
+
+  }
+
+  @media (max-width: 1023px) {
+    .enact-hero {
+      min-height: 270px;
+    }
+
+    .enact-hero-inner {
+      padding-bottom: 2.5rem;
+      padding-top: 2.75rem;
+    }
+
+    .enact-hero-title {
+      font-size: 2.0625rem;
+    }
+
+    .enact-hero-lede {
+      font-size: 1rem;
+    }
+
+    .enact-hero-search-field,
+    .enact-hero-search-submit {
+      min-height: 48px;
+      padding-block: 0;
+    }
+
+    .enact-hero-search {
+      max-width: none;
+    }
+
+    .enact-stats-inner {
+      gap: 2rem;
+    }
+
+    .enact-stat-number {
+      font-size: 1.3125rem;
+    }
+
+    .enact-hero-search-submit {
+      font-size: 0.6875rem;
+    }
+
+    .enact-section {
+      padding-top: 2rem;
+    }
+
+    // 44px touch floor from tablet down.
+    .enact-nav-share {
+      align-items: center;
+      display: inline-flex;
+      min-height: 44px;
+    }
+
+  }
+
+  @media (max-width: 743px) {
+    .enact-hero {
+      min-height: 250px;
+    }
+
+    .enact-hero-inner {
+      padding-bottom: 1.875rem;
+      padding-top: 2.125rem;
+    }
+
+    .enact-hero-title {
+      font-size: 1.6875rem;
+    }
+
+    .enact-hero-lede {
+      font-size: 0.9375rem;
+      margin-bottom: 1.125rem;
+    }
+
+    .enact-hero-search {
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .enact-stats-inner {
+      flex-direction: column;
+      gap: 0.4375rem;
+    }
+
+    .enact-stat-number {
+      font-size: 1.1875rem;
+    }
+
+    .enact-hero-eyebrow {
+      font-size: 0.625rem;
+    }
+
+    .enact-section-title {
+      font-size: 0.6875rem;
+    }
+
+    .enact-section {
+      padding-top: 1.625rem;
+    }
+
+  }
+}
+
+// Stacked in one column on mobile. Inside the body-scoped block so it
+// is not outranked by the rules above.
+@media (max-width: 1199px) {
+}
+
+@media (max-width: 743px) {
+
+}
+
+// The footer's inset above is body-scoped, so containers.scss cannot outrank it; the gutters are
+// repeated here for the one page that has a footer under this theme, from the same tokens.
+@each $max, $gutter in ($frame-laptop-max: $gutter-laptop,
+                        $frame-tablet-max: $gutter-tablet,
+                        $frame-mobile-max: $gutter-mobile) {
+  @media (max-width: $max) {
+  }
+}

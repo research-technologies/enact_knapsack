@@ -1,4 +1,7 @@
 en:
+  date:
+    formats:
+      enact_short: "%-d %b %Y"
   simple_form:
     labels:
       defaults:
@@ -244,6 +247,23 @@ en:
         # Button on the home page Featured Researcher tab linking to the
         # contributors browse index ("Research profiles").
         view_all: View all research profiles
+      # The lede is the fallback for the Home page text content block.
+      hero:
+        title: Practice research, kept together
+        lede: Portfolios of artworks, documentation and writing, deposited as whole projects, in the order their makers intended.
+        search_label: Search the repository
+        search_placeholder: Search portfolios and works
+        search_button: Search
+        advanced_search: Advanced search
+        browse_everything: Browse everything
+      # Keyed to match Hyrax::HomepageControllerDecorator.
+      stats:
+        items:
+          one: item
+          other: items
+        portfolios:
+          one: portfolio
+          other: portfolios
     contributors:
       agent_type: Type
       affiliation: Affiliation
