@@ -44,8 +44,12 @@ module Enact
       portfolio = documents_for_ids([@portfolio_id]).first
       return [] if portfolio.nil?
 
-      @core_ids = ([@portfolio_id] + Array(portfolio['member_ids_ssim'])).uniq.first(MAX_WORKS).to_set
-      docs = documents_for_ids(@core_ids.to_a)
+      member_ids = ([@portfolio_id] + Array(portfolio['member_ids_ssim'])).uniq.first(MAX_WORKS)
+      docs = documents_for_ids(member_ids)
+      # The project as this user can see it, not as it is stored: a member they may not
+      # see is not part of the boundary, and reverse-querying for it would pull in the
+      # neighbours of a work that can never appear on the map.
+      @core_ids = docs.map { |doc| doc['id'] }.to_set
       (docs + neighbour_documents(docs)).first(MAX_WORKS)
     end
 

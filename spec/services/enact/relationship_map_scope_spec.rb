@@ -10,15 +10,20 @@ RSpec.describe Enact::RelationshipMapScope do
 
   # accessible_by is a no-op here: ability filtering belongs to the real query object
   # and is not re-tested through the fake.
+  # Each query field is tracked on its own so every branch of the scope is answerable:
+  # id lookups, the has_model_ssim sweep behind an unscoped map, and the reverse lookup
+  # on relationships_item_ssim.
   class FakeMapSolrQuery
     def initialize(index)
       @index = index
       @ids = []
+      @models = []
       @targets = []
     end
 
     def with_field_pairs(field_pairs:, **)
-      @ids = Array(field_pairs['id'] || field_pairs['has_model_ssim']).map(&:to_s)
+      @ids = Array(field_pairs['id']).map(&:to_s)
+      @models = Array(field_pairs['has_model_ssim']).map(&:to_s)
       @targets = Array(field_pairs['relationships_item_ssim']).map(&:to_s)
       self
     end
@@ -27,10 +32,9 @@ RSpec.describe Enact::RelationshipMapScope do
       self
     end
 
-    # A reverse lookup answers with the docs whose edges point at the requested ids;
-    # an id lookup answers with the requested docs themselves.
     def solr_documents(**)
       return sources_pointing_at_targets if @targets.any?
+      return docs_of_models if @models.any?
 
       @ids.filter_map { |id| @index[id] }
     end
@@ -40,10 +44,14 @@ RSpec.describe Enact::RelationshipMapScope do
     def sources_pointing_at_targets
       @index.values.select { |doc| (Array(doc['relationships_item_ssim']) & @targets).any? }
     end
+
+    def docs_of_models
+      @index.values.select { |doc| (Array(doc['has_model_ssim']) & @models).any? }
+    end
   end
 
-  def doc(id, members: [], relates_to: [])
-    SolrDocument.new('id' => id, 'title_tesim' => ["Work #{id}"], 'has_model_ssim' => ['Portfolio'],
+  def doc(id, members: [], relates_to: [], model: 'Portfolio')
+    SolrDocument.new('id' => id, 'title_tesim' => ["Work #{id}"], 'has_model_ssim' => [model],
                      'member_ids_ssim' => members, 'relationships_item_ssim' => relates_to)
   end
 
@@ -79,12 +87,35 @@ RSpec.describe Enact::RelationshipMapScope do
 
       expect(ids).to contain_exactly('p1', 'm1', 'inward')
     end
+
+    it 'is every accessible work of a registered type when no project is named' do
+      ids = scope_for(index).documents.map { |d| d['id'] }
+
+      expect(ids).to contain_exactly('p1', 'm1', 'outward', 'inward', 'stranger')
+    end
+
+    # A member this user cannot see is not in the project as far as the map is
+    # concerned, so it neither draws nor drags its own neighbours in (issue #161).
+    # `lurker` points at the withheld member and at nothing else in the project.
+    it 'leaves out a member the ability filter withholds, and that member\'s neighbours' do
+      index['p1'] = doc('p1', members: %w[m1 hidden])
+      index['lurker'] = doc('lurker', relates_to: ['hidden'])
+      ids = scope_for(index, portfolio_id: 'p1').documents.map { |d| d['id'] }
+
+      expect(ids).to contain_exactly('p1', 'm1', 'outward', 'inward')
+    end
   end
 
   describe '#core_ids' do
     let(:index) { { 'p1' => doc('p1', members: %w[m1]), 'm1' => doc('m1') } }
 
     it 'is the project itself, so a caller can tell a project edge from a neighbour\'s' do
+      expect(scope_for(index, portfolio_id: 'p1').core_ids).to eq(Set['p1', 'm1'])
+    end
+
+    it 'holds only the members this user can see' do
+      index['p1'] = doc('p1', members: %w[m1 hidden])
+
       expect(scope_for(index, portfolio_id: 'p1').core_ids).to eq(Set['p1', 'm1'])
     end
 
