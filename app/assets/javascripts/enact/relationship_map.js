@@ -116,7 +116,11 @@
       if (!container.clientWidth || !container.clientHeight) { requestAnimationFrame(buildGraph); return; }
       if (!window.cytoscape) { requestAnimationFrame(buildGraph); return; }
 
-      document.getElementById('empty').style.display = 'none';
+      // Removed, not hidden: hidden, it still sits under the graph for a screen
+      // reader to announce alongside a populated map (issue #162). The server only
+      // renders it for an empty graph, so this covers a cached/stale page.
+      const emptyEl = document.getElementById('empty');
+      if (emptyEl) { emptyEl.remove(); }
       const elements = [
         // carry all fields (thumb, type, date, keywords, description...) plus the
         // derived size + ring colour so the stylesheet can map them per node.
@@ -359,7 +363,7 @@
       });
     }
 
-    if (G.nodes.length === 0) { /* leave the #empty message visible */ }
+    if (G.nodes.length === 0) { /* the server rendered the #empty message; nothing to build */ }
     else { buildGraph(); }
   }
 

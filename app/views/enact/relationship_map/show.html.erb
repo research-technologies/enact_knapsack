@@ -41,7 +41,12 @@
         which becomes a right-hand drawer on narrow screens. %>
     <button type="button" id="panel-toggle" aria-controls="side" aria-expanded="false">Details</button>
     <div id="cy"></div>
-    <div id="empty">No related works are visible to you.</div>
+    <%# Only when there is genuinely nothing to draw, so a screen reader never
+        announces it alongside a populated map (issue #162). relationship_map.js
+        removes it outright if a graph does build. %>
+    <% if @graph[:nodes].empty? %>
+      <div id="empty" role="status">No related works are visible to you.</div>
+    <% end %>
     <div id="focusbar"><span>Showing how <b id="focuslabel"></b> relates</span><a id="focusclear">show all &times;</a></div>
   </div>
   <div id="side">
