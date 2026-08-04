@@ -1,0 +1,36 @@
+// Imported, not required: each page sheet is its own sprockets unit, so variables have to arrive
+// through Sass.
+//
+// --enact-accent and --enact-hairline are deliberately not declared anywhere, so a plain
+// `:root {}` in Admin > Appearance > Custom CSS wins. --enact-serif and --enact-sans are the
+// exception: shared/_enact_theme_vars declares those from the Appearance fonts, so overriding
+// them from Custom CSS needs !important.
+
+$ink: #1a1d1c;
+$muted: #5b6563;
+// 4.67:1 on white; #7a8380 was 3.90:1 and failed AA.
+$faint: #6d7674;
+$border: #e0e4e2;
+$hairline: #eef1f0;
+$thumb-border: #dfe3e1;
+
+// Only for bands painted regardless of the tenant's Appearance colours; anything a tenant should
+// be able to recolour reads --enact-primary and friends instead.
+$brand-700: #0e5c58;
+$brand-900: #0a3a37;
+$brand-950: #062a28;
+$brand-300: #8ed6cd;
+$brand-200: #b9ccc9;
+$brand-150: #dbe8e6;
+$brand-100: #8fa9a6;
+$brand-border-dark: #1c4f4b;
+$brand-outline-dark: #5f8a85;
+
+// Enact's frames, not Bootstrap's. Shared because containers.scss and enact_home.scss both
+// set them, and drifting apart would misalign the footer from the rest of the chrome.
+$gutter-laptop: 32px;
+$gutter-tablet: 24px;
+$gutter-mobile: 16px;
+$frame-laptop-max: 1199px;
+$frame-tablet-max: 1023px;
+$frame-mobile-max: 743px;

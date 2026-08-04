@@ -1,0 +1,90 @@
+// Mixins rather than rules, so nothing here reaches a page that did not opt in, and colours are
+// parameters rather than token lookups, so this file can be imported without _tokens.scss.
+
+// Needs `overflow-x: clip` on the *body* to swallow the scrollbar overhang; a clipping ancestor
+// inside the page crops the bleed instead.
+@mixin enact-full-bleed {
+  margin-inline: calc(50% - 50vw);
+  padding-inline: calc(50vw - 50%);
+}
+
+// Mirrors Bootstrap's .container content edge onto a full-bleed band. The widths are tracked by
+// hand, so a Bootstrap bump shows up as misalignment. !important because the markup carries
+// px-2/px-3 and Bootstrap's spacing utilities ship !important.
+@mixin enact-container-inset {
+  padding-left: 15px !important;
+  padding-right: 15px !important;
+
+  @media (min-width: 576px) {
+    padding-left: calc((100% - 540px) / 2 + 15px) !important;
+    padding-right: calc((100% - 540px) / 2 + 15px) !important;
+  }
+
+  @media (min-width: 768px) {
+    padding-left: calc((100% - 720px) / 2 + 15px) !important;
+    padding-right: calc((100% - 720px) / 2 + 15px) !important;
+  }
+
+  @media (min-width: 992px) {
+    padding-left: calc((100% - 960px) / 2 + 15px) !important;
+    padding-right: calc((100% - 960px) / 2 + 15px) !important;
+  }
+
+  @media (min-width: 1200px) {
+    padding-left: calc((100% - 1140px) / 2 + 15px) !important;
+    padding-right: calc((100% - 1140px) / 2 + 15px) !important;
+  }
+}
+
+// Bootstrap's focus glow never clears 3:1 against these backgrounds.
+@mixin enact-controls-reset {
+  .btn,
+  .form-control {
+    border-radius: 0;
+  }
+
+  .btn:focus-visible,
+  .form-control:focus-visible,
+  select:focus-visible {
+    box-shadow: none;
+    outline: 2px solid var(--enact-link, #0e5c58);
+    outline-offset: 2px;
+  }
+}
+
+// Separate from the reset so no page's class names end up in it, where they would compile to dead
+// selectors in the other page's sheet. The colour is a parameter because outline-offset puts the
+// ring on whatever the control sits on, and the teal manages only 1.6:1 on the dark bands.
+@mixin enact-focus-ring($color: var(--enact-link, #0e5c58)) {
+  box-shadow: none;
+  outline: 2px solid $color;
+  outline-offset: 2px;
+}
+
+// Size is a parameter because the show page keeps 0.85rem throughout while the home page steps
+// down per breakpoint.
+@mixin enact-section-title($color, $size: 0.85rem) {
+  color: $color;
+  // !important because these labels are h2 elements, which _appearance_styles pins to the tenant's
+  // Header Font.
+  font-family: var(--enact-sans, 'Helvetica Neue', Helvetica, Arial, sans-serif) !important;
+  font-size: $size;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1.2;
+  margin: 0;
+  text-transform: uppercase;
+}
+
+// Goes on the frame, so a real thumbnail simply covers it.
+@mixin enact-thumb-placeholder {
+  background: repeating-linear-gradient(135deg, #f2f4f3 0 6px, #e6eae8 6px 12px);
+}
+
+@mixin enact-eyebrow-label {
+  font-size: 0.6875rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  line-height: 1;
+  text-transform: uppercase;
+}
