@@ -19,10 +19,12 @@
       <h2 class="enact-card-head"><%= t('enact.show.relationships') %></h2>
       <div class="enact-card-body">
         <%= render 'hyrax/compounds/related_within_project', presenter: presenter %>
-        <%= link_to t('enact.relationships.map_button'),
-                    enact_relationship_map_path(presenter),
-                    class: 'btn btn-primary btn-sm enact-relationship-map-link mt-3',
-                    data: { turbolinks: false, turbo: false } %>
+        <%# Through the shared trigger, as the default theme's card is, so this theme
+            opens the iframe modal instead of navigating away (issue #177). The modal
+            lives in show.html.erb, outside this flex column. %>
+        <%= enact_map_trigger t('enact.relationships.map_button'),
+                              enact_relationship_map_path(presenter),
+                              html_class: 'btn btn-primary btn-sm enact-relationship-map-link mt-3' %>
       </div>
     </section>
   <% end %>

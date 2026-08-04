@@ -12,6 +12,10 @@
   function setup() {
     if (!document.getElementById('enactMapModal')) return;
 
+    // Bootstrap restores focus to the trigger only for modals it opened from a
+    // data-toggle attribute, and this one is opened programmatically (WCAG 2.4.3).
+    var lastTrigger = null;
+
     document.body.addEventListener('click', function (e) {
       var trigger = e.target.closest('[data-map-url]');
       if (!trigger) return;
@@ -30,6 +34,7 @@
       iframe.src          = trigger.getAttribute('data-map-url');
       iframe.title        = title;
       titleEl.textContent = title;
+      lastTrigger = trigger;
       $(modal).modal('show');
     });
 
@@ -37,6 +42,10 @@
       document.getElementById('enactMapIframe').src          = 'about:blank';
       document.getElementById('enactMapIframe').title        = '';
       document.getElementById('enactMapModalLabel').textContent = '';
+      // isConnected: the trigger is gone after a Turbolinks visit, and focusing a
+      // detached node silently drops focus to the body.
+      if (lastTrigger && lastTrigger.isConnected) lastTrigger.focus();
+      lastTrigger = null;
     });
   }
 
