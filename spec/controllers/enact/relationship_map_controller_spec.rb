@@ -2,8 +2,8 @@
 
 require 'rails_helper'
 
-# The labelling rules themselves live on Enact::RelationshipGraph::Edge and are specced
-# there (issue #107).
+# The labelling rules live on Enact::RelationshipGraph::Edge and which works are in
+# scope on Enact::RelationshipMapScope; both are specced there.
 RSpec.describe Enact::RelationshipMapController do
   let(:edge_class) { Enact::RelationshipGraph::Edge }
 
@@ -23,6 +23,38 @@ RSpec.describe Enact::RelationshipMapController do
                               type_other: 'Remixes', type_other_inverse: 'Is remixed by'))
       link = controller.send(:links_for, { 'id' => 's1' }).first
       expect(link).to include(source: 's1', target: 't1', rel: 'Remixes', rel_inverse: 'Is remixed by')
+    end
+  end
+
+  describe '#kept_links' do
+    let(:docs) { [{ 'id' => 'core' }, { 'id' => 'n1' }, { 'id' => 'n2' }] }
+    let(:links) do
+      { 'core' => [{ source: 'core', target: 'n1', rel: 'cites' }],
+        'n1' => [{ source: 'n1', target: 'n2', rel: 'cites' }],
+        'n2' => [{ source: 'n2', target: 'core', rel: 'cites' }] }
+    end
+
+    before { allow(controller).to receive(:links_for) { |doc| links[doc['id']] } }
+
+    it 'keeps only the edges touching the project when scoped to a portfolio' do
+      expect(controller.send(:kept_links, docs, Set['core'])).to contain_exactly(
+        hash_including(source: 'core', target: 'n1'),
+        hash_including(source: 'n2', target: 'core')
+      )
+    end
+
+    it 'keeps every edge between in-scope works when not scoped to a portfolio' do
+      expect(controller.send(:kept_links, docs, nil).size).to eq(3)
+    end
+
+    it 'keeps an external URL target, which is never in the document set' do
+      allow(controller).to receive(:links_for) do |doc|
+        next [] unless doc['id'] == 'core'
+        [{ source: 'core', target: 'https://example.org/a', rel: 'cites', external: true }]
+      end
+
+      expect(controller.send(:kept_links, docs, Set['core']).map { |l| l[:target] })
+        .to eq(['https://example.org/a'])
     end
   end
 
