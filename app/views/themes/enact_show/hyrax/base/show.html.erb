@@ -127,3 +127,9 @@
     <span class='hide analytics-event' data-category="work-in-collection" data-action="work-in-collection-view" data-name="<%= collection_id %>"></span>
   <% end %>
 </div>
+
+<%# Here, not in the sidebar with its trigger: nested in a flex column, a Bootstrap
+    modal has its fixed positioning and focus trap confined to that column. %>
+<% if enact_relationships_card?(@presenter) %>
+  <%= render 'enact/shared/map_modal' %>
+<% end %>
