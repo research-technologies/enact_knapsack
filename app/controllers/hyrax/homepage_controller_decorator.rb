@@ -12,6 +12,7 @@ module Hyrax
       enact_home_counts
       enact_home_browse
       enact_home_item_counts
+      enact_home_recent_parents
     end
 
     private
@@ -89,6 +90,28 @@ module Hyrax
       end
 
       response.total
+    end
+
+    # A child carries no parent field, so this is a reverse lookup on member_ids_ssim. The
+    # restriction goes in q, not fq: SearchBuilder#merge is a shallow Hash merge, so an fq would
+    # replace the processor chain's access filter. Leading local params still beat defType.
+    def enact_home_recent_parents
+      ids = Array(@recent_documents).map(&:id)
+      return @enact_home_recent_parents = {} if ids.empty?
+
+      (_, documents) = search_service.search_results do |builder|
+        builder.rows(PARENT_ROWS)
+        builder.merge(q: "{!terms f=member_ids_ssim}#{ids.join(',')}",
+                      fl: 'id,title_tesim,has_model_ssim,member_ids_ssim')
+      end
+
+      @enact_home_recent_parents = ids.index_with { |id| enact_home_parent_of(documents, id) }.compact
+    end
+
+    def enact_home_parent_of(documents, child_id)
+      parents = documents.select { |doc| Array(doc['member_ids_ssim']).include?(child_id) }
+
+      parents.find { |doc| Array(doc['has_model_ssim']).include?('Portfolio') } || parents.first
     end
 
     # fetch, not search_results with a merged fq: SearchBuilder#merge is a shallow Hash merge, so

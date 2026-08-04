@@ -6,6 +6,10 @@ module EnactHomeHelper
   NAMED_CONTRIBUTORS = 2
   CARD_BLURB_LENGTH = 150
 
+  def enact_featured_researcher?
+    @featured_researcher&.value.present?
+  end
+
   def enact_share_work?
     @presenter&.display_share_button? && !Flipflop.read_only?
   end

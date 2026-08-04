@@ -107,4 +107,28 @@ RSpec.describe Hyrax::HomepageControllerDecorator, :clean_repo, type: :controlle
       expect(assigns(:enact_home_item_counts)[parent.id.to_s]).to eq(1)
     end
   end
+
+  describe 'the parent named beside a recent deposit' do
+    it 'prefers the portfolio when the work also sits in a collection' do
+      collection = SolrDocument.new(id: 'collection-1',
+                                    has_model_ssim: ['PortfolioItemCollection'],
+                                    member_ids_ssim: ['child-1'])
+      parent_portfolio = SolrDocument.new(id: 'portfolio-1',
+                                          has_model_ssim: ['Portfolio'],
+                                          member_ids_ssim: ['child-1'])
+
+      parent = controller.send(:enact_home_parent_of, [collection, parent_portfolio], 'child-1')
+
+      expect(parent['id']).to eq('portfolio-1')
+    end
+
+    it 'names no parent a visitor cannot see' do
+      child = work(PortfolioArtefact, 'Colour studies', 'open')
+      portfolio('Kiln Yard', 'restricted', [child.id])
+
+      get :index
+
+      expect(assigns(:enact_home_recent_parents)[child.id.to_s]).to be_nil
+    end
+  end
 end

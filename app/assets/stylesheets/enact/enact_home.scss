@@ -17,6 +17,7 @@
 
   // Anchors, not .btn, so the reset above does not reach them.
   .enact-type-tile:focus-visible,
+  .enact-researcher-link:focus-visible,
   .enact-featured-save:focus-visible,
   .enact-nav-share:focus-visible {
     @include enact-focus-ring;
@@ -469,6 +470,109 @@
     line-height: 1;
   }
 
+  // ---- recently uploaded + featured researcher ----------------------------
+
+  .enact-recent-row {
+    align-items: start;
+    display: grid;
+    gap: 2.75rem;
+    grid-template-columns: minmax(0, 1.4fr) minmax(0, 1fr);
+  }
+
+  .enact-recent-row-single {
+    grid-template-columns: minmax(0, 1fr);
+  }
+
+  .enact-recent-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+
+  .enact-recent-item {
+    align-items: center;
+    border-bottom: 1px solid var(--enact-hairline, #{$hairline});
+    display: grid;
+    gap: 1rem;
+    grid-template-columns: 64px minmax(0, 1fr);
+    padding: 0.9375rem 0;
+  }
+
+  .enact-recent-thumb {
+    @include enact-thumb-placeholder;
+
+    align-items: center;
+    border: 1px solid $thumb-border;
+    display: flex;
+    height: 64px;
+    justify-content: center;
+    overflow: hidden;
+    width: 64px;
+
+    img {
+      height: 100%;
+      object-fit: cover;
+      width: 100%;
+    }
+  }
+
+  .enact-recent-body {
+    display: block;
+    min-width: 0;
+  }
+
+  .enact-recent-heading {
+    margin: 0 0 0.1875rem;
+  }
+
+  // The family is named because the h3 wrapper is pinned to the Header Font and this link would
+  // otherwise inherit it.
+  .enact-recent-title {
+    display: inline-block;
+    font-family: var(--enact-sans, 'Helvetica Neue', Helvetica, Arial, sans-serif);
+    font-size: 1.0625rem;
+    font-weight: 600;
+    line-height: 1.4;
+    overflow-wrap: break-word;
+  }
+
+  .enact-recent-meta {
+    align-items: center;
+    color: $faint;
+    display: flex;
+    flex-wrap: wrap;
+    font-size: 0.8125rem;
+    gap: 0.625rem;
+    line-height: 1.4;
+  }
+
+  .enact-recent-type {
+    color: $muted;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+  }
+
+  .enact-researcher-body {
+    padding-top: 0.9375rem;
+
+    // Admin-written HTML, so the treatment goes on whatever it contains.
+    p,
+    div {
+      color: #3c4543;
+      font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+      font-size: 0.9375rem;
+      line-height: 1.55;
+    }
+
+    img {
+      border: 1px solid $thumb-border;
+      height: auto;
+      max-width: 100%;
+    }
+  }
+
+  .enact-researcher-link,
   .enact-featured-save {
     background: var(--enact-primary, #{$brand-700});
     border: 0;
@@ -532,6 +636,7 @@
     }
 
     .enact-hero-search-submit,
+    .enact-researcher-link,
     .enact-featured-save {
       font-size: 0.75rem;
     }
@@ -574,6 +679,30 @@
       font-size: 1.125rem;
     }
 
+    .enact-recent-row {
+      gap: 2.125rem;
+    }
+
+    .enact-recent-item {
+      gap: 0.875rem;
+      grid-template-columns: 56px minmax(0, 1fr);
+      padding: 0.8125rem 0;
+    }
+
+    .enact-recent-thumb {
+      height: 56px;
+      width: 56px;
+    }
+
+    .enact-recent-title {
+      font-size: 1rem;
+    }
+
+    .enact-recent-meta {
+      font-size: 0.75rem;
+      gap: 0.5625rem;
+    }
+
   }
 
   @media (max-width: 1023px) {
@@ -613,6 +742,7 @@
     }
 
     .enact-hero-search-submit,
+    .enact-researcher-link,
     .enact-featured-save {
       font-size: 0.6875rem;
     }
@@ -661,10 +791,37 @@
 
     // 44px touch floor from tablet down.
     .enact-nav-share,
+    .enact-researcher-link,
     .enact-featured-save {
       align-items: center;
       display: inline-flex;
       min-height: 44px;
+    }
+
+    // Two columns only work because containers.scss widens this band to the Enact gutter;
+    // against Bootstrap's 540px container each title came out about 177px wide.
+    .enact-recent-row {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
+    }
+
+    .enact-recent-list {
+      column-gap: 1.5rem;
+      columns: 2;
+    }
+
+    .enact-recent-item {
+      break-inside: avoid;
+      grid-template-columns: 52px minmax(0, 1fr);
+    }
+
+    .enact-recent-thumb {
+      height: 52px;
+      width: 52px;
+    }
+
+    .enact-recent-title {
+      font-size: 0.9375rem;
     }
 
   }
@@ -735,6 +892,22 @@
       padding: 0 1rem;
     }
 
+    .enact-recent-list {
+      columns: auto;
+    }
+
+    .enact-recent-item {
+      gap: 0.75rem;
+      grid-template-columns: 48px minmax(0, 1fr);
+      padding: 0.75rem 0;
+    }
+
+    .enact-recent-thumb {
+      height: 48px;
+      width: 48px;
+    }
+
+    .enact-researcher-link,
     .enact-featured-save {
       display: block;
       min-height: 48px;

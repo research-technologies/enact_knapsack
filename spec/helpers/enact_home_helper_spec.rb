@@ -98,4 +98,18 @@ RSpec.describe EnactHomeHelper, type: :helper do
       expect(helper.enact_contributor_summary(document)).to be_nil
     end
   end
+
+  describe '#enact_featured_researcher?' do
+    it 'is false for a blank content block, so the module hides' do
+      assign(:featured_researcher, double(value: ''))
+
+      expect(helper.enact_featured_researcher?).to be(false)
+    end
+
+    it 'is true once an admin has written one' do
+      assign(:featured_researcher, double(value: '<p>Jayne Osgood</p>'))
+
+      expect(helper.enact_featured_researcher?).to be(true)
+    end
+  end
 end

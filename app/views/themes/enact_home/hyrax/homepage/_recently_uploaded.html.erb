@@ -1,0 +1,46 @@
+<% if @recent_documents.present? %>
+  <section class="enact-section enact-recent">
+    <div class="enact-section-head">
+      <h2 class="enact-section-title"><%= t('enact.homepage.recent.heading') %></h2>
+      <%= link_to t('enact.homepage.recent.all'),
+                  main_app.search_catalog_path(sort: 'date_uploaded_dtsi desc'),
+                  class: 'enact-section-link',
+                  aria: { label: t('enact.homepage.recent.all_label') } %>
+    </div>
+
+    <ul class="enact-recent-list" role="list">
+      <% @recent_documents.each do |document| %>
+        <% parent = @enact_home_recent_parents.to_h[document.id] %>
+        <li class="enact-recent-item">
+          <div class="enact-recent-thumb">
+            <%= render_thumbnail_tag(document, { alt: '' }, { suppress_link: true }) if enact_thumbnail?(document) %>
+          </div>
+
+          <div class="enact-recent-body">
+            <h3 class="enact-recent-heading">
+                <%= link_to document.title_or_label, generate_work_url(document, request),
+                          class: 'enact-recent-title',
+                          data: { turbolinks: block_valkyrie_redirect? } %>
+            </h3>
+            <span class="enact-recent-meta">
+              <span class="enact-recent-type"><%= work_type_facet_label(Array(document['has_model_ssim']).first) %></span>
+              <% if document.date_uploaded.present? %>
+                <%# default: because l raises on a missing format and enact_short is defined for en
+                    only, which 500d every non-English homepage. %>
+                <span class="enact-recent-date">
+                  <%= l(document.date_uploaded.to_date, format: :enact_short, default: '%-d %b %Y') %>
+                </span>
+              <% end %>
+              <% parent_title = Array(parent&.[]('title_tesim')).first %>
+              <% if parent_title.present? %>
+                <span class="enact-recent-parent">
+                  <%= t('enact.homepage.recent.in_portfolio', title: parent_title) %>
+                </span>
+              <% end %>
+            </span>
+          </div>
+        </li>
+      <% end %>
+    </ul>
+  </section>
+<% end %>

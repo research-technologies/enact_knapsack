@@ -256,6 +256,13 @@ en:
         search_button: Search
         advanced_search: Advanced search
         browse_everything: Browse everything
+      recent:
+        heading: Recently uploaded
+        all: See all
+        all_label: See all recently uploaded works
+        in_portfolio: in %{title}
+      researcher:
+        heading: Featured researcher
       browse:
         work_types: Browse by work type
       featured:

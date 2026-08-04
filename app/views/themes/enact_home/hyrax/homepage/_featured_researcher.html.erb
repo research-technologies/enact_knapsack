@@ -1,0 +1,14 @@
+<% if enact_featured_researcher? %>
+  <section class="enact-section enact-researcher">
+    <div class="enact-section-head">
+      <h2 class="enact-section-title"><%= t('enact.homepage.researcher.heading') %></h2>
+    </div>
+
+    <div class="enact-researcher-body">
+      <%= displayable_content_block @featured_researcher %>
+
+      <%= link_to t('enact.homepage.featured_researcher.view_all'), '/contributors',
+                  class: 'enact-researcher-link' %>
+    </div>
+  </section>
+<% end %>
