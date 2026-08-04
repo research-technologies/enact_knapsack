@@ -26,7 +26,7 @@ module Enact
     def show
       scope = ::Enact::RelationshipMapScope.new(ability: current_ability, portfolio_id: params[:portfolio])
       docs = scope.documents
-      links = kept_links(docs)
+      links = kept_links(docs, scope.core_ids)
       @graph = { nodes: graph_nodes(docs, links), links: }
       @rel_types = rel_types(links)
       @focus = params[:focus].to_s
@@ -36,12 +36,20 @@ module Enact
 
     private
 
-    # Edges kept for the graph: those to in-project works (the work-to-work web,
+    # Edges kept for the graph: those to in-scope works (the work-to-work web,
     # Object Handling Spec v0.2 Sec 3.5) plus those to external URLs (work_or_url
     # targets outside the repository), which render as their own link nodes.
-    def kept_links(docs)
+    def kept_links(docs, core_ids)
       ids = docs.map { |d| d['id'] }.to_set
-      docs.flat_map { |d| links_for(d) }.select { |l| ids.include?(l[:target]) || l[:external] }
+      docs.flat_map { |d| links_for(d) }
+          .select { |l| (ids.include?(l[:target]) || l[:external]) && in_project?(l, core_ids) }
+    end
+
+    # A project's one-hop neighbours are there to complete the project's own edges,
+    # not to bring their own web along with them, so an edge between two neighbours
+    # is dropped. Whole-corpus mode has no core set and keeps everything.
+    def in_project?(link, core_ids)
+      core_ids.nil? || core_ids.include?(link[:source]) || core_ids.include?(link[:target])
     end
 
     # Nodes for the graph: connected works (a work survives iff it is on a kept
