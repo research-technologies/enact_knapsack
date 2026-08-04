@@ -6,9 +6,11 @@
     Locals:
       presenter - a work show presenter (responds to #solr_document)
 %>
-<% graph = Enact::RelationshipGraph.new(presenter.solr_document)
-   outbound = graph.outbound
-   inbound = graph.inbound %>
+<%# Through the helper, not a fresh graph: the button gate reads the same edges and each
+    resolved target costs a Solr lookup. %>
+<% edges = enact_relationship_edges(presenter)
+   outbound = edges[:outbound]
+   inbound = edges[:inbound] %>
 
 <% if outbound.empty? && inbound.empty? %>
   <p class="text-muted mb-0"><%= t('enact.relationships.none') %></p>

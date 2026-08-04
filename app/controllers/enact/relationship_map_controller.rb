@@ -18,9 +18,8 @@ module Enact
     # Opt-in gate: the map only works when the tenant's metadata profile declares
     # the `relationships` compound (see docs/relationship-map-setup.md). Without
     # it there is nothing to draw, so the standalone page 404s rather than showing
-    # an empty graph. The in-page "Relationship map" button is already implicitly
-    # gated - it renders only inside the relationships compound card, which the
-    # profile drives.
+    # an empty graph. The in-page "Relationship map" button is separately gated on
+    # the map having something to draw (Enact::RelationshipMapHelper, issue #161).
     before_action :require_relationships_compound, only: :show
 
     def show
