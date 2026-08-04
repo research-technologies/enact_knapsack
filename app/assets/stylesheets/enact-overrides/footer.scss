@@ -1,0 +1,9 @@
+// hyrax/_footer.scss reserves `body { margin-bottom: calc(118px + .75rem) }` (doubled below md) for
+// a `.site-footer` it positions absolutely. Hyku's own shared/_footer.html.erb carries no
+// `.site-footer`, so nothing is ever positioned into that gap and it is dead space on every page.
+//
+// `html body` so this holds wherever the knapsack sheet lands in the cascade. Revisit if a Hyku
+// bump brings the gem's `.site-footer` markup back, because then the margin is load-bearing again.
+html body {
+  margin-bottom: 0;
+}
