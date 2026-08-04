@@ -256,6 +256,8 @@ en:
         search_button: Search
         advanced_search: Advanced search
         browse_everything: Browse everything
+      browse:
+        work_types: Browse by work type
       featured:
         heading: Featured
         reorder_handle: "Reorder %{title}: drag, or use the arrow keys"

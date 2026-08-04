@@ -16,6 +16,7 @@
   @include enact-controls-reset;
 
   // Anchors, not .btn, so the reset above does not reach them.
+  .enact-type-tile:focus-visible,
   .enact-featured-save:focus-visible,
   .enact-nav-share:focus-visible {
     @include enact-focus-ring;
@@ -419,6 +420,55 @@
     margin: 1.25rem 0 0.625rem;
   }
 
+  // ---- browse --------------------------------------------------------------
+
+  // A tile per column rather than a stacked list, which only works in a narrow column:
+  // four full-width bars would leave the name and the count at opposite ends of 1140px.
+  .enact-type-tiles {
+    display: grid;
+    gap: 0.75rem;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    list-style: none;
+    margin: 0;
+    padding: 1.375rem 0 0;
+  }
+
+  .enact-type-tile {
+    align-items: baseline;
+    background: var(--enact-band, #f4f6f5);
+    border: 1px solid $border;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    justify-content: space-between;
+    padding: 0.6875rem 1.125rem;
+    text-decoration: none;
+
+    &:hover,
+    &:focus {
+      background:
+        linear-gradient(rgba(0, 0, 0, 0.03), rgba(0, 0, 0, 0.03)),
+        var(--enact-band, #f4f6f5);
+    }
+  }
+
+  // A span, not a heading, so the appearance styles' heading rule never reaches it.
+  .enact-type-name {
+    color: var(--enact-link, #{$brand-700});
+    font-family: var(--enact-serif, Georgia, 'Times New Roman', serif);
+    font-size: 1.25rem;
+    font-weight: 700;
+    line-height: 1.2;
+    overflow-wrap: break-word;
+  }
+
+  .enact-type-count {
+    color: $muted;
+    font-size: 0.8125rem;
+    font-weight: 600;
+    line-height: 1;
+  }
+
   .enact-featured-save {
     background: var(--enact-primary, #{$brand-700});
     border: 0;
@@ -520,6 +570,10 @@
       font-size: 0.75rem;
     }
 
+    .enact-type-name {
+      font-size: 1.125rem;
+    }
+
   }
 
   @media (max-width: 1023px) {
@@ -588,6 +642,23 @@
       margin-bottom: 0.6875rem;
     }
 
+    .enact-type-tiles {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      padding-top: 1.125rem;
+    }
+
+    .enact-type-tile {
+      align-items: center;
+      flex-direction: row;
+      justify-content: space-between;
+      min-height: 44px;
+      padding: 0.875rem 1rem;
+    }
+
+    .enact-type-name {
+      font-size: 1.0625rem;
+    }
+
     // 44px touch floor from tablet down.
     .enact-nav-share,
     .enact-featured-save {
@@ -651,6 +722,17 @@
 
     .enact-portfolio-cover {
       height: 190px;
+    }
+
+    .enact-type-tiles {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0.5rem;
+      padding-top: 1rem;
+    }
+
+    .enact-type-tile {
+      min-height: 48px;
+      padding: 0 1rem;
     }
 
     .enact-featured-save {

@@ -72,6 +72,26 @@ RSpec.describe Hyrax::HomepageControllerDecorator, :clean_repo, type: :controlle
     end
   end
 
+  describe 'the browse facets' do
+    it 'offers a work type the visitor can see, and never Portfolio, which the band reports' do
+      artefact = Hyrax.persister.save(resource: PortfolioArtefact.new(title: ['Site sketchbook']))
+      Hyrax::VisibilityWriter.new(resource: artefact).assign_access_for(visibility: 'open')
+      artefact.permission_manager.acl.save
+      Hyrax.index_adapter.save(resource: artefact)
+      public_portfolio
+
+      get :index
+
+      expect(assigns(:enact_home_work_types)).to eq('PortfolioArtefact' => 1)
+    end
+
+    it 'offers nothing on an empty repository, so the module hides rather than listing zeroes' do
+      get :index
+
+      expect(assigns(:enact_home_work_types)).to be_empty
+    end
+  end
+
   # The restriction lives in q, not fq, because SearchBuilder#merge would replace the chain's own
   # fq and with it the access filter. Nothing about that is visible in the count, so this example is
   # the guard: move the terms query into fq and it fails.

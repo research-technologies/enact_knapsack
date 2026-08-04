@@ -10,6 +10,7 @@ module Hyrax
 
       enact_home_featured
       enact_home_counts
+      enact_home_browse
       enact_home_item_counts
     end
 
@@ -57,6 +58,14 @@ module Hyrax
       readable = enact_home_readable_ids(featured.map { |work| work.presenter.id })
 
       @enact_home_featured = featured.select { |work| readable.include?(work.presenter.id) }
+    end
+
+    # Sorted here rather than by Solr: facet.sort defaults to index, not count, whenever
+    # facet.limit is negative.
+    def enact_home_browse
+      @enact_home_work_types = enact_home_model_counts.except('Portfolio')
+                                                      .sort_by { |_model, count| -count }
+                                                      .to_h
     end
 
     def enact_home_item_counts
