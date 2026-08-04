@@ -116,7 +116,11 @@
       if (!container.clientWidth || !container.clientHeight) { requestAnimationFrame(buildGraph); return; }
       if (!window.cytoscape) { requestAnimationFrame(buildGraph); return; }
 
-      document.getElementById('empty').style.display = 'none';
+      // Removed rather than hidden: hidden, it stays in the accessibility tree of a
+      // populated map (issue #162). Only reachable on a page cached from before the
+      // server stopped rendering it for a non-empty graph.
+      const emptyEl = document.getElementById('empty');
+      if (emptyEl) { emptyEl.remove(); }
       const elements = [
         // carry all fields (thumb, type, date, keywords, description...) plus the
         // derived size + ring colour so the stylesheet can map them per node.
@@ -359,7 +363,7 @@
       });
     }
 
-    if (G.nodes.length === 0) { /* leave the #empty message visible */ }
+    if (G.nodes.length === 0) { /* the server rendered the #empty message; nothing to build */ }
     else { buildGraph(); }
   }
 
