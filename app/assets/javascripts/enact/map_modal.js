@@ -1,22 +1,22 @@
 /*
  * Opens any [data-map-url] trigger's URL in the shared #enactMapModal iframe.
  * On hide, resets src to about:blank so Cytoscape is torn down and no ghost
- * request is left pending. DOM lookups are deferred to handler time so the
- * listener survives Turbolinks cache restores. enactMapModalReady guards against
- * double-init if the file is included more than once.
+ * request is left pending. enactMapModalReady guards against double-init if the
+ * file is included more than once.
  */
 (function () {
   if (window.enactMapModalReady) return;
   window.enactMapModalReady = true;
 
   function setup() {
-    if (!document.getElementById('enactMapModal')) return;
-
     // Bootstrap restores focus to the trigger only for modals it opened from a
     // data-toggle attribute, and this one is opened programmatically (WCAG 2.4.3).
     var lastTrigger = null;
 
-    document.body.addEventListener('click', function (e) {
+    // Delegated from document, never document.body: Turbolinks replaces the body on
+    // every visit, taking body-bound listeners with it, and this file only runs once
+    // per full page load. DOM lookups stay inside the handlers for the same reason.
+    document.addEventListener('click', function (e) {
       var trigger = e.target.closest('[data-map-url]');
       if (!trigger) return;
       var modal = document.getElementById('enactMapModal');
@@ -38,7 +38,7 @@
       $(modal).modal('show');
     });
 
-    $(document.body).on('hidden.bs.modal', '#enactMapModal', function () {
+    $(document).on('hidden.bs.modal', '#enactMapModal', function () {
       document.getElementById('enactMapIframe').src          = 'about:blank';
       document.getElementById('enactMapIframe').title        = '';
       document.getElementById('enactMapModalLabel').textContent = '';
