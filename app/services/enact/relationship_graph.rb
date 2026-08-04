@@ -26,7 +26,28 @@ module Enact
     # On an inbound edge `type_other` holds the *inverse* prose, not the forward
     # label, so the view can render both directions with identical logic.
     Edge = Struct.new(:target_id, :title, :path, :relation_type, :type_other, :type_other_inverse,
-                      :note, :position, :external, keyword_init: true)
+                      :note, :position, :external, keyword_init: true) do
+      # An edge with neither a controlled type nor free-text prose (relationship_type
+      # is optional, issue #107) has no label, colour, or legend entry for the map to
+      # draw it with, so the map skips it while the show page still lists it. The
+      # relationship-map button reads this too, so a work whose only edge is untyped
+      # does not get a button to an empty map (issue #161).
+      def typed?
+        relation_type.present? || type_other.present?
+      end
+
+      # [forward key, inverse key] for the map's edge labels and legend. A free-text
+      # "other" edge keys by its prose, not by the "other" code, so distinct
+      # free-text types stay distinct instead of collapsing into a single "Other"
+      # entry; a controlled edge inverts through the authority, so its inverse is
+      # left nil here (issue #107).
+      def rel_pair
+        prose = type_other.presence if relation_type.blank? || relation_type == 'other'
+        return [relation_type, nil] unless prose
+
+        [prose, type_other_inverse.presence || prose]
+      end
+    end
 
     # @param document [SolrDocument, #relationships] the work whose edges we render
     def initialize(document)

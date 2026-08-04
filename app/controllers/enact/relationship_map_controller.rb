@@ -139,26 +139,14 @@ module Enact
     # document through as-is.
     def links_for(doc)
       ::Enact::RelationshipGraph.new(doc).outbound.filter_map do |edge|
-        rel, rel_inverse = edge_rel_pair(edge)
-        # An untyped relationship (no controlled type, no prose - possible now
-        # that relationship_type is optional) has no map label or colour and no
-        # legend entry, so drop it rather than emit a `null`-typed edge. The show
-        # page still lists it.
-        next if rel.blank?
+        # An untyped relationship has no map label, colour, or legend entry, so drop
+        # it rather than emit a `null`-typed edge; see Edge#typed?.
+        next unless edge.typed?
 
+        rel, rel_inverse = edge.rel_pair
         { source: doc['id'], target: edge.target_id, rel:, rel_inverse:,
           note: edge.note, position: edge.position, external: edge.external }
       end
-    end
-
-    # A free-text "other" edge keys by its prose, not the "other" code, so
-    # distinct free-text types stay distinct on the map instead of collapsing
-    # into a single "Other" node; controlled edges invert via the authority, so
-    # their `rel_inverse` is left nil here (issue #107).
-    def edge_rel_pair(edge)
-      prose = edge.type_other.presence if edge.relation_type.blank? || edge.relation_type == 'other'
-      return [edge.relation_type, nil] unless prose
-      [prose, edge.type_other_inverse.presence || prose]
     end
 
     # Only the types present in the graph; the whole vocabulary would swamp the
