@@ -15,10 +15,6 @@ module Enact
   class RelationshipMapController < ApplicationController
     include ::Enact::RequiresRelationshipsCompound
 
-    # Cap on works pulled into a single map. A project's corpus is small; this
-    # is a backstop, surfaced in the response rather than silently truncating.
-    MAX_WORKS = 1_000
-
     # Opt-in gate: the map only works when the tenant's metadata profile declares
     # the `relationships` compound (see docs/relationship-map-setup.md). Without
     # it there is nothing to draw, so the standalone page 404s rather than showing
@@ -28,12 +24,13 @@ module Enact
     before_action :require_relationships_compound, only: :show
 
     def show
-      docs = scoped_documents
+      scope = ::Enact::RelationshipMapScope.new(ability: current_ability, portfolio_id: params[:portfolio])
+      docs = scope.documents
       links = kept_links(docs)
       @graph = { nodes: graph_nodes(docs, links), links: }
       @rel_types = rel_types(links)
       @focus = params[:focus].to_s
-      @truncated = docs.length >= MAX_WORKS
+      @truncated = scope.truncated?
       render layout: false
     end
 
@@ -54,43 +51,6 @@ module Enact
       work_nodes = docs.select { |d| connected.include?(d['id']) }.map { |d| node_for(d) }
       url_nodes = links.select { |l| l[:external] }.map { |l| l[:target] }.uniq.map { |u| url_node_for(u) }
       work_nodes + url_nodes
-    end
-
-    # The works the map is built from. `?portfolio=<id>` scopes to a single
-    # project (the portfolio plus its member works) so a portfolio's "full
-    # diagram linked together" can be shown; otherwise the whole accessible
-    # corpus is used (then trimmed to connected works in #show).
-    def scoped_documents
-      portfolio_id = params[:portfolio].to_s
-      portfolio_id.present? ? portfolio_documents(portfolio_id) : work_documents
-    end
-
-    # The portfolio plus its member works (`member_ids_ssim`), scoped by ability.
-    # Returns [] if the portfolio is not found / not visible, which renders the
-    # empty-map message rather than erroring.
-    def portfolio_documents(portfolio_id)
-      portfolio = Hyrax::SolrQueryService.new
-                                         .with_field_pairs(field_pairs: { 'id' => portfolio_id })
-                                         .accessible_by(ability: current_ability)
-                                         .solr_documents(rows: 1).first
-      return [] if portfolio.nil?
-
-      ids = ([portfolio_id] + Array(portfolio['member_ids_ssim'])).uniq.first(MAX_WORKS)
-      Hyrax::SolrQueryService.new
-                             .with_field_pairs(field_pairs: { 'id' => ids }, join_with: 'OR')
-                             .accessible_by(ability: current_ability)
-                             .solr_documents(rows: MAX_WORKS)
-    end
-
-    # Enact work types accessible to the current user. We pull the whole set and
-    # filter edges to in-set targets (mirrors the prototype); fine for a
-    # per-project corpus.
-    def work_documents
-      models = Hyrax.config.registered_curation_concern_types.presence
-      Hyrax::SolrQueryService.new
-                             .with_field_pairs(field_pairs: { 'has_model_ssim' => models }, join_with: 'OR')
-                             .accessible_by(ability: current_ability)
-                             .solr_documents(rows: MAX_WORKS)
     end
 
     def node_for(doc)
