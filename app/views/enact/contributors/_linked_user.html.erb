@@ -1,0 +1,23 @@
+<% return unless can?(:manage, :research_profile_links) && contributor.claimed? %>
+<% linked = contributor.linked_user %>
+
+<div class="enact-linked-user mt-3">
+  <% if linked.present? %>
+    <%= button_to t('enact.research_profiles.panel.unlink_from', email: linked.email,
+                                                                 default: 'Unlink from %{email}'),
+                  HykuKnapsack::Engine.routes.url_helpers.enact_contributor_link_path(contributor),
+                  method: :delete,
+                  class: 'btn btn-outline-secondary btn-sm' %>
+  <% else %>
+    <%# No FK on user_id, so a deleted account leaves the id dangling. Still
+        offer the unlink so the stale reference can be cleared. %>
+    <span class="text-muted small mr-2">
+      <%= t('enact.research_profiles.panel.missing_user',
+            default: 'The linked account no longer exists.') %>
+    </span>
+    <%= button_to t('enact.research_profiles.panel.unlink', default: 'Unlink'),
+                  HykuKnapsack::Engine.routes.url_helpers.enact_contributor_link_path(contributor),
+                  method: :delete,
+                  class: 'btn btn-outline-secondary btn-sm' %>
+  <% end %>
+</div>

@@ -1,11 +1,11 @@
-<%# Contributor profile page: a profile header (name, type badge, ORCID icon,
-    affiliations) over a "Works" section listing the works crediting this
-    contributor (access-scoped to the viewer), with each credit's roles shown as
-    badges. The claimed/unclaimed indicator and claim CTA come later. %>
+<%# Contributor profile page %>
 <div class="container enact-contributor-show">
   <header class="enact-contributor-header mb-4">
     <div class="d-flex justify-content-between align-items-start">
-      <h1 class="mb-2"><%= @contributor.display_name %></h1>
+      <h1 class="mb-2">
+        <%= @contributor.display_name %>
+        <%= render 'enact/contributors/verified_mark', contributor: @contributor %>
+      </h1>
       <div class="enact-contributor-actions">
         <%# Opens the research-network map centred on this person in an iframe
             modal so the user stays in the repository experience (client request).
@@ -16,8 +16,7 @@
         <%= enact_map_trigger t('enact.people_map.profile_link', default: 'Research network'),
                               "/people-map?focus=#{@contributor.id}",
                               html_class: 'btn btn-outline-primary btn-sm' %>
-        <%# Edit is admin-gated in the controller; only surface the link to admins. %>
-        <% if current_ability.admin? %>
+        <% if can?(:edit, @contributor) %>
           <%= link_to t('enact.contributors.edit.link', default: 'Edit'),
                       "/contributors/#{@contributor.id}/edit",
                       class: 'btn btn-outline-secondary btn-sm ml-1' %>
@@ -54,6 +53,9 @@
         <% end %>
       </ul>
     <% end %>
+
+    <%= render 'enact/contributors/linked_user', contributor: @contributor %>
+    <%= render 'enact/contributors/claim_prompt', contributor: @contributor %>
   </header>
 
   <section class="enact-contributor-works">

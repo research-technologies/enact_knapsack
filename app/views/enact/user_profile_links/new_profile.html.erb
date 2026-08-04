@@ -1,0 +1,57 @@
+<%# Prefilled create form for a new research profile linked to a user account.
+
+    The admin corrects data here before the profile is written. %>
+<div class="container enact-new-research-profile">
+  <h1><%= t('enact.research_profiles.admin.create_title', default: 'New research profile') %></h1>
+
+  <p class="text-muted">
+    <%= t('enact.research_profiles.admin.create_for_html',
+          email: tag.strong(@user.email),
+          default: 'This profile will be linked to %{email}.') %>
+  </p>
+
+  <% if @contributor.errors.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% @contributor.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%= form_with model: @contributor, scope: :contributor,
+                url: HykuKnapsack::Engine.routes.url_helpers.dashboard_research_profile_link_path(@user),
+                method: :post do |f| %>
+    <div class="form-group">
+      <%= f.label :display_name, t('enact.contributors.display_name', default: 'Name'), class: 'form-label' %>
+      <%= f.text_field :display_name, class: 'form-control', required: true %>
+      <%# The account's name is only a starting point — it may be a username or a
+          shortened form, while the profile is how the person is credited on works. %>
+      <small class="form-text text-muted">
+        <%= t('enact.research_profiles.admin.name_hint',
+              default: 'How this person should be credited on works.') %>
+      </small>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :orcid, t('enact.contributors.orcid', default: 'ORCID'), class: 'form-label' %>
+      <%= f.text_field :orcid, class: 'form-control' %>
+    </div>
+
+    <div class="form-group">
+      <%= f.label :affiliations, t('enact.contributors.affiliations', default: 'Affiliations'), class: 'form-label' %>
+      <%= f.text_area :affiliations, value: @contributor.affiliations.join("\n"),
+                      rows: 3, class: 'form-control' %>
+      <small class="form-text text-muted">
+        <%= t('enact.contributors.edit.affiliations_hint', default: 'One affiliation per line.') %>
+      </small>
+    </div>
+
+    <%= f.submit t('enact.research_profiles.admin.create_submit', default: 'Create profile and link'),
+                 class: 'btn btn-primary' %>
+    <%= link_to t('enact.research_profiles.admin.cancel', default: 'Cancel'),
+                HykuKnapsack::Engine.routes.url_helpers.new_dashboard_research_profile_link_path(@user),
+                class: 'btn btn-link' %>
+  <% end %>
+</div>

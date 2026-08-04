@@ -1,17 +1,15 @@
 # frozen_string_literal: true
 
 module Enact
-  # Public, read-only contributor profile page. Loads the contributor and the
-  # works crediting them (access-scoped to the viewer). The claimed/unclaimed
-  # indicator and "claim" CTA are built out in a later step. No auth: contributor
-  # profiles are public, but the works list only shows works the viewer may see.
+  # Contributor profile pages. Index and show are public — the works list is
+  # access-scoped, so a viewer only sees works they may see — while edit and
+  # update are open to admins and to the profile's linked user.
   #
   # Knapsack-local custom code (Enact:: conventions, top-level namespace).
   class ContributorsController < ApplicationController
-    # Editing a contributor profile is admin-gated for now: a contributor has no
-    # owner until the (deferred) claim flow exists, so only admins/curators may
-    # curate one. Index/show stay public.
-    before_action :require_admin!, only: %i[edit update]
+    # Must run before the authorization check, which needs the record in hand.
+    before_action :load_contributor, only: %i[show edit update]
+    before_action :authorize_contributor_edit!, only: %i[edit update]
     # Browse all contributors (linked from the home page Featured Researcher
     # tab). Optional free-text search (name / ORCID) and person/organization
     # filter narrow the list server-side; alphabetical and paginated.
@@ -32,7 +30,6 @@ module Enact
     # fetched once and the dropdown options are built from it before filtering (so
     # selecting a type never empties the options).
     def show
-      @contributor = Enact::Contributor.find(params[:id])
       @search = params[:q].to_s.strip
       @work_type = params[:work_type].to_s.presence
 
@@ -43,12 +40,9 @@ module Enact
       add_show_breadcrumbs
     end
 
-    def edit
-      @contributor = Enact::Contributor.find(params[:id])
-    end
+    def edit; end
 
     def update
-      @contributor = Enact::Contributor.find(params[:id])
       if @contributor.update(contributor_params)
         redirect_to "/contributors/#{@contributor.id}",
                     notice: t('enact.contributors.edit.updated', default: 'Profile updated.')
@@ -132,12 +126,14 @@ module Enact
       end
     end
 
-    # Phase 1 gate: only admins/curators may edit a profile (no owner/claim yet).
-    # Mirrors the standard Hyku admin check; redirects others to the public show.
-    def require_admin!
-      return if current_ability.admin?
+    def load_contributor
+      @contributor = Enact::Contributor.find(params[:id])
+    end
 
-      redirect_to "/contributors/#{params[:id]}",
+    def authorize_contributor_edit!
+      return if can?(:edit, @contributor)
+
+      redirect_to "/contributors/#{@contributor.id}",
                   alert: t('enact.contributors.edit.forbidden', default: 'You are not authorized to edit this profile.')
     end
   end

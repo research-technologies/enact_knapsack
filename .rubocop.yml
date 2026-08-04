@@ -16,6 +16,7 @@ Metrics/BlockLength:
   AllowedMethods: ['included', 'describe', 'it', 'context']
   Exclude:
   - "spec/**/*.rb"
+  - "config/routes.rb"
 
 Style/AsciiComments:
   Enabled: false

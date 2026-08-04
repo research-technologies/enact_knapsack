@@ -3,8 +3,9 @@
 module Enact
   # A lightweight, editable contributor profile, independent of the Hyrax User.
   # A contributor may have no login and no email; a User is involved only when a
-  # contributor is later *claimed* (the `user_id` column is reserved for that and
-  # unused in Phase 1).
+  # contributor is *claimed*, which links the two 1:1 via `user_id` and lets that
+  # user curate their own profile. Claiming is admin-approved — see
+  # Enact::ProfileRequest.
   #
   # Typed single table: `agent_type` distinguishes a person from an organization
   # so both share one model, picker, and reverse-lookup. Type-varying and
@@ -17,7 +18,19 @@ module Enact
 
     enum :agent_type, { person: 'person', organization: 'organization' }, default: 'person'
 
+    # The Hyku User who has claimed this profile, if any. Optional: most profiles
+    # describe people with no login at all. No FK — deleting a user must not
+    # cascade into deleting a curated profile (see #linked_user).
+    belongs_to :user, optional: true, inverse_of: :enact_contributor
+
     validates :display_name, presence: true
+
+    # One profile per user (a partial unique index is the DB-level guarantee;
+    # this surfaces a clean error rather than a raw constraint violation).
+    validates :user_id, uniqueness: true, allow_nil: true
+
+    # A user account belongs to a person, so only a person can hold one.
+    validate :organizations_cannot_be_claimed
 
     # Optional, but unique when present (a partial unique index is the DB-level
     # guarantee; this surfaces a clean error rather than a raw constraint violation).
@@ -64,10 +77,13 @@ module Enact
       metadata.delete('name_identifier_scheme')
     end
 
-    # Unclaimed contributors are those not yet linked to a User. Claiming (a
-    # future flow) sets `user_id`.
+    # Unclaimed contributors are those not yet linked to a User.
     scope :unclaimed, -> { where(user_id: nil) }
     scope :claimed, -> { where.not(user_id: nil) }
+
+    # Profiles a user account could hold: unclaimed, and a person rather than an
+    # organization. Paired with #linkable? — keep the two in step.
+    scope :linkable, -> { unclaimed.person }
 
     # Case-insensitive match on display_name, orcid, or any value in the metadata
     # blob (affiliations and name_identifiers). The blob is matched as text
@@ -98,7 +114,38 @@ module Enact
       user_id.present?
     end
 
+    # Record-level counterpart of the .linkable scope.
+    def linkable?
+      person? && !claimed?
+    end
+
+    # The linked User, or nil when `user_id` points at a deleted account. There
+    # is no FK on `user_id` (a FK would force either cascading the delete onto a
+    # curated profile or blocking user deletion), so a dangling id is expected
+    # and must read back safely.
+    def linked_user
+      return nil if user_id.blank?
+
+      @linked_user ||= ::User.find_by(id: user_id)
+    end
+
+    # Ownership only — the edit policy that consumes it lives in
+    # Hyrax::Ability::ContributorAbility. `candidate.present?` is load-bearing,
+    # not defensive noise: Ability is built with a nil user for anonymous
+    # visitors, and `nil.id` would raise instead of returning false.
+    def editable_by?(candidate)
+      candidate.present? && user_id.present? && user_id == candidate.id
+    end
+
     private
+
+    def organizations_cannot_be_claimed
+      return if user_id.blank? || !organization?
+
+      errors.add(:user_id, :organization,
+                 message: I18n.t('enact.research_profiles.errors.organization_claim',
+                                 default: 'cannot be linked to an organization profile'))
+    end
 
     # The legacy single `name_identifier` (+ scheme) as a one-element list, so
     # records saved under the old single-identifier shape read back without a

@@ -1,5 +1,5 @@
-<%# Admin-gated contributor profile edit (Phase 1: no owner/claim yet, so only
-    admins/curators reach this — see ContributorsController#require_admin!).
+<%# Contributor profile edit, reachable by an admin or by the user who claimed
+    this profile — see ContributorsController#authorize_contributor_edit!.
     Edits the identity fields the model holds; affiliation is jsonb-backed. %>
 <div class="container enact-contributor-edit">
   <h1><%= t('enact.contributors.edit.title', default: 'Edit profile') %></h1>

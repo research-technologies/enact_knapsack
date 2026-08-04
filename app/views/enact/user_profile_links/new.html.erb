@@ -1,0 +1,166 @@
+<%# Per-user link screen. Candidates are offered in decreasing order of
+    confidence, with creating a new profile as the fallback. %>
+<div class="container enact-profile-link">
+  <h1><%= t('enact.research_profiles.admin.link_title', default: 'Link a research profile') %></h1>
+
+  <div class="card mb-4">
+    <div class="card-body">
+      <h2 class="h5 mb-1"><%= @user.display_name.presence || t('enact.research_profiles.admin.no_name', default: '(no name)') %></h2>
+      <div class="small text-muted"><%= @user.email %></div>
+      <% if @user.orcid.present? %>
+        <div class="small text-muted"><%= @user.orcid %></div>
+      <% end %>
+      <% if @user.affiliation.present? %>
+        <div class="small text-muted"><%= @user.affiliation %></div>
+      <% end %>
+      <% if @profile_request&.note.present? %>
+        <p class="small font-italic text-muted mt-2 mb-0">&ldquo;<%= @profile_request.note %>&rdquo;</p>
+      <% end %>
+    </div>
+  </div>
+
+  <% if @contributor&.errors&.any? %>
+    <div class="alert alert-danger">
+      <ul class="mb-0">
+        <% @contributor.errors.full_messages.each do |message| %>
+          <li><%= message %></li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%# Prior declines. %>
+  <% if @past_declines.present? %>
+    <div class="alert alert-warning enact-past-declines">
+      <p class="mb-1 font-weight-bold">
+        <%= t('enact.research_profiles.admin.past_declines',
+              count: @past_declines.size, default: 'Declined before') %>
+      </p>
+      <ul class="list-unstyled mb-0 small">
+        <% @past_declines.each do |declined| %>
+          <li>
+            <%= l(declined.reviewed_at.to_date, format: :long) %>
+            <% if declined.review_note.present? %>
+              &ndash; &ldquo;<%= declined.review_note %>&rdquo;
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  <% end %>
+
+  <%# The same ORCID on a profile another user already holds %>
+  <% if @orcid_conflict.present? %>
+    <div class="alert alert-warning">
+      <%= t('enact.research_profiles.admin.orcid_conflict_html',
+            profile: link_to(@orcid_conflict.display_name, "/contributors/#{@orcid_conflict.id}",
+                             target: '_blank', rel: 'noopener'),
+            default: 'This user’s ORCID already belongs to %{profile}, which another user has claimed. Resolve that before creating a new profile.') %>
+    </div>
+  <% end %>
+
+  <%# The profile this user actually named leads the page. %>
+  <% if @claimed_profile.present? %>
+    <section class="mb-4 enact-claimed-profile">
+      <h2 class="h6 text-muted"><%= t('enact.research_profiles.admin.claim_request',
+                                      default: 'The profile this user asked to claim') %></h2>
+      <ul class="list-group">
+        <%= render 'enact/contributors/candidate_row', contributor: @claimed_profile, user: @user %>
+      </ul>
+    </section>
+  <% end %>
+
+  <% if @orcid_match.present? %>
+    <section class="mb-4">
+      <h2 class="h6 text-muted"><%= t('enact.research_profiles.admin.orcid_match',
+                                      default: 'Same ORCID, almost certainly the same person') %></h2>
+      <ul class="list-group">
+        <%= render 'enact/contributors/candidate_row', contributor: @orcid_match, user: @user %>
+      </ul>
+    </section>
+  <% end %>
+
+  <% if @suggestions.present? %>
+    <section class="mb-4">
+      <h2 class="h6 text-muted"><%= t('enact.research_profiles.admin.suggestions',
+                                      default: 'Similar existing profiles') %></h2>
+      <ul class="list-group">
+        <% @suggestions.each do |candidate| %>
+          <%= render 'enact/contributors/candidate_row', contributor: candidate, user: @user %>
+        <% end %>
+      </ul>
+    </section>
+  <% end %>
+
+  <section class="mb-4">
+    <h2 class="h6 text-muted"><%= t('enact.research_profiles.admin.search_profiles',
+                                    default: 'Search all profiles') %></h2>
+    <%= form_with url: HykuKnapsack::Engine.routes.url_helpers.new_dashboard_research_profile_link_path(@user),
+                  method: :get, class: 'mb-3' do %>
+      <div class="form-row align-items-end">
+        <div class="col-md-6 mb-2">
+          <%= search_field_tag :q, @search,
+                               placeholder: t('enact.research_profiles.admin.search_profiles_placeholder',
+                                              default: 'Search by name or ORCID'),
+                               class: 'form-control' %>
+        </div>
+        <div class="col-md-3 mb-2">
+          <%= submit_tag t('enact.research_profiles.admin.search', default: 'Search'),
+                         name: nil, class: 'btn btn-outline-secondary' %>
+        </div>
+      </div>
+    <% end %>
+
+    <% if @results.present? %>
+      <ul class="list-group">
+        <% @results.each do |candidate| %>
+          <%= render 'enact/contributors/candidate_row', contributor: candidate, user: @user %>
+        <% end %>
+      </ul>
+    <% elsif @search.present? %>
+      <p class="text-muted"><%= t('enact.research_profiles.admin.no_results',
+                                  default: 'No profiles match that search.') %></p>
+    <% end %>
+  </section>
+
+  <section class="enact-create-profile">
+    <h2 class="h6 text-muted"><%= t('enact.research_profiles.admin.create_heading',
+                                    default: 'Or create a new profile') %></h2>
+    <p class="small text-muted">
+      <%= t('enact.research_profiles.admin.create_explain',
+            default: 'Opens a form prefilled from this user’s name, ORCID and affiliation. These are copied once; later changes to the account are not carried over.') %>
+    </p>
+    <%# A link to the prefilled form: the admin reviews and
+        corrects the snapshot before the profile is written. %>
+    <%= link_to t('enact.research_profiles.admin.create', default: 'Create and link a new profile'),
+                HykuKnapsack::Engine.routes.url_helpers.new_dashboard_research_profile_path(@user),
+                class: 'btn btn-primary' %>
+  </section>
+
+  <%# Declining option %>
+  <% if @profile_request.present? %>
+    <hr class="my-4">
+    <section class="enact-decline-request">
+      <h2 class="h6 text-muted"><%= t('enact.research_profiles.admin.decline_heading',
+                                      default: 'Or decline this request') %></h2>
+
+      <%= form_with url: HykuKnapsack::Engine.routes.url_helpers
+                           .decline_dashboard_research_profile_request_path(@profile_request),
+                    method: :post do %>
+        <div class="form-group">
+          <%= label_tag 'profile_request[review_note]',
+                        t('enact.research_profiles.admin.decline_reason_label', default: 'Reason for declining'),
+                        class: 'form-label' %>
+          <%= text_area_tag 'profile_request[review_note]', nil, rows: 3,
+                            class: 'form-control', required: true %>
+          <small class="form-text text-muted">
+            <%= t('enact.research_profiles.admin.decline_reason_hint',
+                  default: 'Shown to the person who asked, so they know what to do next.') %>
+          </small>
+        </div>
+        <%= submit_tag t('enact.research_profiles.admin.decline_submit', default: 'Decline request'),
+                       name: nil, class: 'btn btn-outline-danger' %>
+      <% end %>
+    </section>
+  <% end %>
+</div>

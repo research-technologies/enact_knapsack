@@ -191,7 +191,7 @@ RSpec.describe 'Enact contributors pages', type: :request, singletenant: true do
     end
   end
 
-  describe 'editing (admin-gated)' do
+  describe 'editing' do
     context 'as an admin' do
       before { login_as(FactoryBot.create(:admin), scope: :user) }
 
@@ -243,6 +243,104 @@ RSpec.describe 'Enact contributors pages', type: :request, singletenant: true do
         expect(ada.reload.display_name).to eq('Ada Lovelace')
         expect(response).not_to have_http_status(:ok)
       end
+
+      it 'redirects rather than erroring on a claimed profile' do
+        ada.update!(user: FactoryBot.create(:user))
+        get "/contributors/#{ada.id}/edit"
+        expect(response).to redirect_to("/contributors/#{ada.id}")
+      end
+    end
+
+    context 'as the linked user' do
+      let(:owner) { FactoryBot.create(:user) }
+
+      before do
+        ada.update!(user: owner)
+        login_as(owner, scope: :user)
+      end
+
+      it 'renders the edit form' do
+        get "/contributors/#{ada.id}/edit"
+        expect(response).to have_http_status(:ok)
+      end
+
+      it 'updates their own profile' do
+        patch "/contributors/#{ada.id}", params: { contributor: { display_name: 'Ada L.' } }
+        expect(response).to redirect_to("/contributors/#{ada.id}")
+        expect(ada.reload.display_name).to eq('Ada L.')
+      end
+    end
+
+    context 'as a different signed-in user when the profile is claimed' do
+      before do
+        ada.update!(user: FactoryBot.create(:user))
+        login_as(FactoryBot.create(:user), scope: :user)
+      end
+
+      it 'forbids editing someone else’s profile' do
+        get "/contributors/#{ada.id}/edit"
+        expect(response).to redirect_to("/contributors/#{ada.id}")
+      end
+
+      it 'forbids updating someone else’s profile' do
+        patch "/contributors/#{ada.id}", params: { contributor: { display_name: 'Hacked' } }
+        expect(ada.reload.display_name).to eq('Ada Lovelace')
+      end
+    end
+  end
+
+  describe 'the verified mark on a linked profile' do
+    it 'appears on the profile page for anyone' do
+      ada.update!(user: FactoryBot.create(:user))
+      get "/contributors/#{ada.id}"
+      expect(response.body).to include('enact-contributor-verified')
+    end
+
+    it 'is absent while the profile is unclaimed' do
+      get "/contributors/#{ada.id}"
+      expect(response.body).not_to include('enact-contributor-verified')
+    end
+
+    it 'appears on the browse index too' do
+      ada.update!(user: FactoryBot.create(:user))
+      get '/contributors'
+      expect(response.body).to include('enact-contributor-verified')
+    end
+
+    it 'is absent from the index while unclaimed' do
+      get '/contributors'
+      expect(response.body).not_to include('enact-contributor-verified')
+    end
+
+    it 'does not reveal the linked account' do
+      owner = FactoryBot.create(:user)
+      ada.update!(user: owner)
+      get "/contributors/#{ada.id}"
+      expect(response.body).not_to include(owner.email)
+    end
+  end
+
+  describe 'the linked users email on the public profile' do
+    let(:owner) { FactoryBot.create(:user) }
+
+    before { ada.update!(user: owner) }
+
+    it 'is absent for an anonymous visitor' do
+      get "/contributors/#{ada.id}"
+      expect(response.body).not_to include(owner.email)
+    end
+
+    it 'is absent for a signed-in user' do
+      login_as(FactoryBot.create(:user), scope: :user)
+      get "/contributors/#{ada.id}"
+      expect(response.body).not_to include(owner.email)
+    end
+
+    it 'appears for an admin, naming what the unlink control acts on' do
+      login_as(FactoryBot.create(:admin), scope: :user)
+      get "/contributors/#{ada.id}"
+      expect(response.body).to include(owner.email)
+      expect(response.body).to include('Unlink from')
     end
   end
 end
