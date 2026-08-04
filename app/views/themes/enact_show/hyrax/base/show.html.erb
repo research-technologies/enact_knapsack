@@ -128,3 +128,10 @@
     <span class='hide analytics-event' data-category="work-in-collection" data-action="work-in-collection-view" data-name="<%= collection_id %>"></span>
   <% end %>
 </div>
+
+<%# The sidebar's relationship-map button opens this. Rendered here rather than in the
+    sidebar because a Bootstrap modal nested in a flex column has its fixed positioning
+    and focus trap confined to it (see enact/shared/_map_modal). %>
+<% if enact_relationship_map?(@presenter) %>
+  <%= render 'enact/shared/map_modal' %>
+<% end %>

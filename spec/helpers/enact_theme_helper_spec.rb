@@ -295,19 +295,4 @@ RSpec.describe EnactThemeHelper, type: :helper do
       expect(helper.enact_card_fields(presenter)).to eq([:rights])
     end
   end
-
-  describe '#enact_relationship_map_path' do
-    def path_for(model)
-      presenter = double('presenter', id: 'abc', solr_document: { 'has_model_ssim' => [model] })
-      helper.enact_relationship_map_path(presenter)
-    end
-
-    it 'opens the whole-project diagram for a Portfolio' do
-      expect(path_for('Portfolio')).to end_with('?portfolio=abc')
-    end
-
-    it 'focuses the map on any other work type' do
-      expect(path_for('PortfolioArtefact')).to end_with('?focus=abc')
-    end
-  end
 end

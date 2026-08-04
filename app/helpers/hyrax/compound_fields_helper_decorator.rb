@@ -14,7 +14,8 @@ module Hyrax
       rendered = super
       inbound_only = inbound_only_relationships_card?(presenter)
       rendered += render('hyrax/compounds/compound_card', presenter:, field: :relationships) if inbound_only
-      rendered += render('enact/shared/map_modal') if presenter.try(:relationships).present? || inbound_only
+      # Keyed off the same gate as the button, so a page with no button carries no modal.
+      rendered += render('enact/shared/map_modal') if enact_relationship_map?(presenter)
       rendered
     rescue StandardError => e
       Hyrax.logger.debug("CompoundFieldsHelperDecorator#render_compound_cards: #{e.message}")

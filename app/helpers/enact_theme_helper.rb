@@ -134,13 +134,6 @@ module EnactThemeHelper
     names.select { |field| presenter.respond_to?(field) && presenter.public_send(field).present? }
   end
 
-  # A Portfolio opens the whole-project diagram, any other work its focused view.
-  def enact_relationship_map_path(presenter)
-    key = Array(presenter.solr_document['has_model_ssim']).first.to_s == 'Portfolio' ? :portfolio : :focus
-
-    HykuKnapsack::Engine.routes.url_helpers.relationship_map_path(key => presenter.id)
-  end
-
   private
 
   # Each pane reads its own param: two pagers on one page cannot share `page`. rows is
