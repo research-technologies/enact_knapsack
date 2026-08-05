@@ -106,6 +106,44 @@ RSpec.describe Enact::RelationshipMapScope do
     end
   end
 
+  # MAX_WORKS is stubbed down so the fixtures stay readable; the cap's value is not what
+  # these examples are about.
+  describe '#truncated?' do
+    it 'is false when no cap dropped anything' do
+      index = { 'p1' => doc('p1', members: %w[m1]), 'm1' => doc('m1') }
+      stub_const('Enact::RelationshipMapScope::MAX_WORKS', 5)
+
+      expect(scope_for(index, portfolio_id: 'p1')).not_to be_truncated
+    end
+
+    it 'is true when the project holds more members than the cap allows' do
+      index = { 'p1' => doc('p1', members: %w[m1 m2 m3]), 'm1' => doc('m1'),
+                'm2' => doc('m2'), 'm3' => doc('m3') }
+      stub_const('Enact::RelationshipMapScope::MAX_WORKS', 2)
+
+      expect(scope_for(index, portfolio_id: 'p1')).to be_truncated
+    end
+
+    # The case counting the returned documents cannot see: the cap lands on the neighbour
+    # id list, and the ability filter then withholds most of what survived, so the map
+    # comes back far under the cap while still missing works.
+    it 'is true when neighbours were dropped, even though fewer works came back than the cap' do
+      index = { 'p1' => doc('p1', relates_to: %w[n1 n2 n3 n4]) }
+      stub_const('Enact::RelationshipMapScope::MAX_WORKS', 3)
+      scope = scope_for(index, portfolio_id: 'p1')
+
+      expect(scope.documents.size).to eq(1)
+      expect(scope).to be_truncated
+    end
+
+    it 'is true when the corpus sweep comes back full, since Solr trims the rest' do
+      index = { 'a' => doc('a'), 'b' => doc('b') }
+      stub_const('Enact::RelationshipMapScope::MAX_WORKS', 2)
+
+      expect(scope_for(index)).to be_truncated
+    end
+  end
+
   describe '#core_ids' do
     let(:index) { { 'p1' => doc('p1', members: %w[m1]), 'm1' => doc('m1') } }
 

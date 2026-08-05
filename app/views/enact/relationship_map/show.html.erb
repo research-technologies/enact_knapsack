@@ -55,7 +55,9 @@
     <div id="detail"><p class="hint">Hover a <b>node</b> to spotlight its connections; click it to focus and see details.
       Click a <b>line</b> for the relationship and its curatorial note. Drag to rearrange; scroll to zoom.</p></div>
     <div class="legend"><h2>Relationship types</h2><p class="legend-hint">Click a type to show or hide it</p><div id="rel-legend"></div></div>
-    <% if @truncated %><div class="trunc">Showing the first <%= ::Enact::RelationshipMapScope::MAX_WORKS %> works; some may be omitted.</div><% end %>
+    <%# No count: a cap can land on an id list before the ability filter thins it, so the
+        number drawn is not the number the cap allowed. %>
+    <% if @truncated %><div class="trunc">Some works are omitted: this map draws at most <%= ::Enact::RelationshipMapScope::MAX_WORKS %> works.</div><% end %>
   </div>
 </div>
 

@@ -17,6 +17,7 @@ module Enact
     def initialize(ability:, portfolio_id: nil)
       @ability = ability
       @portfolio_id = portfolio_id.to_s
+      @truncated = false
     end
 
     # @return [Enumerable<SolrDocument>]
@@ -32,11 +33,25 @@ module Enact
       @core_ids
     end
 
+    # Whether a cap dropped works the graph would otherwise hold, wherever it happened:
+    # the project's membership, the one-hop neighbours, or the corpus sweep. Counting the
+    # documents that came back cannot answer this, because the caps land on id lists
+    # before the ability filter thins them, so a map missing 500 neighbours can still
+    # return well under MAX_WORKS.
     def truncated?
-      documents.length >= MAX_WORKS
+      documents
+      @truncated
     end
 
     private
+
+    # Every cap in one place, so none of them can drop works without the view being able
+    # to say so.
+    def capped(collection)
+      @truncated ||= collection.size > MAX_WORKS
+
+      collection.first(MAX_WORKS)
+    end
 
     # Returns [] if the portfolio is not found / not visible, which renders the
     # empty-map message rather than erroring.
@@ -44,13 +59,12 @@ module Enact
       portfolio = documents_for_ids([@portfolio_id]).first
       return [] if portfolio.nil?
 
-      member_ids = ([@portfolio_id] + Array(portfolio['member_ids_ssim'])).uniq.first(MAX_WORKS)
-      docs = documents_for_ids(member_ids)
+      docs = documents_for_ids(capped(([@portfolio_id] + Array(portfolio['member_ids_ssim'])).uniq))
       # The project as this user can see it, not as it is stored: a member they may not
       # see is not part of the boundary, and reverse-querying for it would pull in the
       # neighbours of a work that can never appear on the map.
       @core_ids = docs.map { |doc| doc['id'] }.to_set
-      (docs + neighbour_documents(docs)).first(MAX_WORKS)
+      capped(docs + neighbour_documents(docs))
     end
 
     # `relationships_item_ssim` is the indexed edge target, the same field the show
@@ -58,9 +72,7 @@ module Enact
     def neighbour_documents(docs)
       targets = docs.flat_map { |doc| Array(doc['relationships_item_ssim']) }
                     .reject { |value| Hyrax::CompoundWorkResolver.url?(value) }
-      ids = ((targets + inbound_source_ids).uniq - @core_ids.to_a).first(MAX_WORKS)
-
-      documents_for_ids(ids)
+      documents_for_ids(capped((targets + inbound_source_ids).uniq - @core_ids.to_a))
     end
 
     def inbound_source_ids
@@ -75,10 +87,15 @@ module Enact
     # affordable while a repository holds one project's corpus per map.
     def work_documents
       models = Hyrax.config.registered_curation_concern_types.presence
-      Hyrax::SolrQueryService.new
-                             .with_field_pairs(field_pairs: { 'has_model_ssim' => models }, join_with: 'OR')
-                             .accessible_by(ability: @ability)
-                             .solr_documents(rows: MAX_WORKS)
+      docs = Hyrax::SolrQueryService.new
+                                    .with_field_pairs(field_pairs: { 'has_model_ssim' => models }, join_with: 'OR')
+                                    .accessible_by(ability: @ability)
+                                    .solr_documents(rows: MAX_WORKS)
+      # Solr trims to `rows` server-side, so a full page is the only signal left that the
+      # corpus holds more.
+      @truncated ||= docs.length >= MAX_WORKS
+
+      docs
     end
 
     def documents_for_ids(ids)
