@@ -15,36 +15,39 @@ module Enact
   class RelationshipMapController < ApplicationController
     include ::Enact::RequiresRelationshipsCompound
 
-    # Cap on works pulled into a single map. A project's corpus is small; this
-    # is a backstop, surfaced in the response rather than silently truncating.
-    MAX_WORKS = 1_000
-
     # Opt-in gate: the map only works when the tenant's metadata profile declares
     # the `relationships` compound (see docs/relationship-map-setup.md). Without
     # it there is nothing to draw, so the standalone page 404s rather than showing
-    # an empty graph. The in-page "Relationship map" button is already implicitly
-    # gated - it renders only inside the relationships compound card, which the
-    # profile drives.
+    # an empty graph. The in-page "Relationship map" button is separately gated on
+    # the map having something to draw (Enact::RelationshipMapHelper, issue #161).
     before_action :require_relationships_compound, only: :show
 
     def show
-      docs = scoped_documents
-      links = kept_links(docs)
+      scope = ::Enact::RelationshipMapScope.new(ability: current_ability, portfolio_id: params[:portfolio])
+      docs = scope.documents
+      links = kept_links(docs, scope.core_ids)
       @graph = { nodes: graph_nodes(docs, links), links: }
       @rel_types = rel_types(links)
       @focus = params[:focus].to_s
-      @truncated = docs.length >= MAX_WORKS
+      @truncated = scope.truncated?
       render layout: false
     end
 
     private
 
-    # Edges kept for the graph: those to in-project works (the work-to-work web,
-    # Object Handling Spec v0.2 Sec 3.5) plus those to external URLs (work_or_url
-    # targets outside the repository), which render as their own link nodes.
-    def kept_links(docs)
+    # The work-to-work web (Object Handling Spec v0.2 Sec 3.5). An external URL target
+    # has no document to match, so it survives on `external` alone and becomes its own
+    # link node.
+    def kept_links(docs, core_ids)
       ids = docs.map { |d| d['id'] }.to_set
-      docs.flat_map { |d| links_for(d) }.select { |l| ids.include?(l[:target]) || l[:external] }
+      docs.flat_map { |d| links_for(d) }
+          .select { |l| (ids.include?(l[:target]) || l[:external]) && in_project?(l, core_ids) }
+    end
+
+    # Neighbours are fetched to complete the project's own edges, not to bring their own
+    # web along with them. A nil core set means there is no project to be outside of.
+    def in_project?(link, core_ids)
+      core_ids.nil? || core_ids.include?(link[:source]) || core_ids.include?(link[:target])
     end
 
     # Nodes for the graph: connected works (a work survives iff it is on a kept
@@ -54,43 +57,6 @@ module Enact
       work_nodes = docs.select { |d| connected.include?(d['id']) }.map { |d| node_for(d) }
       url_nodes = links.select { |l| l[:external] }.map { |l| l[:target] }.uniq.map { |u| url_node_for(u) }
       work_nodes + url_nodes
-    end
-
-    # The works the map is built from. `?portfolio=<id>` scopes to a single
-    # project (the portfolio plus its member works) so a portfolio's "full
-    # diagram linked together" can be shown; otherwise the whole accessible
-    # corpus is used (then trimmed to connected works in #show).
-    def scoped_documents
-      portfolio_id = params[:portfolio].to_s
-      portfolio_id.present? ? portfolio_documents(portfolio_id) : work_documents
-    end
-
-    # The portfolio plus its member works (`member_ids_ssim`), scoped by ability.
-    # Returns [] if the portfolio is not found / not visible, which renders the
-    # empty-map message rather than erroring.
-    def portfolio_documents(portfolio_id)
-      portfolio = Hyrax::SolrQueryService.new
-                                         .with_field_pairs(field_pairs: { 'id' => portfolio_id })
-                                         .accessible_by(ability: current_ability)
-                                         .solr_documents(rows: 1).first
-      return [] if portfolio.nil?
-
-      ids = ([portfolio_id] + Array(portfolio['member_ids_ssim'])).uniq.first(MAX_WORKS)
-      Hyrax::SolrQueryService.new
-                             .with_field_pairs(field_pairs: { 'id' => ids }, join_with: 'OR')
-                             .accessible_by(ability: current_ability)
-                             .solr_documents(rows: MAX_WORKS)
-    end
-
-    # Enact work types accessible to the current user. We pull the whole set and
-    # filter edges to in-set targets (mirrors the prototype); fine for a
-    # per-project corpus.
-    def work_documents
-      models = Hyrax.config.registered_curation_concern_types.presence
-      Hyrax::SolrQueryService.new
-                             .with_field_pairs(field_pairs: { 'has_model_ssim' => models }, join_with: 'OR')
-                             .accessible_by(ability: current_ability)
-                             .solr_documents(rows: MAX_WORKS)
     end
 
     def node_for(doc)
@@ -139,26 +105,12 @@ module Enact
     # document through as-is.
     def links_for(doc)
       ::Enact::RelationshipGraph.new(doc).outbound.filter_map do |edge|
-        rel, rel_inverse = edge_rel_pair(edge)
-        # An untyped relationship (no controlled type, no prose - possible now
-        # that relationship_type is optional) has no map label or colour and no
-        # legend entry, so drop it rather than emit a `null`-typed edge. The show
-        # page still lists it.
-        next if rel.blank?
+        next unless edge.typed?
 
+        rel, rel_inverse = edge.rel_and_inverse
         { source: doc['id'], target: edge.target_id, rel:, rel_inverse:,
           note: edge.note, position: edge.position, external: edge.external }
       end
-    end
-
-    # A free-text "other" edge keys by its prose, not the "other" code, so
-    # distinct free-text types stay distinct on the map instead of collapsing
-    # into a single "Other" node; controlled edges invert via the authority, so
-    # their `rel_inverse` is left nil here (issue #107).
-    def edge_rel_pair(edge)
-      prose = edge.type_other.presence if edge.relation_type.blank? || edge.relation_type == 'other'
-      return [edge.relation_type, nil] unless prose
-      [prose, edge.type_other_inverse.presence || prose]
     end
 
     # Only the types present in the graph; the whole vocabulary would swamp the

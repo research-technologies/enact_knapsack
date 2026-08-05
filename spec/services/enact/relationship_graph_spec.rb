@@ -138,4 +138,39 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
       expect(edge.type_other).to eq('Companion to')
     end
   end
+
+  # The map's labels and its button gate both read these, so they live on the Edge
+  # rather than in either consumer.
+  describe Enact::RelationshipGraph::Edge do
+    describe '#typed?' do
+      it 'is true for a controlled type' do
+        expect(described_class.new(relation_type: 'cites')).to be_typed
+      end
+
+      it 'is true for free-text prose alone' do
+        expect(described_class.new(relation_type: nil, type_other: 'Companion to')).to be_typed
+      end
+
+      it 'is false with neither a type nor prose (nothing for the map to label)' do
+        expect(described_class.new(relation_type: nil, type_other: nil)).not_to be_typed
+      end
+    end
+
+    describe '#rel_and_inverse' do
+      it 'keys a controlled edge by its authority code (the authority supplies the inverse)' do
+        expect(described_class.new(relation_type: 'cites').rel_and_inverse).to eq(['cites', nil])
+      end
+
+      it 'keys an "other" edge by its prose so distinct free-text types stay distinct' do
+        edge = described_class.new(relation_type: 'other', type_other: 'Remixes',
+                                   type_other_inverse: 'Is remixed by')
+        expect(edge.rel_and_inverse).to eq(['Remixes', 'Is remixed by'])
+      end
+
+      it 'keys a bare free-text edge by its prose and falls back to it for the inverse' do
+        edge = described_class.new(relation_type: nil, type_other: 'Companion to')
+        expect(edge.rel_and_inverse).to eq(['Companion to', 'Companion to'])
+      end
+    end
+  end
 end
