@@ -49,6 +49,24 @@ module Hyku
 
     private
 
+    # OVERRIDE: Hyrax picks the renderer from the profile's `render_as` alone,
+    # ignoring the field. Routing on the field instead leaves the profile untouched —
+    # the profile is only a seed, so editing it would need the stored
+    # hyrax_flexible_schemas row reloaded before taking effect anywhere — and keeps
+    # the other faceted properties (publisher, keyword, ...) on their facet links.
+    #
+    # CONTRIBUTE BACK: no Hyrax renderer labels a value from its property's own
+    # authority — `faceted` links the raw value and license/rights are hardcoded to
+    # their services. A generic `render_as: controlled` upstream would replace the
+    # routing here; Enact would still need ItemSubtypeLabels, since item_subtype
+    # draws from four authorities and `controlled_values.sources` is read
+    # first-entry-only.
+    def renderer_for(field, options)
+      return Hyrax::Renderers::ItemSubtypeAttributeRenderer if field.to_s == 'item_subtype'
+
+      super
+    end
+
     def enact_member_models
       ids = authorized_item_ids
       return {} if ids.empty?

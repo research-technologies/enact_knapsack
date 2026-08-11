@@ -1,0 +1,27 @@
+// TEMPORARY OVERRIDE — DELETE THIS FILE (and its require in
+// app/assets/stylesheets/hyku_knapsack/application.css) when the submodule is updated
+// from Hyku's upstream-enact-overrides branch, which carries this fix.
+//
+// Hyku's `repeat(auto-fit, minmax(240px, 1fr))` resolves to three columns for three
+// paths, so the two cards under the full-width lead leave the third empty.
+//
+// Scoped to __paths only: __type-cards shares Hyku's selector but is a
+// variable-length list, where auto-fit must stay.
+.deposit-wizard {
+  &__paths {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // The lead keeps spanning the row; restated because this file's more specific
+  // grid would otherwise leave it sized to one column.
+  &__path-card--container {
+    grid-column: 1 / -1;
+  }
+
+  // Below Hyku's 240px card minimum the two-up row would squeeze, so stack.
+  @media (max-width: 33rem) {
+    &__paths {
+      grid-template-columns: 1fr;
+    }
+  }
+}

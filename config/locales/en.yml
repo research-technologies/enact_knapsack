@@ -121,19 +121,29 @@ en:
         heading: Add to a parent work
         subtext: Search for the title of the portfolio, artefact, event, piece of literature, or collection this deposit should be added to.
       start:
+        # TEMPORARY OVERRIDE — when the submodule is updated from Hyku's
+        # upstream-enact-overrides branch, REVERT these three values to bare
+        # `fa-cube` / `fa-sitemap` / `fa-file-o`, or the rendered class becomes
+        # `fa fa fa-cube`. (Revert, not delete: the titles and descriptions below
+        # stay.)
+        #
+        # The `fa` family class is included here because Hyku's start view renders
+        # `class="...__path-icon <%= icon %>"` without it, so a bare name resolves to
+        # no glyph. Every other consumer (Hyku's _stepper, Enact's item_start) adds
+        # `fa` itself and so takes a bare name.
         paths:
           new:
             title: Create a new Portfolio
             desc: A portfolio is the top-level work of a project — start one, then add the child works that belong to it.
-            icon: fa-cube
+            icon: fa fa-cube
           add:
             title: Add to an existing portfolio or work
             desc: Deposit a new item into a practice research project you've already started.
-            icon: fa-sitemap
+            icon: fa fa-sitemap
           standalone:
             title: Deposit a standalone work
             desc: Add a single artefact, event or piece of writing that isn't part of a portfolio or another work.
-            icon: fa-file-o
+            icon: fa fa-file-o
   enact:
     deposit_wizard:
       item_start:
@@ -160,6 +170,10 @@ en:
         # Shown in place of the file lead-in when nothing was uploaded.
         uploaded_none: Choose the option that best describes this work.
         show_all: Not seeing the right fit? Show all types
+      done:
+        # Replaces Hyku's generic "Deposit another work" when the deposit belongs
+        # to a portfolio, which the next deposit is carried into.
+        add_another_item: Add another item to this portfolio
       errors:
         no_subtype: Please choose an option that describes your work.
     portfolio_tree:
@@ -296,6 +310,11 @@ en:
         portfolios:
           one: portfolio
           other: portfolios
+        # Covers people and organizations alike, since the count and the
+        # /contributors index it links to include both.
+        participants:
+          one: research participant
+          other: research participants
     contributors:
       agent_type: Type
       affiliation: Affiliation

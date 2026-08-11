@@ -118,10 +118,50 @@ autoincrement (`ALTER SEQUENCE hyrax_flexible_schemas_id_seq RESTART
 WITH 1`) so new schemas keep id=1. But this only papers over the bug —
 it breaks again the moment a second seed cycle runs.
 
+## Gap 3 — A compound cannot declare a rule spanning two of its sub-properties
+
+**Symptom.** The `dates` compound declares `start_date` as required and
+`end_date` as optional. Nothing stops a depositor saving a row whose end
+date precedes its start date.
+
+**Cause.** `Hyrax::CompoundSchema#normalize_subproperty` builds the spec
+from a fixed key list (`type`, `authority`, `values`, `required`,
+`group`, `cols`, `as`, `autocomplete`), so an unrecognized key in the
+profile is silently dropped. `Hyrax::CompoundEntryValidation` then
+checks only two things: that a required compound has a row, and that
+each populated row fills the required sub-properties. Both are
+single-field rules; there is no seam for "this field must precede that
+one."
+
+**Upstream fix.** Carry a per-compound `validations:` list through
+`normalize_definition` into the definition hash:
+
+```yaml
+dates:
+  validations:
+    - { type: ordered, before: start_date, after: end_date }
+```
+
+`CompoundEntryValidation#violations` grows a rule for it, and the
+existing `CompoundEntryValidator` needs no change — it already maps each
+violation to an i18n message. That serves any compound with two
+comparable fields (award dates, embargo ranges), not just this one.
+
+**In the knapsack today.**
+`Hyrax::CompoundEntryValidationDecorator` prepends the rule with the two
+field names hardcoded, plus the
+`hyrax.compound_fields.errors.end_before_start` message. Delete both when
+the upstream rule lands; the sub-property labels in
+`config/locales/enact_compound_fields.en.yml` stay.
+
 ## What to do in the knapsack today
 
-Nothing. With these gaps open, the deposit form is the verifiable part
-of the spike (the M3 profile drives form rendering end to end via the
-foundation). The show page is the open question; once gap 1 lands
-upstream, no host-app code is needed to display the saved compound
-rows.
+Gaps 1 and 2 need nothing: the M3 profile drives form rendering end to
+end via the foundation, and once gap 1 lands upstream no host-app code is
+needed to display the saved compound rows.
+
+Gap 3 carries one override —
+`app/services/hyrax/compound_entry_validation_decorator.rb` — because a
+depositor can otherwise save a reversed date range. Each override in this
+repo names its own deletion condition; see the `CONTRIBUTE BACK` marker in
+that file.

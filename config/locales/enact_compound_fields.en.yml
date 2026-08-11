@@ -27,3 +27,16 @@ en:
         # How the free-text "Other" relationship reads from the linked work's
         # side; the label names that perspective so curators know which way round.
         type_other_inverse: Linked Work's Relationship Type
+      dates:
+        start_date: Start date
+        end_date: End date
+      errors:
+        # Raised by Hyrax::CompoundEntryValidationDecorator; deep-merges with
+        # Hyrax's own keys under this same path.
+        #
+        # CONTRIBUTE BACK with that decorator: a profile-declared `ordered` rule
+        # needs a message of its own, and it belongs beside Hyrax's
+        # required_but_empty / missing_required_subproperties. Word it for any
+        # comparable pair rather than for dates. (The sub-property labels above stay
+        # here — they name Enact's own fields.)
+        end_before_start: "Each %{compound} entry must end on or after its start date"

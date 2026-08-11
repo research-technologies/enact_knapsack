@@ -1,50 +1,50 @@
 terms:
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#event
-    label: Event
+    term: Event
   - id: http://publications.europa.eu/resource/authority/public-event-type/COMPETITION_AWARD_CEREMONY
-    label: Award Ceremony
+    term: Award Ceremony
   - id: https://schema.org/ChildrensEvent
-    label: Childrens Event
+    term: Childrens Event
   - id: http://publications.europa.eu/resource/authority/public-event-type/CONFERENCE_SUMMIT
-    label: Conference
+    term: Conference
   - id: https://schema.org/ComedyEvent
-    label: Comedy Event
+    term: Comedy Event
   - id: https://schema.org/DanceEvent
-    label: Dance Event
+    term: Dance Event
   - id: https://github.com/research-technologies/prvoices_schema/wiki/DesignCharrette
-    label: Design Charrette
+    term: Design Charrette
   - id: https://schema.org/ExhibitionEvent
-    label: Exhibition
+    term: Exhibition
     file_suffixes: [pdf, jpg, jpeg, png]
   - id: https://schema.org/Festival
-    label: Festival
+    term: Festival
   - id: https://schema.org/FoodEvent
-    label: Food Event
+    term: Food Event
   - id: https://schema.org/Hackathon
-    label: Hackathon
+    term: Hackathon
   - id: http://vocab.getty.edu/page/aat/300026673
-    label: Lecture
+    term: Lecture
   - id: https://schema.org/LiteraryEvent
-    label: Literary Event
+    term: Literary Event
   - id: live_performance
-    label: Live performance
+    term: Live performance
   - id: https://schema.org/MusicEvent
-    label: Music Event
+    term: Music Event
   - id: http://vocab.getty.edu/page/aat/300075520
-    label: Residency
+    term: Residency
     file_suffixes: [pdf, docx, doc]
   - id: https://schema.org/ScreeningEvent
-    label: Screening
+    term: Screening
     file_suffixes: [pdf, mp4, mov]
   - id: https://schema.org/SocialEvent
-    label: Social Event
+    term: Social Event
   - id: https://schema.org/SportsEvent
-    label: Sports Event
+    term: Sports Event
   - id: http://vocab.getty.edu/page/aat/300054792
-    label: Symposia
+    term: Symposia
   - id: https://schema.org/TheaterEvent
-    label: Theatre Event
+    term: Theatre Event
   - id: https://schema.org/VisualArtsEvent
-    label: VisualArtsEvent
+    term: VisualArtsEvent
   - id: http://publications.europa.eu/resource/authority/public-event-type/TRAINING_WORKSHOP
-    label: Workshop
+    term: Workshop

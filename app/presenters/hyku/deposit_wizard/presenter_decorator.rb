@@ -92,6 +92,52 @@ module Hyku
         state.attributes['item_subtype'].presence
       end
 
+      # TEMPORARY OVERRIDE — DELETE (with the files.html.erb override) when the
+      # submodule is updated from Hyku's upstream-enact-overrides branch.
+      #
+      # Saves the uploaded ids unconditionally, as the metadata steps do, so a file
+      # uploaded on this visit isn't orphaned when the depositor goes Back — its
+      # record existed but its id never reached the session, leaving it invisible to
+      # the uploader, to commit, and to the discard cleanup.
+      def advance_from_files
+        state.uploaded_file_ids = params[:uploaded_files]
+        state.primary_file_id = params[:primary_file_id]
+        return Transition.advance(back_step('files')) if going_back?
+
+        Transition.advance(next_step('files'))
+      end
+
+      # OVERRIDE: label item_subtype on the review step. Hyku discovers a property's
+      # authority from the profile's `controlled_values`, which item_subtype does not
+      # declare (it draws from four authorities, and only the first source would be
+      # read anyway — see Enact::ItemSubtypeLabels).
+      def review_display_values(term, values)
+        return values.map { |v| Enact::ItemSubtypeLabels.label_for(v) } if term.to_s == 'item_subtype'
+
+        super
+      end
+
+      # TEMPORARY OVERRIDE — DELETE when the submodule is updated from Hyku's
+      # upstream-enact-overrides branch, which carries the same guard.
+      #
+      # Hyku calls `.new` on the registered service, but Hyrax has two
+      # authority-service styles: a class (Hyrax::LicenseService) and a module
+      # extending AuthorityService (Hyrax::MediaViewerService). On a module `.new`
+      # raises, Hyku's rescue swallows it, and the value renders raw (media_viewer
+      # showed `universal_viewer`, not "Universal Viewer").
+      def build_controlled_service(term)
+        source = context.helpers.controlled_vocabulary_source_for(term)
+        return if source.blank?
+
+        registered = Hyrax::ControlledVocabularies.services[source]&.safe_constantize
+        return Hyrax::TolerantSelectService.new(source) unless registered
+
+        registered.respond_to?(:new) ? registered.new : registered
+      rescue StandardError => e
+        Hyrax.logger.debug("Enact deposit wizard: no label service for #{term} (#{source}): #{e.message}")
+        nil
+      end
+
       # The structural hierarchy for the done screen, built from the stashed deposit
       # summary (id + parent_id) rather than live wizard state, which reset_state has
       # already cleared by the time done renders. Takes the hash the view already
@@ -104,6 +150,16 @@ module Hyku
 
         Enact::PortfolioTree.new(ability: current_ability)
                             .for_completed_deposit(parent_id:, work_id: deposited['id'])
+      end
+
+      # The portfolio a follow-on deposit should land in. A just-deposited Portfolio
+      # is the portfolio to continue into, not a child of one, so it returns its own
+      # id rather than its (absent) parent's. nil for a standalone work.
+      def continue_in_portfolio_id(deposited)
+        return if deposited.blank?
+        return deposited['id'].presence if deposited['work_type'] == 'Portfolio'
+
+        deposited['parent_id'].presence
       end
 
       def portfolio_hierarchy_summary(tree)

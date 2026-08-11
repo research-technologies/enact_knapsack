@@ -14,6 +14,10 @@ class PortfolioLiterature < Hyrax::Work
   include Hyrax::NestedWorks
   prepend EnactCompoundNormalization
 
+  def self.valid_parent_concern?
+    false
+  end
+
   def self.human_readable_type
     'Literature'
   end
