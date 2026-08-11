@@ -1,0 +1,22 @@
+<%# TEMPORARY OVERRIDE — DELETE THIS FILE when the submodule is updated from Hyku's
+    upstream-enact-overrides branch, which carries this fix. Nothing else here
+    diverges from Hyku v7.1.0 app/views/hyrax/deposit_wizard/files.html.erb.
+
+    Adds `back_submit: true` so Back posts the form and the uploaded file ids reach
+    the session; pairs with
+    Hyku::DepositWizard::PresenterDecorator#advance_from_files, which is the same
+    override on the presenter side and goes away at the same time. %>
+<%= render 'page_header' %>
+
+<div class="deposit-wizard deposit-wizard--files">
+  <%= render 'stepper', steps: deposit_wizard.item_stepper_steps, phase: deposit_wizard.stepper_phase(:upload) %>
+  <%= render 'step_title', title: t('hyku.deposit_wizard.files.heading'), hint: t('hyku.deposit_wizard.files.subtext') %>
+
+  <%= form_tag main_app.deposit_wizard_advance_path(step: 'files'), method: :patch, class: 'deposit-wizard__files-form' do %>
+    <%= render 'file_uploader' %>
+
+    <%= render 'nav', back_path: wizard_back_path('files'),
+                      back_submit: true,
+                      next_html: { data: { behavior: 'files-next' } } %>
+  <% end %>
+</div>

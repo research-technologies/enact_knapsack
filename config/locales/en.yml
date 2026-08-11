@@ -121,12 +121,16 @@ en:
         heading: Add to a parent work
         subtext: Search for the title of the portfolio, artefact, event, piece of literature, or collection this deposit should be added to.
       start:
-        # OVERRIDE the icon values with the `fa` family class included. Hyku's
-        # start view renders `class="...__path-icon <%= icon %>"` without it, so a
-        # bare `fa-cube` resolves to no glyph. Every other icon consumer (Hyku's
-        # _stepper, Enact's own item_start) does add `fa` and so takes a bare
-        # name — Hyku's start view is the outlier. Drop the prefix here once Hyku
-        # renders `fa` like the rest.
+        # TEMPORARY OVERRIDE — when the submodule is updated from Hyku's
+        # upstream-enact-overrides branch, REVERT these three values to bare
+        # `fa-cube` / `fa-sitemap` / `fa-file-o`, or the rendered class becomes
+        # `fa fa fa-cube`. (Revert, not delete: the titles and descriptions below
+        # stay.)
+        #
+        # The `fa` family class is included here because Hyku's start view renders
+        # `class="...__path-icon <%= icon %>"` without it, so a bare name resolves to
+        # no glyph. Every other consumer (Hyku's _stepper, Enact's item_start) adds
+        # `fa` itself and so takes a bare name.
         paths:
           new:
             title: Create a new Portfolio

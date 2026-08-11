@@ -1,10 +1,9 @@
-// OVERRIDE Hyku v7.1.0 deposit-wizard start-screen path cards
-// (app/assets/stylesheets/deposit_wizard/_choices.scss) to close the gap beside the
-// two secondary path cards.
+// TEMPORARY OVERRIDE — DELETE THIS FILE (and its require in
+// app/assets/stylesheets/hyku_knapsack/application.css) when the submodule is updated
+// from Hyku's upstream-enact-overrides branch, which carries this fix.
 //
 // Hyku's `repeat(auto-fit, minmax(240px, 1fr))` resolves to three columns for three
-// paths, so the two cards under the full-width lead leave the third empty. Enact is
-// always the 1-over-2 shape, so the count is fixed rather than derived from width.
+// paths, so the two cards under the full-width lead leave the third empty.
 //
 // Scoped to __paths only: __type-cards shares Hyku's selector but is a
 // variable-length list, where auto-fit must stay.

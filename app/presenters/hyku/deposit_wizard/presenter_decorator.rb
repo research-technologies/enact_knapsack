@@ -92,6 +92,21 @@ module Hyku
         state.attributes['item_subtype'].presence
       end
 
+      # TEMPORARY OVERRIDE — DELETE (with the files.html.erb override) when the
+      # submodule is updated from Hyku's upstream-enact-overrides branch.
+      #
+      # Saves the uploaded ids unconditionally, as the metadata steps do, so a file
+      # uploaded on this visit isn't orphaned when the depositor goes Back — its
+      # record existed but its id never reached the session, leaving it invisible to
+      # the uploader, to commit, and to the discard cleanup.
+      def advance_from_files
+        state.uploaded_file_ids = params[:uploaded_files]
+        state.primary_file_id = params[:primary_file_id]
+        return Transition.advance(back_step('files')) if going_back?
+
+        Transition.advance(next_step('files'))
+      end
+
       # OVERRIDE: label item_subtype on the review step. Hyku discovers a property's
       # authority from the profile's `controlled_values`, which item_subtype does not
       # declare (it draws from four authorities, and only the first source would be
@@ -102,16 +117,14 @@ module Hyku
         super
       end
 
-      # OVERRIDE: Hyku calls `.new` on the registered service, but Hyrax has two
-      # authority-service styles — a class (Hyrax::LicenseService) and a module
+      # TEMPORARY OVERRIDE — DELETE when the submodule is updated from Hyku's
+      # upstream-enact-overrides branch, which carries the same guard.
+      #
+      # Hyku calls `.new` on the registered service, but Hyrax has two
+      # authority-service styles: a class (Hyrax::LicenseService) and a module
       # extending AuthorityService (Hyrax::MediaViewerService). On a module `.new`
       # raises, Hyku's rescue swallows it, and the value renders raw (media_viewer
       # showed `universal_viewer`, not "Universal Viewer").
-      #
-      # CONTRIBUTE BACK: this is a generic Hyku bug, not an Enact one — the one-line
-      # `respond_to?(:new)` guard belongs in Hyku's
-      # Hyku::DepositWizard::Presenter#build_controlled_service. Delete this override
-      # once that lands and Enact bumps the submodule.
       def build_controlled_service(term)
         source = context.helpers.controlled_vocabulary_source_for(term)
         return if source.blank?
