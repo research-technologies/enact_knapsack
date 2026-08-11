@@ -160,6 +160,10 @@ en:
         # Shown in place of the file lead-in when nothing was uploaded.
         uploaded_none: Choose the option that best describes this work.
         show_all: Not seeing the right fit? Show all types
+      done:
+        # Replaces Hyku's generic "Deposit another work" when the deposit belongs
+        # to a portfolio, which the next deposit is carried into.
+        add_another_item: Add another item to this portfolio
       errors:
         no_subtype: Please choose an option that describes your work.
     portfolio_tree:

@@ -18,10 +18,11 @@ Rails.application.config.to_prepare do
     c.item_types     = %w[PortfolioArtefact PortfolioEvent
                           PortfolioLiterature PortfolioItemCollection]
 
-    # Enact chooses the parent up front (the "add to an existing work" path +
-    # select_parent step), so don't also offer it on the review step.
+    # Offer the parent on both edges: chosen up front (the "add to an existing
+    # work" path + select_parent step) and shown again on review, where it stays
+    # editable so a depositor can correct it without walking back.
     # parent_connect is left at its default (on).
-    c.parent_connect_placement = :start
+    c.parent_connect_placement = :both
 
     # Portfolio nesting is the relationship Enact models, not free collection
     # membership, so the review-step collection picker is turned off.

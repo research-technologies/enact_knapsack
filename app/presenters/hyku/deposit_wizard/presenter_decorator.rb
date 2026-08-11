@@ -106,6 +106,16 @@ module Hyku
                             .for_completed_deposit(parent_id:, work_id: deposited['id'])
       end
 
+      # The portfolio a follow-on deposit should land in. A just-deposited Portfolio
+      # is the portfolio to continue into, not a child of one, so it returns its own
+      # id rather than its (absent) parent's. nil for a standalone work.
+      def continue_in_portfolio_id(deposited)
+        return if deposited.blank?
+        return deposited['id'].presence if deposited['work_type'] == 'Portfolio'
+
+        deposited['parent_id'].presence
+      end
+
       def portfolio_hierarchy_summary(tree)
         # Count descendants only; the root Portfolio is not a "new"/"existing" item.
         counts = { 'new' => 0, 'existing' => 0 }

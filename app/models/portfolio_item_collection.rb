@@ -15,6 +15,13 @@ class PortfolioItemCollection < Hyrax::Work
   include Hyrax::NestedWorks
   prepend EnactCompoundNormalization
 
+  # Barred like the other item types (issue #169), but the likeliest of the four to
+  # be re-enabled: PortfolioTree already walks its members. Returning true here is
+  # sufficient to restore the control.
+  def self.valid_parent_concern?
+    false
+  end
+
   def self.human_readable_type
     'Collection'
   end

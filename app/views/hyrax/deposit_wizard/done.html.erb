@@ -21,7 +21,16 @@
 
     <div class="deposit-wizard__nav">
       <%= link_to t('hyku.deposit_wizard.done.view_work'), deposited['path'], class: 'btn btn-primary' if deposited['path'].present? %>
-      <%= link_to t('hyku.deposit_wizard.done.deposit_another'), main_app.deposit_wizard_path, class: 'btn btn-secondary' %>
+      <%# parent_id alone is enough: Hyku treats it as a directed handoff and
+          re-enters at the parent step pre-filled, skipping the path chooser. %>
+      <% continue_id = deposit_wizard.continue_in_portfolio_id(deposited) %>
+      <% if continue_id %>
+        <%= link_to t('enact.deposit_wizard.done.add_another_item'),
+                    main_app.deposit_wizard_path(parent_id: continue_id),
+                    class: 'btn btn-secondary' %>
+      <% else %>
+        <%= link_to t('hyku.deposit_wizard.done.deposit_another'), main_app.deposit_wizard_path, class: 'btn btn-secondary' %>
+      <% end %>
     </div>
 
     <% if (portfolio_tree = deposit_wizard.portfolio_hierarchy(deposited)) %>

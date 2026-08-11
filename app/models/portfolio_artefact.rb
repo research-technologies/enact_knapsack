@@ -21,6 +21,12 @@ class PortfolioArtefact < Hyrax::Work
   include Hyrax::NestedWorks
   prepend EnactCompoundNormalization
 
+  # Only a Portfolio offers "Attach child" (issue #169); see
+  # HykuKnapsack::ReseedValidChildConcerns.
+  def self.valid_parent_concern?
+    false
+  end
+
   # Display "Artefact" in pickers / facets / breadcrumbs rather than the
   # default titleized class name "Portfolio Artefact". Matches the UX
   # label from the original PortfolioItem type dropdown.
