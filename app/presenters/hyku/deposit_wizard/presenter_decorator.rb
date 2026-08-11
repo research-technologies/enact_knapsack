@@ -92,6 +92,39 @@ module Hyku
         state.attributes['item_subtype'].presence
       end
 
+      # OVERRIDE: label item_subtype on the review step. Hyku discovers a property's
+      # authority from the profile's `controlled_values`, which item_subtype does not
+      # declare (it draws from four authorities, and only the first source would be
+      # read anyway — see Enact::ItemSubtypeLabels).
+      def review_display_values(term, values)
+        return values.map { |v| Enact::ItemSubtypeLabels.label_for(v) } if term.to_s == 'item_subtype'
+
+        super
+      end
+
+      # OVERRIDE: Hyku calls `.new` on the registered service, but Hyrax has two
+      # authority-service styles — a class (Hyrax::LicenseService) and a module
+      # extending AuthorityService (Hyrax::MediaViewerService). On a module `.new`
+      # raises, Hyku's rescue swallows it, and the value renders raw (media_viewer
+      # showed `universal_viewer`, not "Universal Viewer").
+      #
+      # CONTRIBUTE BACK: this is a generic Hyku bug, not an Enact one — the one-line
+      # `respond_to?(:new)` guard belongs in Hyku's
+      # Hyku::DepositWizard::Presenter#build_controlled_service. Delete this override
+      # once that lands and Enact bumps the submodule.
+      def build_controlled_service(term)
+        source = context.helpers.controlled_vocabulary_source_for(term)
+        return if source.blank?
+
+        registered = Hyrax::ControlledVocabularies.services[source]&.safe_constantize
+        return Hyrax::TolerantSelectService.new(source) unless registered
+
+        registered.respond_to?(:new) ? registered.new : registered
+      rescue StandardError => e
+        Hyrax.logger.debug("Enact deposit wizard: no label service for #{term} (#{source}): #{e.message}")
+        nil
+      end
+
       # The structural hierarchy for the done screen, built from the stashed deposit
       # summary (id + parent_id) rather than live wizard state, which reset_state has
       # already cleared by the time done renders. Takes the hash the view already

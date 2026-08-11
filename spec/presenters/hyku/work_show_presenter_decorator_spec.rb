@@ -9,6 +9,23 @@ RSpec.describe Hyku::WorkShowPresenterDecorator do
   let(:selected_viewer) { nil }
   let(:ability) { instance_double(Ability) }
 
+  # The profile configures item_subtype as `faceted`, which links the raw URI. The
+  # decorator reroutes on the field so the profile (and the stored schema row it
+  # seeds) needs no change.
+  describe 'renderer routing' do
+    it 'renders item_subtype through the label-resolving renderer' do
+      expect(presenter.send(:renderer_for, :item_subtype, render_as: 'faceted'))
+        .to eq(Hyrax::Renderers::ItemSubtypeAttributeRenderer)
+    end
+
+    it 'leaves the other faceted properties on the faceted renderer' do
+      %i[publisher keyword media_type research_group].each do |field|
+        expect(presenter.send(:renderer_for, field, render_as: 'faceted'))
+          .to eq(Hyrax::Renderers::FacetedAttributeRenderer)
+      end
+    end
+  end
+
   describe '#iiif_viewer' do
     context 'when clover is chosen' do
       let(:selected_viewer) { 'clover' }

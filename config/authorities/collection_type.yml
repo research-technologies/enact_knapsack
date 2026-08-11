@@ -1,29 +1,29 @@
 terms:
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#collection
-    label: Collection
+    term: Collection
   - id: http://vocab.getty.edu/page/aat/300026037
-    label: Anthology
+    term: Anthology
   - id: http://vocab.getty.edu/page/aat/300375748
-    label: Archive
+    term: Archive
     file_suffixes: [zip, pdf]
   - id: curated_set
-    label: Curated set
+    term: Curated set
     file_suffixes: [zip, pdf]
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.7/appendices/appendix-1/resourceTypeGeneral/#dataset
-    label: Dataset
+    term: Dataset
   - id: http://vocab.getty.edu/page/aat/300179434
-    label: Portfolio subset
+    term: Portfolio subset
   - id: https://schema.org/Menu
-    label: Menu
+    term: Menu
   - id: https://schema.org/MusicAlbum
-    label: Music Album
+    term: Music Album
   - id: https://schema.org/MusicPlayList
-    label: Music Play list
+    term: Music Play list
   - id: https://schema.org/RadioSeason
-    label: Radio Season
+    term: Radio Season
   - id: https://schema.org/RadioSeries
-    label: Radio Series
+    term: Radio Series
   - id: https://schema.org/TVSeason
-    label: TV Season
+    term: TV Season
   - id: https://schema.org/TVSeries
-    label: TV Series
+    term: TV Series

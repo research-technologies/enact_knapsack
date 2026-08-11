@@ -31,8 +31,8 @@ module Enact
         @all_subtypes ||= AUTHORITIES.flat_map do |authority, (work_type, badge)|
           terms_for(authority).map do |term|
             { id: term['id'],
-              label: term['label'],
-              card_label: term['label'],
+              label: term['term'],
+              card_label: term['term'],
               work_type:,
               badge:,
               suffixes: Array(term['file_suffixes']).map { |s| s.to_s.downcase } }
