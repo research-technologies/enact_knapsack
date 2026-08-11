@@ -310,6 +310,11 @@ en:
         portfolios:
           one: portfolio
           other: portfolios
+        # Covers people and organizations alike, since the count and the
+        # /contributors index it links to include both.
+        participants:
+          one: research participant
+          other: research participants
     contributors:
       agent_type: Type
       affiliation: Affiliation

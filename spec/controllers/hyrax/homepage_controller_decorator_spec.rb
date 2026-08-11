@@ -61,14 +61,23 @@ RSpec.describe Hyrax::HomepageControllerDecorator, :clean_repo, type: :controlle
 
       get :index
 
-      expect(assigns(:enact_home_counts)).to eq(items: 1, portfolios: 1)
+      expect(assigns(:enact_home_counts)).to include(items: 1, portfolios: 1)
     end
 
     # A nil count reaching a pluralised translation renders the translation hash.
-    it 'sets both counts on an empty repository rather than leaving them nil' do
+    it 'sets every count on an empty repository rather than leaving them nil' do
       get :index
 
-      expect(assigns(:enact_home_counts)).to eq(items: 0, portfolios: 0)
+      expect(assigns(:enact_home_counts)).to eq(items: 0, portfolios: 0, participants: 0)
+    end
+
+    it 'counts contributor profiles of every agent type' do
+      Enact::Contributor.create!(display_name: 'A Researcher')
+      Enact::Contributor.create!(display_name: 'An Institute', agent_type: 'organization')
+
+      get :index
+
+      expect(assigns(:enact_home_counts)[:participants]).to eq(2)
     end
   end
 

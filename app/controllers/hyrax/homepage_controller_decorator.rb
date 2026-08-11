@@ -31,14 +31,19 @@ module Hyrax
       )
     end
 
-    # Both keys are always present, zero included: the featured section interpolates :portfolios
+    # Every key is always present, zero included: the featured section interpolates :portfolios
     # into a pluralised key, which renders the translation hash itself if handed nil.
+    #
+    # Participants counts every agent type, matching the unfiltered /contributors index the stat
+    # links to. Not access-filtered, because a profile is public whether or not it credits a
+    # visible work.
     def enact_home_counts
       counts = enact_home_model_counts
 
       @enact_home_counts = {
         items: counts.values.sum,
-        portfolios: counts['Portfolio'].to_i
+        portfolios: counts['Portfolio'].to_i,
+        participants: Enact::Contributor.count
       }
     end
 

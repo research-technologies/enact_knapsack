@@ -6,8 +6,11 @@
       <%# Items goes to the unfiltered catalogue rather than an OR of the five work types, because
           Blacklight ANDs repeated facet values. The totals agree while a tenant holds only works:
           the homepage builder counts works alone, the catalogue also counts public collections. %>
+      <%# The contributors route is declared at the top level, not under main_app, so it resolves
+          through the knapsack engine's helpers (as app/views/enact/contributors/index.html.erb does). %>
       <% paths = { items: main_app.search_catalog_path,
-                   portfolios: main_app.search_catalog_path(f: { has_model_ssim: ['Portfolio'] }) } %>
+                   portfolios: main_app.search_catalog_path(f: { has_model_ssim: ['Portfolio'] }),
+                   participants: HykuKnapsack::Engine.routes.url_helpers.enact_contributors_path } %>
       <% counts.each do |key, count| %>
         <p class="enact-stat">
           <%= link_to paths[key], class: 'enact-stat-link' do %>
