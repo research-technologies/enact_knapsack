@@ -121,19 +121,25 @@ en:
         heading: Add to a parent work
         subtext: Search for the title of the portfolio, artefact, event, piece of literature, or collection this deposit should be added to.
       start:
+        # OVERRIDE the icon values with the `fa` family class included. Hyku's
+        # start view renders `class="...__path-icon <%= icon %>"` without it, so a
+        # bare `fa-cube` resolves to no glyph. Every other icon consumer (Hyku's
+        # _stepper, Enact's own item_start) does add `fa` and so takes a bare
+        # name — Hyku's start view is the outlier. Drop the prefix here once Hyku
+        # renders `fa` like the rest.
         paths:
           new:
             title: Create a new Portfolio
             desc: A portfolio is the top-level work of a project — start one, then add the child works that belong to it.
-            icon: fa-cube
+            icon: fa fa-cube
           add:
             title: Add to an existing portfolio or work
             desc: Deposit a new item into a practice research project you've already started.
-            icon: fa-sitemap
+            icon: fa fa-sitemap
           standalone:
             title: Deposit a standalone work
             desc: Add a single artefact, event or piece of writing that isn't part of a portfolio or another work.
-            icon: fa-file-o
+            icon: fa fa-file-o
   enact:
     deposit_wizard:
       item_start:

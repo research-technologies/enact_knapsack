@@ -1,0 +1,28 @@
+// OVERRIDE Hyku v7.1.0 deposit-wizard start-screen path cards
+// (app/assets/stylesheets/deposit_wizard/_choices.scss) to close the gap beside the
+// two secondary path cards.
+//
+// Hyku's `repeat(auto-fit, minmax(240px, 1fr))` resolves to three columns for three
+// paths, so the two cards under the full-width lead leave the third empty. Enact is
+// always the 1-over-2 shape, so the count is fixed rather than derived from width.
+//
+// Scoped to __paths only: __type-cards shares Hyku's selector but is a
+// variable-length list, where auto-fit must stay.
+.deposit-wizard {
+  &__paths {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  // The lead keeps spanning the row; restated because this file's more specific
+  // grid would otherwise leave it sized to one column.
+  &__path-card--container {
+    grid-column: 1 / -1;
+  }
+
+  // Below Hyku's 240px card minimum the two-up row would squeeze, so stack.
+  @media (max-width: 33rem) {
+    &__paths {
+      grid-template-columns: 1fr;
+    }
+  }
+}
