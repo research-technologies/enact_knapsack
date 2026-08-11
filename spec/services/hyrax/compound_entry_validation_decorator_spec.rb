@@ -35,7 +35,9 @@ RSpec.describe Hyrax::CompoundEntryValidationDecorator do
     expect(violations).to contain_exactly(hash_including(type: :end_before_start))
   end
 
-  it 'reports one violation per offending row' do
+  # One message however many rows are wrong, matching how Hyrax dedupes its own
+  # missing-required violations: the depositor sees the rule once, not per row.
+  it 'reports a single violation even when several rows are out of order' do
     violations = violations_for([{ 'start_date' => '2026-06-30', 'end_date' => '2026-01-01' },
                                  { 'start_date' => '2025-06-30', 'end_date' => '2025-01-01' }])
 

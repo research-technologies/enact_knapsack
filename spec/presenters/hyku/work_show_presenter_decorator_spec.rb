@@ -13,14 +13,18 @@ RSpec.describe Hyku::WorkShowPresenterDecorator do
   # decorator reroutes on the field so the profile (and the stored schema row it
   # seeds) needs no change.
   describe 'renderer routing' do
+    # renderer_for takes options positionally; braces keep that explicit rather than
+    # relying on bare keywords collapsing into a Hash.
+    let(:faceted) { { render_as: 'faceted' } }
+
     it 'renders item_subtype through the label-resolving renderer' do
-      expect(presenter.send(:renderer_for, :item_subtype, render_as: 'faceted'))
+      expect(presenter.send(:renderer_for, :item_subtype, faceted))
         .to eq(Hyrax::Renderers::ItemSubtypeAttributeRenderer)
     end
 
     it 'leaves the other faceted properties on the faceted renderer' do
       %i[publisher keyword media_type research_group].each do |field|
-        expect(presenter.send(:renderer_for, field, render_as: 'faceted'))
+        expect(presenter.send(:renderer_for, field, faceted))
           .to eq(Hyrax::Renderers::FacetedAttributeRenderer)
       end
     end
