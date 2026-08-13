@@ -61,13 +61,16 @@ related item, the relationship type as it reads from this work's side, and the c
 note. Relationships recorded on other works that point at this one appear too, reading in
 their inverse form.
 
+**The card is scoped to the viewer.** An entry whose target this viewer may not open, in
+either direction, is not listed at all, so a withheld work's title is never disclosed by a
+work that points at it. The card and the map apply the same rule, so they always agree
+about what exists.
+
 When the map has something to draw, the card also offers a **Relationship map** button.
 
-**Why the button sometimes does not appear:** the button is shown only when opening the
-map would show something. A relationship whose target has been deleted, is not visible to
-the current viewer, or has no type recorded still appears in the list, but cannot be
-drawn, so a work with only such relationships offers no button. This guarantees no one
-ever opens an empty diagram.
+**Why the button sometimes does not appear:** a relationship with no type recorded is
+listed on the card but gives the map nothing to label, so a work whose relationships are
+all untyped offers no button. This guarantees no one ever opens an empty diagram.
 
 ## 5. Using the map
 
@@ -130,8 +133,9 @@ into a diagram of the whole repository.
 
 | Question | Answer |
 | --- | --- |
-| A work lists relationships, but there is no map button. Why? | None of its relationships can currently be drawn: the targets may be works the viewer cannot see, works that no longer exist, or entries with no type recorded. Fix the entries, or view the work as a user with wider permissions. |
-| A related work is listed on the page but missing from the map. | Same causes as above, applied to a single entry. The list shows everything recorded; the map draws what resolves for the current viewer and carries a type. |
+| A work lists relationships, but there is no map button. Why? | Every listed relationship lacks a recorded type. The map can only draw a labelled arrow, so untyped entries appear on the card but are never drawn. Re-edit the work and pick a type, or an "Other" free-text one, and the button appears. |
+| A related work is listed on the page but missing from the map. | The entry has no type recorded. The card and the map are otherwise scoped identically, so anything the card lists with a type is drawable. |
+| A relationship I recorded is not listed on the work's page. | Its target no longer resolves to an indexed work, or is not visible to the current viewer; the card lists only what the viewer may open. Signed in with wider permissions, the row returns. |
 | An arrow shows a type but no DataCite term. | It is a free-text "Other" relationship, or one recorded under an earlier vocabulary. It remains fully functional; re-editing the work and selecting a current controlled type adds the DataCite alignment. |
 | Can a particular map view be shared? | Yes. Every view has its own web address; copy it from the browser. The recipient sees the map scoped to their own permissions. |
 | Why does the same relationship read differently on the two works' pages? | By design. A relationship is directional, and each side shows it from its own point of view: "Documents" on one page, "Is Documented By" on the other. Both come from a single recorded entry. |
