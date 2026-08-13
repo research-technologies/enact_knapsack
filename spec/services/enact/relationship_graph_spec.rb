@@ -139,6 +139,64 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
     end
   end
 
+  # The card resolves what the graph gives it, so withholding has to happen here:
+  # a target the ability may not read must not surface a title in either direction
+  # (issue #182). The spec docs carry no read access groups by default, so a plain
+  # user sees nothing until a doc is explicitly granted public read.
+  describe 'ability scoping (issue #182)' do
+    let(:user) { FactoryBot.create(:user) }
+    let(:ability) { ::Ability.new(user) }
+
+    # Re-index an already-indexed doc with public read, permissions only: the
+    # relationships and titles it was indexed with stay as they are.
+    def grant_public_read(id)
+      doc = Hyrax::SolrService.query("{!field f=id}#{id}", rows: 1).first.to_h
+      doc.delete('_version_')
+      Hyrax::SolrService.add(doc.merge('read_access_group_ssim' => ['public']), commit: true)
+    end
+
+    it 'omits an outbound edge whose target this user may not read' do
+      doc = relate(from: source, to: target, type: 'documents')
+
+      expect(described_class.new(doc, ability:).outbound).to be_empty
+      expect(described_class.new(doc).outbound.map(&:title)).to eq(['Target work'])
+    end
+
+    it 'resolves an outbound edge once the target is readable' do
+      doc = relate(from: source, to: target, type: 'documents')
+      grant_public_read(target.id)
+
+      expect(described_class.new(doc, ability:).outbound.map(&:title)).to eq(['Target work'])
+    end
+
+    it 'keeps external URL edges: there is no repository record to withhold' do
+      updated = Hyrax.persister.save(resource: Hyrax.query_service.find_by(id: source.id).tap do |r|
+        r.relationships = [{ 'item' => 'https://example.org/thing', 'type' => 'documents' }]
+      end)
+      index(updated)
+
+      edge = described_class.new(solr_doc_for(updated.id), ability:).outbound.first
+      expect(edge.external).to be(true)
+      expect(edge.title).to eq('https://example.org/thing')
+    end
+
+    it 'omits an inbound edge whose source this user may not read' do
+      relate(from: source, to: target, type: 'cites')
+
+      expect(described_class.new(solr_doc_for(target.id), ability:).inbound).to be_empty
+      expect(described_class.new(solr_doc_for(target.id)).inbound.map(&:title)).to eq(['Source work'])
+    end
+
+    it 'finds an inbound edge once the source is readable' do
+      relate(from: source, to: target, type: 'cites')
+      grant_public_read(source.id)
+
+      edge = described_class.new(solr_doc_for(target.id), ability:).inbound.first
+      expect(edge.title).to eq('Source work')
+      expect(edge.relation_type).to eq('iscitedby')
+    end
+  end
+
   # The map's labels and its button gate both read these, so they live on the Edge
   # rather than in either consumer.
   describe Enact::RelationshipGraph::Edge do

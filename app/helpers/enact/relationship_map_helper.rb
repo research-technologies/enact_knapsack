@@ -10,11 +10,12 @@ module Enact
     include ::Enact::MapModalHelper
 
     # Memoized per work: the card body and the button gate both need these, and each
-    # resolved target costs a Solr lookup.
+    # resolved target costs a Solr lookup. Ability-scoped so the card never lists a
+    # work this viewer cannot open (issue #182).
     def enact_relationship_edges(presenter)
       @enact_relationship_edges ||= {}
       @enact_relationship_edges[presenter.id] ||= begin
-        graph = ::Enact::RelationshipGraph.new(presenter.solr_document)
+        graph = ::Enact::RelationshipGraph.new(presenter.solr_document, ability: current_ability)
         { outbound: graph.outbound, inbound: graph.inbound }
       end
     end
@@ -26,15 +27,10 @@ module Enact
                         html_class:)
     end
 
-    # A listed relationship is not on its own proof of a map worth opening: the card
-    # resolves targets with no ability check (Hyrax::CompoundWorkResolver) while every
-    # query behind the map is ability-scoped, and an untyped edge is never drawn.
+    # The edges are already ability-scoped (issue #182), so anything that resolved is
+    # drawable; only an untyped edge, which the map cannot label, keeps the button away.
     def enact_relationship_map?(presenter)
-      edges = enact_relationship_edges(presenter).values.flatten.select(&:typed?)
-      return false if edges.empty?
-      return true if edges.any?(&:external)
-
-      enact_visible_work?(edges.map(&:target_id).compact.uniq)
+      enact_relationship_edges(presenter).values.flatten.any?(&:typed?)
     rescue StandardError => e
       Hyrax.logger.debug("enact_relationship_map?(#{presenter.try(:id)}): #{e.message}")
       false
@@ -45,17 +41,6 @@ module Enact
       key = Array(presenter.solr_document['has_model_ssim']).first.to_s == 'Portfolio' ? :portfolio : :focus
 
       HykuKnapsack::Engine.routes.url_helpers.relationship_map_path(key => presenter.id)
-    end
-
-    private
-
-    def enact_visible_work?(ids)
-      return false if ids.blank?
-
-      Hyrax::SolrQueryService.new
-                             .with_field_pairs(field_pairs: { 'id' => ids }, join_with: 'OR')
-                             .accessible_by(ability: current_ability)
-                             .count.positive?
     end
   end
 end

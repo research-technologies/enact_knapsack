@@ -15,6 +15,9 @@ RSpec.describe Enact::RelationshipMapHelper, type: :helper do
     edge_class.new(target_id:, relation_type: 'cites', external:)
   end
 
+  # Visibility is no longer this gate's question: the graph filters withheld targets
+  # and sources itself (issue #182, covered in the RelationshipGraph spec), so any
+  # edge that arrives here is openable and only typedness decides.
   describe '#enact_relationship_map?' do
     it 'is false with no edges at all' do
       edges
@@ -26,31 +29,18 @@ RSpec.describe Enact::RelationshipMapHelper, type: :helper do
       expect(helper.enact_relationship_map?(presenter)).to be(false)
     end
 
-    it 'is true for an external URL target without asking Solr' do
+    it 'is true for a typed external URL target' do
       edges(outbound: [typed_edge(target_id: 'https://example.org/a', external: true)])
-      expect(helper).not_to receive(:enact_visible_work?)
-
       expect(helper.enact_relationship_map?(presenter)).to be(true)
     end
 
-    it 'is true when a typed edge points at a work this user can see' do
+    it 'is true for a typed edge to a work' do
       edges(outbound: [typed_edge])
-      allow(helper).to receive(:enact_visible_work?).with(['target']).and_return(true)
-
       expect(helper.enact_relationship_map?(presenter)).to be(true)
-    end
-
-    it 'is false when the target resolves for the card but is not visible to this user' do
-      edges(outbound: [typed_edge])
-      allow(helper).to receive(:enact_visible_work?).and_return(false)
-
-      expect(helper.enact_relationship_map?(presenter)).to be(false)
     end
 
     it 'counts inbound edges too, so a work that is only a target gets a map' do
       edges(inbound: [typed_edge(target_id: 'source')])
-      allow(helper).to receive(:enact_visible_work?).with(['source']).and_return(true)
-
       expect(helper.enact_relationship_map?(presenter)).to be(true)
     end
 
@@ -98,11 +88,22 @@ RSpec.describe Enact::RelationshipMapHelper, type: :helper do
   end
 
   describe '#enact_relationship_edges' do
+    let(:ability) { instance_double(Ability) }
+    let(:graph) { instance_double(Enact::RelationshipGraph, outbound: [], inbound: []) }
+
+    before { allow(helper).to receive(:current_ability).and_return(ability) }
+
     it 'builds the graph once per work and reuses both directions' do
-      graph = instance_double(Enact::RelationshipGraph, outbound: [], inbound: [])
       expect(Enact::RelationshipGraph).to receive(:new).once.and_return(graph)
 
       2.times { helper.enact_relationship_edges(presenter) }
+    end
+
+    it 'passes the viewer ability so withheld targets never reach the card (issue #182)' do
+      expect(Enact::RelationshipGraph).to receive(:new)
+        .with(presenter.solr_document, ability:).and_return(graph)
+
+      helper.enact_relationship_edges(presenter)
     end
   end
 end
