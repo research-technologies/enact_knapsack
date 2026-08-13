@@ -3,6 +3,7 @@
 **Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
 - [HykuKnapsack](#hykuknapsack)
+  - [Enact Documentation](#enact-documentation)
   - [Introduction](#introduction)
     - [Version strategy](#version-strategy)
     - [Precedence](#precedence)
@@ -27,6 +28,18 @@
 
 [Hyku Knapsack](https://github.com/samvera-labs/hyku_knapsack) is a little wrapper around Hyku to make development and deployment easier. Primary goals of this project
 include making contributing back to the Hyku project easier and making upgrades a snap.
+
+## Enact Documentation
+
+This knapsack powers Enact, the UK repository for practice research. Feature documentation lives in [`docs/`](docs/):
+
+- [Relationship Map user guide](docs/relationship-map-user-guide.md): recording typed, curated relationships between works and exploring them on the interactive map. What each field and control does, and why.
+- [Research Network (people map) user guide](docs/people-map-user-guide.md): the collaboration network drawn from the works' contributor credits. How to read it, where the data comes from, and why.
+- [Relationship map setup](docs/relationship-map-setup.md): tenant configuration the map requires.
+- [Relationship map demo notes](docs/relationship-map-demo-notes.md): a guided click-path through the staging demo data.
+- [People map developer notes](docs/people-map.md): internals, classes, and open design questions for the research network.
+- [Hyrax compound foundation gaps](docs/hyrax-compound-foundation-gaps.md): known gaps in compound-attribute support and the upstream rules that would close them.
+- [IIIF auth](docs/iiif-auth.md): rich-media access control notes.
 
 ## Introduction
 
