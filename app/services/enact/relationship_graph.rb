@@ -19,9 +19,11 @@ module Enact
   # Edge targets are internal works (the compound's `work_or_url` field) resolved
   # to a title/path, or external URLs, emitted as external edges (the URL as both
   # title and path) so the relationships card can link to them. An internal
-  # target that does not resolve to an indexed work is skipped. (The relationship
-  # map still graphs work-to-work edges only; external targets are not in its
-  # node set, so the map controller filters them out.)
+  # target that does not resolve to an indexed work is skipped, and with an
+  # ability so is any target or inbound source that ability may not read
+  # (issue #182). (The relationship map still graphs work-to-work edges only;
+  # external targets are not in its node set, so the map controller filters
+  # them out.)
   class RelationshipGraph
     # On an inbound edge `type_other` holds the *inverse* prose, not the forward
     # label, so the view can render both directions with identical logic.
@@ -45,15 +47,26 @@ module Enact
     end
 
     # @param document [SolrDocument, #relationships] the work whose edges we render
-    def initialize(document)
+    # @param ability [Ability, nil] when given, internal targets and inbound
+    #   sources the ability may not read are omitted, so the card can never
+    #   disclose a withheld work's title (issue #182). Nil skips the check: the
+    #   map controller feeds documents its scope has already ability-filtered
+    #   and drops edges against that set, so re-asking per work would only add
+    #   Solr round-trips.
+    def initialize(document, ability: nil)
       @document = document
+      @ability = ability
     end
 
     # Edges this work itself declares, resolved to internal targets and ordered
     # so sequenced edges read in `position` order.
     # @return [Array<Edge>]
     def outbound
-      edges = relationship_entries(@document).filter_map do |entry|
+      entries = relationship_entries(@document)
+      readable = readable_target_ids(entries)
+      edges = entries.filter_map do |entry|
+        next unless readable_target?(entry['item'].to_s, readable)
+
         build_edge(entry['item'], entry, labels: forward_labels(entry))
       end
       sort_edges(edges)
@@ -94,15 +107,37 @@ module Enact
       { code:, other:, other_inverse: nil }
     end
 
-    # The source works whose `relationships` point at the given id. Limited to a
-    # generous page; a single work is not expected to be the target of more
-    # inbound edges than this within one project.
+    # The source works whose `relationships` point at the given id, ability-scoped
+    # when an ability was given. Limited to a generous page; a single work is not
+    # expected to be the target of more inbound edges than this within one project.
     def sources_pointing_at(id)
-      Hyrax::SolrService.query(
-        "relationships_item_ssim:\"#{id}\"",
-        fl: 'id,relationships_json_ss',
-        rows: 1_000
-      )
+      query = Hyrax::SolrQueryService.new
+                                     .with_field_pairs(field_pairs: { 'relationships_item_ssim' => id })
+      query = query.accessible_by(ability: @ability) if @ability
+      query.solr_documents(fl: 'id,relationships_json_ss', rows: 1_000)
+    end
+
+    # The subset of the entries' internal target ids this ability may read, in one
+    # batched query; nil when unscoped. External URLs never enter the check: they
+    # are not repository records, so there is nothing to withhold.
+    def readable_target_ids(entries)
+      return nil if @ability.nil?
+
+      ids = entries.filter_map do |entry|
+        value = entry['item'].to_s
+        value if value.present? && !Hyrax::CompoundWorkResolver.url?(value)
+      end.uniq
+      return Set.new if ids.empty?
+
+      Hyrax::SolrQueryService.new
+                             .with_field_pairs(field_pairs: { 'id' => ids }, join_with: 'OR')
+                             .accessible_by(ability: @ability)
+                             .solr_documents(fl: 'id', rows: ids.size)
+                             .map { |doc| doc['id'].to_s }.to_set
+    end
+
+    def readable_target?(target_value, readable)
+      readable.nil? || Hyrax::CompoundWorkResolver.url?(target_value) || readable.include?(target_value)
     end
 
     # Parse a doc/hit's `relationships` compound into an Array of entry hashes.
