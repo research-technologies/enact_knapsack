@@ -1,6 +1,6 @@
 # frozen_string_literal: true
 
-# OVERRIDES BULKRAX v9.1.0
+# OVERRIDES BULKRAX v9.5.1
 #
 # Empty 'id' in import is parsed to be id: "" and "" is truthy so an object not found error is thrown.
 # Check for id == "" and treat as id == nil
@@ -31,9 +31,12 @@ module Bulkrax
                   Rails.logger.info("Bulkrax Column automatically matched #{node_name}, #{node_content}")
                   single_metadata(node_content)
                 end
+        # start OVERRIDE (unless) #
+        # conditionally set the id value in parsed_metadata if it is not an empty string
         unless name == 'id' && value == ''
           object_name.present? ? set_parsed_object_data(object_multiple, object_name, name, index, value) : set_parsed_data(name, value)
         end
+        # end OVERRIDE #
       end
     end
   end
