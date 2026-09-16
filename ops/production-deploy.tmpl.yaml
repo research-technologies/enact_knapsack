@@ -370,6 +370,14 @@ nginx:
         default 1;
     }
 
+    # ActionCable (mounted at /notifications/endpoint) needs the Upgrade/
+    # Connection headers passed through, or nginx serves it as a plain GET
+    # and it 404s (ActionCable's own response to a non-websocket request).
+    map ${DOLLAR}http_upgrade ${DOLLAR}connection_upgrade {
+        default upgrade;
+        ''      '';
+    }
+
     log_format loki 'host=${DOLLAR}host ip=${DOLLAR}http_x_forwarded_for remote_user=${DOLLAR}remote_user [${DOLLAR}time_local] '
                       'request="${DOLLAR}request" status=${DOLLAR}status bytes=${DOLLAR}body_bytes_sent '
                       'referer="${DOLLAR}http_referer" agent="${DOLLAR}http_user_agent" request_time=${DOLLAR}request_time upstream_response_time=${DOLLAR}upstream_response_time upstream_response_length=${DOLLAR}upstream_response_length cache_status=${DOLLAR}upstream_cache_status';
@@ -517,6 +525,9 @@ nginx:
           proxy_set_header  X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
           proxy_set_header Host ${DOLLAR}http_host;
           proxy_redirect off;
+          proxy_http_version 1.1;
+          proxy_set_header Upgrade ${DOLLAR}http_upgrade;
+          proxy_set_header Connection ${DOLLAR}connection_upgrade;
           proxy_pass http://rails_app;
         }
         ### Required for IIIF authentication
