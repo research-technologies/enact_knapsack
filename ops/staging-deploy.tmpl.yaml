@@ -1,14 +1,14 @@
 fullnameOverride: "enact-knapsack-staging"
 
-replicaCount: 2
+replicaCount: 4 # TEMP: demo-day burst capacity, revert after
 
 resources:
   limits:
     memory: "4Gi"
-    cpu: "750m"
+    cpu: "1200m" # TEMP: demo-day, revert after
   requests:
     memory: "2Gi"
-    cpu: "375m"
+    cpu: "600m" # TEMP: demo-day, revert after
 
 startupProbe:
   enabled: true
@@ -135,7 +135,7 @@ extraEnvVars: &envVars
   - name: RAILS_LOG_TO_STDOUT
     value: "true"
   - name: RAILS_MAX_THREADS
-    value: "7"
+    value: "10" # TEMP: demo-day, revert after
   - name: RAILS_SERVE_STATIC_FILES
     value: "true"
   - name: REDIS_HOST
@@ -317,10 +317,10 @@ nginx:
   resources:
     limits:
       memory: "256Mi"
-      cpu: "100m"
+      cpu: "300m" # TEMP: demo-day (gzip adds CPU cost), revert after
     requests:
       memory: "128Mi"
-      cpu: "20m"
+      cpu: "50m" # TEMP: demo-day, revert after
   image:
     # Built from the `hyku-nginx` Dockerfile stage, which bakes public/assets
     # and public/pdf.js in from the `hyku-web` stage of this exact commit - no
