@@ -5,10 +5,10 @@ replicaCount: 2
 resources:
   limits:
     memory: "4Gi"
-    cpu: "500m"
+    cpu: "1000m"
   requests:
     memory: "2Gi"
-    cpu: "250m"
+    cpu: "500m"
 
 startupProbe:
   enabled: true
@@ -146,7 +146,7 @@ extraEnvVars: &envVars
   - name: RAILS_LOG_TO_STDOUT
     value: "true"
   - name: RAILS_MAX_THREADS
-    value: "5"
+    value: "10"
   - name: RAILS_SERVE_STATIC_FILES
     value: "true"
   - name: REDIS_HOST
@@ -438,6 +438,13 @@ nginx:
         sendfile on;
         send_timeout 300s;
 
+        # Compress dynamic Rails/JSON responses (gzip_static below only
+        # covers pre-compressed static assets).
+        gzip on;
+        gzip_vary on;
+        gzip_proxied any;
+        gzip_types text/plain text/css text/xml application/json application/javascript application/xml+rss image/svg+xml;
+
         include /opt/bitnami/nginx/conf/bots.d/ddos.conf;
         include /opt/bitnami/nginx/conf/bots.d/blockbots.conf;
 
@@ -470,6 +477,34 @@ nginx:
           add_header Last-Modified "";
           add_header ETag "";
           break;
+        }
+
+        # Uploads/downloads/imports/exports can be large & slow; give them a
+        # much longer timeout so genuine large-file transfers don't get cut
+        # off, while everything else keeps the 60s default so a truly hung
+        # backend fails fast instead of holding a Puma thread for an hour.
+        location ~ ^/(uploads|downloads|importers|exporters|single_use_link)(/|$) {
+          proxy_set_header  X-Real-IP  ${DOLLAR}remote_addr;
+          proxy_set_header  X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+          proxy_set_header Host ${DOLLAR}http_host;
+          proxy_redirect off;
+          proxy_connect_timeout 3600s;
+          proxy_send_timeout 3600s;
+          proxy_read_timeout 3600s;
+          proxy_pass http://rails_app;
+        }
+
+        # Work/collection show & edit pages can be slow to render; more
+        # headroom than the 60s default, well short of the upload timeout.
+        location ~ ^/concern/ {
+          proxy_set_header  X-Real-IP  ${DOLLAR}remote_addr;
+          proxy_set_header  X-Forwarded-For ${DOLLAR}proxy_add_x_forwarded_for;
+          proxy_set_header Host ${DOLLAR}http_host;
+          proxy_redirect off;
+          proxy_connect_timeout 180s;
+          proxy_send_timeout 180s;
+          proxy_read_timeout 180s;
+          proxy_pass http://rails_app;
         }
 
         # send non-static file requests to the app server
