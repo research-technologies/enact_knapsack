@@ -1,0 +1,173 @@
+# Expected outcome per fixture row, as of the 2026-08/09 demo-tenant runs.
+#
+#   fail        -> the entry errors today; it should COMPLETE once the issue is fixed
+#   pass        -> the entry completes today; a failure here is a regression
+#   silent_loss -> the entry completes but the stored value is wrong; inspect the record
+#
+# Contributors are global linked records resolved with find_or_create and agent_type is
+# validated only on creation, so every contributor name here is unique. Re-running a
+# fixture against a tenant that already holds these names will pass for the wrong reason:
+# clear the contributor records between runs.
+
+
+regression_should_fail:
+  reg-B01:
+    expect: fail
+    code: B01
+    issue: rights-collides-with-rights_statement
+    fix: 'Separate the two mappings, or drop `rights` from the template.'
+    tests: 'free text in `rights` — collides with the controlled rights_statement property'
+  reg-B02:
+    expect: fail
+    code: B02
+    issue: scalar-date-rejects-year-only
+    fix: 'Accept partial dates in date_created.'
+    tests: 'date_created year-only — scalar date field is date-typed, Date.parse raises'
+  reg-B03:
+    expect: fail
+    code: B03
+    issue: scalar-date-rejects-year-only
+    fix: 'Accept partial dates in date_made_public.'
+    tests: 'date_made_public year-only — same cause as B02'
+  reg-B04:
+    expect: fail
+    code: B04
+    issue: date_information-alone-fails
+    fix: 'Allow a dates record carrying only date_information.'
+    tests: 'date_information with no date_start/date_end/date_type'
+  reg-B05:
+    expect: fail
+    code: B05
+    issue: unsuffixed-contributor-rejected
+    fix: 'Accept the unsuffixed compound, or document suffixes as the only supported shape.'
+    tests: 'unsuffixed contributor + agent_type + role (the minimum real-world shape)'
+  reg-B06:
+    expect: fail
+    code: B06
+    issue: unsuffixed-contributor-multi-rejected
+    fix: 'split: true on the contributors compound.'
+    tests: 'unsuffixed: TWO contributors pipe-delimited'
+  reg-B07:
+    expect: fail
+    code: B07
+    issue: agent_type-case-sensitive
+    fix: 'Case-insensitive enum matching.'
+    tests: "agent_type 'Person' — enum is case-sensitive (unintended)"
+  reg-B08:
+    expect: fail
+    code: B08
+    issue: agent_type-british-spelling-rejected
+    fix: 'Accept organisation as well as organization.'
+    tests: "agent_type 'organisation' — code uses US spelling (unintended)"
+  reg-B09:
+    expect: fail
+    code: B09
+    issue: contributor_role-no-split
+    fix: 'split: true on contributor_role.'
+    tests: 'ONE contributor with TWO roles — needs split:true on contributor_role'
+  reg-B10:
+    expect: fail
+    code: B10
+    issue: relationship_type-no-split
+    fix: 'split: true on relationship_type.'
+    tests: 'unsuffixed: TWO relationships pipe-delimited — needs split:true on relationship_type'
+  reg-B11:
+    expect: fail
+    code: B11
+    issue: collectionresource-recordinvalid
+    fix: 'Likely a required collection_type_gid with no template column.'
+    tests: 'CollectionResource — RecordInvalid at import_collection_job.rb:11'
+  reg-B12:
+    expect: silent_loss
+    code: B12
+    issue: description-splits-on-punctuation
+    fix: 'Remove the multi-value split from free-text description.'
+    tests: 'description containing a colon: and a semicolon; splits into 3 values'
+  reg-B13:
+    expect: silent_loss
+    code: B13
+    issue: media_viewer-no-vocabulary
+    fix: 'Publish the controlled terms, or drop the field.'
+    tests: 'media_viewer — flagged controlled in the template, no published vocabulary'
+
+conformance_should_pass:
+  ctl-G01:
+    expect: pass
+    code: G01
+    tests: 'bare minimum: model, source_identifier, title'
+  ctl-G02:
+    expect: pass
+    code: G02
+    tests: 'suffixed single contributor, all seven sub-fields'
+  ctl-G03:
+    expect: pass
+    code: G03
+    tests: 'suffixed TWO contributors, person + organization'
+  ctl-G04:
+    expect: pass
+    code: G04
+    tests: 'contributor_role = other + role_other free text'
+  ctl-G05:
+    expect: pass
+    code: G05
+    tests: 'suffixed TWO relationships'
+  ctl-G06:
+    expect: pass
+    code: G06
+    tests: 'active:false relationship terms source-of / derived-from'
+  ctl-G07:
+    expect: pass
+    code: G07
+    tests: 'date_start + date_end + date_type, year-only values in the compound'
+  ctl-G08:
+    expect: pass
+    code: G08
+    tests: 'full YYYY-MM-DD in a scalar date field'
+  ctl-G09:
+    expect: pass
+    code: G09
+    tests: 'geo point and bounding box together'
+  ctl-G10:
+    expect: pass
+    code: G10
+    tests: 'funder chain + identifier + item_subtype + media_type'
+  ctl-G11:
+    expect: pass
+    code: G11
+    tests: 'full licence block, SPDX page URL'
+  ctl-G12:
+    expect: pass
+    code: G12
+    tests: 'embargo triple'
+  ctl-G13:
+    expect: pass
+    code: G13
+    tests: 'lease triple'
+  ctl-G14:
+    expect: pass
+    code: G14
+    tests: 'file_access_level closed with open metadata'
+  ctl-G15:
+    expect: pass
+    code: G15
+    tests: 'ItemCollection with collection_order, extent, extent_type'
+  ctl-G16:
+    expect: pass
+    code: G16
+    tests: 'Literature with place_of_publication and PDF viewer flags'
+  ctl-G17:
+    expect: pass
+    code: G17
+    tests: 'context_statement with a colon: and a semicolon; must survive intact'
+  ctl-G18:
+    expect: pass
+    code: G18
+    tests: 'organisational unit with pid, related_item, title lang/type'
+
+regression_empty_id_column:
+  idcol-01:
+    expect: fail
+    code: ID01
+    issue: empty-id-cell-is-truthy
+    fix: "Treat an empty id cell as absent rather than calling find_by_id('')."
+    tests: 'empty `id` cell — "" is truthy in Ruby so find_by_id("") raises'
