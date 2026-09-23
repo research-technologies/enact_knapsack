@@ -4,6 +4,8 @@
 #
 # Empty 'id' in import is parsed to be id: "" and "" is truthy so an object not found error is thrown.
 # Check for id == "" and treat as id == nil
+#
+# rubocop:disable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 module Bulkrax
   module HasMatchersDecorator
     # Overriding the entire method to inject validation against id: ""
@@ -41,5 +43,6 @@ module Bulkrax
     end
   end
 end
+# rubocop:enable Metrics/AbcSize, Metrics/CyclomaticComplexity, Metrics/MethodLength, Metrics/PerceivedComplexity
 
 Bulkrax::HasMatchers.prepend(Bulkrax::HasMatchersDecorator)
