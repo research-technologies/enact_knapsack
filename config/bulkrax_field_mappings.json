@@ -462,14 +462,6 @@
       "nested_attributes": true,
       "name": "type_other_inverse"
     },
-    "relationship_position": {
-      "from": [
-        "relationship_position"
-      ],
-      "object": "relationships",
-      "nested_attributes": true,
-      "name": "position"
-    },
     "relationship_note": {
       "from": [
         "relationship_note"
@@ -959,14 +951,6 @@
       "object": "relationships",
       "nested_attributes": true,
       "name": "type_other_inverse"
-    },
-    "relationship_position": {
-      "from": [
-        "relationship_position"
-      ],
-      "object": "relationships",
-      "nested_attributes": true,
-      "name": "position"
     },
     "relationship_note": {
       "from": [
