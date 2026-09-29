@@ -1035,13 +1035,6 @@ properties:
     - relationships_type_other_inverse_tesim
     form:
       cols: 6
-  relationship_position:
-    type: string
-    name: position
-    available_on:
-      properties:
-      - relationships
-    required: false
   relationship_note:
     type: string
     name: note
@@ -1051,6 +1044,8 @@ properties:
     required: false
     indexing:
     - relationships_note_tesim
+    form:
+      cols: 12
   media_viewer:
     available_on:
       class:

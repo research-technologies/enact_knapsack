@@ -17,7 +17,7 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
 
   # Re-save the source carrying a relationship that points at target, then index
   # it so the edge is queryable. Extra keyword fields (type, type_other,
-  # type_other_inverse, position, note) map to the compound entry's string keys;
+  # type_other_inverse, note) map to the compound entry's string keys;
   # nil values are omitted. Returns the source's SolrDocument.
   def relate(from:, to:, **fields)
     entry = { 'item' => to.id.to_s }
@@ -45,18 +45,18 @@ RSpec.describe Enact::RelationshipGraph, :clean_repo do
       expect(edge.path).to be_present
     end
 
-    it 'orders sequenced edges by position' do
-      other = index(Hyrax.persister.save(resource: Portfolio.new(title: ['Second target'])))
-      entries = [
-        { 'item' => other.id.to_s, 'type' => 'continues', 'position' => '2' },
-        { 'item' => target.id.to_s, 'type' => 'continues', 'position' => '1' }
-      ]
-      updated = Hyrax.persister.save(resource: Hyrax.query_service.find_by(id: source.id).tap { |r| r.relationships = entries })
-      index(updated)
-
-      titles = described_class.new(solr_doc_for(updated.id)).outbound.map(&:title)
-      expect(titles).to eq(['Target work', 'Second target'])
-    end
+    #    it 'orders sequenced edges by position' do
+    #      other = index(Hyrax.persister.save(resource: Portfolio.new(title: ['Second target'])))
+    #      entries = [
+    #        { 'item' => other.id.to_s, 'type' => 'continues', 'position' => '2' },
+    #        { 'item' => target.id.to_s, 'type' => 'continues', 'position' => '1' }
+    #      ]
+    #      updated = Hyrax.persister.save(resource: Hyrax.query_service.find_by(id: source.id).tap { |r| r.relationships = entries })
+    #      index(updated)
+    #
+    #      titles = described_class.new(solr_doc_for(updated.id)).outbound.map(&:title)
+    #      expect(titles).to eq(['Target work', 'Second target'])
+    #    end
 
     it 'emits external URLs as external edges (the URL is both title and path)' do
       updated = Hyrax.persister.save(resource: Hyrax.query_service.find_by(id: source.id).tap do |r|

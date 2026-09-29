@@ -1,0 +1,982 @@
+{
+  "Bulkrax::BagitParser": {
+    "abstract": {
+      "from": [
+        "abstract"
+      ],
+      "split": true
+    },
+    "additional_information": {
+      "from": [
+        "additional_information"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "admin_set_id": {
+      "from": [
+        "admin_set_id"
+      ],
+      "generated": true
+    },
+    "alternative_title": {
+      "from": [
+        "alternative_title"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "alt_text": {
+      "from": [
+        "alt_text"
+      ],
+      "split": true
+    },
+    "arkivo_checksum": {
+      "from": [
+        "arkivo_checksum"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "bulkrax_identifier": {
+      "from": [
+        "source_identifier"
+      ],
+      "source_identifier": true,
+      "generated": true,
+      "search_field": "bulkrax_identifier_tesim"
+    },
+    "children": {
+      "from": [
+        "children"
+      ],
+      "related_children_field_mapping": true
+    },
+    "collection_order": {
+      "from": [
+        "collection_order"
+      ],
+      "split": true
+    },
+    "context_statement": {
+      "from": [
+        "context_statement"
+      ],
+      "split": "\\|"
+    },
+    "creator": {
+      "from": [
+        "creator"
+      ],
+      "split": true
+    },
+    "date_created": {
+      "from": [
+        "date_created"
+      ],
+      "split": true
+    },
+    "date_uploaded": {
+      "from": [
+        "date_uploaded"
+      ],
+      "generated": true
+    },
+    "depositor": {
+      "from": [
+        "depositor"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "description": {
+      "from": [
+        "description"
+      ],
+      "split": "\\|"
+    },
+    "embargo_id": {
+      "from": [
+        "embargo_id"
+      ],
+      "generated": true
+    },
+    "file": {
+      "from": [
+        "file"
+      ],
+      "split": "(?-mix:\\s*[|]\\s*)"
+    },
+    "identifier": {
+      "from": [
+        "identifier"
+      ],
+      "split": true
+    },
+    "import_url": {
+      "from": [
+        "import_url"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "item_subtype": {
+      "from": [
+        "item_subtype"
+      ],
+      "split": "\\|"
+    },
+    "keyword": {
+      "from": [
+        "keyword"
+      ],
+      "split": true
+    },
+    "label": {
+      "from": [
+        "label"
+      ],
+      "generated": true
+    },
+    "language": {
+      "from": [
+        "language"
+      ],
+      "split": true
+    },
+    "lease_id": {
+      "from": [
+        "lease_id"
+      ],
+      "generated": true
+    },
+    "modified_date": {
+      "from": [
+        "modified_date"
+      ],
+      "split": true
+    },
+    "on_behalf_of": {
+      "from": [
+        "on_behalf_of"
+      ],
+      "generated": true
+    },
+    "owner": {
+      "from": [
+        "owner"
+      ],
+      "generated": true
+    },
+    "parents": {
+      "from": [
+        "parents"
+      ],
+      "related_parents_field_mapping": true
+    },
+    "publisher": {
+      "from": [
+        "publisher"
+      ],
+      "split": true
+    },
+    "related_item": {
+      "from": [
+        "related_item"
+      ],
+      "split": "\\|"
+    },
+    "relative_path": {
+      "from": [
+        "relative_path"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "related_url": {
+      "from": [
+        "related_url",
+        "relation"
+      ],
+      "split": "(?-mix:\\s* [|]\\s*)"
+    },
+    "path": {
+      "from": [
+        "redirect_path"
+      ],
+      "object": "redirects",
+      "nested_attributes": true
+    },
+    "is_display_url": {
+      "from": [
+        "redirect_is_display_url"
+      ],
+      "object": "redirects",
+      "nested_attributes": true
+    },
+    "name": {
+      "from": [
+        "participant_name"
+      ],
+      "object": "participants",
+      "nested_attributes": true
+    },
+    "role": {
+      "from": [
+        "participant_role"
+      ],
+      "object": "participants",
+      "nested_attributes": true
+    },
+    "participant_title": {
+      "from": [
+        "participant_title"
+      ],
+      "object": "participants",
+      "nested_attributes": true,
+      "name": "title"
+    },
+    "value": {
+      "from": [
+        "identifier_value"
+      ],
+      "object": "identifiers",
+      "nested_attributes": true
+    },
+    "remote_files": {
+      "from": [
+        "remote_files"
+      ],
+      "split": "(?-mix:\\s*[|]\\s*)"
+    },
+    "rendering_ids": {
+      "from": [
+        "rendering_ids"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "resource_type": {
+      "from": [
+        "resource_type"
+      ],
+      "split": true
+    },
+    "source": {
+      "from": [
+        "source"
+      ],
+      "split": true
+    },
+    "state": {
+      "from": [
+        "state"
+      ],
+      "generated": true
+    },
+    "title": {
+      "from": [
+        "title"
+      ],
+      "split": "(?-mix:\\s*[|]\\s*)"
+    },
+    "video_embed": {
+      "from": [
+        "video_embed"
+      ]
+    },
+    "title_value": {
+      "from": [
+        "title_value"
+      ],
+      "object": "titles",
+      "nested_attributes": true,
+      "name": "value"
+    },
+    "title_type": {
+      "from": [
+        "title_type"
+      ],
+      "object": "titles",
+      "nested_attributes": true,
+      "name": "type"
+    },
+    "title_lang": {
+      "from": [
+        "title_lang"
+      ],
+      "object": "titles",
+      "nested_attributes": true,
+      "name": "lang"
+    },
+    "date_start": {
+      "from": [
+        "date_start"
+      ],
+      "object": "dates",
+      "nested_attributes": true,
+      "name": "start_date"
+    },
+    "date_end": {
+      "from": [
+        "date_end"
+      ],
+      "object": "dates",
+      "nested_attributes": true,
+      "name": "end_date"
+    },
+    "date_type": {
+      "from": [
+        "date_type"
+      ],
+      "object": "dates",
+      "nested_attributes": true,
+      "name": "type"
+    },
+    "date_information": {
+      "from": [
+        "date_information"
+      ],
+      "object": "dates",
+      "nested_attributes": true,
+      "name": "information"
+    },
+    "contributor_ref": {
+      "from": [
+        "contributor_ref"
+      ],
+      "object": "contributors",
+      "nested_attributes": true,
+      "name": "ref"
+    },
+    "contributor_role": {
+      "from": [
+        "contributor_role"
+      ],
+      "object": "contributors",
+      "nested_attributes": true,
+      "name": "role"
+    },
+    "contributor_role_other": {
+      "from": [
+        "contributor_role_other"
+      ],
+      "object": "contributors",
+      "nested_attributes": true,
+      "name": "role_other"
+    },
+    "funder_name": {
+      "from": [
+        "funder_name"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "funder_name"
+    },
+    "funder_identifier": {
+      "from": [
+        "funder_identifier"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "funder_identifier"
+    },
+    "funder_identifier_type": {
+      "from": [
+        "funder_identifier_type"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "funder_identifier_type"
+    },
+    "funder_scheme_uri": {
+      "from": [
+        "funder_scheme_uri"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "scheme_uri"
+    },
+    "funder_award_number": {
+      "from": [
+        "funder_award_number"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "award_number"
+    },
+    "funder_award_uri": {
+      "from": [
+        "funder_award_uri"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "award_uri"
+    },
+    "funder_award_title": {
+      "from": [
+        "funder_award_title"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "award_title"
+    },
+    "geo_place_name": {
+      "from": [
+        "geo_place_name"
+      ],
+      "object": "geo_locations",
+      "nested_attributes": true,
+      "name": "place_name"
+    },
+    "relationship_item": {
+      "from": [
+        "relationship_item"
+      ],
+      "object": "relationships",
+      "nested_attributes": true,
+      "name": "item"
+    },
+    "relationship_type": {
+      "from": [
+        "relationship_type"
+      ],
+      "object": "relationships",
+      "nested_attributes": true,
+      "name": "type"
+    },
+    "relationship_type_other": {
+      "from": [
+        "relationship_type_other"
+      ],
+      "object": "relationships",
+      "nested_attributes": true,
+      "name": "type_other"
+    },
+    "relationship_type_other_inverse": {
+      "from": [
+        "relationship_type_other_inverse"
+      ],
+      "object": "relationships",
+      "nested_attributes": true,
+      "name": "type_other_inverse"
+    },
+    "relationship_note": {
+      "from": [
+        "relationship_note"
+      ],
+      "object": "relationships",
+      "nested_attributes": true,
+      "name": "note"
+    },
+    "rights_statement": {
+      "from": [
+        "rights_statement"
+      ],
+      "object": "rights",
+      "nested_attributes": true,
+      "name": "statement",
+      "split": "\\|",
+      "generated": true
+    },
+    "license": {
+      "from": [
+        "license"
+      ],
+      "object": "rights",
+      "nested_attributes": true,
+      "name": "license"
+    }
+  },
+  "Bulkrax::CsvParser": {
+    "abstract": {
+      "from": [
+        "abstract"
+      ],
+      "split": true
+    },
+    "additional_information": {
+      "from": [
+        "additional_information"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "admin_set_id": {
+      "from": [
+        "admin_set_id"
+      ],
+      "generated": true
+    },
+    "alternative_title": {
+      "from": [
+        "alternative_title"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "alt_text": {
+      "from": [
+        "alt_text"
+      ],
+      "split": true
+    },
+    "arkivo_checksum": {
+      "from": [
+        "arkivo_checksum"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "bulkrax_identifier": {
+      "from": [
+        "source_identifier"
+      ],
+      "source_identifier": true,
+      "generated": true,
+      "search_field": "bulkrax_identifier_tesim"
+    },
+    "children": {
+      "from": [
+        "children"
+      ],
+      "related_children_field_mapping": true
+    },
+    "collection_order": {
+      "from": [
+        "collection_order"
+      ],
+      "split": true
+    },
+    "context_statement": {
+      "from": [
+        "context_statement"
+      ],
+      "split": "\\|"
+    },
+    "creator": {
+      "from": [
+        "creator"
+      ],
+      "split": true
+    },
+    "date_created": {
+      "from": [
+        "date_created"
+      ],
+      "split": true
+    },
+    "date_uploaded": {
+      "from": [
+        "date_uploaded"
+      ],
+      "generated": true
+    },
+    "depositor": {
+      "from": [
+        "depositor"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "description": {
+      "from": [
+        "description"
+      ],
+      "split": "\\|"
+    },
+    "embargo_id": {
+      "from": [
+        "embargo_id"
+      ],
+      "generated": true
+    },
+    "file": {
+      "from": [
+        "file"
+      ],
+      "split": "(?-mix:\\s*[|]\\s*)"
+    },
+    "identifier": {
+      "from": [
+        "identifier"
+      ],
+      "split": true
+    },
+    "import_url": {
+      "from": [
+        "import_url"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "item_subtype": {
+      "from": [
+        "item_subtype"
+      ],
+      "split": "\\|"
+    },
+    "keyword": {
+      "from": [
+        "keyword"
+      ],
+      "split": true
+    },
+    "label": {
+      "from": [
+        "label"
+      ],
+      "generated": true
+    },
+    "language": {
+      "from": [
+        "language"
+      ],
+      "split": true
+    },
+    "lease_id": {
+      "from": [
+        "lease_id"
+      ],
+      "generated": true
+    },
+    "modified_date": {
+      "from": [
+        "modified_date"
+      ],
+      "split": true
+    },
+    "on_behalf_of": {
+      "from": [
+        "on_behalf_of"
+      ],
+      "generated": true
+    },
+    "owner": {
+      "from": [
+        "owner"
+      ],
+      "generated": true
+    },
+    "parents": {
+      "from": [
+        "parents"
+      ],
+      "related_parents_field_mapping": true
+    },
+    "publisher": {
+      "from": [
+        "publisher"
+      ],
+      "split": true
+    },
+    "related_item": {
+      "from": [
+        "related_item"
+      ],
+      "split": "\\|"
+    },
+    "relative_path": {
+      "from": [
+        "relative_path"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "related_url": {
+      "from": [
+        "related_url",
+        "relation"
+      ],
+      "split": "(?-mix:\\s* [|]\\s*)"
+    },
+    "path": {
+      "from": [
+        "redirect_path"
+      ],
+      "object": "redirects",
+      "nested_attributes": true
+    },
+    "is_display_url": {
+      "from": [
+        "redirect_is_display_url"
+      ],
+      "object": "redirects",
+      "nested_attributes": true
+    },
+    "name": {
+      "from": [
+        "participant_name"
+      ],
+      "object": "participants",
+      "nested_attributes": true
+    },
+    "role": {
+      "from": [
+        "participant_role"
+      ],
+      "object": "participants",
+      "nested_attributes": true
+    },
+    "participant_title": {
+      "from": [
+        "participant_title"
+      ],
+      "object": "participants",
+      "nested_attributes": true,
+      "name": "title"
+    },
+    "value": {
+      "from": [
+        "identifier_value"
+      ],
+      "object": "identifiers",
+      "nested_attributes": true
+    },
+    "remote_files": {
+      "from": [
+        "remote_files"
+      ],
+      "split": "(?-mix:\\s*[|]\\s*)"
+    },
+    "rendering_ids": {
+      "from": [
+        "rendering_ids"
+      ],
+      "split": "\\|",
+      "generated": true
+    },
+    "resource_type": {
+      "from": [
+        "resource_type"
+      ],
+      "split": true
+    },
+    "source": {
+      "from": [
+        "source"
+      ],
+      "split": true
+    },
+    "state": {
+      "from": [
+        "state"
+      ],
+      "generated": true
+    },
+    "title": {
+      "from": [
+        "title"
+      ],
+      "split": "(?-mix:\\s*[|]\\s*)"
+    },
+    "video_embed": {
+      "from": [
+        "video_embed"
+      ]
+    },
+    "title_value": {
+      "from": [
+        "title_value"
+      ],
+      "object": "titles",
+      "nested_attributes": true,
+      "name": "value"
+    },
+    "title_type": {
+      "from": [
+        "title_type"
+      ],
+      "object": "titles",
+      "nested_attributes": true,
+      "name": "type"
+    },
+    "title_lang": {
+      "from": [
+        "title_lang"
+      ],
+      "object": "titles",
+      "nested_attributes": true,
+      "name": "lang"
+    },
+    "date_start": {
+      "from": [
+        "date_start"
+      ],
+      "object": "dates",
+      "nested_attributes": true,
+      "name": "start_date"
+    },
+    "date_end": {
+      "from": [
+        "date_end"
+      ],
+      "object": "dates",
+      "nested_attributes": true,
+      "name": "end_date"
+    },
+    "date_type": {
+      "from": [
+        "date_type"
+      ],
+      "object": "dates",
+      "nested_attributes": true,
+      "name": "type"
+    },
+    "date_information": {
+      "from": [
+        "date_information"
+      ],
+      "object": "dates",
+      "nested_attributes": true,
+      "name": "information"
+    },
+    "contributor_ref": {
+      "from": [
+        "contributor_ref"
+      ],
+      "object": "contributors",
+      "nested_attributes": true,
+      "name": "ref"
+    },
+    "contributor_role": {
+      "from": [
+        "contributor_role"
+      ],
+      "object": "contributors",
+      "nested_attributes": true,
+      "name": "role"
+    },
+    "contributor_role_other": {
+      "from": [
+        "contributor_role_other"
+      ],
+      "object": "contributors",
+      "nested_attributes": true,
+      "name": "role_other"
+    },
+    "funder_name": {
+      "from": [
+        "funder_name"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "funder_name"
+    },
+    "funder_identifier": {
+      "from": [
+        "funder_identifier"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "funder_identifier"
+    },
+    "funder_identifier_type": {
+      "from": [
+        "funder_identifier_type"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "funder_identifier_type"
+    },
+    "funder_scheme_uri": {
+      "from": [
+        "funder_scheme_uri"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "scheme_uri"
+    },
+    "funder_award_number": {
+      "from": [
+        "funder_award_number"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "award_number"
+    },
+    "funder_award_uri": {
+      "from": [
+        "funder_award_uri"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "award_uri"
+    },
+    "funder_award_title": {
+      "from": [
+        "funder_award_title"
+      ],
+      "object": "funding_references",
+      "nested_attributes": true,
+      "name": "award_title"
+    },
+    "geo_place_name": {
+      "from": [
+        "geo_place_name"
+      ],
+      "object": "geo_locations",
+      "nested_attributes": true,
+      "name": "place_name"
+    },
+    "relationship_item": {
+      "from": [
+        "relationship_item"
+      ],
+      "object": "relationships",
+      "nested_attributes": true,
+      "name": "item"
+    },
+    "relationship_type": {
+      "from": [
+        "relationship_type"
+      ],
+      "object": "relationships",
+      "nested_attributes": true,
+      "name": "type"
+    },
+    "relationship_type_other": {
+      "from": [
+        "relationship_type_other"
+      ],
+      "object": "relationships",
+      "nested_attributes": true,
+      "name": "type_other"
+    },
+    "relationship_type_other_inverse": {
+      "from": [
+        "relationship_type_other_inverse"
+      ],
+      "object": "relationships",
+      "nested_attributes": true,
+      "name": "type_other_inverse"
+    },
+    "relationship_note": {
+      "from": [
+        "relationship_note"
+      ],
+      "object": "relationships",
+      "nested_attributes": true,
+      "name": "note"
+    },
+    "rights_statement": {
+      "from": [
+        "rights_statement"
+      ],
+      "object": "rights",
+      "nested_attributes": true,
+      "name": "statement",
+      "split": "\\|",
+      "generated": true
+    },
+    "license": {
+      "from": [
+        "license"
+      ],
+      "object": "rights",
+      "nested_attributes": true,
+      "name": "license"
+    }
+  }
+}
