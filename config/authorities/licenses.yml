@@ -1,3 +1,72 @@
+# SPDX licence vocabulary, read via Enact::LicensesService. The upstream SPDX
+# list is retained in full (729 terms) and is the right authority for the
+# `licenses` field. Nothing here is deleted: existing deposits may already
+# reference any id.
+#
+# CURATION (non-QA keys, additive; added 2026-08 from the 15-pathfinder
+# relevance audit — see reports/licenses_relevance.rtf):
+#
+#   recommended: true   Term appears in the deposit-wizard picklist. Eight
+#                       terms carry it. The remaining 721 stay available
+#                       behind type-ahead search over the full SPDX list, for
+#                       the rare depositor who genuinely needs one. 681 of the
+#                       729 terms (93.4%) score zero for all 15 pathfinders,
+#                       because no pathfinder deposited software; presenting
+#                       the whole list to a filmmaker depositing a .mov is a
+#                       substantial part of why the field is left blank.
+#   default: true       Soft default, pre-selected in the wizard. Exactly one
+#                       term carries it: CC-BY-NC-ND-4.0, the observed cohort
+#                       default (53/75 across 14 of the 15 pathfinders; MDX
+#                       wrote it on every item). Soft means pre-set but not
+#                       saveable until the depositor confirms or changes it.
+#   superseded_by:      Points at the `id` of the current equivalent term, so
+#                       the UI can steer a depositor off a retired version or
+#                       a jurisdiction port. Advisory only — the term stays
+#                       selectable and stays `active: true`.
+#
+# THE PICKLIST IS TEN ITEMS, NOT EIGHT. The two remaining options are not
+# licences and have no SPDX identifier, so they are NOT added here as fake
+# licence entries. They live in the sibling config `rights_status.yml`:
+#
+#   enact:all-rights-reserved     © holder, no reuse licence granted
+#   enact:rights-undetermined     not yet cleared or decided
+#
+# The deposit wizard composes the two fields: `rights_status` is required and
+# actively prompted, `licenses` is answered when — and only when — a licence
+# has actually been granted. A deposit can legitimately be CC-BY-NC-ND-4.0 AND
+# `enact:third-party-ip-present`.
+#
+# A BLANK LICENCE FIELD MEANS RIGHTS UNDETERMINED, NOT OPENLY LICENSED. The
+# WestminsterResearch CRIS licence field is empty across every portfolio,
+# performance, exhibition and artefact record, and that emptiness is currently
+# being read as open. It is not. Blank must resolve to
+# `enact:rights-undetermined` with a review date attached, never to an open
+# licence. JO-ODDKIN and JO-TODD wrote "Licence TBC"; VH-STAIR and VH-VICT
+# wrote "Reuse License TBC"; RH-RITUAL wrote "n/a".
+#
+# LICENCE ATTACHES PER FILE, NOT PER WORK. VW-AIRGRID deposits a paired .psd
+# (shareable) and .mcd (not); the cohort-wide master/dissemination split (.mov
+# plus .mp4, .tif plus .jpg, score .pdf plus performance .mp3) means one work
+# routinely carries two rights states at once. A work-level licence field
+# cannot express either case.
+#
+# `active:` IS UPSTREAM SPDX DEPRECATION, NOT LOCAL CURATION. All 32
+# `active: false` terms are SPDX's own deprecated *software* identifiers
+# (AGPL, GFDL, GPL/LGPL exception variants, BSD-2-Clause-FreeBSD/NetBSD,
+# bzip2-1.0.5, eCos-2.0, Net-SNMP, Nunit, StandardML-NJ, wxWindows). None
+# would ever be offered to an arts depositor. Every term this repository would
+# actually want suppressed is `active: true`. `recommended:` is therefore the
+# flag that curates; `active:` is left mirroring upstream and is not
+# repurposed.
+#
+# CREATIVE COMMONS: 55 terms present, only 9 current (the six 4.0 licences,
+# CC0-1.0, CC-PDDC, CC-PDM-1.0). 42 of the other 46 now carry `superseded_by:`
+# — 25 superseded generic/unported versions and 17 jurisdiction ports (CC
+# stopped producing ports at 4.0). The four IGO ports
+# (CC-BY-3.0-IGO, CC-BY-SA-3.0-IGO, CC-BY-NC-SA-3.0-IGO, CC-BY-NC-ND-3.0-IGO)
+# are deliberately left WITHOUT `superseded_by:`: they are genuinely correct
+# for WM-PRIM's OECD report, the one place in this cohort where a port is the
+# right answer, and there is no 4.0 IGO port to steer to.
 terms:
   -
     id: "https://spdx.org/licenses/0BSD.html"
@@ -614,41 +683,57 @@ terms:
     active: true
     term: Creative Commons Attribution 1.0 Generic
     licenseId: CC-BY-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-2.0.html"
     active: true
     term: Creative Commons Attribution 2.0 Generic
     licenseId: CC-BY-2.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-2.5.html"
     active: true
     term: Creative Commons Attribution 2.5 Generic
     licenseId: CC-BY-2.5
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-2.5-AU.html"
     active: true
     term: Creative Commons Attribution 2.5 Australia
     licenseId: CC-BY-2.5-AU
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: "Jurisdiction port (Australia); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-3.0.html"
     active: true
     term: Creative Commons Attribution 3.0 Unported
     licenseId: CC-BY-3.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-3.0-AT.html"
     active: true
     term: Creative Commons Attribution 3.0 Austria
     licenseId: CC-BY-3.0-AT
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: "Jurisdiction port (Austria); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-3.0-AU.html"
     active: true
     term: Creative Commons Attribution 3.0 Australia
     licenseId: CC-BY-3.0-AU
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: "Jurisdiction port (Australia); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-3.0-DE.html"
     active: true
     term: Creative Commons Attribution 3.0 Germany
     licenseId: CC-BY-3.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: "Jurisdiction port (Germany); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-3.0-IGO.html"
     active: true
@@ -659,71 +744,99 @@ terms:
     active: true
     term: Creative Commons Attribution 3.0 Netherlands
     licenseId: CC-BY-3.0-NL
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: "Jurisdiction port (Netherlands); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-3.0-US.html"
     active: true
     term: Creative Commons Attribution 3.0 United States
     licenseId: CC-BY-3.0-US
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: "Jurisdiction port (United States); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-4.0.html"
     active: true
     term: Creative Commons Attribution 4.0 International
     licenseId: CC-BY-4.0
+    recommended: true
+    note: "Curated picklist. CC 4.0 family. Scores for MF-SGSAH, SM-FORK, SZT-C21MP, AC-SONGS, PC-PORTS."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-1.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial 1.0 Generic
     licenseId: CC-BY-NC-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-NC-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-2.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial 2.0 Generic
     licenseId: CC-BY-NC-2.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-NC-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-2.5.html"
     active: true
     term: Creative Commons Attribution Non Commercial 2.5 Generic
     licenseId: CC-BY-NC-2.5
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-NC-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-3.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial 3.0 Unported
     licenseId: CC-BY-NC-3.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-NC-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-3.0-DE.html"
     active: true
     term: Creative Commons Attribution Non Commercial 3.0 Germany
     licenseId: CC-BY-NC-3.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
+    note: "Jurisdiction port (Germany); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-NC-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial 4.0 International
     licenseId: CC-BY-NC-4.0
+    recommended: true
+    note: "Curated picklist. CC 4.0 family. Top-3 for PPP-QMUL, MF-SGSAH, PC-PORTS, NM-VOICES, RH-RITUAL."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-ND-1.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial No Derivatives 1.0 Generic
     licenseId: CC-BY-NC-ND-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-ND-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-NC-ND-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-ND-2.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial No Derivatives 2.0 Generic
     licenseId: CC-BY-NC-ND-2.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-ND-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-NC-ND-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-ND-2.5.html"
     active: true
     term: Creative Commons Attribution Non Commercial No Derivatives 2.5 Generic
     licenseId: CC-BY-NC-ND-2.5
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-ND-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-NC-ND-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-ND-3.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial No Derivatives 3.0 Unported
     licenseId: CC-BY-NC-ND-3.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-ND-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-NC-ND-4.0. Only superseded generic term to score anywhere (2 for PPP-QMUL, NM-VOICES, RH-RITUAL, VH-STAIR/VH-VICT)."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-ND-3.0-DE.html"
     active: true
     term: Creative Commons Attribution Non Commercial No Derivatives 3.0 Germany
     licenseId: CC-BY-NC-ND-3.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-ND-4.0.html"
+    note: "Jurisdiction port (Germany); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-NC-ND-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-ND-3.0-IGO.html"
     active: true
@@ -734,46 +847,65 @@ terms:
     active: true
     term: Creative Commons Attribution Non Commercial No Derivatives 4.0 International
     licenseId: CC-BY-NC-ND-4.0
+    recommended: true
+    default: true
+    note: "Curated picklist + soft default. Highest-scoring term in the file, 53/75 across 14 of 15 pathfinders; MDX wrote it on every item."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-1.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 1.0 Generic
     licenseId: CC-BY-NC-SA-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-NC-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-2.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 2.0 Generic
     licenseId: CC-BY-NC-SA-2.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-NC-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-2.0-DE.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 2.0 Germany
     licenseId: CC-BY-NC-SA-2.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: "Jurisdiction port (Germany); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-NC-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-2.0-FR.html"
     active: true
     term: Creative Commons Attribution-NonCommercial-ShareAlike 2.0 France
     licenseId: CC-BY-NC-SA-2.0-FR
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: "Jurisdiction port (France); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-NC-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-2.0-UK.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 2.0 England and Wales
     licenseId: CC-BY-NC-SA-2.0-UK
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: "Jurisdiction port (England and Wales); CC stopped producing ports at 4.0. Era-plausible for WM-PRIM (2006-08) only. Steer to CC-BY-NC-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-2.5.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 2.5 Generic
     licenseId: CC-BY-NC-SA-2.5
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-NC-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-3.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 3.0 Unported
     licenseId: CC-BY-NC-SA-3.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-NC-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-3.0-DE.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 3.0 Germany
     licenseId: CC-BY-NC-SA-3.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: "Jurisdiction port (Germany); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-NC-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-3.0-IGO.html"
     active: true
@@ -784,76 +916,106 @@ terms:
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 4.0 International
     licenseId: CC-BY-NC-SA-4.0
+    recommended: true
+    note: "Curated picklist. CC 4.0 family. Top-3 for PPP-QMUL and the Heritage, Memory & Archives cluster."
   -
     id: "https://spdx.org/licenses/CC-BY-ND-1.0.html"
     active: true
     term: Creative Commons Attribution No Derivatives 1.0 Generic
     licenseId: CC-BY-ND-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-ND-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-ND-2.0.html"
     active: true
     term: Creative Commons Attribution No Derivatives 2.0 Generic
     licenseId: CC-BY-ND-2.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-ND-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-ND-2.5.html"
     active: true
     term: Creative Commons Attribution No Derivatives 2.5 Generic
     licenseId: CC-BY-ND-2.5
+    superseded_by: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-ND-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-ND-3.0.html"
     active: true
     term: Creative Commons Attribution No Derivatives 3.0 Unported
     licenseId: CC-BY-ND-3.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-ND-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-ND-3.0-DE.html"
     active: true
     term: Creative Commons Attribution No Derivatives 3.0 Germany
     licenseId: CC-BY-ND-3.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
+    note: "Jurisdiction port (Germany); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-ND-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
     active: true
     term: Creative Commons Attribution No Derivatives 4.0 International
     licenseId: CC-BY-ND-4.0
+    recommended: true
+    note: "Curated picklist. CC 4.0 family. Scores for MF-SGSAH, VH-STAIR, VH-VICT, GS-UNDER."
   -
     id: "https://spdx.org/licenses/CC-BY-SA-1.0.html"
     active: true
     term: Creative Commons Attribution Share Alike 1.0 Generic
     licenseId: CC-BY-SA-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-SA-2.0.html"
     active: true
     term: Creative Commons Attribution Share Alike 2.0 Generic
     licenseId: CC-BY-SA-2.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-SA-2.0-UK.html"
     active: true
     term: Creative Commons Attribution Share Alike 2.0 England and Wales
     licenseId: CC-BY-SA-2.0-UK
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: "Jurisdiction port (England and Wales); CC stopped producing ports at 4.0. Era-plausible for VW-AIRGRID (2011-12) only. Steer to CC-BY-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-SA-2.1-JP.html"
     active: true
     term: Creative Commons Attribution Share Alike 2.1 Japan
     licenseId: CC-BY-SA-2.1-JP
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: "Jurisdiction port (Japan); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-SA-2.5.html"
     active: true
     term: Creative Commons Attribution Share Alike 2.5 Generic
     licenseId: CC-BY-SA-2.5
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-SA-3.0.html"
     active: true
     term: Creative Commons Attribution Share Alike 3.0 Unported
     licenseId: CC-BY-SA-3.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: "Superseded generic/unported version; the current equivalent is CC-BY-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-SA-3.0-AT.html"
     active: true
     term: Creative Commons Attribution Share Alike 3.0 Austria
     licenseId: CC-BY-SA-3.0-AT
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: "Jurisdiction port (Austria); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-SA-3.0-DE.html"
     active: true
     term: Creative Commons Attribution Share Alike 3.0 Germany
     licenseId: CC-BY-SA-3.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: "Jurisdiction port (Germany); CC stopped producing ports at 4.0. Scores 0 for all 15 pathfinders — no pathfinder is based there. Steer to CC-BY-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC-BY-SA-3.0-IGO.html"
     active: true
@@ -864,6 +1026,8 @@ terms:
     active: true
     term: Creative Commons Attribution Share Alike 4.0 International
     licenseId: CC-BY-SA-4.0
+    recommended: true
+    note: "Curated picklist. CC 4.0 family. Scores for MF-SGSAH and the Music & Sound cluster."
   -
     id: "https://spdx.org/licenses/CC-PDDC.html"
     active: true
@@ -879,11 +1043,15 @@ terms:
     active: true
     term: Creative Commons Share Alike 1.0 Generic
     licenseId: CC-SA-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: "Retired by Creative Commons itself; never part of the versioned families. Scores 0 for all 15 pathfinders. Steer to CC-BY-SA-4.0."
   -
     id: "https://spdx.org/licenses/CC0-1.0.html"
     active: true
     term: Creative Commons Zero v1.0 Universal
     licenseId: CC0-1.0
+    recommended: true
+    note: "Curated picklist. Public domain dedication; scores 3 for MF-SGSAH, 2 for the Performance & Live Art cluster."
   -
     id: "https://spdx.org/licenses/CDDL-1.0.html"
     active: true
@@ -2679,6 +2847,8 @@ terms:
     active: true
     term: Open Government Licence v3.0
     licenseId: OGL-UK-3.0
+    recommended: true
+    note: "Curated picklist. Needed by local-authority and national-museum partners (MF-SGSAH 3, JO-ODDKIN/JO-TODD 2, WM-PRIM 2)."
   -
     id: "https://spdx.org/licenses/OGTSL.html"
     active: true

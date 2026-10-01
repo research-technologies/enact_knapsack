@@ -15,17 +15,29 @@ terms:
     term: Physical Object - Building
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#instrument
     term: Physical Object - Instrument
+  - id: http://vocab.getty.edu/page/aat/300041273
+    term: Physical Object - LimitedEditionPrint
+    file_suffixes: [pdf, tif, tiff, jpg, jpeg, png]
+    note: Fine-art or limited-edition print as an editioned object — risograph, letterpress, screenprint, lithograph, etching. AAT "prints (visual works)". Evidence — VW-AIRGRID's The Demonstrators (ISBN 9780955886836), risograph, printed by Bolt Editions; MF-SGSAH by breadth (GSA, ECA and DCA all run print studios). Use for the printed object itself; Design - LayoutDesign describes only the page layout.
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#audiovisual
     term: Audiovisual
   - id: https://vocabularies.coar-repositories.org/resource_types/c_c513/
     term: Visual Media
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#image
     term: Image
+    active: false
+    note: Deprecated in favour of Visual Media - StillImage. The two are the same concept from two authorities (DataCite "A visual representation other than text" versus COAR c_ecc8) and scored identically across the cohort — 56/75, 12 of 15 pathfinders, 8 of 8 disciplines each. COAR wins because the whole rest of this file hangs off the COAR Visual Media hierarchy and all six still-image children are parented on it. Retained, never deleted, because existing deposits may already carry this id; DataCite Image stays the crosswalk target on export.
   - id: https://vocabularies.coar-repositories.org/resource_types/c_ecc8/
     term: Visual Media - StillImage
+    note: Canonical still-image term, kept in preference to the deprecated DataCite Image. Parent of the still-image children below. Evidence — 56/75, 12 of 15 pathfinders, 8 of 8 disciplines.
   - id: https://schema.org/Drawing
     term: Visual Media - StillImage - Drawing
     file_suffixes: [jpg, jpeg, png, tiff, tif, svg, pdf]
+    note: Freehand or artistic drawing — sketches, studies, working doodles. Evidence — VH-STAIR's "Scans of doodles and thoughts (.pdf)". For measured drawings made to conventions of scale and projection use Visual Media - StillImage - TechnicalDrawing instead.
+  - id: http://vocab.getty.edu/page/aat/300034789
+    term: Visual Media - StillImage - TechnicalDrawing
+    file_suffixes: [pdf, dwg, dxf, svg, tiff, tif, jpg, jpeg, png]
+    note: Measured architectural or technical drawing following precise conventions of scale and projection — plans, sections, elevations, orthographic projections, perspectives, schedules. AAT "technical drawings" (300034789). Evidence — VW-AIRGRID's 1-to-50 scaled orthographic ground-floor plan (1 of a set of 7), sections AA and BB, perspective views and sewing schedules; WM-PRIM's competition drawings. Added because these previously shared schema.org/Drawing with VH-STAIR's scanned doodles.
   - id: https://schema.org/Painting
     term: Visual Media - StillImage - Painting
     file_suffixes: [jpg, jpeg, png, tiff, tif]
@@ -62,6 +74,7 @@ terms:
   - id: https://schema.org/MusicComposition
     term: Sound - MusicComposition
     file_suffixes: [xml, mxl, mid, midi, pdf]
+    note: Names the musical WORK, not the carrier it is transmitted on. A deposited score is Musical notation in literature_type (COAR c_18cw); the two records are joined by the realisation relationship rather than by duplicating a notation term here — see the cross-cutting decision in Section 5 of the artefact_type relevance report. Evidence — SM-FORK's Strata, paired score (.pdf) plus performance recording, and roughly nine further pairs; also AC-SONGS and SZT-C21MP.
   - id: https://schema.org/MusicRecording
     term: Sound - MusicRecording
     file_suffixes: [mp3, wav, flac, aac, m4a, ogg]
@@ -89,6 +102,7 @@ terms:
     term: ComputationalNotebook
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#model
     term: Model
+    note: Covers digital and 3D models. DataCite defines Model as a graphical or visualisation model representing empirical objects, phenomena or physical processes, which reaches VW-AIRGRID's hybrid 2D/3D digital environment (.mcd) and WM-PRIM's competition models without a further term. No separate 3D-model term was added, deliberately, to keep the picklist readable in one screen. For a physical presentation or study model deposited as an object use Physical Object; for the drawings that accompany it use Visual Media - StillImage - TechnicalDrawing.
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#service
     term: Service
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#software
@@ -113,6 +127,7 @@ terms:
     term: Design - InteriorDesign
   - id: http://vocab.getty.edu/page/aat/300034787
     term: Design - ArchitecturalDesign
+    note: Names the architectural design work. Authority mismatch flagged for programme review, not acted on — AAT 300034787 resolves to "architectural drawings (visual works)", an object concept, not a design process; the id is left untouched per the no-id-change rule and the label per the picklist the pathfinder scoring was run against. The drawings themselves now have their own term, Visual Media - StillImage - TechnicalDrawing. Evidence — 5 for VW-AIRGRID and WM-PRIM, 4 for AC-SONGS, PC-PORTS and MF-SGSAH, 0 for both Harris films and both Osgood projects.
   - id: http://vocab.getty.edu/page/aat/300047910
     term: Design - MultimediaDesign
   - id: https://github.com/research-technologies/prvoices_schema/wiki/SoundDesign
@@ -121,10 +136,20 @@ terms:
     term: Design - ExhibitionDesign
   - id: http://vocab.getty.edu/page/aat/300054190
     term: Design - TheatreDesign
+  - id: http://vocab.getty.edu/page/aat/300054766
+    term: Exhibition
+    note: The exhibition as a realised output, distinct from Design - ExhibitionDesign, which describes the design made FOR an exhibition. AAT "exhibitions (events)". Evidence — GS-UNDER's Undercover online exhibition, opened 11 May 2021, whose whole deposit records the exhibition image files; WM-PRIM's Talbot Rice Gallery show, invitations and installation photographs; VW-AIRGRID at Par Gallery, Croydon, 4 Oct to 8 Nov 2011. Boundary — where the exhibition is the grouping principle for a set of items use collection_type Exhibition (same AAT concept); where it is a dated happening with a venue use event_type.
   - id: https://vocabularies.coar-repositories.org/resource_types/ACF7-8YT9/
     term: Dataset - AggregatedData
   - id: https://vocabularies.coar-repositories.org/resource_types/c_cb28/
     term: Dataset - ClinicalTrialData
+    active: false
+    note: Deprecated — scored 0 for all 15 pathfinders and all 8 discipline clusters. Inherited from a general-purpose research-data vocabulary and has no application in an arts and humanities practice-research repository. Retained, never deleted, in case an existing deposit carries the id. If clinical data ever arrives, use Dataset - ExperimentalData or Other.
+  - id: https://enact.ac.uk/vocab/artefact_type/communications-archive
+    term: Dataset - CommunicationsArchive
+    file_suffixes: [txt, csv, json, eml, mbox, zip, pdf]
+    source: enact
+    note: Project communications and correspondence deposited as process documentation — exported chat logs, message archives, email threads. Evidence — RH-RITUAL's Rituals for Earthly Survival WhatsApp Chat Log (.txt), recording project communications May 2024 to March 2025 and evidencing the emergence of composting and Children of the Compost as central creative ideas; ethics-approved and consented, deposited as a closed file with a public metadata record. The same shape recurs in AC-SONGS workshop transcriptions and PPP-QMUL consent forms and collaboration agreements. No COAR, DataCite or AAT term expresses it, so an Enact-local id is minted rather than an authority URI guessed.
   - id: https://vocabularies.coar-repositories.org/resource_types/FXF3-D3G7/
     term: Dataset - CompiledData
   - id: https://vocabularies.coar-repositories.org/resource_types/AM6W-6QAW/
@@ -133,6 +158,8 @@ terms:
     term: Dataset - ExperimentalData
   - id: https://vocabularies.coar-repositories.org/resource_types/A8F1-NPV9/
     term: Dataset - GenomicData
+    active: false
+    note: Deprecated — scored 0 for all 15 pathfinders and all 8 discipline clusters. Inherited from a general-purpose research-data vocabulary and has no application in an arts and humanities practice-research repository. Retained, never deleted, in case an existing deposit carries the id. If sequence data ever arrives, use Dataset - ExperimentalData or Other.
   - id: https://vocabularies.coar-repositories.org/resource_types/2H0M-X761/
     term: Dataset - GeospatialData
   - id: https://vocabularies.coar-repositories.org/resource_types/H41Y-FW7B/

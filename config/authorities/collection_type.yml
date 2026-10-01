@@ -1,6 +1,31 @@
+# collection_type.yml — the grouping vocabulary for Enact collection records.
+#
+# CROSS-REFERENCE — the Artefact / Literature boundary.
+# The Artefact / Literature split is retained on modality grounds (Artefact =
+# non-text, Literature = text based). One consequence is that a multi-component
+# practice research output routinely splits across BOTH record types
+# — RH-RITUAL's performance documentation is Artefact while the Creative
+# Practice Research Portfolio that articulates it is Literature; SM-FORK's
+# performance audio is Artefact while all ten of his scores are Literature;
+# VW-AIRGRID's foam-board artefacts are Artefact while the risograph book
+# The Demonstrators is Literature.
+# "Collection" and "Portfolio subset" are therefore where a multi-component
+# output split across the artefact and literature record types gets
+# reassembled. They are load-bearing well beyond their apparent scope, and
+# collections MUST be able to hold members of both record types — if they
+# cannot, no multi-component output in this cohort can be assembled correctly.
+# See Section 5 of reports/artefact_type_relevance.rtf and Section 4 of
+# reports/collection_type_relevance.rtf.
+#
+# Conventions in this file. Locally minted terms use bare string ids, following
+# the existing convention set by curated_set; no authority URI is invented for
+# them, and they carry source: enact. Terms no longer in use are deprecated
+# with active: false and a note — they are never deleted, because existing
+# deposits may already reference the id.
 terms:
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#collection
     term: Collection
+    note: The default grouping term and the only one reaching all 15 pathfinders at 3 or above (65/75). Use where no more specific grouping principle applies. May hold members of both the Artefact and the Literature record type — see the cross-reference in the header. Evidence — SM-FORK's .xlsx declares two named collections, Concert_pieces and Pedagogy_pieces.
   - id: http://vocab.getty.edu/page/aat/300026037
     term: Anthology
   - id: http://vocab.getty.edu/page/aat/300375748
@@ -11,10 +36,32 @@ terms:
     file_suffixes: [zip, pdf]
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.7/appendices/appendix-1/resourceTypeGeneral/#dataset
     term: Dataset
+  - id: http://vocab.getty.edu/page/aat/300054766
+    term: Exhibition
+    note: An exhibition used as the grouping principle for a set of items. Evidence — GS-UNDER's 198 images are grouped by, and only by, the online exhibition that opened on 11 May 2021; WM-PRIM groups material around the Talbot Rice Gallery show; VW-AIRGRID around Par Gallery, Croydon. Neither Collection nor Curated set records that the grouping principle was an exhibition. Same AAT concept as artefact_type Exhibition, which names the exhibition as a realised output; use event_type for the dated happening.
+  - id: master_and_derivatives
+    term: Master and derivatives
+    source: enact
+    note: One work held with its preservation master and its dissemination copies — a grouping with an internal asymmetry that Collection and Curated set both flatten. Evidence — cohort-wide (programme finding 3, files come in pairs not singletons). VW-AIRGRID's systematic .psd (shareable) plus .mcd (not shareable) pattern across roughly 30 artefacts; VH-VICT and VH-STAIR's master .mov plus compressed .mp4; WM-PRIM's .tif plus .jpg. Where the asymmetry between two individual items is what matters, prefer the relationship_types route; use this term for the group as a whole.
+  - id: multi_component_output
+    term: Multi-component output
+    source: enact
+    note: The REF practice-research shape — one output made of several declared components, described as a named whole. Portfolio subset describes the parts; this describes the thing they belong to. Evidence — PPP-QMUL folders every REF2021 output as ".1 Research Process / .2 Research Insights / .3 Time & Manner of Dissemination" and ships an "Overview of Multi-Component Output" navigation file; RH-RITUAL states "Rituals for Earthly Survival is a multi-component creative practice research output"; VW-AIRGRID declares a REF2014 portfolio of exactly three components.
   - id: http://vocab.getty.edu/page/aat/300179434
     term: Portfolio subset
+    note: One declared component of a larger output — the parts, where Multi-component output is the whole. The term practice researchers reach for unprompted, and, with Collection, one of the two places where a work split across the artefact and literature record types is reassembled; see the cross-reference in the header. Evidence — RH-RITUAL's Creative Practice Research Portfolio; VW-AIRGRID's three REF2014 components; PPP-QMUL's three-way .1/.2/.3 folder structure. 52/75, 13 of 15 pathfinders.
+  - id: project
+    term: Project
+    source: enact
+    note: A project or grant used as the grouping principle. Evidence — all 15 pathfinders group by project or grant, and Section 1 of the Enact template asks for exactly this; funder references include AH/W004518/1 (AC-SONGS), AH/Z507131/1 (JO-TODD), NLPG-00648682 (RH-RITUAL), AH/K000195/1 and AH/M010155/1 (SZT-C21MP). Collection is currently being asked to stand in for it. Minted locally because schema.org/ResearchProject is an Organization subtype and so names the body, not the grouping of outputs.
+  - id: version_group
+    term: Version group
+    source: enact
+    note: A work held together with its successive versions, and with any attached peer reviews. Collection would flatten them into siblings. Evidence — RH-RITUAL asks explicitly to "get this document peer reviewed and a second revised version uploaded, possibly even with the peer reviews for transparency", and his deposited file is already named "Rituals for Earthly Survival - PRP vr2.pdf". Programme finding 8 lists versioning plus attached peer review as a requirement.
   - id: https://schema.org/Menu
     term: Menu
+    active: false
+    note: Deprecated — scored 0 across all 15 pathfinders and all 8 discipline clusters. A schema.org restaurant term with no reading under which an arts and humanities practice-research repository needs it. Retained, never deleted, in case an existing deposit carries the id.
   - id: https://schema.org/MusicAlbum
     term: Music Album
   - id: https://schema.org/MusicPlayList
@@ -23,7 +70,12 @@ terms:
     term: Radio Season
   - id: https://schema.org/RadioSeries
     term: Radio Series
+  - id: https://schema.org/CreativeWorkSeries
+    term: Series
+    note: A serial or episodic grouping that is not broadcast — podcasts, video series, seminar and presentation series. Evidence — JO-ODDKIN's 7-episode podcast series featuring the co-creators of Making Odd Kin, currently forced into Radio Series, which is untrue and reads wrongly in a public catalogue; SZT-C21MP's monthly 20-minute video presentations from practice research PhD students, an ongoing serial that is not television. Prefer this term over Radio Series and TV Series for anything not actually broadcast.
   - id: https://schema.org/TVSeason
     term: TV Season
+    active: false
+    note: Deprecated — scored 0 across all 15 pathfinders and all 8 discipline clusters. For a non-broadcast serial use Series. Retained, never deleted, in case an existing deposit carries the id.
   - id: https://schema.org/TVSeries
     term: TV Series
