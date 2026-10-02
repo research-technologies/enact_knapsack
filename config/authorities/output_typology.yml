@@ -1,0 +1,96 @@
+# Four-layer output typology for the `typology` field. This is the field that
+# carries the validity claim — "this is a practice research output, not
+# commentary about one". It does NOT live on the artefact_type / literature_type
+# split: that split is retained on modality grounds (text-borne vs object-borne),
+# because modality predicts formats, accessibility and preservation, and it
+# cannot also carry status. Do not duplicate terms across artefact_type and
+# literature_type to solve status problems; that is what this field is for.
+#
+# The programme audit found these four layers hold across all 15 pathfinder
+# submissions with no item falling outside them.
+#
+# DEPOSITOR-DECLARED, NEVER SYSTEM-INFERRED. Where the audit inferred type from
+# folder names or filenames the result is provisional, and that inference is the
+# main source of the ~10% "Uncategorised" bucket. Where the depositor's own
+# "What is this?" field named the item, that label is authoritative and wins.
+# The picklist must therefore be presented to the depositor, not derived behind
+# them.
+#
+# MANDATORY, AND AS VISIBLE AS THE TYPE LABEL. This field is what answers a
+# viewer's "what am I looking at?" — it is the first thing a reader needs and it
+# powers the portfolio-level site map. PPP-QMUL already ships this layer by hand
+# ("Instructions for navigating the digital archive", "Overview of
+# Multi-Component Output", "Contents", and a flow-chart); the field makes it
+# structural rather than hand-built.
+#
+# THE PROCESS / FINAL OUTPUT BOUNDARY GENUINELY BLURS and must be confirmed by
+# the depositor rather than guessed. Three documented hard cases are recorded in
+# the notes below. Working rule where a call has to be made: the creative
+# artefact that constitutes the research output = Final output; the material
+# generated in making or evidencing it = Process.
+#
+# Enact-local ids (no external authority defines this typology), per the scheme
+# https://enact.ac.uk/vocab/<config-basename>/<kebab-slug>; all four are
+# source: enact.
+terms:
+  - id: https://enact.ac.uk/vocab/output_typology/metadata
+    term: Metadata
+    source: enact
+    note: >-
+      Material that identifies, describes or gives access to the output rather
+      than constituting it. Research statement; descriptive and accessibility
+      transcripts; links to external catalogues; DOIs; the navigation/site-map
+      layer; the deposit record itself. Evidence: RH-RITUAL's 300-word research
+      statement; GS-UNDER's pointer to the WMA AtoM catalogue as the
+      authoritative object-level record; RH-RITUAL's three Zenodo DOIs;
+      PPP-QMUL's "Instructions for navigating the digital archive" and
+      "Contents"; VW-AIRGRID's portfolio text.
+  - id: https://enact.ac.uk/vocab/output_typology/process
+    term: Process
+    source: enact
+    note: >-
+      Material generated in making or evidencing the output. Script drafts and
+      annotated scripts; graphics and doodles; kit lists; photo documentation;
+      self-tapes and rehearsal footage; datasets and observational data;
+      workshop transcriptions; development notes; chat logs. Evidence: VH-STAIR
+      deposits "Script Draft (.docx)" beside the final "Script (.pdf)", plus the
+      kit list, scans of doodles and thoughts, and production stills;
+      RH-RITUAL's WhatsApp chat log; PPP-QMUL folder ".1 Research Process".
+      Practice research deliberately RETAINS superseded drafts as process
+      evidence — this layer is why, and it is why nothing here should ever be
+      marked obsolete.
+  - id: https://enact.ac.uk/vocab/output_typology/final-output
+    term: Final output
+    source: enact
+    note: >-
+      The creative artefact that constitutes the research output. Film, master
+      film, screendance, score, composition, performance audio, model, artefact,
+      online exhibition, animation, song. Evidence: VH-STAIR's film; SM-FORK's
+      scores and performance recordings; GS-UNDER's online exhibition;
+      VW-AIRGRID's lattice artefacts; JO-ODDKIN's animation; AC-SONGS's songs;
+      PPP-QMUL folder ".2 Research Insights". HARD CASES, all requiring
+      depositor confirmation — (a) "Research Insights": analytical findings
+      (arguably Metadata or Related) or creative outcome? PPP-QMUL's own heading
+      does not settle it. (b) Documentation of a performance: the performance is
+      the Final output, but in practice research the documentation may itself BE
+      the deposited output — VH-STAIR's film IS the output, while his production
+      stills are Process. The same deposit therefore points both ways. (c) A
+      published write-up straddles Final output and Related outputs.
+  - id: https://enact.ac.uk/vocab/output_typology/related-outputs
+    term: Related outputs
+    source: enact
+    note: >-
+      Dissemination, reception and reporting around the output. Presentations;
+      festival certificates and programmes; exhibition invitations and reviews;
+      published papers; abstract books; annual reports; podcasts. Evidence:
+      VH-STAIR's Screenworks journal article with video (DOI
+      10.37186/swrks/15.1/11); JO-ODDKIN's 7-episode podcast series; GS-UNDER's
+      exhibition material; PPP-QMUL folder ".3 Time & Manner of Dissemination".
+      See hard case (c) on Final output: a published write-up straddles the two,
+      and the depositor decides.
+# PPP-QMUL's own REF2021 folder scheme maps onto three of these four layers:
+#   .1 Research Process             -> Process
+#   .2 Research Insights            -> Final output   (see hard case (a))
+#   .3 Time & Manner of Dissemination -> Related outputs
+# Those are the depositor's headings, not ours — which is the point: the
+# typology was already there, undeclared, in the submissions themselves.

@@ -1,0 +1,86 @@
+# Rights status vocabulary, read via Enact::RightsStatusService. NEW config
+# (2026-08), derived from the 15-pathfinder relevance audit — see
+# reports/licenses_relevance.rtf §4.3.
+#
+# WHY THIS EXISTS. A licence answers "what may a reuser do with this?".
+# These terms answer "what is the rights position of this deposit?", which is
+# a different question, and is why the licence field keeps coming back blank.
+# Eight rights states appear verbatim in the pathfinder submissions. SPDX
+# expresses none of them: they are the states a work is in *before*, *instead
+# of*, or *alongside* a licence.
+#
+# COMPOSES WITH `licenses`, DOES NOT REPLACE IT. `rights_status` is REQUIRED
+# and actively prompted at deposit; `licenses` is answered when — and only
+# when — a licence has actually been granted. The two are orthogonal and a
+# deposit may carry both: CC-BY-NC-ND-4.0 AND `third_party_ip_present` is a
+# normal, correct combination (a licence over the parts you hold, a clearance
+# flag over the parts you do not). Multiple rights_status terms may apply to
+# one deposit; PPP-QMUL carries five of the eight at once.
+#
+# IT MUST REPLACE THE FREE-TEXT RIGHTS BOX, NOT SIT BESIDE IT. AC-SONGS wrote
+# "Creative Commons License", unversioned — a string that 55 distinct SPDX ids
+# would satisfy and none of them decidably. Free text will always produce
+# unresolvable answers here.
+#
+# BLANK IS NOT OPEN. `rights_undetermined` is the resolution of an empty
+# field, and it is explicitly NOT "openly licensed". It must be a chosen
+# answer with a review date attached, not the absence of an answer.
+#
+# GDPR IS A LAWFUL BASIS, NOT A LICENCE. PPP-QMUL processes personal data
+# under GDPR Art 6(1)(e) (public task) and Art 9(2)(j) (archiving/research in
+# the public interest). Those are grounds for processing, not permissions to
+# reuse, and belong in a separate processing-basis field — do not model them
+# as a rights status or as a licence.
+#
+# RIGHTS STATUS VARIES PER VERSION, AND PER FILE. RH-RITUAL asked for
+# versioned deposit with peer reviews attached, so rights status must be
+# recordable per version of a work, not once per work. It must also attach
+# per file: VW-AIRGRID's paired .psd (shareable) and .mcd (not), and the
+# cohort-wide master/dissemination split, put two rights states inside one
+# deposit.
+#
+# IDS follow the Enact-local scheme documented in CHANGESPEC.md rule 4:
+# https://enact.ac.uk/vocab/rights_status/<kebab-slug>, `source: enact`. No
+# external authority is asserted for these terms because none carries them —
+# that absence is the finding, not an omission.
+terms:
+  - id: https://enact.ac.uk/vocab/rights_status/all-rights-reserved
+    term: All rights reserved — no reuse licence granted
+    source: enact
+    note: "Copyright asserted, no reuse permission granted. The commonest rights state in the cohort and SPDX has no identifier for it. JO-ODDKIN wrote '© Middlesex University, 2024. All rights reserved.'; VH-STAIR and VH-VICT wrote '© Vron Harris'; WM-PRIM's Architectural Design article sits under Wiley publisher terms."
+  - id: https://enact.ac.uk/vocab/rights_status/rights-undetermined
+    term: Rights undetermined — not yet cleared
+    source: enact
+    default_for_blank: true
+    note: "Rights not yet cleared or decided. THE DEFAULT RESOLUTION OF A BLANK LICENCE FIELD, and explicitly NOT 'open'. JO-ODDKIN and JO-TODD wrote 'Licence TBC'; VH-STAIR and VH-VICT wrote 'Reuse License TBC'; RH-RITUAL wrote 'n/a'; programme-wide the WestminsterResearch CRIS licence field is empty across all portfolio, performance, exhibition and artefact records. Requires a review date so the state can be reported on and chased."
+  - id: https://enact.ac.uk/vocab/rights_status/closed-file-public-metadata
+    term: Closed file with public metadata record
+    source: enact
+    note: "File withheld, metadata record public and citable. File-level access control is orthogonal to licence and cannot be encoded as one. Requested independently by RH-RITUAL (consented WhatsApp chat log, personal data, ethics-approved), GS-UNDER (198 images, uncleared third-party IP) and MDX (items closed pending access-control clarity)."
+  - id: https://enact.ac.uk/vocab/rights_status/third-party-ip-present
+    term: Third-party IP present — clearance required
+    source: enact
+    note: "Depositor does not hold all the rights they would need in order to grant a licence. GS-UNDER: 52 face coverings carrying Adidas, Balenciaga, BoohooMAN, Burberry, C.P. Company, Louis Vuitton, Off-White, Paul Smith, Rick Owens, Vivienne Westwood and 23 more brands. WM-PRIM: the OECD report and the Wiley magazine article. Composes with a licence over the parts the depositor does hold."
+  - id: https://enact.ac.uk/vocab/rights_status/non-commercial-per-agreement
+    term: Non-commercial only per collaboration agreement
+    source: enact
+    note: "Non-commercial restriction imposed by contract, not by licence. PPP-QMUL under the OLA 2020 collaboration agreement, MRC-funded. CC-BY-NC-* approximates the effect but not the provenance: this binds the DEPOSITOR by contract rather than the reuser by licence, and it survives any later change of licence — which is precisely why it cannot be an SPDX term. SPDX's only three non-CC non-commercial licences (NCGL-UK-2.0, PolyForm-Noncommercial-1.0.0, NPOSL-3.0) are all wrong for films and photographs."
+  - id: https://enact.ac.uk/vocab/rights_status/consent-based-withdrawable
+    term: Consent-based — participant may withdraw
+    source: enact
+    note: "Permission rests on participant consent and is revocable. Directly at odds with Creative Commons licences, which are irrevocable by design — so this is not merely unexpressed by SPDX, it is in tension with the whole CC model, and needs a separate revocable-permission field. PPP-QMUL's Image & Audio Consent Form carries an explicit right to withdraw; PC-PORTS deposits recorded oral-history interviews; NM-VOICES works with memory, migration and trauma testimony; RH-RITUAL's chat log is consented personal data."
+  - id: https://enact.ac.uk/vocab/rights_status/embargoed-until-date
+    term: Embargoed until a date
+    source: enact
+    requires: embargo_end_date
+    note: "Release withheld until a fixed calendar date. PPP-QMUL's confidentiality obligations survive 3 to 5 years from the end of the agreement. Pairs with an embargo_end_date value that a system can compute against."
+  - id: https://enact.ac.uk/vocab/rights_status/embargoed-until-event
+    term: Embargoed until an event
+    source: enact
+    requires: embargo_trigger_event
+    note: "Release withheld until a named event occurs. PPP-QMUL: publication embargo until the Lead's Primary Publication. There is no date to compute against, so a date-picker alone will not do — this needs a free-text trigger and a manual release step. Modelled separately from embargoed-until-date for exactly that reason."
+  - id: https://enact.ac.uk/vocab/rights_status/communal-indigenous-knowledge
+    term: Communal / Indigenous knowledge — community consent required
+    source: enact
+    see_also: https://localcontexts.org/
+    note: "Rights held communally; reuse requires community consent, not individual copyright licensing. PPP-QMUL's communal-knowledge consent clause, covering the Kamukuwaká cave replica work with AIKAX, Museu do Índio and Xingu partners in Brazil. This term is a placeholder for a proper implementation: the correct instrument is Local Contexts Traditional Knowledge (TK) and Biocultural (BC) Labels, applied by the community itself, which SPDX does not carry and is unlikely ever to. see_also verified as resolving 2026-08."

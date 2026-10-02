@@ -1,7 +1,11 @@
 # DataCite relationType vocabulary for the `relationships` compound, read via
-# Enact::RelationshipTypesService. Non-QA keys: `inverse:` (how the edge reads
-# from the target's side; a symmetric term points at itself) and optional
-# `color:` (map edge colour; uncoloured terms share a neutral fallback).
+# Enact::RelationshipTypesService, plus a small set of Enact-local extensions
+# (`source: enact`) for edges DataCite cannot express. Non-QA keys: `inverse:`
+# (how the edge reads from the target's side; a symmetric term points at itself)
+# and optional `color:` (map edge colour; uncoloured terms share a neutral
+# fallback). Enact-local terms carry no `datacite:` key — on DataCite export
+# they fall back to `Other` plus the free-text `type_other` /
+# `type_other_inverse` subproperties.
 terms:
   - id: iscitedby
     term: Is Cited By
@@ -42,41 +46,79 @@ terms:
     source: datacite
     datacite: Describes
     inverse: isdescribedby
+    color: '#a3c43a'
+    note: >-
+      Colour added — ranked 3rd in the vocabulary (53/75, 15/15 pathfinders) yet
+      previously drew the neutral fallback. RH-RITUAL's PRP "includes a project
+      summary, 300-word research statement, theoretical context, timeline";
+      VW-AIRGRID's portfolio text gives "Abstract, context, general
+      description".
   - id: isdescribedby
     term: Is Described By
     source: datacite
     datacite: IsDescribedBy
     inverse: describes
+    color: '#a3c43a'
+    note: >-
+      Colour added, matching `describes` (rank 11, 46/75, 11/15). GS-UNDER: "the
+      repository record should therefore link to the WMA catalogue as the
+      authoritative object-level record".
   - id: hasmetadata
     term: Has Metadata
     source: datacite
     datacite: HasMetadata
     inverse: ismetadatafor
+    note: >-
+      Scope note only, no change to the term. System-set rather than
+      depositor-facing: offer it in the deposit picklist only behind an advanced
+      disclosure. Its inverse `ismetadatafor` scores 3/15 and is near-unusable
+      in the depositor-facing direction.
   - id: ismetadatafor
     term: Is Metadata For
     source: datacite
     datacite: IsMetadataFor
     inverse: hasmetadata
+    note: >-
+      Scope note only, no change to the term. Should be system-set, not offered
+      in the depositor picklist — 27/75 across only 3/15 pathfinders, the
+      narrowest breadth of any live term.
   - id: hasversion
     term: Has Version
     source: datacite
     datacite: HasVersion
     inverse: isversionof
+    color: '#4040c4'
+    note: >-
+      Colour added; one hue for the whole version family. Versioning was
+      previously invisible on the map despite being RH-RITUAL's explicit ask —
+      "I would like to be able to get this document peer reviewed and a second
+      revised version uploaded". SM-FORK ships "Loading Study 1 - v2.pdf".
   - id: isversionof
     term: Is Version Of
     source: datacite
     datacite: IsVersionOf
     inverse: hasversion
+    color: '#4040c4'
+    note: Colour added — version family hue. See `hasversion`.
   - id: isnewversionof
     term: Is New Version Of
     source: datacite
     datacite: IsNewVersionOf
     inverse: ispreviousversionof
+    color: '#4040c4'
+    note: >-
+      Colour added — version family hue. RH-RITUAL's file on disk is literally
+      named "Rituals for Earthly Survival - PRP vr2.pdf" (scores 5 for
+      RH-RITUAL).
   - id: ispreviousversionof
     term: Is Previous Version Of
     source: datacite
     datacite: IsPreviousVersionOf
     inverse: isnewversionof
+    color: '#4040c4'
+    note: >-
+      Colour added — version family hue. Note this is the correct term for a
+      superseded draft retained as process evidence; `obsoletes` is not.
   - id: ispartof
     term: Is Part Of
     source: datacite
@@ -131,12 +173,24 @@ terms:
     datacite: IsVariantFormOf
     inverse: isoriginalformof
     color: '#b05ec0'
+    note: >-
+      Scope note only, no change to the term. DataCite scopes this to "a variant
+      or different form... e.g. calculated or calibrated form, or different
+      packaging" — i.e. a data-processing relation. Mastering and encoding
+      variants (VH-VICT's "28 VictoryAndShameMaster.mov" against "29
+      VictoryAndShameVimeo.mp4"; WM-PRIM's .tif/.jpg; PPP-QMUL's .mov/.mp4)
+      should use the reinstated symmetric `pair-with` instead, because neither
+      file is subordinate to the other.
   - id: isoriginalformof
     term: Is Original Form Of
     source: datacite
     datacite: IsOriginalFormOf
     inverse: isvariantformof
     color: '#b05ec0'
+    note: >-
+      Scope note only, no change to the term. As `isvariantformof`: DataCite
+      scopes this pair to calculated/calibrated forms and packaging, not to
+      mastering or encoding. Prefer `pair-with` for master/dissemination pairs.
   - id: isidenticalto
     term: Is Identical To
     source: datacite
@@ -147,11 +201,18 @@ terms:
     source: datacite
     datacite: IsReviewedBy
     inverse: reviews
+    color: '#40964a'
+    note: >-
+      Colour added (43/75, 9/15). RH-RITUAL asked for exactly this: peer reviews
+      published alongside the revised version, "possibly even with the peer
+      reviews for transparency". Also scores 4 for SZT-C21MP and MF-SGSAH.
   - id: reviews
     term: Reviews
     source: datacite
     datacite: Reviews
     inverse: isreviewedby
+    color: '#40964a'
+    note: Colour added, matching `isreviewedby`. See RH-RITUAL evidence there.
   - id: isderivedfrom
     term: Is Derived From
     source: datacite
@@ -169,54 +230,138 @@ terms:
     source: datacite
     datacite: IsRequiredBy
     inverse: requires
+    note: >-
+      Watch-list only — NOT deprecated. Weak (19/75) and semantically a
+      software-dependency relation, but there are honest instances: PPP-QMUL's
+      index.html requiring its CSS, SM-FORK's web app requiring its audio
+      corpus, VW-AIRGRID's .mcd files requiring Vectorworks. Consider an
+      advanced disclosure rather than removal; review after first live cohort.
   - id: requires
     term: Requires
     source: datacite
     datacite: Requires
     inverse: isrequiredby
+    note: >-
+      Watch-list only — NOT deprecated. See `isrequiredby`. Retained because the
+      three evidenced instances are genuine dependencies, not workarounds.
   - id: obsoletes
     term: Obsoletes
     source: datacite
     datacite: Obsoletes
     inverse: isobsoletedby
+    note: >-
+      Scope note only, no change to the term. Counter-doctrinal in practice
+      research, which deliberately RETAINS superseded drafts as process
+      evidence: VH-STAIR deposits the "Script Draft (.docx)" beside the final
+      "Script (.pdf)", plus scans of doodles and thoughts. Superseded-ness here
+      is a typology question (output_typology.yml -> Process) and a versioning
+      question (`ispreviousversionof`), not an obsolescence one. Marking
+      anything obsolete would destroy what the four-layer typology exists to
+      preserve. Hide behind an advanced disclosure.
   - id: isobsoletedby
     term: Is Obsoleted By
     source: datacite
     datacite: IsObsoletedBy
     inverse: obsoletes
+    note: >-
+      Scope note only, no change to the term. See `obsoletes` — use the
+      typology's Process layer and the version family instead. Hide behind an
+      advanced disclosure.
   - id: iscollectedby
     term: Is Collected By
     source: datacite
     datacite: IsCollectedBy
     inverse: collects
+    color: '#45c445'
+    note: Colour added, matching `collects` (44/75, 11/15, 8/8 disciplines).
   - id: collects
     term: Collects
     source: datacite
     datacite: Collects
     inverse: iscollectedby
+    color: '#45c445'
+    note: >-
+      Colour added — reaches all 8 disciplines. SM-FORK declares two named
+      collections, "Concert_pieces" and "Pedagogy_pieces"; GS-UNDER's exhibition
+      collects "52 unique face covers arranged in chronological order".
+  # Enact-local extension. DataCite has no term meaning "B is a realisation of
+  # A": the headline gap in this vocabulary. `isderivedfrom` is wrong (a
+  # performance is an instance of a score, not a derivative work of it);
+  # `isvariantformof` is wrong (different medium, not different packaging);
+  # `haspart` is wrong (neither contains the other); `documents` is wrong (the
+  # video documents a *performance* of the score, not the score). One-to-many by
+  # design. Carries no `datacite:` key — exports as `Other` + `type_other`.
+  - id: is-realisation-of
+    term: Is Realisation Of
+    source: enact
+    inverse: has-realisation
+    color: '#c43f7d'
+    note: >-
+      Score-to-performance and script-to-film. SM-FORK pairs strata_score.pdf
+      with strata run-4_end-9.mp4, fringing_score.pdf with Fringing hcmf2021.mp4
+      and "Loading Study 1 - v2.pdf" with "loading study 1 v1 heather.mp3";
+      one-to-many, since he holds a bank of 7 starts and 10 ends. Also serves
+      VH-STAIR's scripts to films, and any notated or scripted object preceding
+      an event. Recurs across the whole Music & Sound cluster and by extension
+      every performance discipline.
+  - id: has-realisation
+    term: Has Realisation
+    source: enact
+    inverse: is-realisation-of
+    color: '#c43f7d'
+    note: >-
+      Inverse of `is-realisation-of`: read from the notated or scripted object
+      towards the event. One-to-many — SM-FORK's strata_score.pdf has many
+      recorded realisations.
   # Free-text escape hatch, mirroring the `other` role in contributor_roles.yml:
   # selecting "Other" pairs with the sibling `type_other` (+ `type_other_inverse`)
   # free-text subproperties. `inverse: other` is the symmetric fallback used when
-  # no `type_other_inverse` is supplied.
+  # no `type_other_inverse` is supplied. Deliberately left on the neutral map
+  # colour: an unnamed edge should not claim a semantic family.
   - id: other
     term: Other
     source: datacite
     datacite: Other
     inverse: other
-  # Legacy pre-DataCite vocabulary: hidden from the deposit dropdown but still
-  # resolvable, so edges stored before the switch keep working. (Legacy
-  # `documents` shares its id with the DataCite term above.) Remove once no
-  # tenant data uses them.
+  # Pre-DataCite vocabulary, retained so edges stored before the switch keep
+  # working. (Legacy `documents` shares its id with the DataCite term above.)
+  #
+  # THREE OF THESE HAVE BEEN DELIBERATELY REINSTATED as active Enact-local
+  # extensions — `sequence`/`sequence-of`, `pair-with` and `juxtaposed-with` —
+  # because the relevance review found they fit this cohort better than anything
+  # live in DataCite. They are no longer legacy and MUST NOT be re-retired or
+  # removed in a future tidy-up; see the note on each. Each has also been given
+  # its own hue, so a reinstated edge is now distinguishable from a live
+  # DataCite edge on the map (previously every legacy term reused a live term's
+  # colour).
+  #
+  # The four still marked `active: false` below are pure redundancy and may be
+  # dropped once no tenant data uses them: `source-of` and `derived-from`
+  # duplicate the live `issourceof` / `isderivedfrom` exactly, and
+  # `referenced-by` duplicates `isreferencedby`.
   - id: sequence
     term: Sequence
+    source: enact
     inverse: sequence-of
-    color: '#5b9bd5'
-    active: false
+    color: '#2f5aae'
+    active: true
+    note: >-
+      REINSTATED — do not re-retire. Ordered succession, which is neither
+      `continues` (project succession) nor `haspart` (containment): VH-STAIR's
+      Parts One/Two/Three, PPP-QMUL's .1/.2/.3 folder sequence, JO-ODDKIN's
+      7-episode podcast series, GS-UNDER's 52 face covers "arranged in
+      chronological order". Scored 42/75 across 9/15 pathfinders while
+      unreachable from the dropdown. Given its own deep blue, distinct from the
+      `continues` family blue it previously reused.
   - id: sequence-of
     term: Sequence Of
+    source: enact
     inverse: sequence
-    color: '#5b9bd5'
-    active: false
+    color: '#2f5aae'
+    active: true
+    note: >-
+      REINSTATED — do not re-retire. Inverse of `sequence`; see the evidence
+      there. Own hue, no longer reusing the `continues` blue.
   - id: source-of
     term: Source Of
     inverse: derived-from
@@ -229,9 +374,21 @@ terms:
     active: false
   - id: pair-with
     term: Pair With
+    source: enact
     inverse: pair-with
-    color: '#b05ec0'
-    active: false
+    color: '#6ecfab'
+    active: true
+    note: >-
+      REINSTATED — do not re-retire. The symmetric pairing DataCite lacks, and
+      the right shape for it: neither file is subordinate, unlike the directional
+      `isvariantformof` / `isoriginalformof`. Scored 53/75 across 12 of 15
+      pathfinders while hidden from the dropdown — 8th in the whole vocabulary.
+      Exactly the master/dissemination case: VH-VICT's "28
+      VictoryAndShameMaster.mov" against "29 VictoryAndShameVimeo.mp4";
+      VW-AIRGRID's ~30 .psd/.mcd pairs; WM-PRIM's .tif/.jpg; PPP-QMUL's
+      .mov/.mp4 across 2,295 files. Programme finding #3, "files come in pairs,
+      not singletons". Given its own mint hue, no longer reusing the
+      `isvariantformof` purple.
   - id: response-to
     term: Response To
     inverse: referenced-by
@@ -244,6 +401,15 @@ terms:
     active: false
   - id: juxtaposed-with
     term: Juxtaposed With
+    source: enact
     inverse: juxtaposed-with
-    color: '#c2a83e'
-    active: false
+    color: '#c57792'
+    active: true
+    note: >-
+      REINSTATED — do not re-retire. Curatorial adjacency: things placed beside
+      one another for comparison, with no derivation, containment or sequence
+      claim. GS-UNDER's 52 face coverings "arranged in chronological order" for
+      comparison; VW-AIRGRID's exhibited artefact series; SM-FORK's "web
+      application that randomly pairs recordings". Symmetric, like `pair-with`,
+      but curatorial rather than technical. Given its own dusty rose, no longer
+      reusing the `haspart` gold.

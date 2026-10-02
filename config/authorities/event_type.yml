@@ -3,12 +3,20 @@ terms:
     term: Event
   - id: http://publications.europa.eu/resource/authority/public-event-type/COMPETITION_AWARD_CEREMONY
     term: Award Ceremony
+    note: Scope — the ceremony at which a prize or shortlisting is conferred. The EU term COMPETITION_AWARD_CEREMONY conflates the competition with the ceremony; for the competition or open call itself use Competition / open call. Evidence VH-VICT INEFF 24/7 Filmmaking Competition (the competition) and shortlisting for Special Achievement in Experimental Fiction Filmmaking (the ceremony), VH-STAIR BAFTSS Practice Research Awards 2026 Runner Up.
   - id: https://schema.org/ChildrensEvent
     term: Childrens Event
   - id: http://publications.europa.eu/resource/authority/public-event-type/CONFERENCE_SUMMIT
     term: Conference
   - id: https://schema.org/ComedyEvent
     term: Comedy Event
+  - id: http://vocab.getty.edu/page/aat/300054760
+    term: Competition / open call
+    note: Competition, open call or juried submission process, as distinct from the ceremony at which the result is announced — see Award Ceremony. Evidence VH-VICT INEFF 24/7 Filmmaking Competition.
+  - id: https://enact.ac.uk/vocab/event_type/continuing-professional-development
+    term: Continuing professional development (CPD)
+    source: enact
+    note: Sector training or professional-development session delivered to practitioners, as distinct from a research Workshop. Evidence JO-ODDKIN CPD with Barnet Reception teachers, phases 1-3.
   - id: https://schema.org/DanceEvent
     term: Dance Event
   - id: https://github.com/research-technologies/prvoices_schema/wiki/DesignCharrette
@@ -18,33 +26,74 @@ terms:
     file_suffixes: [pdf, jpg, jpeg, png]
   - id: https://schema.org/Festival
     term: Festival
+    note: Scope — general festival. For a juried or curated film festival with selection, certificates and competition strands use Film festival. Evidence RH-RITUAL We Shine Portsmouth Nov 2024 (general) against VH-STAIR Boreal Screendance Festival 2024 and VH-VICT INEFF Festival 2025 (film).
+  - id: http://vocab.getty.edu/page/aat/300263838
+    term: Film festival
+    note: Juried or curated film festival, where selection and certification carry the esteem. Evidence VH-STAIR Boreal Screendance Festival 2024 certificate and programme, VH-VICT INEFF Festival 2025.
   - id: https://schema.org/FoodEvent
     term: Food Event
+    active: false
+    note: Deprecated for the Enact profile — scored zero against all 15 pathfinders. Retained because existing deposits may reference the id. Use Event or Social Event instead.
   - id: https://schema.org/Hackathon
     term: Hackathon
+  - id: https://enact.ac.uk/vocab/event_type/keynote
+    term: Keynote
+    source: enact
+    note: Invited keynote address, distinct from Lecture because the invitation is the esteem signal recorded in A&H CVs. Evidence JO-ODDKIN circa 8 invited keynotes (Oslo Montessori, SJIEC Australia, Lady Gowrie, NORBARN/NORCHILD, Germany 2024 and 2025, Educational Studies).
+  - id: https://enact.ac.uk/vocab/event_type/launch-event
+    term: Launch event
+    source: enact
+    note: Public launch of a project, work, building or programme. Social Event was the only previous fallback and is plainly wrong. Evidence RH-RITUAL project launch, WM-PRIM student workshop led to launch the new school.
   - id: http://vocab.getty.edu/page/aat/300026673
     term: Lecture
+    note: Scope — the occasion at which a lecture is delivered, with date, venue and audience. For the text of a lecture (script, paper or transcript) deposited as an output see literature_type Lecture, COAR c_8544. Both senses are in live use in this cohort; neither term is deprecated. For an invited keynote use Keynote. Evidence JO-ODDKIN Northern Nursery Public Lecture Sydney, WM-PRIM lecture / conversation between Fiona McLachlan and Will McLean.
   - id: https://schema.org/LiteraryEvent
     term: Literary Event
   - id: live_performance
     term: Live performance
+    note: Scope — a timed performance before an audience in a conventional venue. Where the work is made for and inseparable from its site, or the audience is immersed in it, use Site-specific / immersive performance. Evidence SM-FORK concert pieces (live performance) against RH-RITUAL across six named Portsmouth venues (site-specific).
   - id: https://schema.org/MusicEvent
     term: Music Event
+  - id: https://enact.ac.uk/vocab/event_type/participatory-installation
+    term: Participatory installation
+    source: enact
+    note: Installation whose completion depends on audience participation. Exhibition captures the display and Live performance the timing; each loses the participation. Evidence RH-RITUAL participatory installation at Treadgolds Building Portsmouth, PPP-QMUL Horniman Xingu Village.
+  - id: http://vocab.getty.edu/page/aat/300266327
+    term: Private view / opening
+    note: Invited opening or private view preceding a public exhibition run. Evidence GS-UNDER Undercover opening 11 May 2021, WM-PRIM exhibition invitation items, VW-AIRGRID Par Gallery Croydon Oct 2011.
+  - id: https://enact.ac.uk/vocab/event_type/rehearsal-development-session
+    term: Rehearsal / development session
+    source: enact
+    note: Closed working session that makes the work rather than disseminating it — the Process layer of the four-layer typology, for which the file previously had no term at all. Evidence RH-RITUAL declared rehearsal/development sessions, VH-STAIR editing, screening and feedback sessions between the two shoot days.
   - id: http://vocab.getty.edu/page/aat/300075520
     term: Residency
     file_suffixes: [pdf, docx, doc]
   - id: https://schema.org/ScreeningEvent
     term: Screening
     file_suffixes: [pdf, mp4, mov]
+  - id: https://enact.ac.uk/vocab/event_type/site-specific-immersive-performance
+    term: Site-specific / immersive performance
+    source: enact
+    note: Performance made for and inseparable from a particular site, or in which the audience is immersed. Distinct from Live performance because site is constitutive of the work rather than incidental to it, and it anchors the venue metadata. Evidence RH-RITUAL immersive site-specific audiovisual performance across Treadgolds Building, Lens Studio Guildhall, Groundlings Theatre, Minghella Studios New Theatre Royal, The Round Tower and The Square Tower.
   - id: https://schema.org/SocialEvent
     term: Social Event
   - id: https://schema.org/SportsEvent
     term: Sports Event
+    active: false
+    note: Deprecated for the Enact profile — scored zero against all 15 pathfinders. Retained because existing deposits may reference the id. Use Event instead.
+  - id: https://enact.ac.uk/vocab/event_type/summer-school
+    term: Summer school
+    source: enact
+    note: Multi-day intensive training programme, often residential. Neither Workshop nor Conference fits. Evidence RH-RITUAL Creative Discovery Summer School, MF-SGSAH doctoral training as core business.
   - id: http://vocab.getty.edu/page/aat/300054792
     term: Symposia
   - id: https://schema.org/TheaterEvent
     term: Theatre Event
   - id: https://schema.org/VisualArtsEvent
     term: VisualArtsEvent
+  - id: http://vocab.getty.edu/page/aat/300310218
+    term: Webinar / online event
+    note: Online-delivered event. Assessed as a delivery modality rather than a genre — a webinar is a workshop, seminar or lecture held online — so where the genre is known, type the event by its genre and record online-only delivery as a modality attribute. This term is provided for the case where online delivery is the defining fact and no genre term applies. Evidence JO-ODDKIN webinar series and online writing retreat, AC-SONGS third workshop held online, GS-UNDER exhibition online in its entirety.
   - id: http://publications.europa.eu/resource/authority/public-event-type/TRAINING_WORKSHOP
     term: Workshop
+    note: Scope — the broadest term in the file and its biggest liability. For a closed making session use Rehearsal / development session; for practitioner training use Continuing professional development (CPD); for a multi-day intensive use Summer school. Evidence AC-SONGS, RH-RITUAL, WM-PRIM and JO-ODDKIN all previously filed these three under Workshop.

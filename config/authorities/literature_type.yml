@@ -1,6 +1,16 @@
 terms:
+  - id: https://enact.ac.uk/vocab/literature_type/abstract-book
+    term: Abstract book
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: Book of abstracts issued by a conference or symposium, often the only published trace of an invited keynote. Evidence JO-ODDKIN ECQI 2025 and NERA 2025 abstract books.
   - id: https://vocabularies.coar-repositories.org/resource_types/c_1162/
     term: Annotation
+  - id: https://enact.ac.uk/vocab/literature_type/annual-progress-report
+    term: Annual / progress report
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: Periodic or interim report on a funding cycle, distinct from the final Research report. AAT annual reports (300027292) covers organisational annual reporting only, so an Enact-local id is used. Evidence JO-TODD and PPP-QMUL both operate on funder reporting cycles.
   - id: https://vocabularies.coar-repositories.org/resource_types/c_86bc/
     term: Bibliography
   - id: https://vocabularies.coar-repositories.org/resource_types/c_6947/
@@ -8,6 +18,7 @@ terms:
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#book
     term: Book
     file_suffixes: [pdf, epub, docx, doc]
+    note: Scope — monograph or edited volume. For an illustrated book for children or beginning readers use Picture book. Evidence JO-ODDKIN Making Odd Kin, ISBN 0-9549110-5-9, previously flattened into this term.
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#bookchapter
     term: BookChapter
   - id: https://vocabularies.coar-repositories.org/resource_types/c_3248/
@@ -16,6 +27,8 @@ terms:
     term: Book review
   - id: https://vocabularies.coar-repositories.org/resource_types/c_7877/
     term: Clinical study
+    active: false
+    note: Deprecated for the Enact profile — scored zero against all 15 pathfinders and is inherited from a STEM-oriented COAR list. Retained because existing deposits may reference the id.
   - id: https://vocabularies.coar-repositories.org/resource_types/D97F-VB57/
     term: Commentary
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#conferencepaper
@@ -43,6 +56,11 @@ terms:
     term: Dissertation
   - id: https://vocabularies.coar-repositories.org/resource_types/c_b239/
     term: Editorial
+  - id: https://enact.ac.uk/vocab/literature_type/impact-case-study
+    term: Impact case study
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: REF-style structured impact case study. AAT case studies (300460253) is the generic research-method sense and does not carry the assessment genre, so an Enact-local id is used. Evidence PPP-QMUL GCRF impact case study, previously forced into Report.
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#journal
     term: Journal
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#journalarticle
@@ -52,18 +70,21 @@ terms:
     term: Letter to the editor
   - id: https://vocabularies.coar-repositories.org/resource_types/c_8544/
     term: Lecture
+    note: Scope — the text of a lecture (script, paper or transcript) deposited as an output. For the occasion at which it was delivered see event_type Lecture, Getty AAT 300026673. Both senses are in live use in this cohort; neither term is deprecated. Evidence JO-ODDKIN Northern Nursery Public Lecture Sydney, WM-PRIM lecture / conversation between Fiona McLachlan and Will McLean.
   - id: https://vocabularies.coar-repositories.org/resource_types/c_0857/
     term: Letter
   - id: https://vocabularies.coar-repositories.org/resource_types/c_2cd9/
     term: Magazine
   - id: https://vocabularies.coar-repositories.org/resource_types/c_0040/
     term: Manuscript
+    note: Scope — an unpublished scholarly text. For a film or screen script use Script / Screenplay, which was previously absent and forced these items here. Evidence VH-STAIR Script Draft, Script, Annotated Script Notes and Suggestions for Part Three, VH-VICT Annotated Script.
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18wz/
     term: Memorandum
   - id: http://vocab.getty.edu/page/aat/300054676
     term: Methodology
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18cw/
     term: Musical notation
+    note: Scope — the score as carrier, the notated expression fixed as a file. The composition as a work is artefact_type Sound - MusicComposition; the two records are joined by the new realisation relationship (relationship_types is-realisation-of / has-realisation) rather than by duplicating a score term into artefact_type, per the cross-cutting decision. Correct term at term level, no change needed. Evidence SM-FORK circa 10 scores each declared as item type score (.pdf) and each paired with a performance recording.
   - id: https://vocabularies.coar-repositories.org/resource_types/c_2fe3/
     term: Newspaper
   - id: https://vocabularies.coar-repositories.org/resource_types/c_998f/
@@ -74,10 +95,25 @@ terms:
     term: Output Management Plan
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#peerreview
     term: Peer Review
+  - id: http://vocab.getty.edu/page/aat/300026446
+    term: Picture book
+    file_suffixes: [pdf, epub, jpg, jpeg, png]
+    note: Illustrated book for children or beginning readers, where the images, sequencing and object are the finding. Book flattens it into a monograph. Evidence JO-ODDKIN Making Odd Kin, ISBN 0-9549110-5-9, Maxart, co-made with children and a nursery.
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#preprint
     term: Pre-Print
+  - id: https://enact.ac.uk/vocab/literature_type/policy-briefing
+    term: Policy briefing
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: Short, targeted, non-scholarly briefing for a policy audience, distinct from the longer Policy report. Evidence PPP-QMUL four city briefings for Cardiff, Manchester, Glasgow and London, issued alongside a final report.
   - id: https://vocabularies.coar-repositories.org/resource_types/c_186u/
     term: Policy report
+    note: Scope — full-length policy report. For a short targeted briefing use Policy briefing. Evidence PPP-QMUL Relative Values final report against its four city briefings.
+  - id: https://enact.ac.uk/vocab/literature_type/practice-research-portfolio
+    term: Practice research portfolio
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: Compound, structured, discipline-specific portfolio document — typically project summary, research statement, theoretical context, timeline, research questions, aims, methods, key findings, dissemination, references and appendices. Previously scattered across Text, Report, Research report and Methodology. Evidence RH-RITUAL Creative Practice Research Portfolio PDF, VW-AIRGRID REF2014 written account / portfolio text.
   - id: http://vocab.getty.edu/page/aat/300027240
     term: Programme
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18op/
@@ -86,10 +122,17 @@ terms:
     term: Research protocol
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18ws/
     term: Research report
+    note: Scope — the final report on a piece of research. For interim or annual reporting within a funding cycle use Annual / progress report. Evidence RH-RITUAL ACE project report (final) against JO-TODD and PPP-QMUL funder reporting cycles.
+  - id: https://enact.ac.uk/vocab/literature_type/research-statement
+    term: Research statement
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: The REF practice-research 300-word statement — short, structured, mandatory for assessment and the single most citable piece of text a practice researcher produces. Evidence RH-RITUAL on Zenodo (10.5281/zenodo.20020238), VH-STAIR on Screenworks (10.37186/swrks/15.1/11).
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18gh/
     term: Technical report
   - id: https://vocabularies.coar-repositories.org/resource_types/c_71bd/
     term: Technical documentation
+    note: Scope — systems and technical documentation. For practitioner-facing guidance use Toolkit.
   - id: https://vocabularies.coar-repositories.org/resource_types/c_46ec/
     term: Thesis
     file_suffixes: [pdf, docx, doc]
@@ -99,12 +142,19 @@ terms:
     term: Doctoral thesis
   - id: https://vocabularies.coar-repositories.org/resource_types/c_bdcc/
     term: Master thesis
+  - id: https://enact.ac.uk/vocab/literature_type/toolkit
+    term: Toolkit
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: Practitioner-facing guidance document. Technical documentation is aimed at systems, not practitioners. AAT tool kits (300434886) denotes physical sets of tools and is the wrong sense, so an Enact-local id is used. Evidence PPP-QMUL Relative Values Toolkit.
   - id: https://vocabularies.coar-repositories.org/resource_types/H6QP-SC1X/
     term: Trademark
   - id: https://vocabularies.coar-repositories.org/resource_types/6NC7-GK9S/
     term: Transcription
+    note: Scope — a written record of spoken or performed material, where the text is itself the evidence. Correct for AC-SONGS workshop transcriptions, PC-PORTS recorded interviews and PPP-QMUL community interview material. NOT for a descriptive or accessibility transcript, which describes an audiovisual work for a viewer who cannot see or hear it; that is an accessibility surrogate bound to a specific file and belongs on the artefact record, not as an independent Literature output. Evidence VH-STAIR descriptive (accessibility) transcript (.pdf).
   - id: https://vocabularies.coar-repositories.org/resource_types/c_baaf/
     term: Research proposal
+    note: Scope — a proposal for research funding (the COAR sense). NOT an architectural or design proposal submitted to a client; for those use the artefact_type design terms, principally Design - ArchitecturalDesign or Design. Evidence WM-PRIM design proposal documents (A Machine for Learning, School as a Rule Wonderwall, Dalry Primary School, Original proposal to North Ayrshire, Proposal for Lawthorn Primary School) score this term to 5 and will mis-file without this distinction.
   - id: https://vocabularies.coar-repositories.org/resource_types/c_efa0/
     term: Review
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#report
@@ -114,10 +164,16 @@ terms:
     term: Research article
   - id: https://vocabularies.coar-repositories.org/resource_types/c_dcae04bc/
     term: Review article
+  - id: http://vocab.getty.edu/page/aat/300026491
+    term: Script / Screenplay
+    file_suffixes: [pdf, docx, doc, fdx]
+    note: Written form of a story prepared for screen or stage production, including characters, scenes, settings, dialogue and directions. Nothing in artefact_type or literature_type previously fitted; Manuscript was the fallback and carried the wrong frame. Evidence VH-STAIR 4 script items, VH-VICT 1.
   - id: https://vocabularies.coar-repositories.org/resource_types/c_7bab/
     term: Software paper
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#studyregistration
     term: Study Registration
+    active: false
+    note: Deprecated for the Enact profile — scored zero against all 15 pathfinders and is inherited from a STEM-oriented list. Retained because existing deposits may reference the id.
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#text
     term: Text
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#workflow
