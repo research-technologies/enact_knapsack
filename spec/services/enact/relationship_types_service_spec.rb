@@ -71,7 +71,7 @@ RSpec.describe Enact::RelationshipTypesService do
     it 'excludes them from the deposit dropdown' do
       active_ids = Hyrax::TolerantSelectService.new('relationship_types').select_active_options.map(&:last)
       expect(active_ids).to include('cites')
-      expect(active_ids).not_to include('sequence', 'source-of')
+      expect(active_ids).not_to include('referenced-by', 'source-of')
     end
   end
 end
