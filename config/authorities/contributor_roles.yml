@@ -10,31 +10,14 @@
 # Each term also carries the interop metadata a future DOI/RAiD/ORCID minter
 # needs (Enact::ContributorRole reads it from here; nothing is hardcoded in
 # Ruby):
-#   source     — provenance of the term. Six values are in use; the counts
-#                below are for this revision of the file:
-#                  credit      —  14  NISO CRediT contributor roles
-#                  LOC         — 292  Library of Congress MARC relator terms
-#                  schema.org  —  65  schema.org properties
-#                  datacite    —  20  DataCite contributorType values
-#                  westminster —   3  legacy WestminsterResearch local terms
-#                  enact       —  18  minted for Enact from Pathfinder evidence
-#   credit_uri — CRediT role URI; present on the 14 credit terms only
+#   source     — provenance: credit (CRediT) | LOC (MARC relators) | schema.org |
+#                datacite | westminster (legacy local) | enact (minted for Enact)
+#   credit_uri — CRediT role URI; credit terms only
 #   datacite   — DataCite contributorType (schema 4.x); defaults to "Other"
-#   marc       — MARC relator code; present on the LOC terms only
-#   kind       — OPTIONAL. person | organisation | collective. Constrains
-#                what sort of agent may hold the role. It is set only where
-#                the role is genuinely restricted (Funder is always an
-#                organisation; Collective is always a collective). An ABSENT
-#                kind means UNCONSTRAINED — any of the three may hold it —
-#                which is the case for the great majority of terms.
-#                collective covers the named-but-unenumerated contributor
-#                that practice research routinely credits (a creative team,
-#                a community, a school cohort) and that is neither a person
-#                nor an institution.
-#   note       — OPTIONAL. Curatorial scope note. Used to record Pathfinder
-#                evidence for a term, and to disambiguate false friends whose
-#                inherited label invites the wrong reading (see children,
-#                witness, signer).
+#   marc       — MARC relator code; LOC terms only
+#   kind       — optional: person | organisation | collective. Set only where the role
+#                is restricted; absent means any kind of agent.
+#   note       — optional short scope note for depositors.
 #
 # Anything not in this list is captured free-text in the sibling
 # `contributor_role_other` subproperty (the never-block-deposit fallback).
@@ -222,7 +205,7 @@ terms:
     source: enact
     datacite: Other
     kind: person
-    note: Assistant camera / 1st AC — VH-STAIR credits Mauro Mascate and Gesa Pfeiffer as 1st AC. Neither the role nor an adjacent one existed; Camera operator is a different job.
+    note: 'Assistant camera / 1st AC. Distinct from Camera operator.'
   - id: associated-name
     term: Associated name
     source: LOC
@@ -424,7 +407,7 @@ terms:
     term: children
     source: schema.org
     datacite: Other
-    note: schema.org sense — a person's offspring in a family relationship. NOT child participants or child contributors. JO-ODDKIN's Children, staff and minibeasts of Danegrove and St Josephs schools are Contributor or Collective, never this term.
+    note: 'schema.org sense: a person''s offspring. Not child participants or contributors; use Contributor or Collective for those.'
   - id: choreographer
     term: Choreographer
     source: LOC
@@ -449,7 +432,7 @@ terms:
     source: enact
     datacite: ProjectMember
     kind: person
-    note: UKRI grant role — AC-SONGS names Co-I explicitly. Lead, Project director, ProjectLeader and Research team head are none of them the UK grant term.
+    note: 'Co-investigator (Co-I) on a research grant.'
   - id: coach
     term: coach
     source: schema.org
@@ -458,7 +441,7 @@ terms:
     term: Collaborator
     source: enact
     datacite: Other
-    note: SM-FORK typed collaborator as free text — it is in neither the vocabulary nor the 30-term picklist he shipped himself; WM-PRIM's narrative is collaborating on a competition entry. The most-evidenced gap in the cohort. Deliberately unconstrained as to kind.
+    note: 'A person or organisation who collaborated on the work. Kind left unconstrained.'
   - id: colleague
     term: colleague
     source: schema.org
@@ -473,7 +456,7 @@ terms:
     source: enact
     datacite: Other
     kind: collective
-    note: A named but unenumerated group credited as a contributor — JO-ODDKIN's Minibeast team and Children, staff and minibeasts of Danegrove and St Josephs schools; RH-RITUAL's the creative team. Use where ResearchGroup or Production personnel would misdescribe.
+    note: 'A named group credited as a whole, without listing members. Use where ResearchGroup or Production personnel would misdescribe.'
   - id: collector
     term: Collector
     source: LOC
@@ -489,7 +472,7 @@ terms:
     source: LOC
     datacite: Other
     marc: clr
-    note: US spelling retained as the canonical term; covers UK colourist and colour grading, e.g. VH-STAIR's Colour Grade and FX credit for Anna Barsukova. Record the FX element separately under Visual effects provider or Special effects provider.
+    note: 'Colourist / colour grading (US spelling is the canonical term). Record visual effects separately under Visual effects provider.'
   - id: commentator
     term: Commentator
     source: LOC
@@ -505,7 +488,7 @@ terms:
     source: enact
     datacite: Other
     kind: collective
-    note: A community contributing as a collective partner — PPP-QMUL's work with Wauja and Kuikuro communities via AIKAX and Museu do Indio. Communal consent governs reuse; the relevant instrument is Traditional Knowledge and Biocultural Labels, not an individual licence.
+    note: 'A community contributing as a collective partner. Reuse is governed by communal consent (Traditional Knowledge and Biocultural Labels), not an individual licence.'
   - id: competitor
     term: competitor
     source: schema.org
@@ -577,7 +560,7 @@ terms:
     term: Content provider
     source: enact
     datacite: Other
-    note: JO-ODDKIN credits all three principals as co-founder & content provider across three items. Founder and Provider covered it only awkwardly. Deliberately unconstrained as to kind.
+    note: 'Person or organisation that supplied content for the work. Kind left unconstrained.'
   - id: contestant
     term: Contestant
     source: LOC
@@ -772,7 +755,7 @@ terms:
     source: enact
     datacite: Other
     kind: person
-    note: DIT — named in the VH-STAIR credit block. Camera operator and Technical director both flatten it.
+    note: 'Digital imaging technician (DIT) on a film or photographic production.'
   - id: director
     term: Director
     source: LOC
@@ -874,7 +857,7 @@ terms:
     source: enact
     datacite: Other
     kind: organisation
-    note: Equipment Support — The Kit Hub, MDX, credited on every VH-STAIR and VH-VICT item. Covers facilities as well as kit; Provider and Production personnel were approximations.
+    note: 'Person or organisation that provided equipment or facilities.'
   - id: etcher
     term: Etcher
     source: LOC
@@ -884,7 +867,7 @@ terms:
     term: Evaluator
     source: enact
     datacite: Other
-    note: RH-RITUAL deposits an embedded evaluation under its own Zenodo DOI; PPP-QMUL ran a Horniman Museum evaluation. CRediT Validation and MARC Reviewer both mean something else. Deliberately unconstrained as to kind.
+    note: 'Person or organisation that evaluated the work or project. Kind left unconstrained.'
   - id: event-place
     term: Event place
     source: LOC
@@ -972,7 +955,7 @@ terms:
     datacite: Other
     marc: fnd
     kind: organisation
-    note: kind organisation — an institutional capacity only. Named grants throughout the cohort, e.g. AHRC AH/W004518/1 and ACE NLPG-00648682.
+    note: 'Organisation that funded the work.'
   - id: game-developer
     term: Game developer
     source: LOC
@@ -1011,7 +994,7 @@ terms:
     datacite: Other
     marc: his
     kind: organisation
-    note: kind organisation — an institutional capacity only. Every submission is institutionally hosted (MDX, UoW, MMU, BNU, QMUL).
+    note: 'Institution hosting the research or project.'
   - id: hostinginstitution
     term: HostingInstitution
     source: datacite
@@ -1030,7 +1013,7 @@ terms:
     term: Indigenous knowledge holder
     source: enact
     datacite: Other
-    note: PPP-QMUL's Xingu partners — Wauja and Kuikuro knowledge holders via AIKAX and Museu do Indio. Apply only with the community's consent, and alongside Traditional Knowledge and Biocultural Labels. May name an individual or a people, so kind is left unconstrained.
+    note: 'Holder of Indigenous or traditional knowledge drawn on in the work. Apply only with the community''s consent, alongside Traditional Knowledge and Biocultural Labels.'
   - id: inker
     term: inker
     source: schema.org
@@ -1197,7 +1180,7 @@ terms:
     source: enact
     datacite: Other
     kind: person
-    note: The fabrication role in craft practice — VW-AIRGRID as designer/maker of the foam-board and thread Air Grid lattices. Filmmaker, Papermaker, Platemaker and Printmaker existed but no standalone Maker.
+    note: 'The person who fabricated the work, as in craft practice.'
   - id: makeup-artist
     term: Makeup artist
     source: LOC
@@ -1428,12 +1411,12 @@ terms:
     source: enact
     datacite: Other
     kind: person
-    note: JO-ODDKIN deposits a 7-episode podcast series. Host and Television host were the only options.
+    note: 'Host or presenter of a podcast.'
   - id: podcast-producer
     term: Podcast producer
     source: enact
     datacite: Producer
-    note: JO-ODDKIN deposits a 7-episode podcast series. Radio producer was the only adjacent term. Deliberately unconstrained as to kind, since a production company may hold the role.
+    note: 'Producer of a podcast; may be a person or a production company.'
   - id: praeses
     term: Praeses
     source: LOC
@@ -1449,7 +1432,7 @@ terms:
     source: enact
     datacite: ProjectLeader
     kind: person
-    note: UKRI grant role — AC-SONGS writes PI explicitly, and the programme is AHRC-funded throughout. Lead, Project director, ProjectLeader and Research team head are none of them the UK grant term.
+    note: 'Principal investigator (PI) on a research grant.'
   - id: printer
     term: Printer
     source: LOC
@@ -1514,7 +1497,7 @@ terms:
     source: enact
     datacite: Other
     kind: organisation
-    note: The one term in SM-FORK's 30-item picklist with no equivalent anywhere in the vocabulary. AC-SONGS names Carbon Landscape Project and Lancashire Wildlife Trust as contributors; PPP-QMUL names AIKAX, Museu do Indio, British Council, Factum Foundation and the Horniman Museum.
+    note: 'Organisation participating as a named partner in the project.'
   - id: projectleader
     term: ProjectLeader
     source: datacite
@@ -1552,7 +1535,7 @@ terms:
     datacite: Other
     marc: pbl
     kind: organisation
-    note: kind organisation — an institutional capacity only.
+    note: 'Organisation that published the work.'
   - id: publishing-director
     term: Publishing director
     source: LOC
@@ -1638,7 +1621,7 @@ terms:
     datacite: Other
     marc: rps
     kind: organisation
-    note: kind organisation — an institutional capacity only. Zenodo, Screenworks, WMA AtoM, repository.mdx.ac.uk.
+    note: 'Repository or archive holding a related record or copy.'
   - id: research-team-head
     term: Research team head
     source: LOC
@@ -1658,7 +1641,7 @@ terms:
     source: datacite
     datacite: ResearchGroup
     kind: collective
-    note: kind collective — a named research collective, e.g. JO-ODDKIN's Becoming-Worldly-Wit(h)nesses Research Collective. For an informal or non-research team use Collective.
+    note: 'A named research group or collective. For an informal or non-research team use Collective.'
   - id: respondent
     term: Respondent
     source: LOC
@@ -1717,7 +1700,7 @@ terms:
     source: enact
     datacite: Other
     kind: person
-    note: RH-RITUAL describes its creative team as Butoh, sound, projection and scenography. Only Set designer existed, and it names a narrower job.
+    note: 'Designer of the overall stage or performance environment; broader than Set designer.'
   - id: scientific-advisor
     term: Scientific advisor
     source: LOC
@@ -1738,7 +1721,7 @@ terms:
     source: enact
     datacite: Editor
     kind: person
-    note: Script Editor Stephen Chester is credited on every VH-STAIR and VH-VICT item. Editor and CRediT Writing review & editing both flatten it.
+    note: 'Script editor on a film, broadcast or stage production.'
   - id: sculptor
     term: Sculptor
     source: LOC
@@ -1786,7 +1769,7 @@ terms:
     source: LOC
     datacite: Other
     marc: sgn
-    note: MARC sense — a person whose autograph or signature appears on the item itself. NOT the Section 4 deposit-permission signature that every pathfinder supplies, which is Depositor.
+    note: 'MARC sense: a person whose signature appears on the item. Not the depositor''s permission signature.'
   - id: singer
     term: Singer
     source: LOC
@@ -1859,7 +1842,7 @@ terms:
     source: enact
     datacite: Other
     kind: person
-    note: WM-PRIM names Tim Macfarlane. Engineer existed, but Architect and Landscape architect are given their own terms, so the omission was an inconsistency.
+    note: 'Structural engineer on an architectural or built project.'
   - id: supervisor
     term: Supervisor
     source: datacite
@@ -1975,7 +1958,7 @@ terms:
     source: LOC
     datacite: Other
     marc: wit
-    note: MARC sense — a person who witnesses a document or event and attests to it. Does not apply to JO-ODDKIN's Becoming-Worldly-Wit(h)nesses Research Collective, which is a pun on with-ness; use Collective or ResearchGroup for that.
+    note: 'MARC sense: a person who witnesses a document or event and attests to it.'
   - id: wood-engraver
     term: Wood engraver
     source: LOC
