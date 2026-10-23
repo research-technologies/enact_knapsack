@@ -1,0 +1,27 @@
+# Output typology for the (planned) `typology` field: what role an item plays in a
+# practice research output — Metadata / Process / Final output / Related outputs.
+# Separate from artefact_type / literature_type, which describe modality.
+# Depositor-declared, never system-inferred. Enact-local ids, source: enact.
+terms:
+  - id: https://enact.ac.uk/vocab/output_typology/metadata
+    term: Metadata
+    source: enact
+    note: 'Material that identifies, describes or gives access to the output: research statement, transcripts, catalogue links, DOIs.'
+  - id: https://enact.ac.uk/vocab/output_typology/process
+    term: Process
+    source: enact
+    note: 'Material generated in making the output: drafts, sketches, rehearsal footage, data, development notes.'
+  - id: https://enact.ac.uk/vocab/output_typology/final-output
+    term: Final output
+    source: enact
+    note: 'The creative work that constitutes the research output: film, score, performance, artefact, exhibition.'
+  - id: https://enact.ac.uk/vocab/output_typology/related-outputs
+    term: Related outputs
+    source: enact
+    note: 'Dissemination and reception around the output: papers, presentations, programmes, reviews, podcasts.'
+# PPP-QMUL's own REF2021 folder scheme maps onto three of these four layers:
+#   .1 Research Process             -> Process
+#   .2 Research Insights            -> Final output   (see hard case (a))
+#   .3 Time & Manner of Dissemination -> Related outputs
+# Those are the depositor's headings, not ours — which is the point: the
+# typology was already there, undeclared, in the submissions themselves.

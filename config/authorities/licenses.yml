@@ -1,3 +1,15 @@
+# SPDX licence vocabulary, read via Enact::LicensesService. The full SPDX list is kept;
+# nothing is deleted because existing deposits may reference any id.
+#
+# Curation keys (not yet read by the service or the deposit wizard):
+#   recommended: true  shown in the short deposit picklist; the rest via type-ahead
+#   default: true      suggested default (soft: depositor must confirm)
+#   superseded_by:     id of the current equivalent, for retired versions and ports
+#
+# A licence says what a reuser may do. The rights position of a deposit (undetermined,
+# third-party IP, embargo, etc.) lives in rights_status.yml; the two combine.
+# A blank licence means rights undetermined, not open.
+# `active:` mirrors upstream SPDX deprecation and is not used for local curation.
 terms:
   -
     id: "https://spdx.org/licenses/0BSD.html"
@@ -614,41 +626,57 @@ terms:
     active: true
     term: Creative Commons Attribution 1.0 Generic
     licenseId: CC-BY-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: 'Superseded version; prefer CC-BY-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-2.0.html"
     active: true
     term: Creative Commons Attribution 2.0 Generic
     licenseId: CC-BY-2.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: 'Superseded version; prefer CC-BY-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-2.5.html"
     active: true
     term: Creative Commons Attribution 2.5 Generic
     licenseId: CC-BY-2.5
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: 'Superseded version; prefer CC-BY-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-2.5-AU.html"
     active: true
     term: Creative Commons Attribution 2.5 Australia
     licenseId: CC-BY-2.5-AU
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-3.0.html"
     active: true
     term: Creative Commons Attribution 3.0 Unported
     licenseId: CC-BY-3.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: 'Superseded version; prefer CC-BY-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-3.0-AT.html"
     active: true
     term: Creative Commons Attribution 3.0 Austria
     licenseId: CC-BY-3.0-AT
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-3.0-AU.html"
     active: true
     term: Creative Commons Attribution 3.0 Australia
     licenseId: CC-BY-3.0-AU
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-3.0-DE.html"
     active: true
     term: Creative Commons Attribution 3.0 Germany
     licenseId: CC-BY-3.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-3.0-IGO.html"
     active: true
@@ -659,71 +687,99 @@ terms:
     active: true
     term: Creative Commons Attribution 3.0 Netherlands
     licenseId: CC-BY-3.0-NL
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-3.0-US.html"
     active: true
     term: Creative Commons Attribution 3.0 United States
     licenseId: CC-BY-3.0-US
+    superseded_by: "https://spdx.org/licenses/CC-BY-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-4.0.html"
     active: true
     term: Creative Commons Attribution 4.0 International
     licenseId: CC-BY-4.0
+    recommended: true
+    note: 'Recommended: shown in the short picklist.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-1.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial 1.0 Generic
     licenseId: CC-BY-NC-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
+    note: 'Superseded version; prefer CC-BY-NC-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-2.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial 2.0 Generic
     licenseId: CC-BY-NC-2.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
+    note: 'Superseded version; prefer CC-BY-NC-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-2.5.html"
     active: true
     term: Creative Commons Attribution Non Commercial 2.5 Generic
     licenseId: CC-BY-NC-2.5
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
+    note: 'Superseded version; prefer CC-BY-NC-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-3.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial 3.0 Unported
     licenseId: CC-BY-NC-3.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
+    note: 'Superseded version; prefer CC-BY-NC-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-3.0-DE.html"
     active: true
     term: Creative Commons Attribution Non Commercial 3.0 Germany
     licenseId: CC-BY-NC-3.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-NC-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-4.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial 4.0 International
     licenseId: CC-BY-NC-4.0
+    recommended: true
+    note: 'Recommended: shown in the short picklist.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-ND-1.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial No Derivatives 1.0 Generic
     licenseId: CC-BY-NC-ND-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-ND-4.0.html"
+    note: 'Superseded version; prefer CC-BY-NC-ND-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-ND-2.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial No Derivatives 2.0 Generic
     licenseId: CC-BY-NC-ND-2.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-ND-4.0.html"
+    note: 'Superseded version; prefer CC-BY-NC-ND-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-ND-2.5.html"
     active: true
     term: Creative Commons Attribution Non Commercial No Derivatives 2.5 Generic
     licenseId: CC-BY-NC-ND-2.5
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-ND-4.0.html"
+    note: 'Superseded version; prefer CC-BY-NC-ND-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-ND-3.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial No Derivatives 3.0 Unported
     licenseId: CC-BY-NC-ND-3.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-ND-4.0.html"
+    note: 'Superseded version; prefer CC-BY-NC-ND-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-ND-3.0-DE.html"
     active: true
     term: Creative Commons Attribution Non Commercial No Derivatives 3.0 Germany
     licenseId: CC-BY-NC-ND-3.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-ND-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-NC-ND-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-ND-3.0-IGO.html"
     active: true
@@ -734,46 +790,65 @@ terms:
     active: true
     term: Creative Commons Attribution Non Commercial No Derivatives 4.0 International
     licenseId: CC-BY-NC-ND-4.0
+    recommended: true
+    default: true
+    note: 'Recommended: shown in the short picklist and suggested as the default.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-1.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 1.0 Generic
     licenseId: CC-BY-NC-SA-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: 'Superseded version; prefer CC-BY-NC-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-2.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 2.0 Generic
     licenseId: CC-BY-NC-SA-2.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: 'Superseded version; prefer CC-BY-NC-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-2.0-DE.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 2.0 Germany
     licenseId: CC-BY-NC-SA-2.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-NC-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-2.0-FR.html"
     active: true
     term: Creative Commons Attribution-NonCommercial-ShareAlike 2.0 France
     licenseId: CC-BY-NC-SA-2.0-FR
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-NC-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-2.0-UK.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 2.0 England and Wales
     licenseId: CC-BY-NC-SA-2.0-UK
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-NC-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-2.5.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 2.5 Generic
     licenseId: CC-BY-NC-SA-2.5
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: 'Superseded version; prefer CC-BY-NC-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-3.0.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 3.0 Unported
     licenseId: CC-BY-NC-SA-3.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: 'Superseded version; prefer CC-BY-NC-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-3.0-DE.html"
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 3.0 Germany
     licenseId: CC-BY-NC-SA-3.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-NC-SA-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-NC-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-NC-SA-3.0-IGO.html"
     active: true
@@ -784,76 +859,106 @@ terms:
     active: true
     term: Creative Commons Attribution Non Commercial Share Alike 4.0 International
     licenseId: CC-BY-NC-SA-4.0
+    recommended: true
+    note: 'Recommended: shown in the short picklist.'
   -
     id: "https://spdx.org/licenses/CC-BY-ND-1.0.html"
     active: true
     term: Creative Commons Attribution No Derivatives 1.0 Generic
     licenseId: CC-BY-ND-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
+    note: 'Superseded version; prefer CC-BY-ND-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-ND-2.0.html"
     active: true
     term: Creative Commons Attribution No Derivatives 2.0 Generic
     licenseId: CC-BY-ND-2.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
+    note: 'Superseded version; prefer CC-BY-ND-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-ND-2.5.html"
     active: true
     term: Creative Commons Attribution No Derivatives 2.5 Generic
     licenseId: CC-BY-ND-2.5
+    superseded_by: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
+    note: 'Superseded version; prefer CC-BY-ND-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-ND-3.0.html"
     active: true
     term: Creative Commons Attribution No Derivatives 3.0 Unported
     licenseId: CC-BY-ND-3.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
+    note: 'Superseded version; prefer CC-BY-ND-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-ND-3.0-DE.html"
     active: true
     term: Creative Commons Attribution No Derivatives 3.0 Germany
     licenseId: CC-BY-ND-3.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-ND-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-ND-4.0.html"
     active: true
     term: Creative Commons Attribution No Derivatives 4.0 International
     licenseId: CC-BY-ND-4.0
+    recommended: true
+    note: 'Recommended: shown in the short picklist.'
   -
     id: "https://spdx.org/licenses/CC-BY-SA-1.0.html"
     active: true
     term: Creative Commons Attribution Share Alike 1.0 Generic
     licenseId: CC-BY-SA-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: 'Superseded version; prefer CC-BY-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-SA-2.0.html"
     active: true
     term: Creative Commons Attribution Share Alike 2.0 Generic
     licenseId: CC-BY-SA-2.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: 'Superseded version; prefer CC-BY-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-SA-2.0-UK.html"
     active: true
     term: Creative Commons Attribution Share Alike 2.0 England and Wales
     licenseId: CC-BY-SA-2.0-UK
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-SA-2.1-JP.html"
     active: true
     term: Creative Commons Attribution Share Alike 2.1 Japan
     licenseId: CC-BY-SA-2.1-JP
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-SA-2.5.html"
     active: true
     term: Creative Commons Attribution Share Alike 2.5 Generic
     licenseId: CC-BY-SA-2.5
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: 'Superseded version; prefer CC-BY-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-SA-3.0.html"
     active: true
     term: Creative Commons Attribution Share Alike 3.0 Unported
     licenseId: CC-BY-SA-3.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: 'Superseded version; prefer CC-BY-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-SA-3.0-AT.html"
     active: true
     term: Creative Commons Attribution Share Alike 3.0 Austria
     licenseId: CC-BY-SA-3.0-AT
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-SA-3.0-DE.html"
     active: true
     term: Creative Commons Attribution Share Alike 3.0 Germany
     licenseId: CC-BY-SA-3.0-DE
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: 'Jurisdiction port; prefer CC-BY-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC-BY-SA-3.0-IGO.html"
     active: true
@@ -864,6 +969,8 @@ terms:
     active: true
     term: Creative Commons Attribution Share Alike 4.0 International
     licenseId: CC-BY-SA-4.0
+    recommended: true
+    note: 'Recommended: shown in the short picklist.'
   -
     id: "https://spdx.org/licenses/CC-PDDC.html"
     active: true
@@ -879,11 +986,15 @@ terms:
     active: true
     term: Creative Commons Share Alike 1.0 Generic
     licenseId: CC-SA-1.0
+    superseded_by: "https://spdx.org/licenses/CC-BY-SA-4.0.html"
+    note: 'Retired by Creative Commons; prefer CC-BY-SA-4.0.'
   -
     id: "https://spdx.org/licenses/CC0-1.0.html"
     active: true
     term: Creative Commons Zero v1.0 Universal
     licenseId: CC0-1.0
+    recommended: true
+    note: 'Recommended: shown in the short picklist.'
   -
     id: "https://spdx.org/licenses/CDDL-1.0.html"
     active: true
@@ -2679,6 +2790,8 @@ terms:
     active: true
     term: Open Government Licence v3.0
     licenseId: OGL-UK-3.0
+    recommended: true
+    note: 'Recommended: shown in the short picklist.'
   -
     id: "https://spdx.org/licenses/OGTSL.html"
     active: true

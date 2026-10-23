@@ -1,6 +1,16 @@
 terms:
+  - id: https://enact.ac.uk/vocab/literature_type/abstract-book
+    term: Abstract book
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: 'Book of abstracts issued by a conference or symposium, often the only published trace of an invited keynote.'
   - id: https://vocabularies.coar-repositories.org/resource_types/c_1162/
     term: Annotation
+  - id: https://enact.ac.uk/vocab/literature_type/annual-progress-report
+    term: Annual / progress report
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: 'Periodic or interim report within a funding cycle. For the final report use Research report.'
   - id: https://vocabularies.coar-repositories.org/resource_types/c_86bc/
     term: Bibliography
   - id: https://vocabularies.coar-repositories.org/resource_types/c_6947/
@@ -8,6 +18,7 @@ terms:
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#book
     term: Book
     file_suffixes: [pdf, epub, docx, doc]
+    note: 'Monograph or edited volume. For an illustrated children''s book use Picture book.'
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#bookchapter
     term: BookChapter
   - id: https://vocabularies.coar-repositories.org/resource_types/c_3248/
@@ -16,6 +27,8 @@ terms:
     term: Book review
   - id: https://vocabularies.coar-repositories.org/resource_types/c_7877/
     term: Clinical study
+    active: false
+    note: 'Deprecated. Kept so existing records still resolve.'
   - id: https://vocabularies.coar-repositories.org/resource_types/D97F-VB57/
     term: Commentary
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#conferencepaper
@@ -43,6 +56,11 @@ terms:
     term: Dissertation
   - id: https://vocabularies.coar-repositories.org/resource_types/c_b239/
     term: Editorial
+  - id: https://enact.ac.uk/vocab/literature_type/impact-case-study
+    term: Impact case study
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: 'REF-style structured impact case study.'
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#journal
     term: Journal
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#journalarticle
@@ -52,18 +70,21 @@ terms:
     term: Letter to the editor
   - id: https://vocabularies.coar-repositories.org/resource_types/c_8544/
     term: Lecture
+    note: 'The text of a lecture (script, paper or transcript). For the occasion it was delivered use event_type Lecture.'
   - id: https://vocabularies.coar-repositories.org/resource_types/c_0857/
     term: Letter
   - id: https://vocabularies.coar-repositories.org/resource_types/c_2cd9/
     term: Magazine
   - id: https://vocabularies.coar-repositories.org/resource_types/c_0040/
     term: Manuscript
+    note: 'Unpublished scholarly text. For a film or stage script use Script / Screenplay.'
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18wz/
     term: Memorandum
   - id: http://vocab.getty.edu/page/aat/300054676
     term: Methodology
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18cw/
     term: Musical notation
+    note: 'The score as carrier. For the musical work use artefact_type Sound - MusicComposition and link with is-realisation-of.'
   - id: https://vocabularies.coar-repositories.org/resource_types/c_2fe3/
     term: Newspaper
   - id: https://vocabularies.coar-repositories.org/resource_types/c_998f/
@@ -74,10 +95,25 @@ terms:
     term: Output Management Plan
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#peerreview
     term: Peer Review
+  - id: http://vocab.getty.edu/page/aat/300026446
+    term: Picture book
+    file_suffixes: [pdf, epub, jpg, jpeg, png]
+    note: 'Illustrated book for children or beginning readers, where images and sequencing carry the work.'
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#preprint
     term: Pre-Print
+  - id: https://enact.ac.uk/vocab/literature_type/policy-briefing
+    term: Policy briefing
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: 'Short, targeted, non-scholarly briefing for a policy audience, distinct from the longer Policy report.'
   - id: https://vocabularies.coar-repositories.org/resource_types/c_186u/
     term: Policy report
+    note: 'Full-length policy report. For a short targeted briefing use Policy briefing.'
+  - id: https://enact.ac.uk/vocab/literature_type/practice-research-portfolio
+    term: Practice research portfolio
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: 'Structured portfolio document, typically with summary, research statement, context, methods, findings and dissemination.'
   - id: http://vocab.getty.edu/page/aat/300027240
     term: Programme
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18op/
@@ -86,10 +122,17 @@ terms:
     term: Research protocol
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18ws/
     term: Research report
+    note: 'Final report on a piece of research. For interim reporting use Annual / progress report.'
+  - id: https://enact.ac.uk/vocab/literature_type/research-statement
+    term: Research statement
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: 'The REF practice-research statement (up to 300 words).'
   - id: https://vocabularies.coar-repositories.org/resource_types/c_18gh/
     term: Technical report
   - id: https://vocabularies.coar-repositories.org/resource_types/c_71bd/
     term: Technical documentation
+    note: 'Systems and technical documentation. For practitioner-facing guidance use Toolkit.'
   - id: https://vocabularies.coar-repositories.org/resource_types/c_46ec/
     term: Thesis
     file_suffixes: [pdf, docx, doc]
@@ -99,12 +142,19 @@ terms:
     term: Doctoral thesis
   - id: https://vocabularies.coar-repositories.org/resource_types/c_bdcc/
     term: Master thesis
+  - id: https://enact.ac.uk/vocab/literature_type/toolkit
+    term: Toolkit
+    file_suffixes: [pdf, docx, doc]
+    source: enact
+    note: 'Practitioner-facing guidance document. Technical documentation is aimed at systems, not practitioners.'
   - id: https://vocabularies.coar-repositories.org/resource_types/H6QP-SC1X/
     term: Trademark
   - id: https://vocabularies.coar-repositories.org/resource_types/6NC7-GK9S/
     term: Transcription
+    note: 'Written record of spoken or performed material.'
   - id: https://vocabularies.coar-repositories.org/resource_types/c_baaf/
     term: Research proposal
+    note: 'Proposal for research funding. For an architectural or design proposal use the artefact_type Design terms.'
   - id: https://vocabularies.coar-repositories.org/resource_types/c_efa0/
     term: Review
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#report
@@ -114,10 +164,16 @@ terms:
     term: Research article
   - id: https://vocabularies.coar-repositories.org/resource_types/c_dcae04bc/
     term: Review article
+  - id: http://vocab.getty.edu/page/aat/300026491
+    term: Script / Screenplay
+    file_suffixes: [pdf, docx, doc, fdx]
+    note: 'Written script for screen or stage: characters, scenes, dialogue and directions.'
   - id: https://vocabularies.coar-repositories.org/resource_types/c_7bab/
     term: Software paper
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#studyregistration
     term: Study Registration
+    active: false
+    note: 'Deprecated. Kept so existing records still resolve.'
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#text
     term: Text
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#workflow

@@ -10,10 +10,14 @@
 # Each term also carries the interop metadata a future DOI/RAiD/ORCID minter
 # needs (Enact::ContributorRole reads it from here; nothing is hardcoded in
 # Ruby):
-#   source     — credit | practice
-#   credit_uri — CRediT role URI, omitted for practice roles
+#   source     — provenance: credit (CRediT) | LOC (MARC relators) | schema.org |
+#                datacite | westminster (legacy local) | enact (minted for Enact)
+#   credit_uri — CRediT role URI; credit terms only
 #   datacite   — DataCite contributorType (schema 4.x); defaults to "Other"
-#   marc       — MARC relator code where one fits a practice role
+#   marc       — MARC relator code; LOC terms only
+#   kind       — optional: person | organisation | collective. Set only where the role
+#                is restricted; absent means any kind of agent.
+#   note       — optional short scope note for depositors.
 #
 # Anything not in this list is captured free-text in the sibling
 # `contributor_role_other` subproperty (the never-block-deposit fallback).
@@ -196,6 +200,12 @@ terms:
     source: LOC
     datacite: Other
     marc: asg
+  - id: assistant-camera
+    term: Assistant camera
+    source: enact
+    datacite: Other
+    kind: person
+    note: 'Assistant camera / 1st AC. Distinct from Camera operator.'
   - id: associated-name
     term: Associated name
     source: LOC
@@ -397,6 +407,7 @@ terms:
     term: children
     source: schema.org
     datacite: Other
+    note: 'schema.org sense: a person''s offspring. Not child participants or contributors; use Contributor or Collective for those.'
   - id: choreographer
     term: Choreographer
     source: LOC
@@ -416,10 +427,21 @@ terms:
     source: LOC
     datacite: Other
     marc: cli
+  - id: co-investigator
+    term: Co-investigator
+    source: enact
+    datacite: ProjectMember
+    kind: person
+    note: 'Co-investigator (Co-I) on a research grant.'
   - id: coach
     term: coach
     source: schema.org
     datacite: Other
+  - id: collaborator
+    term: Collaborator
+    source: enact
+    datacite: Other
+    note: 'A person or organisation who collaborated on the work. Kind left unconstrained.'
   - id: colleague
     term: colleague
     source: schema.org
@@ -429,6 +451,12 @@ terms:
     source: LOC
     datacite: Other
     marc: cor
+  - id: collective
+    term: Collective
+    source: enact
+    datacite: Other
+    kind: collective
+    note: 'A named group credited as a whole, without listing members. Use where ResearchGroup or Production personnel would misdescribe.'
   - id: collector
     term: Collector
     source: LOC
@@ -444,6 +472,7 @@ terms:
     source: LOC
     datacite: Other
     marc: clr
+    note: 'Colourist / colour grading (US spelling is the canonical term). Record visual effects separately under Visual effects provider.'
   - id: commentator
     term: Commentator
     source: LOC
@@ -454,6 +483,12 @@ terms:
     source: LOC
     datacite: Other
     marc: cwt
+  - id: community-collaborator
+    term: Community collaborator
+    source: enact
+    datacite: Other
+    kind: collective
+    note: 'A community contributing as a collective partner. Reuse is governed by communal consent (Traditional Knowledge and Biocultural Labels), not an individual licence.'
   - id: competitor
     term: competitor
     source: schema.org
@@ -521,6 +556,11 @@ terms:
     term: ContactPerson
     source: schema.org
     datacite: ContactPerson
+  - id: content-provider
+    term: Content provider
+    source: enact
+    datacite: Other
+    note: 'Person or organisation that supplied content for the work. Kind left unconstrained.'
   - id: contestant
     term: Contestant
     source: LOC
@@ -710,6 +750,12 @@ terms:
     source: LOC
     datacite: Other
     marc: dsr
+  - id: digital-imaging-technician
+    term: Digital imaging technician
+    source: enact
+    datacite: Other
+    kind: person
+    note: 'Digital imaging technician (DIT) on a film or photographic production.'
   - id: director
     term: Director
     source: LOC
@@ -806,11 +852,22 @@ terms:
     source: LOC
     datacite: Other
     marc: egr
+  - id: equipment-provider
+    term: Equipment and facilities provider
+    source: enact
+    datacite: Other
+    kind: organisation
+    note: 'Person or organisation that provided equipment or facilities.'
   - id: etcher
     term: Etcher
     source: LOC
     datacite: Other
     marc: etr
+  - id: evaluator
+    term: Evaluator
+    source: enact
+    datacite: Other
+    note: 'Person or organisation that evaluated the work or project. Kind left unconstrained.'
   - id: event-place
     term: Event place
     source: LOC
@@ -897,6 +954,8 @@ terms:
     source: LOC
     datacite: Other
     marc: fnd
+    kind: organisation
+    note: 'Organisation that funded the work.'
   - id: game-developer
     term: Game developer
     source: LOC
@@ -934,6 +993,8 @@ terms:
     source: LOC
     datacite: Other
     marc: his
+    kind: organisation
+    note: 'Institution hosting the research or project.'
   - id: hostinginstitution
     term: HostingInstitution
     source: datacite
@@ -948,6 +1009,11 @@ terms:
     source: LOC
     datacite: Other
     marc: ill
+  - id: indigenous-knowledge-holder
+    term: Indigenous knowledge holder
+    source: enact
+    datacite: Other
+    note: 'Holder of Indigenous or traditional knowledge drawn on in the work. Apply only with the community''s consent, alongside Traditional Knowledge and Biocultural Labels.'
   - id: inker
     term: inker
     source: schema.org
@@ -1109,6 +1175,12 @@ terms:
     term: maintainer
     source: schema.org
     datacite: Other
+  - id: maker
+    term: Maker
+    source: enact
+    datacite: Other
+    kind: person
+    note: 'The person who fabricated the work, as in craft practice.'
   - id: makeup-artist
     term: Makeup artist
     source: LOC
@@ -1334,6 +1406,17 @@ terms:
     source: LOC
     datacite: Other
     marc: plt
+  - id: podcast-host
+    term: Podcast host
+    source: enact
+    datacite: Other
+    kind: person
+    note: 'Host or presenter of a podcast.'
+  - id: podcast-producer
+    term: Podcast producer
+    source: enact
+    datacite: Producer
+    note: 'Producer of a podcast; may be a person or a production company.'
   - id: praeses
     term: Praeses
     source: LOC
@@ -1344,6 +1427,12 @@ terms:
     source: LOC
     datacite: Other
     marc: pre
+  - id: principal-investigator
+    term: Principal investigator
+    source: enact
+    datacite: ProjectLeader
+    kind: person
+    note: 'Principal investigator (PI) on a research grant.'
   - id: printer
     term: Printer
     source: LOC
@@ -1403,6 +1492,12 @@ terms:
     source: LOC
     datacite: Other
     marc: pdr
+  - id: project-partner
+    term: Project partner
+    source: enact
+    datacite: Other
+    kind: organisation
+    note: 'Organisation participating as a named partner in the project.'
   - id: projectleader
     term: ProjectLeader
     source: datacite
@@ -1439,6 +1534,8 @@ terms:
     source: LOC
     datacite: Other
     marc: pbl
+    kind: organisation
+    note: 'Organisation that published the work.'
   - id: publishing-director
     term: Publishing director
     source: LOC
@@ -1523,6 +1620,8 @@ terms:
     source: LOC
     datacite: Other
     marc: rps
+    kind: organisation
+    note: 'Repository or archive holding a related record or copy.'
   - id: research-team-head
     term: Research team head
     source: LOC
@@ -1541,6 +1640,8 @@ terms:
     term: ResearchGroup
     source: datacite
     datacite: ResearchGroup
+    kind: collective
+    note: 'A named research group or collective. For an informal or non-research team use Collective.'
   - id: respondent
     term: Respondent
     source: LOC
@@ -1594,6 +1695,12 @@ terms:
     source: LOC
     datacite: Other
     marc: sce
+  - id: scenographer
+    term: Scenographer
+    source: enact
+    datacite: Other
+    kind: person
+    note: 'Designer of the overall stage or performance environment; broader than Set designer.'
   - id: scientific-advisor
     term: Scientific advisor
     source: LOC
@@ -1609,6 +1716,12 @@ terms:
     source: LOC
     datacite: Other
     marc: scr
+  - id: script-editor
+    term: Script editor
+    source: enact
+    datacite: Editor
+    kind: person
+    note: 'Script editor on a film, broadcast or stage production.'
   - id: sculptor
     term: Sculptor
     source: LOC
@@ -1656,6 +1769,7 @@ terms:
     source: LOC
     datacite: Other
     marc: sgn
+    note: 'MARC sense: a person whose signature appears on the item. Not the depositor''s permission signature.'
   - id: singer
     term: Singer
     source: LOC
@@ -1723,6 +1837,12 @@ terms:
     source: LOC
     datacite: Other
     marc: stl
+  - id: structural-engineer
+    term: Structural engineer
+    source: enact
+    datacite: Other
+    kind: person
+    note: 'Structural engineer on an architectural or built project.'
   - id: supervisor
     term: Supervisor
     source: datacite
@@ -1838,6 +1958,7 @@ terms:
     source: LOC
     datacite: Other
     marc: wit
+    note: 'MARC sense: a person who witnesses a document or event and attests to it.'
   - id: wood-engraver
     term: Wood engraver
     source: LOC
