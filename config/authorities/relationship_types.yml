@@ -1,7 +1,11 @@
 # DataCite relationType vocabulary for the `relationships` compound, read via
-# Enact::RelationshipTypesService. Non-QA keys: `inverse:` (how the edge reads
-# from the target's side; a symmetric term points at itself) and optional
-# `color:` (map edge colour; uncoloured terms share a neutral fallback).
+# Enact::RelationshipTypesService, plus a small set of Enact-local extensions
+# (`source: enact`) for edges DataCite cannot express. Non-QA keys: `inverse:`
+# (how the edge reads from the target's side; a symmetric term points at itself)
+# and optional `color:` (map edge colour; uncoloured terms share a neutral
+# fallback). Enact-local terms carry no `datacite:` key — on DataCite export
+# they fall back to `Other` plus the free-text `type_other` /
+# `type_other_inverse` subproperties.
 terms:
   - id: iscitedby
     term: Is Cited By
@@ -42,41 +46,51 @@ terms:
     source: datacite
     datacite: Describes
     inverse: isdescribedby
+    color: '#a3c43a'
   - id: isdescribedby
     term: Is Described By
     source: datacite
     datacite: IsDescribedBy
     inverse: describes
+    color: '#a3c43a'
   - id: hasmetadata
     term: Has Metadata
     source: datacite
     datacite: HasMetadata
     inverse: ismetadatafor
+    note: 'Usually system-set; offer to depositors only behind an advanced option.'
   - id: ismetadatafor
     term: Is Metadata For
     source: datacite
     datacite: IsMetadataFor
     inverse: hasmetadata
+    note: 'Usually system-set; offer to depositors only behind an advanced option.'
   - id: hasversion
     term: Has Version
     source: datacite
     datacite: HasVersion
     inverse: isversionof
+    color: '#4040c4'
   - id: isversionof
     term: Is Version Of
     source: datacite
     datacite: IsVersionOf
     inverse: hasversion
+    color: '#4040c4'
+    note: 'See `hasversion`.'
   - id: isnewversionof
     term: Is New Version Of
     source: datacite
     datacite: IsNewVersionOf
     inverse: ispreviousversionof
+    color: '#4040c4'
   - id: ispreviousversionof
     term: Is Previous Version Of
     source: datacite
     datacite: IsPreviousVersionOf
     inverse: isnewversionof
+    color: '#4040c4'
+    note: 'Use for a superseded draft kept as process evidence (not obsoletes).'
   - id: ispartof
     term: Is Part Of
     source: datacite
@@ -131,12 +145,14 @@ terms:
     datacite: IsVariantFormOf
     inverse: isoriginalformof
     color: '#b05ec0'
+    note: 'DataCite sense: calculated, calibrated or repackaged forms. For master/dissemination copies use Is Source Of / Is Derived From.'
   - id: isoriginalformof
     term: Is Original Form Of
     source: datacite
     datacite: IsOriginalFormOf
     inverse: isvariantformof
     color: '#b05ec0'
+    note: 'DataCite sense: calculated, calibrated or repackaged forms. For master/dissemination copies use Is Source Of / Is Derived From.'
   - id: isidenticalto
     term: Is Identical To
     source: datacite
@@ -147,11 +163,13 @@ terms:
     source: datacite
     datacite: IsReviewedBy
     inverse: reviews
+    color: '#40964a'
   - id: reviews
     term: Reviews
     source: datacite
     datacite: Reviews
     inverse: isreviewedby
+    color: '#40964a'
   - id: isderivedfrom
     term: Is Derived From
     source: datacite
@@ -169,54 +187,80 @@ terms:
     source: datacite
     datacite: IsRequiredBy
     inverse: requires
+    note: 'Technical dependency (e.g. a file needing particular software or assets). Consider showing behind an advanced option.'
   - id: requires
     term: Requires
     source: datacite
     datacite: Requires
     inverse: isrequiredby
+    note: 'Technical dependency (e.g. a file needing particular software or assets). Consider showing behind an advanced option.'
   - id: obsoletes
     term: Obsoletes
     source: datacite
     datacite: Obsoletes
     inverse: isobsoletedby
+    note: 'Rarely right in practice research, which keeps superseded drafts. Prefer the version terms and the Process typology.'
   - id: isobsoletedby
     term: Is Obsoleted By
     source: datacite
     datacite: IsObsoletedBy
     inverse: obsoletes
+    note: 'Rarely right in practice research. Prefer the version terms and the Process typology.'
   - id: iscollectedby
     term: Is Collected By
     source: datacite
     datacite: IsCollectedBy
     inverse: collects
+    color: '#45c445'
   - id: collects
     term: Collects
     source: datacite
     datacite: Collects
     inverse: iscollectedby
+    color: '#45c445'
+  # Enact-local extension: DataCite has no 'is a realisation of' (score -> performance,
+  # script -> film). Exports to DataCite as Other + type_other.
+  - id: is-realisation-of
+    term: Is Realisation Of
+    source: enact
+    inverse: has-realisation
+    color: '#c43f7d'
+    note: 'A performance, recording or film realising a score or script.'
+  - id: has-realisation
+    term: Has Realisation
+    source: enact
+    inverse: is-realisation-of
+    color: '#c43f7d'
+    note: 'A score or script and its realisations (performances, recordings, films). Inverse of is-realisation-of.'
   # Free-text escape hatch, mirroring the `other` role in contributor_roles.yml:
   # selecting "Other" pairs with the sibling `type_other` (+ `type_other_inverse`)
   # free-text subproperties. `inverse: other` is the symmetric fallback used when
-  # no `type_other_inverse` is supplied.
+  # no `type_other_inverse` is supplied. Deliberately left on the neutral map
+  # colour: an unnamed edge should not claim a semantic family.
   - id: other
     term: Other
     source: datacite
     datacite: Other
     inverse: other
-  # Legacy pre-DataCite vocabulary: hidden from the deposit dropdown but still
-  # resolvable, so edges stored before the switch keep working. (Legacy
-  # `documents` shares its id with the DataCite term above.) Remove once no
-  # tenant data uses them.
+  # Pre-DataCite vocabulary, retained so edges stored before the switch keep working.
+  # sequence / sequence-of, pair-with and juxtaposed-with are REINSTATED as active
+  # Enact-local terms: do not re-retire. The rest stay active: false and duplicate live
+  # terms (source-of = issourceof, derived-from = isderivedfrom,
+  # referenced-by = isreferencedby).
   - id: sequence
     term: Sequence
+    source: enact
     inverse: sequence-of
-    color: '#5b9bd5'
-    active: false
+    color: '#2f5aae'
+    active: true
+    note: 'Reinstated — do not re-retire. Ordered succession: parts, episodes or numbered stages.'
   - id: sequence-of
     term: Sequence Of
+    source: enact
     inverse: sequence
-    color: '#5b9bd5'
-    active: false
+    color: '#2f5aae'
+    active: true
+    note: 'Reinstated — do not re-retire. Inverse of sequence.'
   - id: source-of
     term: Source Of
     inverse: derived-from
@@ -229,9 +273,11 @@ terms:
     active: false
   - id: pair-with
     term: Pair With
+    source: enact
     inverse: pair-with
-    color: '#b05ec0'
-    active: false
+    color: '#6ecfab'
+    active: true
+    note: 'Reinstated — do not re-retire. Symmetric pairing where neither item is primary, e.g. a score and its performance.'
   - id: response-to
     term: Response To
     inverse: referenced-by
@@ -244,6 +290,8 @@ terms:
     active: false
   - id: juxtaposed-with
     term: Juxtaposed With
+    source: enact
     inverse: juxtaposed-with
-    color: '#c2a83e'
-    active: false
+    color: '#c57792'
+    active: true
+    note: 'Reinstated — do not re-retire. Items placed beside one another for comparison, with no derivation or sequence implied.'

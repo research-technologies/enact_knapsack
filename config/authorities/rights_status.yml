@@ -1,0 +1,47 @@
+# Rights status vocabulary (planned field; no service reads it yet).
+# Records the rights position of a deposit, as distinct from the licence granted to
+# reusers (licenses.yml). The two combine: e.g. CC-BY-NC-ND-4.0 plus
+# third-party-ip-present. Several statuses may apply, and status may vary per file
+# and per version. Blank resolves to rights-undetermined, never to open.
+# Enact-local ids, source: enact.
+terms:
+  - id: https://enact.ac.uk/vocab/rights_status/all-rights-reserved
+    term: All rights reserved — no reuse licence granted
+    source: enact
+    note: 'Copyright asserted; no reuse permission granted.'
+  - id: https://enact.ac.uk/vocab/rights_status/rights-undetermined
+    term: Rights undetermined — not yet cleared
+    source: enact
+    default_for_blank: true
+    note: 'Rights not yet cleared or decided. The default for a blank licence field: blank does NOT mean open.'
+  - id: https://enact.ac.uk/vocab/rights_status/closed-file-public-metadata
+    term: Closed file with public metadata record
+    source: enact
+    note: 'File withheld; the metadata record is public and citable.'
+  - id: https://enact.ac.uk/vocab/rights_status/third-party-ip-present
+    term: Third-party IP present — clearance required
+    source: enact
+    note: 'The deposit includes material the depositor does not hold the rights to. Combine with a licence for the parts they do hold.'
+  - id: https://enact.ac.uk/vocab/rights_status/non-commercial-per-agreement
+    term: Non-commercial only per collaboration agreement
+    source: enact
+    note: 'Non-commercial restriction imposed by contract (e.g. a collaboration agreement), not by licence.'
+  - id: https://enact.ac.uk/vocab/rights_status/consent-based-withdrawable
+    term: Consent-based — participant may withdraw
+    source: enact
+    note: 'Permission rests on participant consent and can be withdrawn. Not compatible with an irrevocable CC licence.'
+  - id: https://enact.ac.uk/vocab/rights_status/embargoed-until-date
+    term: Embargoed until a date
+    source: enact
+    requires: embargo_end_date
+    note: 'Release withheld until a fixed date (set embargo_end_date).'
+  - id: https://enact.ac.uk/vocab/rights_status/embargoed-until-event
+    term: Embargoed until an event
+    source: enact
+    requires: embargo_trigger_event
+    note: 'Release withheld until a named event, such as a lead publication. Needs a manual release step.'
+  - id: https://enact.ac.uk/vocab/rights_status/communal-indigenous-knowledge
+    term: Communal / Indigenous knowledge — community consent required
+    source: enact
+    see_also: https://localcontexts.org/
+    note: 'Rights held communally; reuse needs community consent. Use with Traditional Knowledge and Biocultural Labels.'

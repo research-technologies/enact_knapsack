@@ -15,17 +15,29 @@ terms:
     term: Physical Object - Building
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#instrument
     term: Physical Object - Instrument
+  - id: http://vocab.getty.edu/page/aat/300041273
+    term: Physical Object - LimitedEditionPrint
+    file_suffixes: [pdf, tif, tiff, jpg, jpeg, png]
+    note: 'Fine-art or limited-edition print as an editioned object — risograph, letterpress, screenprint, lithograph, etching. AAT "prints (visual works)".'
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#audiovisual
     term: Audiovisual
   - id: https://vocabularies.coar-repositories.org/resource_types/c_c513/
     term: Visual Media
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#image
     term: Image
+    active: false
+    note: 'Deprecated; use Visual Media - StillImage.'
   - id: https://vocabularies.coar-repositories.org/resource_types/c_ecc8/
     term: Visual Media - StillImage
+    note: 'Still images: photographs, drawings and other visual works. Parent of the still-image terms below.'
   - id: https://schema.org/Drawing
     term: Visual Media - StillImage - Drawing
     file_suffixes: [jpg, jpeg, png, tiff, tif, svg, pdf]
+    note: 'Freehand or artistic drawing: sketches, studies, working doodles. For measured drawings use Visual Media - StillImage - TechnicalDrawing.'
+  - id: http://vocab.getty.edu/page/aat/300034789
+    term: Visual Media - StillImage - TechnicalDrawing
+    file_suffixes: [pdf, dwg, dxf, svg, tiff, tif, jpg, jpeg, png]
+    note: 'Measured drawing to conventions of scale and projection: plans, sections, elevations.'
   - id: https://schema.org/Painting
     term: Visual Media - StillImage - Painting
     file_suffixes: [jpg, jpeg, png, tiff, tif]
@@ -62,6 +74,7 @@ terms:
   - id: https://schema.org/MusicComposition
     term: Sound - MusicComposition
     file_suffixes: [xml, mxl, mid, midi, pdf]
+    note: 'The musical work itself, not the carrier. A deposited score is Musical notation (literature_type); link the two with is-realisation-of.'
   - id: https://schema.org/MusicRecording
     term: Sound - MusicRecording
     file_suffixes: [mp3, wav, flac, aac, m4a, ogg]
@@ -89,6 +102,7 @@ terms:
     term: ComputationalNotebook
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#model
     term: Model
+    note: 'Physical, digital or 3D model.'
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#service
     term: Service
   - id: https://datacite-metadata-schema.readthedocs.io/en/4.5/appendices/appendix-1/resourceTypeGeneral/#software
@@ -113,6 +127,7 @@ terms:
     term: Design - InteriorDesign
   - id: http://vocab.getty.edu/page/aat/300034787
     term: Design - ArchitecturalDesign
+    note: 'The architectural design work. For the drawings themselves use Visual Media - StillImage - TechnicalDrawing.'
   - id: http://vocab.getty.edu/page/aat/300047910
     term: Design - MultimediaDesign
   - id: https://github.com/research-technologies/prvoices_schema/wiki/SoundDesign
@@ -121,10 +136,20 @@ terms:
     term: Design - ExhibitionDesign
   - id: http://vocab.getty.edu/page/aat/300054190
     term: Design - TheatreDesign
+  - id: http://vocab.getty.edu/page/aat/300054766
+    term: Exhibition
+    note: 'The exhibition as a realised output. For the design made for an exhibition use Design - ExhibitionDesign; for the dated event use event_type Exhibition.'
   - id: https://vocabularies.coar-repositories.org/resource_types/ACF7-8YT9/
     term: Dataset - AggregatedData
   - id: https://vocabularies.coar-repositories.org/resource_types/c_cb28/
     term: Dataset - ClinicalTrialData
+    active: false
+    note: 'Deprecated: not applicable to practice research. Kept so existing records still resolve.'
+  - id: https://enact.ac.uk/vocab/artefact_type/communications-archive
+    term: Dataset - CommunicationsArchive
+    file_suffixes: [txt, csv, json, eml, mbox, zip, pdf]
+    source: enact
+    note: 'Project communications and correspondence deposited as process documentation — exported chat logs, message archives, email threads.'
   - id: https://vocabularies.coar-repositories.org/resource_types/FXF3-D3G7/
     term: Dataset - CompiledData
   - id: https://vocabularies.coar-repositories.org/resource_types/AM6W-6QAW/
@@ -133,6 +158,8 @@ terms:
     term: Dataset - ExperimentalData
   - id: https://vocabularies.coar-repositories.org/resource_types/A8F1-NPV9/
     term: Dataset - GenomicData
+    active: false
+    note: 'Deprecated: not applicable to practice research. Kept so existing records still resolve.'
   - id: https://vocabularies.coar-repositories.org/resource_types/2H0M-X761/
     term: Dataset - GeospatialData
   - id: https://vocabularies.coar-repositories.org/resource_types/H41Y-FW7B/
