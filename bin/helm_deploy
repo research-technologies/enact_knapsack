@@ -30,6 +30,22 @@ helm pull --untar oci://ghcr.io/samvera/charts/hyrax --version $CHART_VERSION
 # Only update the helm repo locally - it breaks in CI containers and is not needed for OCI based charts
 # helm repo update
 
+# Stream rollout progress for visibility while helm waits (--atomic gives no
+# output until it finishes). Informational only - it never decides
+# success/failure, that's helm's own exit code below. Output is just
+# replica/pod status, no secret values.
+(
+  for _ in $(seq 1 30); do
+    deploys=$(kubectl get deploy -n "$namespace" -l app.kubernetes.io/instance="$release_name" -o name 2>/dev/null)
+    [ -n "$deploys" ] && break
+    sleep 2
+  done
+  for d in $deploys; do
+    kubectl rollout status "$d" -n "$namespace" --timeout=15m
+  done
+) &
+watch_pid=$!
+
 helm upgrade \
     --install \
     --atomic \
@@ -43,3 +59,9 @@ helm upgrade \
     --create-namespace \
     "$release_name" \
     hyrax
+helm_status=$?
+
+kill "$watch_pid" 2>/dev/null
+wait "$watch_pid" 2>/dev/null
+
+exit "$helm_status"
