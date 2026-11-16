@@ -28,7 +28,7 @@ RSpec.describe Hyrax::DisplaysContentDecorator do
       def mime_type = 'video/mp4'
       def conformed_duration = nil
       def thumbnail = []
-      def download_path(_extension) = 'file:///tmp/progressive.mp4'
+      def download_path(_extension, _mime_type = nil) = 'file:///tmp/progressive.mp4'
     end
   end
 
