@@ -63,9 +63,4 @@ HykuKnapsack::Engine.routes.draw do
   get '/file_sets/:id/hls/*path', to: '/hyrax/hls#show', as: :file_set_hls, format: false
 
   get '/dashboard/job_statuses', to: '/hyrax/dashboard/job_statuses#index', as: :dashboard_job_statuses
-
-  # Admin-only "Mint DOI" button on a work's show page (via hyrax-pid).
-  # Not nested under /concern/:type since the lookup is by id alone; leading
-  # slash escapes the engine namespace -> top-level Hyrax::DoisController.
-  post '/works/:id/mint_doi', to: '/hyrax/dois#create', as: :mint_doi
 end

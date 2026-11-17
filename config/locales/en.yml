@@ -51,14 +51,6 @@ en:
         one: Collection
         other: Collections
   hyrax:
-    dois:
-      create:
-        success: "Minted DOI %{doi}. Submitted to DataCite — %{summary}"
-        not_found: "Could not find that record to mint a DOI."
-        failure: "Could not mint a DOI: %{message}"
-    base:
-      show_actions:
-        mint_doi: "Mint DOI"
     # Per-work-type card icons (Hyrax::ModelIcon looks up hyrax.icons.<i18n_key>,
     # falling back to hyrax.icons.default). Distinguishes the four Portfolio child
     # types from each other and from the Portfolio container.
