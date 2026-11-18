@@ -38,7 +38,7 @@ module Enact
       return nil if value.blank?
 
       target = target_for(value)
-      {relationType: relation_type, relatedItemType: related_item_type_for(target)}.merge(identifier_for(value, target))
+      { relationType: relation_type, relatedItemType: related_item_type_for(target) }.merge(identifier_for(value, target))
     end
 
     # A controlled `type` maps through the authority (falling back to
@@ -77,11 +77,11 @@ module Enact
     # target with nothing usable (a dangling internal id, or an internal
     # work with no DOI of its own yet) just omits it rather than guessing.
     def identifier_for(value, target)
-      return {relatedItemIdentifier: value, relatedItemIdentifierType: "URL"} if target == :url
+      return { relatedItemIdentifier: value, relatedItemIdentifierType: "URL" } if target == :url
       return {} if target.nil?
 
       doi = Array(target.try(:doi)).first
-      doi.present? ? {relatedItemIdentifier: doi, relatedItemIdentifierType: "DOI"} : {}
+      doi.present? ? { relatedItemIdentifier: doi, relatedItemIdentifierType: "DOI" } : {}
     end
 
     # Compound entry keys read tolerantly (symbol or string) -- see

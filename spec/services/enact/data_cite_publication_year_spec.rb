@@ -7,13 +7,13 @@ require 'rails_helper'
 # preference to `date_created`.
 RSpec.describe Enact::DataCitePublicationYear do
   def work_double(dates: [], date_created: nil)
-    double('Work', dates: dates, date_created: date_created) # rubocop:disable RSpec/VerifiedDoubles
+    double('Work', dates:, date_created:) # rubocop:disable RSpec/VerifiedDoubles
   end
 
   describe '.year_for' do
     it 'prefers a "Published"-typed dates entry over date_created' do
       work = work_double(
-        dates: [{type: 'Created', start_date: '2020-01-01'}, {type: 'Published', start_date: '2022-06-15'}],
+        dates: [{ type: 'Created', start_date: '2020-01-01' }, { type: 'Published', start_date: '2022-06-15' }],
         date_created: '2020-01-01'
       )
 
@@ -21,13 +21,13 @@ RSpec.describe Enact::DataCitePublicationYear do
     end
 
     it 'tolerates string-keyed dates entries' do
-      work = work_double(dates: [{'type' => 'Published', 'start_date' => '2023-03-01'}])
+      work = work_double(dates: [{ 'type' => 'Published', 'start_date' => '2023-03-01' }])
 
       expect(described_class.year_for(work)).to eq('2023')
     end
 
     it 'falls back to date_created when no dates entry is typed "Published"' do
-      work = work_double(dates: [{type: 'Created', start_date: '2020-01-01'}], date_created: '2021-05-01')
+      work = work_double(dates: [{ type: 'Created', start_date: '2020-01-01' }], date_created: '2021-05-01')
 
       expect(described_class.year_for(work)).to eq('2021')
     end

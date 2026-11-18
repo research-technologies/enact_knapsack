@@ -8,7 +8,7 @@ require 'rails_helper'
 # a per-work-class default (see config/initializers/hyrax_pid.rb).
 RSpec.describe Enact::DataCiteResourceType do
   def work_double(item_subtype:, class_name: 'PortfolioArtefact')
-    double('Work', item_subtype: item_subtype, class: double('Class', name: class_name)) # rubocop:disable RSpec/VerifiedDoubles
+    double('Work', item_subtype:, class: double('Class', name: class_name)) # rubocop:disable RSpec/VerifiedDoubles
   end
 
   describe '.general_for' do

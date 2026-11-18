@@ -11,7 +11,7 @@ RSpec.describe Enact::DataCiteMetadata do
 
   describe '.creators_for' do
     context 'with a contributor tagged "author"' do
-      let(:entries) { [{contributor: author.id.to_s, role: ['author']}] }
+      let(:entries) { [{ contributor: author.id.to_s, role: ['author'] }] }
 
       it 'builds one DataCite creator per author-tagged entry' do
         expect(described_class.creators_for(work)).to eq(
@@ -19,7 +19,7 @@ RSpec.describe Enact::DataCiteMetadata do
             {
               name: 'Ada',
               nameType: 'Personal',
-              nameIdentifiers: [{nameIdentifier: 'https://orcid.org/0000-0002-1825-0097', nameIdentifierScheme: 'ORCID', schemeUri: 'https://orcid.org'}]
+              nameIdentifiers: [{ nameIdentifier: 'https://orcid.org/0000-0002-1825-0097', nameIdentifierScheme: 'ORCID', schemeUri: 'https://orcid.org' }]
             }
           ]
         )
@@ -27,7 +27,7 @@ RSpec.describe Enact::DataCiteMetadata do
     end
 
     context 'with contributors tagged other roles only' do
-      let(:entries) { [{contributor: publisher.id.to_s, role: ['publisher']}] }
+      let(:entries) { [{ contributor: publisher.id.to_s, role: ['publisher'] }] }
 
       it 'returns an empty Array (no DataCite Creator) since none is tagged "author"' do
         expect(described_class.creators_for(work)).to eq([])
@@ -35,7 +35,7 @@ RSpec.describe Enact::DataCiteMetadata do
     end
 
     context 'with a role stored as a bare string, not an Array' do
-      let(:entries) { [{'contributor' => author.id.to_s, 'role' => 'author'}] }
+      let(:entries) { [{ 'contributor' => author.id.to_s, 'role' => 'author' }] }
 
       it 'still resolves it (tolerates single-value roles and string keys)' do
         expect(described_class.creators_for(work).first[:name]).to eq('Ada')
@@ -44,7 +44,7 @@ RSpec.describe Enact::DataCiteMetadata do
 
     context 'with an organization contributor and no identifiers' do
       let(:org) { Enact::Contributor.create!(display_name: 'A Lab', agent_type: 'organization') }
-      let(:entries) { [{contributor: org.id.to_s, role: ['author']}] }
+      let(:entries) { [{ contributor: org.id.to_s, role: ['author'] }] }
 
       it 'sets nameType Organizational and omits nameIdentifiers' do
         creator = described_class.creators_for(work).first
@@ -60,7 +60,7 @@ RSpec.describe Enact::DataCiteMetadata do
 
   describe '.publisher_for' do
     context 'with a contributor tagged "publisher"' do
-      let(:entries) { [{contributor: publisher.id.to_s, role: ['publisher']}] }
+      let(:entries) { [{ contributor: publisher.id.to_s, role: ['publisher'] }] }
 
       it "returns that contributor's display_name" do
         expect(described_class.publisher_for(work)).to eq('Enact Press')
@@ -68,7 +68,7 @@ RSpec.describe Enact::DataCiteMetadata do
     end
 
     context 'with no contributor tagged "publisher"' do
-      let(:entries) { [{contributor: author.id.to_s, role: ['author']}] }
+      let(:entries) { [{ contributor: author.id.to_s, role: ['author'] }] }
 
       it 'returns nil (the metadata mapper fails loudly on a blank required field)' do
         expect(described_class.publisher_for(work)).to be_nil

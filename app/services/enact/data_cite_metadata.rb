@@ -30,7 +30,7 @@ module Enact
     #   treats an empty Array as a missing required field)
     def creators_for(work)
       contributor_entries(work).select { |entry| creator_role?(entry) }
-                                .filter_map { |entry| creator_hash(entry) }
+                               .filter_map { |entry| creator_hash(entry) }
     end
 
     # @param work [#contributors]
@@ -74,7 +74,7 @@ module Enact
       contributor = resolve(entry)
       return nil unless contributor
 
-      hash = {name: contributor.display_name, nameType: contributor.organization? ? "Organizational" : "Personal"}
+      hash = { name: contributor.display_name, nameType: contributor.organization? ? "Organizational" : "Personal" }
       identifiers = name_identifiers(contributor)
       hash[:nameIdentifiers] = identifiers if identifiers.any?
       affiliations = affiliation_list(contributor)
@@ -88,21 +88,19 @@ module Enact
     # array.
     def name_identifiers(contributor)
       identifiers = []
-      if contributor.orcid.present?
-        identifiers << {nameIdentifier: contributor.orcid, nameIdentifierScheme: "ORCID", schemeUri: "https://orcid.org"}
-      end
+      identifiers << { nameIdentifier: contributor.orcid, nameIdentifierScheme: "ORCID", schemeUri: "https://orcid.org" } if contributor.orcid.present?
       Array(contributor.name_identifiers).each do |entry|
         value = (entry["value"] || entry[:value]).to_s
         next if value.blank?
 
         scheme = (entry["scheme"] || entry[:scheme]).presence || "Other"
-        identifiers << {nameIdentifier: value, nameIdentifierScheme: scheme}
+        identifiers << { nameIdentifier: value, nameIdentifierScheme: scheme }
       end
       identifiers
     end
 
     def affiliation_list(contributor)
-      Array(contributor.affiliations).reject(&:blank?).map { |name| {name: name} }
+      Array(contributor.affiliations).reject(&:blank?).map { |name| { name: } }
     end
 
     def fetch(entry, key)
