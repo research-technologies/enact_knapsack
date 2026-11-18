@@ -32,25 +32,25 @@ module HykuKnapsack
     def create(body)
       attributes = body.dig(:data, :attributes) || {}
       doi = "#{attributes[:prefix]}/fake.#{SecureRandom.hex(4)}"
-      store(doi, attributes.merge(doi: doi, state: "draft"))
+      store(doi, attributes.merge(doi:, state: "draft"))
     end
 
     def update(path, body)
       doi = doi_from(path)
       attributes = body.dig(:data, :attributes) || {}
       state = attributes[:event] == "publish" ? "findable" : (@dois.dig(doi, "state") || "draft")
-      store(doi, (@dois[doi] || {}).merge(attributes.except(:event)).merge(doi: doi, state: state))
+      store(doi, (@dois[doi] || {}).merge(attributes.except(:event)).merge(doi:, state:))
     end
 
     def find(path)
       doi = doi_from(path)
-      record = @dois.fetch(doi) { {"doi" => doi, "state" => "findable"} }
-      {"data" => {"id" => doi, "type" => "dois", "attributes" => record}}
+      record = @dois.fetch(doi) { { "doi" => doi, "state" => "findable" } }
+      { "data" => { "id" => doi, "type" => "dois", "attributes" => record } }
     end
 
     def store(doi, attributes)
       @dois[doi] = attributes.transform_keys(&:to_s)
-      {"data" => {"id" => doi, "type" => "dois", "attributes" => @dois[doi]}}
+      { "data" => { "id" => doi, "type" => "dois", "attributes" => @dois[doi] } }
     end
 
     def doi_from(path)
