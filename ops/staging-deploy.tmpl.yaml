@@ -1,6 +1,6 @@
 fullnameOverride: "enact-knapsack-staging"
 
-replicaCount: 2
+replicaCount: 1
 
 resources:
   limits:
@@ -192,7 +192,7 @@ extraEnvVars: &envVars
   - name: REPOSITORY_S3_STORAGE
     value: "true"
   - name: REPOSITORY_S3_BUCKET
-    value: enact-repository-staging-822951369940
+    value: enact-staging-repository-staging-822951369940
   - name: REPOSITORY_S3_REGION
     value: eu-west-1
   - name: AWS_REGION
@@ -528,13 +528,13 @@ nginx:
             auth_request     /auth;
             auth_request_set ${DOLLAR}auth_status ${DOLLAR}upstream_status;
             # Use a variable here, so that nginx refreshes this value per request, otherwise ips get cached
-            set ${DOLLAR}image_internal     https://iiif-staging.enacthyku.com;
+            set ${DOLLAR}image_internal     https://iiif-stg.enacthyku.com;
 
             # CloudFront routes by SNI + Host; both must match the distribution's
             # configured alias, not the tenant's own hostname.
             proxy_ssl_server_name  on;
-            proxy_ssl_name         iiif-staging.enacthyku.com;
-            proxy_set_header       Host             iiif-staging.enacthyku.com;
+            proxy_ssl_name         iiif-stg.enacthyku.com;
+            proxy_set_header       Host             iiif-stg.enacthyku.com;
             proxy_set_header       X-Real-IP        ${DOLLAR}remote_addr;
             proxy_set_header       X-Forwarded-For  ${DOLLAR}proxy_add_x_forwarded_for;
             proxy_set_header       X-Forwarded-Host ${DOLLAR}host;
