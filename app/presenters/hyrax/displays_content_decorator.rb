@@ -57,7 +57,8 @@ module Hyrax
     end
 
     # OVERRIDE to always return https, consider contributing back to Hyrax
-    def download_path(extension)
+    # second arg (mime_type) added upstream in video_content/audio_content - unused here
+    def download_path(extension, _mime_type = nil)
       Hyrax::Engine.routes.url_helpers.download_url(object, file: extension, host: hostname, protocol: 'https')
     end
   end
