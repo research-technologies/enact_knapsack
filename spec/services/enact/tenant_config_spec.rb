@@ -123,6 +123,44 @@ RSpec.describe Enact::TenantConfig do
     end
   end
 
+  describe 'default groups' do
+    let!(:editors) { Hyrax::Group.find_or_create_by!(name: 'editors') }
+    let!(:admin) { Hyrax::Group.find_or_create_by!(name: 'admin') }
+
+    before do
+      editors.update!(humanized_name: 'Editors', description: 'Can edit everything.')
+      admin.update!(humanized_name: 'Translation missing: en.hyku.admin.groups.humanized_name.admin', description: 'Admins.')
+    end
+
+    it 'exports names and descriptions, leaving out translation placeholders' do
+      groups = described_class.new(dir).export['groups']
+
+      expect(groups['editors']).to eq('humanized_name' => 'Editors', 'description' => 'Can edit everything.')
+      expect(groups['admin']).to eq('description' => 'Admins.')
+    end
+
+    it 'imports them into existing groups only' do
+      described_class.new(dir).export
+      editors.update!(humanized_name: 'Translation missing: x', description: 'Translation missing: y')
+      manifest = JSON.parse(dir.join('config.json').read)
+      manifest['groups']['no_such_group'] = { 'humanized_name' => 'Ghost' }
+      dir.join('config.json').write(JSON.generate(manifest))
+
+      described_class.new(dir).import
+
+      expect(editors.reload).to have_attributes(humanized_name: 'Editors', description: 'Can edit everything.')
+      expect(Hyrax::Group.find_by(name: 'no_such_group')).to be_nil
+    end
+
+    it 'skips groups when the bundle has none' do
+      described_class.new(dir).export
+      manifest = JSON.parse(dir.join('config.json').read).except('groups')
+      dir.join('config.json').write(JSON.generate(manifest))
+
+      expect { described_class.new(dir).import }.not_to raise_error
+    end
+  end
+
   describe '.export_tenant and .import_tenant' do
     let(:instance) { instance_double(described_class, export: { 'a' => 1 }, import: { 'b' => 2 }) }
 

@@ -2,8 +2,9 @@
 
 module Enact
   # Copies a tenant's look-and-feel to another tenant through a directory bundle:
-  # site settings, content blocks, feature flags, uploaded site images and a
-  # behavioural subset of the Account settings (never contact emails, analytics ids or private settings).
+  # site settings, content blocks, feature flags, uploaded site images, the names and
+  # descriptions of the default groups, and a behavioural subset of the Account settings
+  # (never contact emails, analytics ids or private settings).
   # #export and #import act on the current tenant; the .export_tenant / .import_tenant
   # entry points switch to a tenant by cname first.
   class TenantConfig
@@ -13,6 +14,7 @@ module Enact
       home_theme show_theme search_theme available_works
     ].freeze
     SITE_UPLOADS = %w[banner_image logo_image directory_image default_collection_image default_work_image favicon].freeze
+    GROUP_ATTRIBUTES = %w[humanized_name description].freeze
     ACCOUNT_SETTINGS = %w[
       allow_downloads batch_email_notifications depositor_email_notifications bulkrax_field_mappings
       file_size_limit hidden_index_fields solr_max_results solr_rows_per_request
@@ -40,7 +42,8 @@ module Enact
         'uploads' => export_uploads,
         'content_blocks' => ContentBlock.pluck(:name, :value).to_h,
         'features' => Hyrax::Feature.pluck(:key, :enabled).to_h,
-        'account_settings' => export_account_settings
+        'account_settings' => export_account_settings,
+        'groups' => export_groups
       }
       @dir.join(MANIFEST).write(JSON.pretty_generate(manifest))
       manifest
@@ -53,6 +56,7 @@ module Enact
       import_content_blocks(manifest['content_blocks'])
       import_features(manifest['features'])
       import_account_settings(manifest['account_settings'])
+      import_groups(manifest['groups'])
       Flipflop::FeatureCache.current.clear!
       manifest
     end
@@ -87,6 +91,25 @@ module Enact
     def import_content_blocks(blocks)
       blocks.each do |name, value|
         ContentBlock.find_or_initialize_by(name:).update!(value:)
+      end
+    end
+
+    # RolesService bakes I18n.t into a constant at class load, so a tenant created while translations
+    # are not yet loaded stores "Translation missing: ..." as its default groups' names; never copy those.
+    def usable_group_value?(value)
+      value.present? && !value.start_with?('Translation missing')
+    end
+
+    def export_groups
+      default_names = RolesService::DEFAULT_HYRAX_GROUPS_WITH_ATTRIBUTES.keys.map(&:to_s)
+      Hyrax::Group.where(name: default_names).to_h do |group|
+        [group.name, group.slice(*GROUP_ATTRIBUTES).select { |_, value| usable_group_value?(value) }]
+      end
+    end
+
+    def import_groups(groups)
+      groups&.each do |name, attributes|
+        Hyrax::Group.find_by(name:)&.update!(attributes)
       end
     end
 
