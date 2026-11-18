@@ -2,7 +2,8 @@
 
 module Enact
   # Copies a tenant's look-and-feel to another tenant through a directory bundle:
-  # site settings, content blocks, feature flags and uploaded site images.
+  # site settings, content blocks, feature flags, uploaded site images and a
+  # behavioural subset of the Account settings (never contact emails, analytics ids or private settings).
   # #export and #import act on the current tenant; the .export_tenant / .import_tenant
   # entry points switch to a tenant by cname first.
   class TenantConfig
@@ -12,6 +13,10 @@ module Enact
       home_theme show_theme search_theme available_works
     ].freeze
     SITE_UPLOADS = %w[banner_image logo_image directory_image default_collection_image default_work_image favicon].freeze
+    ACCOUNT_SETTINGS = %w[
+      allow_downloads batch_email_notifications depositor_email_notifications bulkrax_field_mappings
+      file_size_limit hidden_index_fields solr_max_results solr_rows_per_request
+    ].freeze
 
     def self.export_tenant(cname:, dir:)
       AccountElevator.switch!(cname)
@@ -34,7 +39,8 @@ module Enact
         'site' => site.attributes.slice(*SITE_ATTRIBUTES),
         'uploads' => export_uploads,
         'content_blocks' => ContentBlock.pluck(:name, :value).to_h,
-        'features' => Hyrax::Feature.pluck(:key, :enabled).to_h
+        'features' => Hyrax::Feature.pluck(:key, :enabled).to_h,
+        'account_settings' => export_account_settings
       }
       @dir.join(MANIFEST).write(JSON.pretty_generate(manifest))
       manifest
@@ -46,6 +52,7 @@ module Enact
       import_site(manifest)
       import_content_blocks(manifest['content_blocks'])
       import_features(manifest['features'])
+      import_account_settings(manifest['account_settings'])
       Flipflop::FeatureCache.current.clear!
       manifest
     end
@@ -81,6 +88,19 @@ module Enact
       blocks.each do |name, value|
         ContentBlock.find_or_initialize_by(name:).update!(value:)
       end
+    end
+
+    def export_account_settings
+      return {} unless site.account
+
+      ACCOUNT_SETTINGS.index_with { |name| site.account.public_send(name) }
+    end
+
+    def import_account_settings(settings)
+      return if settings.blank?
+      raise ArgumentError, 'Tenant has no Account to apply settings to' unless site.account
+
+      site.account.update!(settings)
     end
 
     def import_features(features)

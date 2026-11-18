@@ -37,6 +37,7 @@ RSpec.describe Enact::TenantConfig do
       expect(manifest['content_blocks']).to include('home_text' => '<p>Welcome</p>')
       expect(manifest['features']).to include('deposit_wizard' => true, 'hls_streaming' => false)
       expect(manifest['uploads']).to eq({})
+      expect(manifest['account_settings']).to eq({})
       expect(dir.join('uploads')).not_to exist
     end
 
@@ -46,9 +47,7 @@ RSpec.describe Enact::TenantConfig do
       expect(source_manifest['uploads']).to match('favicon' => a_string_ending_with('.png'))
       expect(dir.join('uploads', source_manifest['uploads']['favicon'])).to exist
 
-      blank_site = Site.instance
-      blank_site.remove_favicon!
-      blank_site.update!(institution_name: nil, home_theme: nil, show_theme: nil, search_theme: nil)
+      Site.instance.update!(remove_favicon: '1', institution_name: nil, home_theme: nil, show_theme: nil, search_theme: nil)
       expect(Site.instance.reload.favicon).to be_blank
       ContentBlock.delete_all
       Hyrax::Feature.delete_all
@@ -72,6 +71,55 @@ RSpec.describe Enact::TenantConfig do
 
       expect { 2.times { described_class.new(dir).import } }.not_to change(ContentBlock, :count)
       expect(ContentBlock.find_by(name: 'home_text').value).to eq('<p>Welcome</p>')
+    end
+  end
+
+  describe 'account settings' do
+    let(:account) { create(:account) }
+
+    before do
+      Site.instance.update!(account:)
+      account.update!(allow_downloads: false, hidden_index_fields: 'title, creator', contact_email: 'demo@example.com',
+                      bulkrax_field_mappings: '{"Bulkrax::BagitParser":{}}')
+    end
+
+    it 'exports only the allowlisted settings' do
+      settings = described_class.new(dir).export['account_settings']
+
+      expect(settings.keys).to match_array(described_class::ACCOUNT_SETTINGS)
+      expect(settings).to include('allow_downloads' => false, 'hidden_index_fields' => 'title, creator')
+      expect(JSON.parse(settings['bulkrax_field_mappings'])).to eq('Bulkrax::BagitParser' => {})
+    end
+
+    it 'imports them without touching contact emails' do
+      # Changing a notification setting schedules jobs inside the account's tenant, which has no schema here.
+      site = Site.instance
+      site.account = account
+      allow(Site).to receive(:instance).and_return(site)
+      allow(Apartment::Tenant).to receive(:switch).and_yield
+      allow(account).to receive(:find_or_schedule_jobs)
+      described_class.new(dir).export
+      account.update!(allow_downloads: true, hidden_index_fields: 'title', contact_email: 'prod@example.com')
+
+      described_class.new(dir).import
+
+      expect(account.reload).to have_attributes(allow_downloads: false, hidden_index_fields: 'title, creator',
+                                                contact_email: 'prod@example.com')
+    end
+
+    it 'raises when the destination tenant has no account' do
+      described_class.new(dir).export
+      Site.instance.update!(account: nil)
+
+      expect { described_class.new(dir).import }.to raise_error(ArgumentError, /no Account/)
+    end
+
+    it 'skips settings when the bundle has none' do
+      described_class.new(dir).export
+      manifest = JSON.parse(dir.join('config.json').read).except('account_settings')
+      dir.join('config.json').write(JSON.generate(manifest))
+
+      expect { described_class.new(dir).import }.not_to raise_error
     end
   end
 
