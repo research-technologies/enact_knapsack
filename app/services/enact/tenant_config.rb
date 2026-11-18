@@ -1,0 +1,92 @@
+# frozen_string_literal: true
+
+module Enact
+  # Copies a tenant's look-and-feel to another tenant through a directory bundle:
+  # site settings, content blocks, feature flags and uploaded site images.
+  # #export and #import act on the current tenant; the .export_tenant / .import_tenant
+  # entry points switch to a tenant by cname first.
+  class TenantConfig
+    MANIFEST = 'config.json'
+    SITE_ATTRIBUTES = %w[
+      application_name institution_name institution_name_full contact_email directory_image_alt_text
+      home_theme show_theme search_theme available_works
+    ].freeze
+    SITE_UPLOADS = %w[banner_image logo_image directory_image default_collection_image default_work_image favicon].freeze
+
+    def self.export_tenant(cname:, dir:)
+      AccountElevator.switch!(cname)
+      new(dir).export
+    end
+
+    def self.import_tenant(cname:, dir:)
+      AccountElevator.switch!(cname)
+      new(dir).import
+    end
+
+    def initialize(dir)
+      @dir = Pathname.new(dir)
+    end
+
+    # @return [Hash] the manifest written to the bundle
+    def export
+      @dir.mkpath
+      manifest = {
+        'site' => site.attributes.slice(*SITE_ATTRIBUTES),
+        'uploads' => export_uploads,
+        'content_blocks' => ContentBlock.pluck(:name, :value).to_h,
+        'features' => Hyrax::Feature.pluck(:key, :enabled).to_h
+      }
+      @dir.join(MANIFEST).write(JSON.pretty_generate(manifest))
+      manifest
+    end
+
+    # @return [Hash] the manifest that was applied
+    def import
+      manifest = JSON.parse(@dir.join(MANIFEST).read)
+      import_site(manifest)
+      import_content_blocks(manifest['content_blocks'])
+      import_features(manifest['features'])
+      Flipflop::FeatureCache.current.clear!
+      manifest
+    end
+
+    private
+
+    # Site.instance re-queries on every call, so memoize: assignments and #save! must hit one object.
+    def site
+      @site ||= Site.instance
+    end
+
+    def export_uploads
+      uploads_dir = @dir.join('uploads')
+      SITE_UPLOADS.each_with_object({}) do |name, files|
+        file = site.public_send(name)
+        next if file.blank?
+
+        uploads_dir.mkpath
+        FileUtils.cp(file.path, uploads_dir.join(File.basename(file.path)))
+        files[name] = File.basename(file.path)
+      end
+    end
+
+    def import_site(manifest)
+      site.assign_attributes(manifest['site'])
+      manifest['uploads'].each do |name, filename|
+        File.open(@dir.join('uploads', filename)) { |file| site.public_send("#{name}=", file) }
+      end
+      site.save!
+    end
+
+    def import_content_blocks(blocks)
+      blocks.each do |name, value|
+        ContentBlock.find_or_initialize_by(name:).update!(value:)
+      end
+    end
+
+    def import_features(features)
+      features.each do |key, enabled|
+        Hyrax::Feature.find_or_initialize_by(key:).update!(enabled:)
+      end
+    end
+  end
+end
