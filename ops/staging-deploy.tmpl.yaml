@@ -98,7 +98,7 @@ extraEnvVars: &envVars
   - name: DB_PORT
     value: "5432"
   - name: DB_NAME
-    value: enact-knapsack-staging
+    value: enact_knapsack_staging
   - name: DB_USER
     value: enact-knapsack-staging
   - name: HYRAX_SKIP_WINGS
@@ -279,7 +279,7 @@ externalPostgresql:
   host: zalando-postgres-v17.postgres.svc.cluster.local
   username: enact-knapsack-staging
   password: $DB_PASSWORD
-  database: enact-knapsack-staging
+  database: enact_knapsack_staging
   port: 5432
 
 externalSolrHost: solr.solr.svc.cluster.local
