@@ -47,6 +47,15 @@ module HykuKnapsack
       end
     end
 
+    # Tenants created at runtime (Hyku's account UI) load schema.rb and then record
+    # which migrations it covers, using ActiveRecord::Migrator.migrations_paths.
+    # Rails only sets that from the app's full db/migrate list inside rake tasks, so
+    # at runtime the knapsack's and engines' migration folders are missed, and the
+    # next db:migrate tries to re-create their tables.
+    config.after_initialize do
+      ActiveRecord::Migrator.migrations_paths = Rails.application.paths["db/migrate"].to_a
+    end
+
     config.before_initialize do
       # When running in flexible metadata mode, disable include_metadata for all resource
       # types so that schemas are driven entirely by the M3 profile rather than core_metadata.
