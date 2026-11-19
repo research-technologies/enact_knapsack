@@ -39,7 +39,9 @@ USER root
 COPY --chown=solr:solr solr/security.json /var/solr/data/security.json
 USER $SOLR_USER
 
-FROM ghcr.io/notch8/scripts/bitnamilegacy-nginx:1.21.6-debian-11-r21 AS hyku-nginx
+# No Bitnami image dependency anymore (Bitnami stopped publishing legacy-tag
+# updates). See notch8/notch8-ops#812.
+FROM nginx/nginx-unprivileged:1.31.9-alpine AS hyku-nginx
 
 # Bake this exact commit's compiled assets/vendored pdf.js into the nginx
 # image itself, so nginx and Rails always agree on what a deploy's asset URLs
