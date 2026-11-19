@@ -10,7 +10,7 @@ module Enact
   class TenantConfig
     MANIFEST = 'config.json'
     SITE_ATTRIBUTES = %w[
-      application_name institution_name institution_name_full contact_email directory_image_alt_text
+      application_name institution_name institution_name_full directory_image_alt_text
       home_theme show_theme search_theme available_works
     ].freeze
     SITE_UPLOADS = %w[banner_image logo_image directory_image default_collection_image default_work_image favicon].freeze
@@ -75,8 +75,9 @@ module Enact
         next if file.blank?
 
         uploads_dir.mkpath
-        FileUtils.cp(file.path, uploads_dir.join(File.basename(file.path)))
-        files[name] = File.basename(file.path)
+        filename = "#{name}#{File.extname(file.path)}"
+        FileUtils.cp(file.path, uploads_dir.join(filename))
+        files[name] = filename
       end
     end
 

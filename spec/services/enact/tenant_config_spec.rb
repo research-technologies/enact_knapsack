@@ -44,8 +44,8 @@ RSpec.describe Enact::TenantConfig do
     it 'restores everything into a blank site, including uploads' do
       attach_favicon(Site.instance)
       source_manifest = described_class.new(dir).export
-      expect(source_manifest['uploads']).to match('favicon' => a_string_ending_with('.png'))
-      expect(dir.join('uploads', source_manifest['uploads']['favicon'])).to exist
+      expect(source_manifest['uploads']).to eq('favicon' => 'favicon.png')
+      expect(dir.join('uploads', 'favicon.png')).to exist
 
       Site.instance.update!(remove_favicon: '1', institution_name: nil, home_theme: nil, show_theme: nil, search_theme: nil)
       expect(Site.instance.reload.favicon).to be_blank
@@ -63,6 +63,29 @@ RSpec.describe Enact::TenantConfig do
       expect(ContentBlock.find_by(name: 'home_text').value).to eq('<p>Welcome</p>')
       expect(Hyrax::Feature.find_by(key: 'deposit_wizard').enabled).to be true
       expect(Hyrax::Feature.find_by(key: 'hls_streaming').enabled).to be false
+    end
+
+    it 'exports images whose stored file names collide without overwriting each other' do
+      Dir.mktmpdir do |tmp|
+        paths = %w[a b].map do |sub|
+          FileUtils.mkdir_p(File.join(tmp, sub))
+          File.join(tmp, sub, 'tenant_1700000000.png').tap { |path| File.binwrite(path, sub) }
+        end
+        site = Site.instance
+        allow(Site).to receive(:instance).and_return(site)
+        allow(site).to receive(:logo_image).and_return(double(blank?: false, path: paths[0]))
+        allow(site).to receive(:directory_image).and_return(double(blank?: false, path: paths[1]))
+
+        manifest = described_class.new(dir).export
+
+        expect(manifest['uploads']).to eq('logo_image' => 'logo_image.png', 'directory_image' => 'directory_image.png')
+        expect(dir.join('uploads', 'logo_image.png').read).to eq('a')
+        expect(dir.join('uploads', 'directory_image.png').read).to eq('b')
+      end
+    end
+
+    it 'does not copy the site contact email' do
+      expect(described_class.new(dir).export['site']).not_to have_key('contact_email')
     end
 
     it 'is safe to re-run' do
