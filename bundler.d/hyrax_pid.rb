@@ -4,5 +4,5 @@
 # actually boots from.
 #
 # `branch:` is required for Bundler's local override: docker-compose.override.yml
-# mounts a local checkout and sets BUNDLE_LOCAL__HYRAX_PID to use it instead.
+# mounts a local checkout and sets BUNDLE_LOCAL__HYRAX___PID to use it instead.
 gem 'hyrax-pid', github: "research-technologies/hyrax-pid", branch: "main"
