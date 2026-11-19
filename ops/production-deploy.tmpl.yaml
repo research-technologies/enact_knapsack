@@ -335,10 +335,7 @@ nginx:
   image:
     # Built from the `hyku-nginx` Dockerfile stage, which bakes public/assets
     # and public/pdf.js in from the `hyku-web` stage of this exact commit - no
-    # shared volume or deploy-time copy step needed for those. Based on
-    # nginx/nginx-unprivileged (see Dockerfile), not a Bitnami image - the
-    # chart's own nginx templates (not a Bitnami subchart) don't read a
-    # separate `registry` key, so it's folded into `repository` here.
+    # shared volume or deploy-time copy step needed for those.
     repository: "ghcr.io/$REPO_LOWER/nginx"
     tag: "$TAG"
   extraVolumes:
