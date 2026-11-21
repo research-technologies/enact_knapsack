@@ -12,6 +12,9 @@ scratch.md
 file_cache/
 .bash_history
 /.cache
+.local/
+.lesshst
+.viminfo
 
 # Local verification artifacts
 .playwright-mcp/

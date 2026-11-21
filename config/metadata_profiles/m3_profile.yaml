@@ -391,6 +391,35 @@ properties:
     view:
       render_as: faceted
       html_dl: true
+  doi:
+    # Minted by the admin-only "Mint DOI" button (Hyrax::DoisController, via
+    # the hyrax-pid gem). Hidden from the edit form (like bulkrax_identifier
+    # below) since it's system-set, not hand-entered. Distinct from
+    # portfolio_identifier, which is specifically a RAiD, not a DOI.
+    available_on:
+      class:
+      - Portfolio
+      - PortfolioArtefact
+      - PortfolioEvent
+      - PortfolioLiterature
+      - PortfolioItemCollection
+    cardinality:
+      minimum: 0
+      maximum: 1
+    data_type: string
+    display_label:
+      default: DOI
+    indexing:
+    - doi_ssi
+    form:
+      display: false
+      primary: false
+      required: false
+      multiple: false
+    property_uri: http://purl.org/spar/datacite/doi
+    range: http://www.w3.org/2001/XMLSchema#string
+    view:
+      html_dl: true
   portfolio_identifier:
     available_on:
       class:
@@ -761,6 +790,7 @@ properties:
     - Created
     - Issued
     - Submitted
+    - Published
     - Updated
     - Valid
     - Withdrawn

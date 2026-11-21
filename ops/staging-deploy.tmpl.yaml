@@ -81,6 +81,10 @@ ingress:
       secretName: enact-knapsack-staging-tls
 
 extraEnvVars: &envVars
+  - name: ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+    value: $ACTIVE_RECORD_ENCRYPTION_PRIMARY_KEY
+  - name: ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
+    value: $ACTIVE_RECORD_ENCRYPTION_KEY_DERIVATION_SALT
   - name: BUNDLE_LOCAL__HYKU_KNAPSACK
     value: /app/samvera
   - name: BUNDLE_DISABLE_LOCAL_BRANCH_CHECK
