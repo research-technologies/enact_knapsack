@@ -335,12 +335,8 @@ nginx:
   image:
     # Built from the `hyku-nginx` Dockerfile stage, which bakes public/assets
     # and public/pdf.js in from the `hyku-web` stage of this exact commit - no
-    # shared volume or deploy-time copy step needed for those. Still based on
-    # ghcr.io/notch8/scripts/bitnamilegacy-nginx (see Dockerfile) since the
-    # server block below relies on that image's bots.d/{ddos,blockbots}.conf
-    # includes.
-    registry: ghcr.io
-    repository: "$REPO_LOWER/nginx"
+    # shared volume or deploy-time copy step needed for those.
+    repository: "ghcr.io/$REPO_LOWER/nginx"
     tag: "$TAG"
   extraVolumes:
     - name: uploads
@@ -387,7 +383,7 @@ nginx:
     # round-trip. Keyed by tenant Host + session cookie + file-set id, so a
     # cached decision can never be served to a different tenant, a different
     # session, or a different file set.
-    proxy_cache_path /opt/bitnami/nginx/tmp/iiif_auth_cache levels=1:2 keys_zone=iiif_auth_cache:1m max_size=10m inactive=2m use_temp_path=off;
+    proxy_cache_path /var/cache/nginx/iiif_auth_cache levels=1:2 keys_zone=iiif_auth_cache:1m max_size=10m inactive=2m use_temp_path=off;
 
     # Extracts the file-set id the same way Enact::IiifController#file_set_id_for
     # does (must stay in sync with that regex). Falls back to the full request
@@ -399,7 +395,7 @@ nginx:
         default                        ${DOLLAR}request_uri;
     }
 
-    error_log  /opt/bitnami/nginx/logs/error.log warn;
+    error_log  /var/log/nginx/error.log warn;
     #tcp_nopush     on;
 
     # Cloudflare ips see for refresh
@@ -430,7 +426,6 @@ nginx:
 
     real_ip_header X-Forwarded-For;
     real_ip_recursive on;
-    include /opt/bitnami/nginx/conf/conf.d/*.conf;
     server {
         listen 8080;
         server_name _;
@@ -440,7 +435,7 @@ nginx:
         client_body_in_file_only clean;
         client_body_buffer_size 32K;
         client_max_body_size 0;
-        access_log /opt/bitnami/nginx/logs/access.log loki;
+        access_log /var/log/nginx/access.log loki;
         # if=${DOLLAR}loggable;
 
         sendfile on;
@@ -452,9 +447,6 @@ nginx:
         gzip_vary on;
         gzip_proxied any;
         gzip_types text/plain text/css text/xml application/json application/javascript application/xml+rss image/svg+xml;
-
-        include /opt/bitnami/nginx/conf/bots.d/ddos.conf;
-        include /opt/bitnami/nginx/conf/bots.d/blockbots.conf;
 
         location ~ (\.php|\.aspx|\.asp) {
         	return 404;
