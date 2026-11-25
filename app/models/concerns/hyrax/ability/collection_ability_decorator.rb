@@ -19,4 +19,8 @@ end
 Hyrax::Ability::CollectionAbility.prepend(Hyrax::Ability::CollectionAbilityDecorator)
 
 # Append last so `cannot` overrides earlier grants; `|=` avoids duplicates on reload.
-Ability.ability_logic |= [:disable_collection_creation]
+# Deferred: this file loads in the engine's to_prepare, before Hyku adds its locales, and referencing
+# Ability here loads RolesService, which freezes I18n.t into a constant ("Translation missing" group names).
+Rails.application.config.after_initialize do
+  Ability.ability_logic |= [:disable_collection_creation]
+end
