@@ -1,5 +1,6 @@
 <%# Overrides hyrax's app/views/hyrax/base/_show_actions.html.erb (5.2.0) to
-    hide "Add to collection" from non-admins and add hyrax-pid's "Mint DOI" button. %>
+    hide "Add to collection" from non-admins and add hyrax-pid's DOI buttons
+    ("Mint DOI"/"Update DOI Metadata", and "Register DOI"). %>
 <div class="row show-actions button-row-top-two-column">
   <div class="col-sm-6">
     <% if !workflow_restriction?(presenter) %>
@@ -24,7 +25,7 @@
       <% # analytics graph will not show unless the page is refreshed. %>
       <%= link_to t('.analytics'), presenter.stats_path, id: 'stats', class: 'btn btn-secondary', data: { turbolinks: false } %>
     <% end %>
-    <%= render 'hyrax/pid/mint_button', presenter: presenter %>
+    <%= render 'hyrax/pid/doi_actions', presenter: presenter %>
   </div>
 
   <div class="col-sm-6 text-right">

@@ -27,6 +27,13 @@ module HykuKnapsack
       end
     end
 
+    # Stands in for Hyrax::Pid::DataCite::Client#check_credentials ("Test
+    # connection" on the PID services page): there's nothing to check.
+    # @return [Hyrax::Pid::ConnectionCheck]
+    def check_credentials(prefix:)
+      Hyrax::Pid::ConnectionCheck.new(ok: true, message: "Fake DataCite client in use (prefix #{prefix}); nothing was sent.")
+    end
+
     private
 
     def create(body)

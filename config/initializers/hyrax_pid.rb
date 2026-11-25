@@ -7,14 +7,18 @@
 # `/hyrax/base/_show_actions` override) shows once DataCite is configured there
 # and the tenant's "mint_doi" feature is on at /admin/features.
 #
-# No real DataCite account exists for this environment yet, so this swaps in a
-# fake client (HykuKnapsack::FakeDataCiteClient) that fabricates DataCite-shaped
-# responses in-process, with no network call; any values entered on the
-# settings page will do. Delete the `config.data_cite.client` line to mint for
-# real, which falls the minter back to its default Net::HTTP client.
+# By default the minter calls DataCite for real (its default Net::HTTP client),
+# against the sandbox or production API depending on the "sandbox" setting on
+# that page.
+#
+# Set HYRAX_PID_FAKE_DATACITE=true to swap in HykuKnapsack::FakeDataCiteClient
+# instead: it fabricates DataCite-shaped responses in-process, with no network
+# call, so any values entered on the settings page will do.
 Rails.application.config.to_prepare do
   Hyrax::Pid.configure do |config|
-    config.data_cite.client = HykuKnapsack::FakeDataCiteClient.new
+    if ActiveModel::Type::Boolean.new.cast(ENV.fetch("HYRAX_PID_FAKE_DATACITE", "false"))
+      config.data_cite.client = HykuKnapsack::FakeDataCiteClient.new
+    end
 
     # Maps DataCite's minimum-required fields
     # (https://datacite-metadata-schema.readthedocs.io/en/4.7/properties/overview/)
