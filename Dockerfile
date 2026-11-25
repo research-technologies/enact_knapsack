@@ -13,7 +13,11 @@ ENV TESSDATA_PREFIX=/app/samvera/tessdata
 # Fetch from raw.githubusercontent.com (CDN-backed) rather than the github.com
 # blob/...?raw=true redirect, which GitHub now rate-limits (HTTP 429) for
 # unauthenticated CI fetches and was failing the build.
-ADD https://raw.githubusercontent.com/tesseract-ocr/tessdata_best/main/eng.traineddata /app/samvera/tessdata/eng_best.traineddata
+ADD --chmod=755 https://raw.githubusercontent.com/tesseract-ocr/tessdata_best/main/eng.traineddata /app/samvera/tessdata/eng_best.traineddata
+
+USER root
+RUN cp -r /usr/share/tesseract-ocr/5/tessdata/configs /app/samvera/tessdata/configs
+USER app
 
 ############### KNAPSACK SPECIFIC CODE ###################
 # This means bundler inject looks at /app/samvera/.bundler.d for overrides
