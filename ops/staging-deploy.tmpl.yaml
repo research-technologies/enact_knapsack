@@ -1,6 +1,6 @@
 fullnameOverride: "enact-knapsack-staging"
 
-replicaCount: 2
+replicaCount: 1
 
 resources:
   limits:
@@ -98,7 +98,7 @@ extraEnvVars: &envVars
   - name: DB_PORT
     value: "5432"
   - name: DB_NAME
-    value: enact-knapsack-staging
+    value: enact_knapsack_staging
   - name: DB_USER
     value: enact-knapsack-staging
   - name: HYRAX_SKIP_WINGS
@@ -192,7 +192,7 @@ extraEnvVars: &envVars
   - name: REPOSITORY_S3_STORAGE
     value: "true"
   - name: REPOSITORY_S3_BUCKET
-    value: enact-repository-staging-822951369940
+    value: enact-staging-repository-staging-822951369940
   - name: REPOSITORY_S3_REGION
     value: eu-west-1
   - name: AWS_REGION
@@ -279,7 +279,7 @@ externalPostgresql:
   host: zalando-postgres-v17.postgres.svc.cluster.local
   username: enact-knapsack-staging
   password: $DB_PASSWORD
-  database: enact-knapsack-staging
+  database: enact_knapsack_staging
   port: 5432
 
 externalSolrHost: solr.solr.svc.cluster.local
@@ -520,13 +520,13 @@ nginx:
             auth_request     /auth;
             auth_request_set ${DOLLAR}auth_status ${DOLLAR}upstream_status;
             # Use a variable here, so that nginx refreshes this value per request, otherwise ips get cached
-            set ${DOLLAR}image_internal     https://iiif-staging.enacthyku.com;
+            set ${DOLLAR}image_internal     https://iiif-stg.enacthyku.com;
 
             # CloudFront routes by SNI + Host; both must match the distribution's
             # configured alias, not the tenant's own hostname.
             proxy_ssl_server_name  on;
-            proxy_ssl_name         iiif-staging.enacthyku.com;
-            proxy_set_header       Host             iiif-staging.enacthyku.com;
+            proxy_ssl_name         iiif-stg.enacthyku.com;
+            proxy_set_header       Host             iiif-stg.enacthyku.com;
             proxy_set_header       X-Real-IP        ${DOLLAR}remote_addr;
             proxy_set_header       X-Forwarded-For  ${DOLLAR}proxy_add_x_forwarded_for;
             proxy_set_header       X-Forwarded-Host ${DOLLAR}host;
