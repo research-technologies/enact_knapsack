@@ -16,9 +16,7 @@
 # call, so any values entered on the settings page will do.
 Rails.application.config.to_prepare do
   Hyrax::Pid.configure do |config|
-    if ActiveModel::Type::Boolean.new.cast(ENV.fetch("HYRAX_PID_FAKE_DATACITE", "false"))
-      config.data_cite.client = HykuKnapsack::FakeDataCiteClient.new
-    end
+    config.data_cite.client = HykuKnapsack::FakeDataCiteClient.new if ActiveModel::Type::Boolean.new.cast(ENV.fetch("HYRAX_PID_FAKE_DATACITE", "false"))
 
     # Maps DataCite's minimum-required fields
     # (https://datacite-metadata-schema.readthedocs.io/en/4.7/properties/overview/)
